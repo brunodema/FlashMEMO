@@ -1,0 +1,36 @@
+body {
+  background-color: #eeedef
+}
+
+.height-100 {
+  height: 100vh
+}
+
+.card {
+  width: 380px;
+  border: none;
+  border-radius: 0px
+}
+
+.content span {
+  color: green;
+  font-weight: 500
+}
+
+.content p {
+  font-size: 13px
+}
+
+.angle i {
+  font-size: 19px;
+  cursor: pointer
+}
+
+.angle i:nth-child(1) {
+  margin-right: 10px
+}
+
+.about span:nth-child(1) {
+  margin-right: 10px;
+  color: green
+}
