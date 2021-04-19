@@ -7,6 +7,8 @@ import { HomeComponent } from './home/home.component';
 import { NewsComponent } from './news/news.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
+import { UserSummaryComponent } from './home/user-summary/user-summary.component';
+import { NewsSummaryComponent } from './home/news-summary/news-summary.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { FooterComponent } from './shared/footer/footer.component';
     HomeComponent,
     NewsComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    UserSummaryComponent,
+    NewsSummaryComponent
   ],
   imports: [
     BrowserModule,
