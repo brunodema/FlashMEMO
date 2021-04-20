@@ -9,6 +9,8 @@ import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { UserSummaryComponent } from './home/user-summary/user-summary.component';
 import { NewsSummaryComponent } from './home/news-summary/news-summary.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { NewsService } from './news/news.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { NewsSummaryComponent } from './home/news-summary/news-summary.component
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

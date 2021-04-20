@@ -8,7 +8,7 @@ import { News } from '../models/news.model';
 })
 export class NewsService {
 
-  protected testServiceURL : string = "http://localhost:3000/";
+  protected testServiceURL : string = "http://localhost:3000";
 
   constructor(private http : HttpClient) { }
 
