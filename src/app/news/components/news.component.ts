@@ -18,7 +18,7 @@ export class NewsComponent implements OnInit {
     this.newsService.getNews()
       .subscribe(
         news => {
-          this.news = news;
+          this.news = news.sort((i1, i2) => i2.creationDate - i1.creationDate);
         },
         error => {
           this.error = error;
