@@ -1,0 +1,22 @@
+<div class="card flex-md-row my-3 shadow-sm h-md-250">
+  <img
+    class="card-img-right flex-auto d-none d-md-block"
+    style="width: 200px; height: 200px"
+    [src]="news.thumbnailPath"
+  />
+  <div class="card-body d-flex flex-column align-items-start">
+    <strong class="d-inline-block mb-2 text-primary">News</strong>
+    <h6 class="mb-0">
+      <a class="text-dark" href="#">{{ news.title }}</a>
+    </h6>
+    <div class="mb-1 text-muted small">
+      {{ news.creationDate | date: "medium" }}
+    </div>
+    <p class="card-text mb-auto line-clamp-3">
+      {{ news.subtitle }}
+    </p>
+    <a class="btn btn-outline-primary my-2" role="button" href="#"
+      >Continue reading</a
+    >
+  </div>
+</div>

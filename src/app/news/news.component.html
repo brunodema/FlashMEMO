@@ -1,32 +1,8 @@
 <div class="container my-3">
   <div class="d-flex justify-content-end">
-    <button type="button" class="btn btn-primary" [routerLink]="['/create']">Create News</button>
+    <button type="button" class="btn btn-primary" [routerLink]="['/create']">
+      Create News
+    </button>
   </div>
-  <div
-    class="card flex-md-row my-3 shadow-sm h-md-250"
-    *ngFor="let item of news"
-  >
-    <img
-      class="card-img-right flex-auto d-none d-md-block"
-      [src]="item.thumbnailPath"
-    />
-    <div class="card-body d-flex flex-column align-items-start">
-      <strong class="d-inline-block mb-2 text-primary">News</strong>
-      <h6 class="mb-0">
-        <a class="text-dark" href="#"
-          >{{ item.title }}</a
-        >
-      </h6>
-      <div class="mb-1 text-muted small">{{ item.creationDate | date: 'medium' }}</div>
-      <p class="card-text mb-auto">
-        {{ item.subtitle }}
-      </p>
-      <a
-        class="btn btn-outline-primary btn-sm"
-        role="button"
-        href="#"
-        >Continue reading</a
-      >
-    </div>
-  </div>
+  <app-news-card *ngFor="let item of newsList" [news]="item"></app-news-card>
 </div>

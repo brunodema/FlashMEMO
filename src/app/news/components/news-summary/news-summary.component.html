@@ -1,20 +1,18 @@
 <div class="container my-5">
   <div class="row">
     <div class="col-md-6" *ngFor="let item of news">
-      <div
-        class="container d-flex justify-content-center align-items-center"
-      >
+      <div class="container d-flex justify-content-center align-items-center">
         <div class="card">
           <div class="ratio ratio-16x9">
             <iframe
-            src="https://www.youtube.com/embed/6ja-DekjKg0"
-            allowfullscreen
-          ></iframe>
+              src="https://www.youtube.com/embed/6ja-DekjKg0"
+              allowfullscreen
+            ></iframe>
           </div>
 
           <div class="p-3 content">
-            <span>{{ item.title }}</span>
-            <h4>{{ item.subtitle }}</h4>
+            <span class="line-clamp-3">{{ item.title }}</span>
+            <h4 class="line-clamp-3">{{ item.subtitle }}</h4>
             <p class="line-clamp-3">
               {{ item.content }}
             </p>
@@ -29,11 +27,13 @@
                 ><i class="fa fa-envelope"></i>
                 <small> {{ item.lastUpdated }} </small></span
               >
+            </div>
+          </div>
         </div>
       </div>
     </div>
+    <div *ngIf="error">
+      <h4>oops! something came up hehehe</h4>
+    </div>
   </div>
-</div>
-<div *ngIf="error">
- <h4>oops! something came up hehehe</h4>
 </div>

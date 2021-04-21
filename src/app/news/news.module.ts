@@ -7,6 +7,7 @@ import { NewsComponent } from './news.component';
 import { NewsCreateComponent } from './create/news-create.component';
 
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { NewsCardComponent } from './components/news-card/news-card.component';
 
 
 
@@ -14,7 +15,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
   declarations: [
     NewsSummaryComponent,
     NewsComponent,
-    NewsCreateComponent
+    NewsCreateComponent,
+    NewsCardComponent
   ],
   providers: [
     NewsService
