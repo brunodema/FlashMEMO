@@ -1,6 +1,9 @@
 <div class="container my-5">
+  <div class="d-flex justify-content-end">
+    <button type="button" class="btn btn-primary" [routerLink]="['/create']">Create News</button>
+  </div>
   <div
-    class="card flex-md-row mb-4 shadow-sm h-md-250"
+    class="card flex-md-row my-4 shadow-sm h-md-250"
     *ngFor="let item of news"
   >
     <img
