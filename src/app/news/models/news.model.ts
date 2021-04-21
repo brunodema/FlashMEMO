@@ -6,6 +6,6 @@ export class News {
   lastUpdated : number = Date.now();
   content: string = "";
 
-
   constructor() {}
+
 }

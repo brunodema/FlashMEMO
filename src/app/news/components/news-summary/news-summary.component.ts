@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { News } from './models/news.model';
-import { NewsService } from './news.service';
+import { News } from '../../models/news.model';
+import { NewsService } from '../../services/news.service';
 
 @Component({
-  selector: 'app-news',
-  templateUrl: './news.component.html',
-  styleUrls: ['./news.component.css']
+  selector: 'app-news-summary',
+  templateUrl: './news-summary.component.html',
+  styleUrls: ['./news-summary.component.css']
 })
-export class NewsComponent implements OnInit {
+
+export class NewsSummaryComponent implements OnInit {
 
   public news : News[] = [];
   public error? : Error;
@@ -19,7 +20,6 @@ export class NewsComponent implements OnInit {
       .subscribe(
         news => {
           this.news = news;
-          news.forEach(a => console.log(a.thumbnailPath))
         },
         error => {
           this.error = error;

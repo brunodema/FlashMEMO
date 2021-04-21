@@ -14,7 +14,7 @@
           >{{ item.title }}</a
         >
       </h6>
-      <div class="mb-1 text-muted small">{{ item.creationDate }}</div>
+      <div class="mb-1 text-muted small">{{ item.creationDate | date: 'medium' }}</div>
       <p class="card-text mb-auto">
         {{ item.subtitle }}
       </p>
