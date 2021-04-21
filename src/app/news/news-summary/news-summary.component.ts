@@ -3,7 +3,7 @@ import { News } from '../models/news.model';
 import { NewsService } from '../news.service';
 
 @Component({
-  selector: 'app-news',
+  selector: 'app-news-summary',
   templateUrl: './news-summary.component.html',
   styleUrls: ['./news-summary.component.css']
 })
