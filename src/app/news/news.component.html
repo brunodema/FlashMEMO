@@ -1,81 +1,29 @@
-<div class="col-lg-9 stretch-card grid-margin">
-  <div class="card">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-sm-4 grid-margin">
-          <div class="position-relative">
-            <div class="rotate-img">
-              <img src="assets/images/dashboard/home_4.jpg" alt="thumb" class="img-fluid">
-            </div>
-            <div class="badge-positioned">
-              <span class="badge badge-danger font-weight-bold">Flash news</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-8  grid-margin">
-          <h2 class="mb-2 font-weight-600">
-            South Korea’s Moon Jae-in sworn in vowing to address
-            North
-          </h2>
-          <div class="fs-13 mb-2">
-            <span class="mr-2">Photo </span>10 Minutes ago
-          </div>
-          <p class="mb-0">
-            Lorem Ipsum has been the industry's standard dummy
-            text ever since the 1500s, when an
-          </p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-4 grid-margin">
-          <div class="position-relative">
-            <div class="rotate-img">
-              <img src="assets/images/dashboard/home_5.jpg" alt="thumb" class="img-fluid">
-            </div>
-            <div class="badge-positioned">
-              <span class="badge badge-danger font-weight-bold">Flash news</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-8  grid-margin">
-          <h2 class="mb-2 font-weight-600">
-            No charges over 2017 Conservative battle bus cases
-          </h2>
-          <div class="fs-13 mb-2">
-            <span class="mr-2">Photo </span>10 Minutes ago
-          </div>
-          <p class="mb-0">
-            Lorem Ipsum has been the industry's standard dummy
-            text ever since the 1500s, when an
-          </p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-4">
-          <div class="position-relative">
-            <div class="rotate-img">
-              <img src="assets/images/dashboard/home_6.jpg" alt="thumb" class="img-fluid">
-            </div>
-            <div class="badge-positioned">
-              <span class="badge badge-danger font-weight-bold">Flash news</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-8">
-          <h2 class="mb-2 font-weight-600">
-            Kaine: Trump Jr. may have committed treason
-          </h2>
-          <div class="fs-13 mb-2">
-            <span class="mr-2">Photo </span>10 Minutes ago
-          </div>
-          <p class="mb-0">
-            Lorem Ipsum has been the industry's standard dummy
-            text ever since the 1500s, when an
-          </p>
-        </div>
-      </div>
+<div class="container my-5">
+  <div
+    class="card flex-md-row mb-4 shadow-sm h-md-250"
+    *ngFor="let item of news"
+  >
+    <img
+      class="card-img-right flex-auto d-none d-md-block"
+      [src]="item.thumbnailPath"
+    />
+    <div class="card-body d-flex flex-column align-items-start">
+      <strong class="d-inline-block mb-2 text-primary">News</strong>
+      <h6 class="mb-0">
+        <a class="text-dark" href="#"
+          >{{ item.title }}</a
+        >
+      </h6>
+      <div class="mb-1 text-muted small">{{ item.creationDate }}</div>
+      <p class="card-text mb-auto">
+        {{ item.subtitle }}
+      </p>
+      <a
+        class="btn btn-outline-primary btn-sm"
+        role="button"
+        href="#"
+        >Continue reading</a
+      >
     </div>
   </div>
 </div>

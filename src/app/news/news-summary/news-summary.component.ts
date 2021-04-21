@@ -25,8 +25,6 @@ export class NewsSummaryComponent implements OnInit {
           this.error = error;
           console.log(this.error);
         }
-
       );
   }
-
 }

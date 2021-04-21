@@ -3,6 +3,7 @@
     {
       "title": "Lorem Ipsum1",
       "subtitle": "Lorem Ipsum lorem ipsum lorem ipsum",
+      "thumbnailPath": "assets/FlashmemoLogo.png",
       "creationDate": 1618870470533,
       "lastUpdated": 1618870470533,
       "content": "Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum"
@@ -10,6 +11,7 @@
     {
       "title": "Lorem Ipsum2",
       "subtitle": "Lorem Ipsum lorem ipsum lorem ipsum",
+      "thumbnailPath": "assets/FlashmemoLogo.png",
       "creationDate": 1618870581532,
       "lastUpdated": 1618870581532,
       "content": "Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum"
@@ -17,6 +19,7 @@
     {
       "title": "Lorem Ipsum3",
       "subtitle": "Lorem Ipsum lorem ipsum lorem ipsum",
+      "thumbnailPath": "assets/FlashmemoLogo.png",
       "creationDate": 1618870590435,
       "lastUpdated": 1618870590435,
       "content": "Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum"
@@ -24,6 +27,7 @@
     {
       "title": "Lorem Ipsum4",
       "subtitle": "Lorem Ipsum lorem ipsum lorem ipsum",
+      "thumbnailPath": "assets/FlashmemoLogo.png",
       "creationDate": 1618870598190,
       "lastUpdated": 1618870598190,
       "content": "Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum"
