@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { NewsSummaryComponent } from './news/news-summary/news-summary.component';
 
 const routes: Routes = [
   {path: "", redirectTo: "home", pathMatch: "full"},
   {path: "home", component: HomeComponent},
-  {path: "news", component: NewsSummaryComponent}
+  {path: "news", loadChildren: () => import('./news/news.module').then(p => p.NewsModule)}
 ];
 
 @NgModule({
