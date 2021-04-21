@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { News } from '../models/news.model';
-import { NewsService } from './news.service';
+import { NewsService } from '../news.service';
 
 @Component({
   selector: 'app-news',
-  templateUrl: './news.component.html',
-  styleUrls: ['./news.component.css']
+  templateUrl: './news-summary.component.html',
+  styleUrls: ['./news-summary.component.css']
 })
-export class NewsComponent implements OnInit {
+
+export class NewsSummaryComponent implements OnInit {
 
   public news : News[] = [];
+  public error? : Error;
 
   constructor(private newsService : NewsService) { }
 
@@ -19,7 +21,11 @@ export class NewsComponent implements OnInit {
         news => {
           this.news = news;
         },
-        error => console.log(error)
+        error => {
+          this.error = error;
+          console.log(this.error);
+        }
+
       );
   }
 
