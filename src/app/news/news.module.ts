@@ -6,6 +6,8 @@ import { NewsSummaryComponent } from './components/news-summary/news-summary.com
 import { NewsComponent } from './news.component';
 import { NewsCreateComponent } from './create/news-create.component';
 
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+
 
 
 @NgModule({
@@ -19,7 +21,8 @@ import { NewsCreateComponent } from './create/news-create.component';
   ],
   imports: [
     CommonModule,
-    NewsRoutingModule
+    NewsRoutingModule,
+    CKEditorModule
   ],
   exports: [
     NewsSummaryComponent
