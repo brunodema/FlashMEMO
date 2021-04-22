@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RouteMap } from '../shared/models/route-map/route-map';
 
 @Component({
   selector: 'app-user',
@@ -6,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
+
+  routes : RouteMap[] = [
+    {label: "Create User", route: "create"}
+  ]
 
   constructor() { }
 
