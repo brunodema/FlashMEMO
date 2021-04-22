@@ -7,8 +7,8 @@ import { HomeComponent } from './home/home.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NewsModule } from './news/news.module';
 import { SharedModule } from './shared/shared.module';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
+import { FooterComponent } from './common/footer/footer.component';
+import { HeaderComponent } from './common/header/header.component';
 
 @NgModule({
   declarations: [
