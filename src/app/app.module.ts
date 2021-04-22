@@ -9,13 +9,15 @@ import { NewsModule } from './news/news.module';
 import { SharedModule } from './shared/shared.module';
 import { FooterComponent } from './common/footer/footer.component';
 import { HeaderComponent } from './common/header/header.component';
+import { UserPreferencesDropdownComponent } from './common/header/user-preferences-dropdown/user-preferences-dropdown.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    UserPreferencesDropdownComponent
   ],
   imports: [
     BrowserModule,
