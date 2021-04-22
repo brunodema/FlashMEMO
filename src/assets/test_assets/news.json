@@ -40,5 +40,34 @@
       "lastUpdated": 1619040737679,
       "content": "Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum"
     }
+  ],
+  "User": [
+    {
+      "id": 1,
+      "name": "Bruno",
+      "surname": "Demantova",
+      "email": "brunoeckdema@gmail.com",
+      "password": "123",
+      "creationDate": 1619062769525,
+      "lastLogin": 1619062769525
+    },
+    {
+      "id": 2,
+      "name": "Paulo",
+      "surname": "Chaves",
+      "email": "paulo.chaves@alhambrait.com.br",
+      "password": "123",
+      "creationDate": 1619062769535,
+      "lastLogin": 1619062769535
+    },
+    {
+      "id": 3,
+      "name": "Cisco",
+      "surname": "Demantova",
+      "email": "cisquinho@gmail.com",
+      "password": "123",
+      "creationDate": 1619062769526,
+      "lastLogin": 1619062769526
+    }
   ]
 }
