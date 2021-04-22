@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SafePipeService } from './safe-pipe.service';
+import { SafePipeService } from './safe-pipe.pipe';
 
 describe('SafePipeService', () => {
   let service: SafePipeService;

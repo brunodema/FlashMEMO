@@ -8,7 +8,6 @@ import { NewsCreateComponent } from './create/news-create.component';
 
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NewsCardComponent } from './components/news-card/news-card.component';
-import { SafePipeService } from '../shared/services/safe-pipe.service';
 import { SharedModule } from '../shared/shared.module';
 
 

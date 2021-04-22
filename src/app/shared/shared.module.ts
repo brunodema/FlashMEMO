@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AppRoutingModule } from '../app-routing.module';
-import { SafePipeService } from './services/safe-pipe.service';
+import { SafePipeService } from './pipes/safe-pipe.pipe';
 
 @NgModule({
   declarations: [
