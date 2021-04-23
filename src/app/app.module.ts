@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NewsModule } from './news/news.module';
 import { SharedModule } from './shared/shared.module';
 import { FooterComponent } from './common/footer/footer.component';
@@ -17,7 +17,7 @@ import { UserPreferencesDropdownComponent } from './common/header/user-preferenc
     HomeComponent,
     HeaderComponent,
     FooterComponent,
-    UserPreferencesDropdownComponent
+    UserPreferencesDropdownComponent,
   ],
   imports: [
     BrowserModule,
