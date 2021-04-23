@@ -36,7 +36,6 @@ const config : ConfigOption = {
   validators: [
     { name: 'fieldMatch', validation: fieldMatchValidator },
   ],
-
 }
 
 

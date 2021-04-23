@@ -21,6 +21,7 @@ export class RegistrationFormComponent implements OnInit {
         placeholder: 'Enter your name',
         required: true,
       },
+      className: "d-block mb-2"
     },
     {
       key: 'surname',
@@ -30,6 +31,7 @@ export class RegistrationFormComponent implements OnInit {
         placeholder: 'Enter your last name',
         required: true,
       },
+      className: "d-block mb-2"
     },
     {
       key: 'email',
@@ -40,6 +42,7 @@ export class RegistrationFormComponent implements OnInit {
         placeholder: 'Enter your email',
         required: true,
       },
+      className: "d-block mb-2"
     },
     {
       validators: {
@@ -57,6 +60,7 @@ export class RegistrationFormComponent implements OnInit {
             placeholder: 'Enter your password',
             required: true,
           },
+          className: "d-block mb-2"
         },
         {
           key: 'passwordConfirm',
