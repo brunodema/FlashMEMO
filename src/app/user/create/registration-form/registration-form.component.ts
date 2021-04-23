@@ -42,24 +42,33 @@ export class RegistrationFormComponent implements OnInit {
       },
     },
     {
-      key: 'password1',
-      type: 'input',
-      templateOptions: {
-        type: 'password',
-        label: 'Password',
-        placeholder: 'Enter your password',
-        required: true,
+      validators: {
+        validation: [
+          { name: 'fieldMatch', options: { errorPath: 'passwordConfirm' } },
+        ],
       },
-    },
-    {
-      key: 'password2',
-      type: 'input',
-      templateOptions: {
-        type: 'password',
-        label: 'Confirm password',
-        placeholder: 'Repeat your password',
-        required: true,
-      },
+      fieldGroup: [
+        {
+          key: 'password',
+          type: 'input',
+          templateOptions: {
+            type: 'password',
+            label: 'Password',
+            placeholder: 'Enter your password',
+            required: true,
+          },
+        },
+        {
+          key: 'passwordConfirm',
+          type: 'input',
+          templateOptions: {
+            type: 'password',
+            label: 'Confirm password',
+            placeholder: 'Repeat your password',
+            required: true,
+          },
+        },
+      ],
     },
   ];
 
