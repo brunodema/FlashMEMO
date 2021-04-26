@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NewsService } from './services/news.service';
+import { MockNewsService, NewsService } from './services/news.service';
 import { NewsRoutingModule } from './news-routing.module';
 import { NewsSummaryComponent } from './components/news-summary/news-summary.component';
 import { NewsComponent } from './news.component';
@@ -20,7 +20,8 @@ import { SharedModule } from '../shared/shared.module';
     NewsCardComponent
   ],
   providers: [
-    NewsService
+    NewsService,
+    MockNewsService
   ],
   imports: [
     CommonModule,

@@ -1,13 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SafePipeService } from './safe-pipe.pipe';
+import { SafePipe } from './safe-pipe.pipe';
 
-describe('SafePipeService', () => {
-  let service: SafePipeService;
+describe('SafePipe', () => {
+  let service: SafePipe;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(SafePipeService);
+    TestBed.configureTestingModule({
+      providers: [SafePipe]
+    });
+    service = TestBed.inject(SafePipe);
   });
 
   it('should be created', () => {
