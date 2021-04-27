@@ -8,7 +8,7 @@ import { NewsService } from '../../services/news.service';
   styleUrls: ['./news-summary.component.css'],
 })
 export class NewsSummaryComponent implements OnInit {
-  public news: News[] = [];
+  public newsList$: News[] = [];
   public error?: Error;
 
   constructor(private newsService: NewsService) {}
@@ -16,7 +16,7 @@ export class NewsSummaryComponent implements OnInit {
   ngOnInit() {
     this.newsService.getNews().subscribe(
       (news) => {
-        this.news = news;
+        this.newsList$ = news;
       },
       (error) => {
         this.error = error;
