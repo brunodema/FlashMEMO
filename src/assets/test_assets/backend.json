@@ -4,40 +4,40 @@
       "title": "Lorem Ipsum1",
       "subtitle": "Lorem Ipsum lorem ipsum lorem ipsum",
       "thumbnailPath": "assets/features/flashmemo_dummy1.jpg",
-      "creationDate": 1618870470533,
-      "lastUpdated": 1618870470533,
+      "creationDate": 1,
+      "lastUpdated": 1,
       "content": "Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum"
     },
     {
       "title": "Lorem Ipsum2",
       "subtitle": "Lorem Ipsum lorem ipsum lorem ipsum",
       "thumbnailPath": "assets/features/flashmemo_dummy2.jpg",
-      "creationDate": 1618870581532,
-      "lastUpdated": 1618870581532,
+      "creationDate": 2,
+      "lastUpdated": 2,
       "content": "Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum"
     },
     {
       "title": "Lorem Ipsum3",
       "subtitle": "Lorem Ipsum lorem ipsum lorem ipsum. Aliqua magna esse mollit laborum excepteur minim est non aliquip minim reprehenderit deserunt anim enim.",
       "thumbnailPath": "assets/features/flashmemo_dummy3.jpg",
-      "creationDate": 1618870590435,
-      "lastUpdated": 1618870590435,
+      "creationDate": 3,
+      "lastUpdated": 3,
       "content": "Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum"
     },
     {
       "title": "Lorem Ipsum4",
       "subtitle": "Lorem Ipsum lorem ipsum lorem ipsum",
       "thumbnailPath": "assets/features/flashmemo_dummy4.jpg",
-      "creationDate": 1618870598190,
-      "lastUpdated": 1618870598190,
+      "creationDate": 4,
+      "lastUpdated": 4,
       "content": "Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum"
     },
     {
       "title": "Lorem Ipsum5",
       "subtitle": "Consequat enim dolore cillum est veniam magna minim ipsum velit. Enim tempor pariatur elit dolore irure irure minim amet do est id. Deserunt minim nisi ut fugiat eu deserunt. Officia ut aliqua officia dolore occaecat excepteur duis. Consectetur sint duis duis laboris elit duis et labore culpa eu officia. Cillum quis quis voluptate amet elit veniam quis tempor est duis ipsum laboris. Dolor irure Lorem sunt ut voluptate. Tempor eiusmod eiusmod duis occaecat exercitation nisi occaecat officia ex ex enim sit voluptate non.",
       "thumbnailPath": "assets/FlashmemoLogo.png",
-      "creationDate": 1619040737679,
-      "lastUpdated": 1619040737679,
+      "creationDate": 5,
+      "lastUpdated": 5,
       "content": "Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum Lorem Ipsum lorem ipsum lorem ipsum"
     }
   ],

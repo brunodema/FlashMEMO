@@ -15,6 +15,6 @@ export class NewsSummaryComponent implements OnInit {
   constructor(private newsService: NewsService) {}
 
   ngOnInit() {
-    this.newsList$ = this.newsService.getNews();
+    this.newsList$ = this.newsService.getNews(false);
   }
 }

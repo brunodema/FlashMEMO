@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { RouteMap } from '../shared/models/route-map/route-map';
 import { News } from './models/news.model';
 import { NewsService } from './services/news.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-news',
@@ -18,6 +19,10 @@ export class NewsComponent implements OnInit {
   constructor(private newsService: NewsService) {}
 
   ngOnInit() {
-    this.newsList$ = this.newsService.getNews();
+    this.newsList$ = this.newsService
+      .getNews(false)
+      .pipe(
+        map((news) => news.sort((a1, a2) => a1.creationDate - a2.creationDate))
+      );
   }
 }
