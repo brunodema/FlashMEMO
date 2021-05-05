@@ -4,6 +4,8 @@ import { Observable, throwError } from 'rxjs';
 import { News } from '../models/news.model';
 import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/internal/operators/tap';
+import { map } from 'rxjs/internal/operators/map';
+import { NewsListResponseModel } from './news.response.model';
 
 const sortAscending = function (data: News[]) {
   data.sort((a: News, b: News) => a.creationDate - b.creationDate);
@@ -29,5 +31,6 @@ export class NewsService {
     let func = function (data: News[]) {};
     newerFirst === true ? (func = sortAscending) : (func = sortDescending);
     return this.http.get<News[]>(`${this.testServiceURL}`).pipe(tap(func));
+    //return this.http.get<News[]>(`https://localhost:44326/api/v1/News/list`);
   }
 }

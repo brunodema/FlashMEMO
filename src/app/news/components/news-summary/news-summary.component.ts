@@ -9,12 +9,14 @@ import { NewsService } from '../../services/news.service';
   styleUrls: ['./news-summary.component.css'],
 })
 export class NewsSummaryComponent implements OnInit {
-  public newsList$: Observable<News[]>;
+  public newsList: News[];
   public error?: Error;
 
   constructor(private newsService: NewsService) {}
 
   ngOnInit() {
-    this.newsList$ = this.newsService.getNews(false);
+    this.newsService
+      .getNews(false)
+      .subscribe((newsList) => (this.newsList = newsList));
   }
 }

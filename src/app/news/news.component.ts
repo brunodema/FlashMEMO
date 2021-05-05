@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./news.component.css'],
 })
 export class NewsComponent implements OnInit {
-  public newsList$: Observable<News[]>;
+  public newsList: News[];
   public error?: Error;
 
   routes: RouteMap[] = [{ label: 'Create News', route: 'create' }];
@@ -19,10 +19,6 @@ export class NewsComponent implements OnInit {
   constructor(private newsService: NewsService) {}
 
   ngOnInit() {
-    this.newsList$ = this.newsService
-      .getNews(false)
-      .pipe(
-        map((news) => news.sort((a1, a2) => a1.creationDate - a2.creationDate))
-      );
+    this.newsService.getNews(false).subscribe((news) => (this.newsList = news));
   }
 }
