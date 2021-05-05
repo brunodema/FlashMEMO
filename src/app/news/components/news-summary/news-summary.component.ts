@@ -1,4 +1,5 @@
 import { Component, OnInit, Pipe } from '@angular/core';
+import { Observable } from 'rxjs';
 import { News } from '../../models/news.model';
 import { NewsService } from '../../services/news.service';
 
@@ -8,20 +9,12 @@ import { NewsService } from '../../services/news.service';
   styleUrls: ['./news-summary.component.css'],
 })
 export class NewsSummaryComponent implements OnInit {
-  public newsList$: News[] = [];
+  public newsList$: Observable<News[]>;
   public error?: Error;
 
   constructor(private newsService: NewsService) {}
 
   ngOnInit() {
-    this.newsService.getNews().subscribe(
-      (news) => {
-        this.newsList$ = news;
-      },
-      (error) => {
-        this.error = error;
-        console.log(this.error);
-      }
-    );
+    this.newsList$ = this.newsService.getNews();
   }
 }

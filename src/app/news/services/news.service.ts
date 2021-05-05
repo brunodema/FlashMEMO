@@ -13,6 +13,7 @@ export class NewsService {
   constructor(private http: HttpClient) {}
 
   getNews(): Observable<News[]> {
-    return this.http.get<News[]>(`${this.testServiceURL}/api/v1/News/list`);
+    //return this.http.get<News[]>(`${this.testServiceURL}/api/v1/News/list`);
+    return this.http.get<News[]>(`http://localhost:3000/News`);
   }
 }

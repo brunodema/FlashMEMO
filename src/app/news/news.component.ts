@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { RouteMap } from '../shared/models/route-map/route-map';
 import { News } from './models/news.model';
 import { NewsService } from './services/news.service';
@@ -9,7 +10,7 @@ import { NewsService } from './services/news.service';
   styleUrls: ['./news.component.css'],
 })
 export class NewsComponent implements OnInit {
-  public newsList$: News[] = [];
+  public newsList$: Observable<News[]>;
   public error?: Error;
 
   routes: RouteMap[] = [{ label: 'Create News', route: 'create' }];
@@ -17,16 +18,6 @@ export class NewsComponent implements OnInit {
   constructor(private newsService: NewsService) {}
 
   ngOnInit() {
-    this.newsService.getNews().subscribe(
-      (news) => {
-        this.newsList$ = news.sort(
-          (i1, i2) => i2.creationDate - i1.creationDate
-        );
-      },
-      (error) => {
-        this.error = error;
-        console.log(this.error);
-      }
-    );
+    this.newsList$ = this.newsService.getNews();
   }
 }
