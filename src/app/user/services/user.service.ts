@@ -1,19 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
+  protected testServiceURL: string = environment.backendRootAddress;
 
-  protected testServiceURL : string = "http://localhost:3000";
+  constructor(private http: HttpClient) {}
 
-  constructor(private http : HttpClient) { }
-
-  getNews() : Observable<User[]>
-  {
+  getNews(): Observable<User[]> {
     return this.http.get<User[]>(`${this.testServiceURL}/User`);
   }
 }
