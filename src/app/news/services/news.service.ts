@@ -17,19 +17,17 @@ const sortDescending = function (data: News[]) {
   providedIn: 'root',
 })
 export class NewsService {
-  protected testServiceURL: string = environment.backendRootAddress;
+  protected testServiceURL: string =
+    environment.production === false
+      ? `${environment.backendRootAddress}/News`
+      : `${environment.backendRootAddress}/api/v1/News/list`;
 
   constructor(private http: HttpClient) {}
 
   getNews(newerFirst: boolean = true): Observable<News[]> {
     //return this.http.get<News[]>(`${this.testServiceURL}/api/v1/News/list`);
-    if (newerFirst) {
-      return this.http
-        .get<News[]>(`http://localhost:3000/News`)
-        .pipe(tap(sortAscending));
-    }
-    return this.http
-      .get<News[]>(`http://localhost:3000/News`)
-      .pipe(tap(sortDescending));
+    let func = function (data: News[]) {};
+    newerFirst === true ? (func = sortAscending) : (func = sortDescending);
+    return this.http.get<News[]>(`${this.testServiceURL}`).pipe(tap(func));
   }
 }
