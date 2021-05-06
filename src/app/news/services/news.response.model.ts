@@ -1,8 +1,8 @@
 import { News } from '../models/news.model';
 
 export interface NewsListResponseModel {
-  newsList: News[];
-  status: string;
+  errors: string[];
   message: string;
-  errors: any[];
+  news: News[]; // name must match with the returned object (lesson learned)
+  status: string;
 }

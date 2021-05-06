@@ -1,6 +1,7 @@
 import { Component, OnInit, Pipe } from '@angular/core';
 import { Observable } from 'rxjs';
 import { News } from '../../models/news.model';
+import { NewsListResponseModel } from '../../services/news.response.model';
 import { NewsService } from '../../services/news.service';
 
 @Component({
