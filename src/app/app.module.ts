@@ -21,10 +21,6 @@ import { AuthService } from './shared/services/auth.service';
 import { AuthGuard } from './shared/services/auth.guard';
 import { JwtModule } from '@auth0/angular-jwt';
 
-export function tokenGetter() {
-  return localStorage.getItem('access_token');
-}
-
 @NgModule({
   declarations: [
     AppComponent,

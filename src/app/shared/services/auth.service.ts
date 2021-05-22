@@ -1,20 +1,20 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 export interface LoginRequestModel {
-  Email: string;
-  Password: string;
+  email: string;
+  password: string;
 }
 
 export interface LoginResponseModel {
-  Status: string;
-  Message: string;
-  JWTToken: string;
-  Errors: any[];
+  status: string;
+  message: string;
+  jwtToken: string;
+  errors: any[];
 }
 
 @Injectable({
@@ -27,8 +27,6 @@ export class AuthService {
 
   public isAuthenticated(): boolean {
     const token = localStorage.getItem('token')!; // non-null assertion operator
-    // Check whether the token is expired and return
-    // true or false
     return !this.jwtHelper.isTokenExpired(token);
   }
 
@@ -37,10 +35,31 @@ export class AuthService {
     password: string
   ): Observable<LoginResponseModel> {
     const body: LoginRequestModel = {
-      Email: email,
-      Password: password,
+      email: email,
+      password: password,
     };
     const customHeaders = { 'content-type': 'application/json' };
-    return this.http.post<LoginResponseModel>(`${this.serviceURL}/login`, body);
+    return this.http
+      .post<LoginResponseModel>(`${this.serviceURL}/login`, body)
+      .pipe(
+        map((res) => {
+          this.storeJWT(res.jwtToken);
+          return res;
+        }),
+        catchError((err: HttpErrorResponse) => throwError(err))
+      );
+  }
+
+  public storeJWT(JWTToken: string) {
+    this.clearPreExistingJWT();
+    localStorage.setItem('token', JWTToken);
+  }
+
+  public getJWT() {
+    this.jwtHelper.tokenGetter();
+  }
+
+  private clearPreExistingJWT() {
+    localStorage.removeItem('token');
   }
 }
