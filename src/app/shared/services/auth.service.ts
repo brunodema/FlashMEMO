@@ -50,6 +50,11 @@ export class AuthService {
       );
   }
 
+  public logout() {
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
+  }
+
   public storeJWT(JWTToken: string) {
     this.clearPreExistingJWT();
     localStorage.setItem('token', JWTToken);
