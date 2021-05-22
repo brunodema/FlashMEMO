@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./user-preferences-dropdown.component.css'],
 })
 export class UserPreferencesDropdownComponent implements OnInit {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(public authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {}
 
@@ -21,5 +21,10 @@ export class UserPreferencesDropdownComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/home']);
   }
 }
