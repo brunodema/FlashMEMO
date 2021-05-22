@@ -20,6 +20,7 @@ import { UserPreferencesDropdownComponent } from './common/header/user-preferenc
 import { AuthService } from './shared/services/auth.service';
 import { AuthGuard } from './shared/services/auth.guard';
 import { JwtModule } from '@auth0/angular-jwt';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { JwtModule } from '@auth0/angular-jwt';
     HeaderComponent,
     FooterComponent,
     UserPreferencesDropdownComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
