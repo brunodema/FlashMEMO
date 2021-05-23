@@ -1,27 +1,22 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-
-export interface LoginRequestModel {
-  email: string;
-  password: string;
-}
-
-export interface LoginResponseModel {
-  status: string;
-  message: string;
-  jwtToken: string;
-  errors: any[];
-}
+import {
+  BaseAPIResponseModel,
+  LoginRequestModel,
+  LoginResponseModel,
+  RegisterRequestModel,
+} from '../models/api-response';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   protected serviceURL: string = `${environment.backendRootAddress}/api/v1/Auth`;
+  protected customHeaders = { 'content-type': 'application/json' }; // check the need for it (and start using if necessary)
 
   constructor(private jwtHelper: JwtHelperService, private http: HttpClient) {}
 
@@ -38,14 +33,10 @@ export class AuthService {
       email: email,
       password: password,
     };
-    const customHeaders = { 'content-type': 'application/json' };
     return this.http
       .post<LoginResponseModel>(`${this.serviceURL}/login`, body)
       .pipe(
-        map((res) => {
-          this.storeJWT(res.jwtToken);
-          return res;
-        }),
+        map((res) => this.handleSuccessfulLogin(res)),
         catchError((err: HttpErrorResponse) => throwError(err))
       );
   }
@@ -55,16 +46,32 @@ export class AuthService {
     sessionStorage.removeItem('token');
   }
 
-  public storeJWT(JWTToken: string) {
+  public register(
+    registerData: RegisterRequestModel
+  ): Observable<BaseAPIResponseModel> {
+    return this.http
+      .post<BaseAPIResponseModel>(`${this.serviceURL}/register`, registerData)
+      .pipe(
+        map((res) => res),
+        catchError((err: HttpErrorResponse) => throwError(err))
+      );
+  }
+
+  private storeJWT(JWTToken: string) {
     this.clearPreExistingJWT();
     localStorage.setItem('token', JWTToken);
   }
 
-  public getJWT() {
+  private getJWT() {
     this.jwtHelper.tokenGetter();
   }
 
   private clearPreExistingJWT() {
     localStorage.removeItem('token');
+  }
+
+  private handleSuccessfulLogin(res: LoginResponseModel): LoginResponseModel {
+    this.storeJWT(res.jwtToken);
+    return res;
   }
 }
