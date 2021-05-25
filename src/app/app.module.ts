@@ -8,6 +8,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // for bootstrap animations
 import { CollapseModule } from 'ngx-bootstrap/collapse'; // boostrap collapsable
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown'; // boostrap dropbdown
+import { ToastrModule } from 'ngx-toastr'; // Toastr
 
 import { AuthService } from './shared/services/auth.service';
 import { AuthGuard } from './shared/guards/auth.guard';
@@ -45,6 +46,7 @@ import { LoginComponent } from './login/login.component';
         },
       },
     }),
+    ToastrModule.forRoot(),
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent],
