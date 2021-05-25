@@ -46,7 +46,9 @@ import { LoginComponent } from './login/login.component';
         },
       },
     }),
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-center',
+    }),
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent],

@@ -20,16 +20,20 @@ export class UserPreferencesDropdownComponent implements OnInit {
   login() {
     this.authService.login('sysadmin@flashmemo.com', 'Flashmemo@123').subscribe(
       (result) => {
-        this.toastr.success(
-          'You will soon be redirected',
-          'Welcome to FlashMEMO!'
-        );
-        setTimeout(() => this.router.navigate(['/news']), 3000);
+        this.toastr
+          .success('You will soon be redirected', 'Welcome to FlashMEMO!', {
+            timeOut: 3000,
+          })
+          .onHidden.subscribe(() => this.redirectToHome());
       },
       (error) => {
         console.log(error);
       }
     );
+  }
+
+  redirectToHome() {
+    this.router.navigate(['/news']);
   }
 
   logout() {
