@@ -1,6 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { LoginResponseModel } from 'src/app/shared/models/api-response';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -18,22 +20,38 @@ export class UserPreferencesDropdownComponent implements OnInit {
   ngOnInit(): void {}
 
   login() {
-    this.authService.login('sysadmin@flashmemo.com', 'Flashmemo@123').subscribe(
+    this.authService.login('sysdadminflashmemo.com', '23').subscribe(
       (result) => {
         this.toastr
-          .success('You will soon be redirected', 'Welcome to FlashMEMO!', {
+          .success('You will soon be redirected.', 'Welcome to FlashMEMO!', {
             timeOut: 3000,
           })
           .onHidden.subscribe(() => this.redirectToHome());
       },
-      (error) => {
-        console.log(error);
+      (error: HttpErrorResponse) => {
+        this.toastr.error(
+          this.processErrorsFromAPI(error.error),
+          'Authentication Failure',
+          {
+            timeOut: 3000,
+          }
+        );
       }
     );
   }
 
   redirectToHome() {
     this.router.navigate(['/news']);
+  }
+
+  processErrorsFromAPI(errorResponse: LoginResponseModel): string {
+    let resp = errorResponse.message + '\n\n';
+    if (errorResponse.errors) {
+      errorResponse.errors.forEach((error) => {
+        resp += `\n${error}`;
+      });
+    }
+    return resp;
   }
 
   logout() {
