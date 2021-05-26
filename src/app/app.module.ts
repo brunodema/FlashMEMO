@@ -48,6 +48,8 @@ import { LoginComponent } from './login/login.component';
     }),
     ToastrModule.forRoot({
       positionClass: 'toast-top-center',
+      countDuplicates: true,
+      maxOpened: 3,
     }),
   ],
   providers: [AuthService, AuthGuard],

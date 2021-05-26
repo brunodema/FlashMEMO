@@ -9,3 +9,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+.toast-container {
+  text-align: center;
+}
