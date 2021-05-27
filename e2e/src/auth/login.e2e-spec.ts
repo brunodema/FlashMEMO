@@ -22,6 +22,7 @@ describe('test login', function () {
   });
 
   it('should succcessfully login after clicking the login button', () => {
+    // this one is just a prototype. Once login page is implemented, this can be corrected
     page.navigateTo();
     page.getLoginButton().click();
 
