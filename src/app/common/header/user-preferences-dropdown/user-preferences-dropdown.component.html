@@ -1,14 +1,23 @@
-<div class="btn-group" dropdown>
+<ul *ngIf="!this.authService.isAuthenticated()" class="navbar-nav me-auto mb-2 mb-lg-0">
+  <li class="nav-item">
+    <a id="login-btn" class="nav-link" (click)="this.login()" href="javascript:void(0)">Login</a>
+  </li>
+  <li class="nav-item">
+    <a id="register-btn" class="nav-link" [routerLink]="['/user/create']">Register</a>
+  </li>
+</ul>
+
+
+<div *ngIf="this.authService.isAuthenticated()" class="btn-group" dropdown>
   <button id="button-animated" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
           aria-controls="dropdown-animated">
-    Button dropdown <span class="caret"></span>
+    Hello User <span class="caret"></span>
   </button>
   <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu"
       role="menu" aria-labelledby="button-animated">
-    <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
-    <li role="menuitem"><a class="dropdown-item" href="#">Another action</a>
+    <li role="menuitem"><a class="dropdown-item" href="#">My Profile</a></li>
+    <li role="menuitem"><a class="dropdown-item" href="#">Change Password</a>
     </li>
-    <li role="menuitem"><a class="dropdown-item" href="#">Something else
-      here</a></li>
+    <li role="menuitem"><a class="dropdown-item" href="javascript:void(0)" (click)="logout()">Logout</a></li>
   </ul>
 </div>

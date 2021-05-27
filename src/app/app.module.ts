@@ -4,19 +4,21 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NewsModule } from './news/news.module';
 import { SharedModule } from './shared/shared.module';
+import { JwtModule } from '@auth0/angular-jwt';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // for bootstrap animations
+import { CollapseModule } from 'ngx-bootstrap/collapse'; // boostrap collapsable
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown'; // boostrap dropbdown
+import { ToastrModule } from 'ngx-toastr'; // Toastr
 
-// for bootstrap animations
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// boostrap collapsable
-import { CollapseModule } from 'ngx-bootstrap/collapse';
-// boostrap dropbdown
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { AuthService } from './shared/services/auth.service';
+import { AuthGuard } from './shared/guards/auth.guard';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './common/footer/footer.component';
 import { HeaderComponent } from './common/header/header.component';
 import { UserPreferencesDropdownComponent } from './common/header/user-preferences-dropdown/user-preferences-dropdown.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import { UserPreferencesDropdownComponent } from './common/header/user-preferenc
     HeaderComponent,
     FooterComponent,
     UserPreferencesDropdownComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,8 +39,20 @@ import { UserPreferencesDropdownComponent } from './common/header/user-preferenc
     BrowserAnimationsModule,
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('token');
+        },
+      },
+    }),
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-center',
+      countDuplicates: true,
+      maxOpened: 3,
+    }),
   ],
-  providers: [],
+  providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
