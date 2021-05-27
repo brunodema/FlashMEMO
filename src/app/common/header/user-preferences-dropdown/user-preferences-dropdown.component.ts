@@ -20,26 +20,24 @@ export class UserPreferencesDropdownComponent implements OnInit {
   ngOnInit(): void {}
 
   login() {
-    this.authService
-      .login('sysdadmin@flashmemo.com', 'Flashmemo@123')
-      .subscribe(
-        (result) => {
-          this.toastr
-            .success('You will soon be redirected.', 'Welcome to FlashMEMO!', {
-              timeOut: 3000,
-            })
-            .onHidden.subscribe(() => this.redirectToHome());
-        },
-        (error: HttpErrorResponse) => {
-          this.toastr.error(
-            this.processErrorsFromAPI(error.error),
-            'Authentication Failure',
-            {
-              timeOut: 3000,
-            }
-          );
-        }
-      );
+    this.authService.login('sysadmin@flashmemo.com', 'Flashmemo@123').subscribe(
+      (result) => {
+        this.toastr
+          .success('You will soon be redirected.', 'Welcome to FlashMEMO!', {
+            timeOut: 3000,
+          })
+          .onHidden.subscribe(() => this.redirectToHome());
+      },
+      (error: HttpErrorResponse) => {
+        this.toastr.error(
+          this.processErrorsFromAPI(error.error),
+          'Authentication Failure',
+          {
+            timeOut: 3000,
+          }
+        );
+      }
+    );
   }
 
   redirectToHome() {

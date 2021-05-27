@@ -2,7 +2,7 @@ import { browser, by, element, promise } from 'protractor';
 
 export class HomePage {
   async navigateTo(): Promise<unknown> {
-    return browser.get(browser.baseUrl);
+    return browser.driver.get(browser.baseUrl);
   }
 
   async getTitleText(): Promise<string> {
