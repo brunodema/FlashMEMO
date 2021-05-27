@@ -1,5 +1,5 @@
 // pokemon.e2e-spec.ts
-import { browser, by, element, error } from 'protractor';
+import { browser } from 'protractor';
 import { HomePage } from '../../home.po';
 
 describe('test login', function () {

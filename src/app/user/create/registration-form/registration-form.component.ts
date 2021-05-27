@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { RegisterRequestModel } from 'src/app/shared/models/api-response';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({

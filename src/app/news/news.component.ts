@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { RouteMap } from '../shared/models/route-map/route-map';
 import { News } from './models/news.model';
 import { NewsService } from './services/news.service';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-news',
