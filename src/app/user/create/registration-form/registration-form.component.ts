@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { LoginRequestModel } from 'src/app/shared/models/api-response';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -86,8 +87,12 @@ export class RegistrationFormComponent implements OnInit {
       this.authService.register(this.form.value).subscribe(
         (result) => {
           console.log('user successfully registered!');
+          let loginRequestData: LoginRequestModel = {
+            email: this.form.value.email,
+            password: this.form.value.password,
+          };
           this.authService
-            .login(this.form.value.email, this.form.value.password)
+            .login(loginRequestData)
             .subscribe((res) => this.router.navigate(['/home']));
         },
         (error) => {

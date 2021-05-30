@@ -25,16 +25,9 @@ export class AuthService {
     return !this.jwtHelper.isTokenExpired(token);
   }
 
-  public login(
-    email: string,
-    password: string
-  ): Observable<LoginResponseModel> {
-    const body: LoginRequestModel = {
-      email: email,
-      password: password,
-    };
+  public login(requestData: LoginRequestModel): Observable<LoginResponseModel> {
     return this.http
-      .post<LoginResponseModel>(`${this.serviceURL}/login`, body)
+      .post<LoginResponseModel>(`${this.serviceURL}/login`, requestData)
       .pipe(
         map((res) => this.handleSuccessfulLogin(res)),
         catchError((err: HttpErrorResponse) => throwError(err))
