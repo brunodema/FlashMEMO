@@ -1,6 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ToastrService } from 'ngx-toastr';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -17,8 +19,14 @@ import {
 export class AuthService {
   protected serviceURL: string = `${environment.backendRootAddress}/api/v1/Auth`;
   protected customHeaders = { 'content-type': 'application/json' }; // check the need for it (and start using if necessary)
+  protected homeAddress = '/home';
 
-  constructor(private jwtHelper: JwtHelperService, private http: HttpClient) {}
+  constructor(
+    private jwtHelper: JwtHelperService,
+    private http: HttpClient,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   public isAuthenticated(): boolean {
     const token = localStorage.getItem('token')!; // non-null assertion operator
@@ -30,13 +38,14 @@ export class AuthService {
       .post<LoginResponseModel>(`${this.serviceURL}/login`, requestData)
       .pipe(
         map((res) => this.handleSuccessfulLogin(res)),
-        catchError((err: HttpErrorResponse) => throwError(err))
+        catchError((err: HttpErrorResponse) => this.handleFailedLogin(err))
       );
   }
 
   public logout() {
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
+    this.router.navigate(['/home']);
   }
 
   public register(
@@ -66,6 +75,37 @@ export class AuthService {
 
   private handleSuccessfulLogin(res: LoginResponseModel): LoginResponseModel {
     this.storeJWT(res.jwtToken);
+    this.toastr
+      .success('You will soon be redirected.', 'Welcome to FlashMEMO!', {
+        timeOut: 3000,
+      })
+      .onHidden.subscribe(() => this.redirectToHome());
     return res;
+  }
+
+  private handleFailedLogin(err: HttpErrorResponse) {
+    this.clearPreExistingJWT();
+    this.toastr.error(
+      this.processErrorsFromAPI(err.error),
+      'Authentication Failure',
+      {
+        timeOut: 3000,
+      }
+    );
+    return throwError(err);
+  }
+
+  processErrorsFromAPI(errorResponse: LoginResponseModel): string {
+    let resp = errorResponse.message + '\n\n';
+    if (errorResponse.errors) {
+      errorResponse.errors.forEach((error) => {
+        resp += `\n${error}`;
+      });
+    }
+    return resp;
+  }
+
+  redirectToHome() {
+    this.router.navigate([this.homeAddress]);
   }
 }
