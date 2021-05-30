@@ -61,6 +61,7 @@ export class AuthService {
 
   private clearPreExistingJWT() {
     localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
   }
 
   private handleSuccessfulLogin(res: LoginResponseModel): LoginResponseModel {
