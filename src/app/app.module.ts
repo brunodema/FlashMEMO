@@ -15,10 +15,10 @@ import { AuthGuard } from './shared/guards/auth.guard';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { FooterComponent } from './common/footer/footer.component';
-import { HeaderComponent } from './common/header/header.component';
-import { UserPreferencesDropdownComponent } from './common/header/user-preferences-dropdown/user-preferences-dropdown.component';
 import { LoginComponent } from './login/login.component';
+import { HeaderComponent } from './shared/components/header/header.component';
+import { FooterComponent } from './shared/components/footer/footer.component';
+import { UserPreferencesDropdownComponent } from './shared/components/user-preferences-dropdown/user-preferences-dropdown.component';
 
 @NgModule({
   declarations: [
