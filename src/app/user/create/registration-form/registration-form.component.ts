@@ -87,13 +87,6 @@ export class RegistrationFormComponent implements OnInit {
       this.authService.register(this.form.value).subscribe(
         (result) => {
           console.log('user successfully registered!');
-          let loginRequestData: LoginRequestModel = {
-            email: this.form.value.email,
-            password: this.form.value.password,
-          };
-          this.authService
-            .login(loginRequestData)
-            .subscribe((res) => this.router.navigate(['/home']));
         },
         (error) => {
           console.log(error);

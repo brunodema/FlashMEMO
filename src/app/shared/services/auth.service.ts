@@ -33,7 +33,7 @@ export class AuthService {
     return !this.jwtHelper.isTokenExpired(token);
   }
 
-  public login(requestData: LoginRequestModel): Observable<LoginResponseModel> {
+  public login(requestData: LoginRequestModel): Observable<any> {
     return this.http
       .post<LoginResponseModel>(`${this.serviceURL}/login`, requestData)
       .pipe(
@@ -45,17 +45,21 @@ export class AuthService {
   public logout() {
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
-    this.router.navigate(['/home']);
+    this.redirectToHome();
   }
 
-  public register(
-    registerData: RegisterRequestModel
-  ): Observable<BaseAPIResponseModel> {
+  public register(registerData: RegisterRequestModel): Observable<any> {
     return this.http
       .post<BaseAPIResponseModel>(`${this.serviceURL}/register`, registerData)
       .pipe(
-        map((res) => res),
-        catchError((err: HttpErrorResponse) => throwError(err))
+        map((res) => {
+          this.handleSuccessfulRegistration(res);
+          this.login({
+            email: registerData.email,
+            password: registerData.password,
+          }).subscribe();
+        }),
+        catchError((err: HttpErrorResponse) => this.handleFailedLogin(err))
       );
   }
 
@@ -73,14 +77,23 @@ export class AuthService {
     sessionStorage.removeItem('token');
   }
 
-  private handleSuccessfulLogin(res: LoginResponseModel): LoginResponseModel {
+  private handleSuccessfulLogin(res: LoginResponseModel) {
     this.storeJWT(res.jwtToken);
     this.toastr
       .success('You will soon be redirected.', 'Welcome to FlashMEMO!', {
         timeOut: 3000,
       })
       .onHidden.subscribe(() => this.redirectToHome());
-    return res;
+  }
+
+  private handleSuccessfulRegistration(res: BaseAPIResponseModel) {
+    this.toastr.success(
+      'User created. You will soon be redirected.',
+      'Registration Complete!',
+      {
+        timeOut: 3000,
+      }
+    );
   }
 
   private handleFailedLogin(err: HttpErrorResponse) {
