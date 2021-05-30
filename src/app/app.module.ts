@@ -16,18 +16,45 @@ import { AuthGuard } from './shared/guards/auth.guard';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
+import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import { ConfigOption, FormlyModule } from '@ngx-formly/core';
+import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { UserPreferencesDropdownComponent } from './shared/components/user-preferences-dropdown/user-preferences-dropdown.component';
+
+export function fieldMatchValidator(control: AbstractControl) {
+  const { password, passwordConfirm } = control.value;
+
+  // avoid displaying the message error when values are empty
+  if (!passwordConfirm || !password) {
+    return null;
+  }
+
+  if (passwordConfirm === password) {
+    return null;
+  }
+
+  return { fieldMatch: { message: 'Password Not Matching' } };
+}
+
+const config: ConfigOption = {
+  validationMessages: [
+    { name: 'required', message: 'This field is required' },
+    { name: 'emailIsValid', message: 'This is not a valid email' },
+    { name: 'passwordMatch', message: 'The password must match' },
+  ],
+  validators: [{ name: 'fieldMatch', validation: fieldMatchValidator }],
+};
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
+    LoginComponent,
     HeaderComponent,
     FooterComponent,
     UserPreferencesDropdownComponent,
-    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +78,9 @@ import { UserPreferencesDropdownComponent } from './shared/components/user-prefe
       countDuplicates: true,
       maxOpened: 3,
     }),
+    ReactiveFormsModule,
+    FormlyModule.forRoot(config),
+    FormlyBootstrapModule,
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent],
