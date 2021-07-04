@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   // backendRootAddress: 'http://localhost:3000',
   backendRootAddress: 'https://localhost:44326',
+  maxPageSize: 10000,
 };
 
 /*
