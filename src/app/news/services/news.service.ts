@@ -5,11 +5,9 @@ import { News } from '../models/news.model';
 import { environment } from 'src/environments/environment';
 
 import { map } from 'rxjs/internal/operators/map';
-import { NewsListResponseModel } from './news.response.model';
-
-const sortAscending = (a: News, b: News) => a.creationDate - b.creationDate;
-
-const sortDescending = (a: News, b: News) => b.creationDate - a.creationDate;
+import { SortType } from 'src/app/shared/models/sort-classes/sort-type';
+import { PaginatedListResponse } from 'src/app/shared/models/api-response';
+import { SortOptions } from 'src/app/shared/models/sort-classes/sort-options';
 
 @Injectable({
   providedIn: 'root',
@@ -19,13 +17,14 @@ export class NewsService {
 
   constructor(private http: HttpClient) {}
 
-  getNews(newerFirst: boolean = true): Observable<News[]> {
-    //return this.http.get<News[]>(`${this.testServiceURL}/api/v1/News/list`);
-    let func: any;
-    newerFirst === true ? (func = sortAscending) : (func = sortDescending);
-    //return this.http.get<News[]>(`${this.testServiceURL}`).pipe(tap(func));
+  getAllNews(sortType: SortType = SortType.NONE): Observable<News[]> {
+    let pageSize = environment.maxPageSize;
+    let comparisonFunction = SortOptions.getComparisonFunction(sortType);
+
     return this.http
-      .get<NewsListResponseModel>(`${this.testServiceURL}`)
-      .pipe(map((a) => a.news.sort(func)));
+      .get<PaginatedListResponse<News>>(
+        `${this.testServiceURL}?pageSize=${pageSize}`
+      )
+      .pipe(map((a) => a.data.results.sort(comparisonFunction)));
   }
 }
