@@ -1,3 +1,5 @@
+import { PaginatedListModel } from './paginated-list';
+
 export interface BaseAPIResponseModel {
   status: string;
   message: string;
@@ -19,4 +21,11 @@ export interface RegisterRequestModel {
 
 export interface LoginResponseModel extends BaseAPIResponseModel {
   jwtToken: string;
+}
+
+export interface PaginatedListResponse<Type> {
+  errors: string[];
+  message: string;
+  data: PaginatedListModel<Type>; // name must match with the returned object (lesson learned)
+  status: string;
 }
