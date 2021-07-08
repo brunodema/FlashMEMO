@@ -16,12 +16,17 @@ import { AuthGuard } from './shared/guards/auth.guard';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import {
+  AbstractControl,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ConfigOption, FormlyModule } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { UserPreferencesDropdownComponent } from './shared/components/user-preferences-dropdown/user-preferences-dropdown.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
