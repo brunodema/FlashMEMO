@@ -39,3 +39,17 @@ export class UserComponent implements OnInit {
   //   this.service.sortColumn = column;
   //   this.service.sortDirection = direction;
 }
+
+/*
+* Set to what the search bar will attach to (which properties)
+  * Set search function
+* Set service to attach to
+* Set an array of columns. For each:
+  * Label of column
+  * Property to bind
+  * Sort function
+* Set default page size
+
+
+
+*/

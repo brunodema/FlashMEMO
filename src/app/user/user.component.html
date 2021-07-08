@@ -20,9 +20,9 @@
     <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col" sortable="newsID" >Name</th>
-      <th scope="col" sortable="title" >Surname</th>
-      <th scope="col" sortable="subtitle" >Email</th>
+      <th scope="col" sortable="newsID" >Tile</th>
+      <th scope="col" sortable="title" >Subtitle</th>
+      <th scope="col" sortable="subtitle" >Content</th>
       <!-- <th scope="col" sortable="name" (sort)="onSort($event)">Country</th>
       <th scope="col" sortable="area" (sort)="onSort($event)">Area</th>
       <th scope="col" sortable="population" (sort)="onSort($event)">Population</th> -->
@@ -30,12 +30,12 @@
     </thead>
     <tbody>
     <tr *ngFor="let item of news">
-      <th scope="row">{{ item }}</th>
+      <th scope="row">{{ item.newsID }}</th>
       <td>
-        <ngb-highlight [result]="item.newsID" [term]="searchTerm"></ngb-highlight>
+        <ngb-highlight [result]="item.title" [term]="searchTerm"></ngb-highlight>
       </td>
-      <td><ngb-highlight [result]="item.title" [term]="searchTerm"></ngb-highlight></td>
-      <td><ngb-highlight [result]="item.subtitle " [term]="searchTerm"></ngb-highlight></td>
+      <td><ngb-highlight [result]="item.subtitle" [term]="searchTerm"></ngb-highlight></td>
+      <td><ngb-highlight [result]="item.content " [term]="searchTerm"></ngb-highlight></td>
     </tr>
     </tbody>
   </table>
