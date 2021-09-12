@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "flashMEMO": {
+    "FlashMEMO": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/flashMEMO",
+            "outputPath": "dist/FlashMEMO",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -65,18 +65,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "flashMEMO:build"
+            "browserTarget": "FlashMEMO:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "flashMEMO:build:production"
+              "browserTarget": "FlashMEMO:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "flashMEMO:build"
+            "browserTarget": "FlashMEMO:build"
           }
         },
         "test": {
@@ -114,16 +114,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "flashMEMO:serve"
+            "devServerTarget": "FlashMEMO:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "flashMEMO:serve:production"
+              "devServerTarget": "FlashMEMO:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "flashMEMO"
+  "defaultProject": "FlashMEMO"
 }
