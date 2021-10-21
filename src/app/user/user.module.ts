@@ -6,10 +6,11 @@ import { UserComponent } from './user.component';
 import { UserCreateComponent } from './create/user-create.component';
 import { SharedModule } from '../shared/shared.module';
 
-import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
-import { ConfigOption, FormlyModule } from '@ngx-formly/core';
+import { FormsModule, NgModel, ReactiveFormsModule } from '@angular/forms';
+import { FormlyModule } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { RegistrationFormComponent } from './create/registration-form/registration-form.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [UserComponent, UserCreateComponent, RegistrationFormComponent],
@@ -20,6 +21,8 @@ import { RegistrationFormComponent } from './create/registration-form/registrati
     FormlyModule.forChild(),
     FormlyBootstrapModule,
     SharedModule,
+    NgbModule,
+    FormsModule,
   ],
 })
 export class UserModule {}
