@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   // backendRootAddress: 'http://localhost:3000',
-  backendRootAddress: 'https://localhost:44326',
+  backendRootAddress: 'http://api.flashmemo.edu:5000',
   maxPageSize: 10000,
 };
 
