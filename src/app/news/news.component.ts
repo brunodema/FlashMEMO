@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { RouteMap } from '../shared/models/route-map/route-map';
-import { SortType } from '../shared/models/sort-classes/sort-type';
 import { News } from './models/news.model';
 import { NewsService } from './services/news.service';
 
@@ -18,7 +17,7 @@ export class NewsComponent implements OnInit {
   constructor(private newsService: NewsService) {}
 
   ngOnInit() {
-    this.newsService.getAllNews(SortType.DESCENDING).subscribe((news) => {
+    this.newsService.getAllNews(2).subscribe((news) => {
       this.newsList = news;
       console.log(news);
     });

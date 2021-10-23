@@ -9,13 +9,12 @@ import { RouteMap } from '../shared/models/route-map/route-map';
   styleUrls: ['./user.component.css'],
 })
 export class UserComponent implements OnInit {
-  searchTerm: string;
-  pageNumber: number;
-  pageSize: number;
   news: News[];
   total: number;
 
   routes: RouteMap[] = [{ label: 'Create User', route: 'create' }];
+
+  ngOnInit(): void {}
 
   constructor(public service: NewsService) {
     service.getAllNews().subscribe((res) => {
@@ -23,33 +22,4 @@ export class UserComponent implements OnInit {
       this.total = this.news.length;
     });
   }
-
-  ngOnInit(): void {}
-
-  // @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
-
-  // onSort({ column, direction }: SortEvent) {
-  //   // resetting other headers
-  //   this.headers.forEach((header) => {
-  //     if (header.sortable !== column) {
-  //       header.direction = '';
-  //     }
-  //   });
-
-  //   this.service.sortColumn = column;
-  //   this.service.sortDirection = direction;
 }
-
-/*
-* Set to what the search bar will attach to (which properties)
-  * Set search function
-* Set service to attach to
-* Set an array of columns. For each:
-  * Label of column
-  * Property to bind
-  * Sort function
-* Set default page size
-
-
-
-*/

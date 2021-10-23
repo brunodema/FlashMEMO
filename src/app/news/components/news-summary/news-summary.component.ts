@@ -1,5 +1,4 @@
 import { Component, OnInit, Pipe } from '@angular/core';
-import { SortType } from 'src/app/shared/models/sort-classes/sort-type';
 import { News } from '../../models/news.model';
 import { NewsService } from '../../services/news.service';
 
@@ -16,7 +15,7 @@ export class NewsSummaryComponent implements OnInit {
 
   ngOnInit() {
     this.newsService
-      .getAllNews(SortType.DESCENDING)
+      .getAllNews()
       .subscribe((newsList) => (this.newsList = newsList));
   }
 }

@@ -21,7 +21,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormlyModule.forChild(),
     FormlyBootstrapModule,
     SharedModule,
-    NgbModule,
+
     FormsModule,
   ],
 })
