@@ -71,8 +71,7 @@
             "host": "flashmemo.edu",
             "sourceMap": {
               "scripts": true,
-              "styles": true,
-              "vendor": true
+              "styles": true
             }
           },
           "configurations": {
