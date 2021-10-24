@@ -6,11 +6,17 @@ import { UserComponent } from './user.component';
 import { UserCreateComponent } from './create/user-create.component';
 import { SharedModule } from '../shared/shared.module';
 
-import { FormsModule, NgModel, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { RegistrationFormComponent } from './create/registration-form/registration-form.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+// Material UI stuff for dynamic tables
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSortModule } from '@angular/material/sort';
+import { MatInputModule } from '@angular/material/input'; // this one is not mentioned in any tutorial, BUT IS REQUIRED FOR THE SORTABLE/FILTERABLE/PAGINATED TABLE TO WORK!
 
 @NgModule({
   declarations: [UserComponent, UserCreateComponent, RegistrationFormComponent],
@@ -21,8 +27,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormlyModule.forChild(),
     FormlyBootstrapModule,
     SharedModule,
-
     FormsModule,
+    // Material
+    MatFormFieldModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatSortModule,
+    MatInputModule,
   ],
 })
 export class UserModule {}
