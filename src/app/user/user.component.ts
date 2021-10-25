@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { News } from '../news/models/news.model';
 import { NewsService } from '../news/services/news.service';
 import { RouteMap } from '../shared/models/route-map/route-map';
