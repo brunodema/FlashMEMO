@@ -10,9 +10,9 @@
   <table mat-table [dataSource]="dataSource" matSort>
 
     <!-- newsId Column -->
-    <ng-container matColumnDef="newsId">
+    <ng-container matColumnDef="newsID">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> newsID </th>
-      <td mat-cell *matCellDef="let row"> {{row.newsId}} </td>
+      <td mat-cell *matCellDef="let row"> {{row.newsID}} </td>
     </ng-container>
 
     <!-- title Column -->
@@ -24,7 +24,7 @@
     <!-- content Column -->
     <ng-container matColumnDef="content">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Content </th>
-      <td mat-cell *matCellDef="let row"> {{row.content}} </td>
+      <td mat-cell *matCellDef="let row" class="line-clamp-3"> {{row.content}} </td>
     </ng-container>
 
 
@@ -37,8 +37,5 @@
     </tr>
   </table>
 
-  <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator> -->
-</div>
-
-  
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
 </div>

@@ -13,10 +13,11 @@ import { RegistrationFormComponent } from './create/registration-form/registrati
 
 // Material UI stuff for dynamic tables
 import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input'; // this one is not mentioned in any tutorial, BUT IS REQUIRED FOR THE SORTABLE/FILTERABLE/PAGINATED TABLE TO WORK!
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [UserComponent, UserCreateComponent, RegistrationFormComponent],
