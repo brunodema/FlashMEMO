@@ -19,6 +19,5 @@ import { SharedModule } from '../shared/shared.module';
   ],
   imports: [CommonModule, NewsRoutingModule, CKEditorModule, SharedModule],
   exports: [NewsSummaryComponent],
-  providers: [NewsService],
 })
 export class NewsModule {}

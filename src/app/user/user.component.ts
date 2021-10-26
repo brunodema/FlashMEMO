@@ -1,40 +1,29 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
 import { News } from '../news/models/news.model';
 import { NewsService } from '../news/services/news.service';
 import { RouteMap } from '../shared/models/route-map/route-map';
 
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { DataTableComponent } from '../shared/components/data-table/data-table/data-table.component';
+import { DataTableService } from '../shared/models/DataTableService';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css'],
+  providers: [{ provide: DataTableService, useClass: NewsService }],
 })
-export class UserComponent {
+export class UserComponent implements AfterViewInit {
   displayedColumns: string[] = ['newsID', 'title', 'content'];
-  dataSource: MatTableDataSource<News> = new MatTableDataSource();
+  pageSizeOptions: number[] = [5, 10, 25];
 
   routes: RouteMap[] = [{ label: 'Create User', route: 'create' }];
 
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(DataTableComponent) dataTable: DataTableComponent<News>;
 
-  constructor(public service: NewsService) {
-    this.service.search({ pageSize: 37, pageNumber: 1 }).subscribe((res) => {
-      this.dataSource = new MatTableDataSource(res);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
-  }
+  constructor(public service: DataTableService<News>) {}
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  ngAfterViewInit(): void {
+    this.dataTable.displayedColumns = this.displayedColumns;
+    this.dataTable.pageSizeOptions = this.pageSizeOptions;
   }
 }

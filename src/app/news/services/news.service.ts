@@ -6,11 +6,14 @@ import { environment } from 'src/environments/environment';
 
 import { map } from 'rxjs/internal/operators/map';
 import { PaginatedListResponse } from 'src/app/shared/models/api-response';
+import {
+  SortColumn,
+  SortType,
+} from 'src/app/shared/models/IServiceSearchParams';
+import { IServiceSearchParams } from 'src/app/shared/models/IServiceSearchParams';
+import { DataTableService } from 'src/app/shared/models/DataTableService';
 
-export type SortColumn = keyof News | '';
-export type SortType = 0 | 1 | 2; // 0 = None, 1 = Ascending, 2 = Descending (need to rework this both on front and back-end)
-
-type searchParams = {
+class NewsSearchParams implements IServiceSearchParams {
   pageSize: Number;
   pageNumber: Number;
   fromDate?: string;
@@ -20,12 +23,12 @@ type searchParams = {
   content?: string;
   sortType?: SortType;
   columnToSort?: SortColumn;
-};
+}
 
 @Injectable({
   providedIn: 'root',
 })
-export class NewsService {
+export class NewsService implements DataTableService<News> {
   protected testServiceURL: string = `${environment.backendRootAddress}/api/v1/News`;
 
   constructor(private http: HttpClient) {}
@@ -42,7 +45,7 @@ export class NewsService {
   }
 
   search(
-    params: searchParams = { pageSize: 10, pageNumber: 1 }
+    params: NewsSearchParams = { pageSize: 10, pageNumber: 1 }
   ): Observable<News[]> {
     let formattedURL: string = `${this.testServiceURL}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
     if (params.fromDate) {
