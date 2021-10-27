@@ -7,23 +7,14 @@
   <table mat-table [dataSource]='this.dataSource' matSort>
 
     <!-- newsId Column -->
-    <ng-container matColumnDef="newsID">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> newsID </th>
-      <td mat-cell *matCellDef="let row"> {{row.newsID}} </td>
+    <ng-container *ngFor="let item of this.displayedColumns">
+      <ng-container matColumnDef={{item}}>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{item}} </th>
+        <td mat-cell *matCellDef="let row">
+          <div class="line-clamp-3">{{row[item]}}</div>
+        </td>
+      </ng-container>
     </ng-container>
-
-    <!-- title Column -->
-    <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
-      <td mat-cell *matCellDef="let row"> {{row.title}} </td>
-    </ng-container>
-
-    <!-- content Column -->
-    <ng-container matColumnDef="content">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Content </th>
-      <td mat-cell *matCellDef="let row" class="line-clamp-3"> {{row.content}} </td>
-    </ng-container>
-
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
