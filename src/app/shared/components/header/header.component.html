@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
   <div class="container">
-    <a class="navbar-brand" [routerLink]="['/home']">
+    <a class="navbar-brand" routerLink="/home">
       <img
         src="/assets/FlashmemoLogo.png"
         width="30"
@@ -25,13 +25,13 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent" [collapse]="isCollapsed" [isAnimated]="true">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/news']">News</a>
+          <a class="nav-link" routerLink="/news">News</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/user']">Users</a>
+          <a class="nav-link" routerLink="/user">Users</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/deck']">Decks</a>
+          <a class="nav-link" routerLink="/deck">Decks</a>
         </li>
       </ul>
       <app-user-preferences-dropdown></app-user-preferences-dropdown>
