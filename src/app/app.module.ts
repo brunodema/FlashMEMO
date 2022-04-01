@@ -1,35 +1,32 @@
+// Modules
+// base
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
-import { NewsModule } from './news/news.module';
-import { SharedModule } from './shared/shared.module';
 import { JwtModule } from '@auth0/angular-jwt';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // for bootstrap animations
 import { CollapseModule } from 'ngx-bootstrap/collapse'; // boostrap collapsable
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown'; // boostrap dropbdown
 import { ToastrModule } from 'ngx-toastr'; // Toastr
+import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import { ConfigOption, FormlyModule } from '@ngx-formly/core';
+import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
+// custom
+import { SharedModule } from './shared/shared.module';
+import { AppRoutingModule } from './app-routing.module';
+import { NewsModule } from './news/news.module';
 
+// Services and Guards
 import { AuthService } from './shared/services/auth.service';
 import { AuthGuard } from './shared/guards/auth.guard';
 
+// Components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import {
-  AbstractControl,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { ConfigOption, FormlyModule } from '@ngx-formly/core';
-import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { UserPreferencesDropdownComponent } from './shared/components/user-preferences-dropdown/user-preferences-dropdown.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { MatTableModule } from '@angular/material/table';
-import { MatSortModule } from '@angular/material/sort';
-import { MatPaginatorModule } from '@angular/material/paginator';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
@@ -66,10 +63,11 @@ const config: ConfigOption = {
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
-    NewsModule,
+    // custom modules
     SharedModule,
+    AppRoutingModule,
+    NewsModule,
     // boostrap collapsable
     BrowserAnimationsModule,
     CollapseModule.forRoot(),
