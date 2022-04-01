@@ -15,6 +15,7 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { NewsModule } from './news/news.module';
+import { DeckModule } from './deck/deck.module';
 
 // Services and Guards
 import { AuthService } from './shared/services/auth.service';
@@ -68,6 +69,7 @@ const config: ConfigOption = {
     SharedModule,
     AppRoutingModule,
     NewsModule,
+    DeckModule,
     // boostrap collapsable
     BrowserAnimationsModule,
     CollapseModule.forRoot(),

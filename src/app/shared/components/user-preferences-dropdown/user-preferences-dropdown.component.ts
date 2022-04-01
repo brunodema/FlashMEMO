@@ -8,7 +8,6 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 @Component({
   selector: 'app-user-preferences-dropdown',
   templateUrl: './user-preferences-dropdown.component.html',
-  styleUrls: ['./user-preferences-dropdown.component.css'],
 })
 export class UserPreferencesDropdownComponent implements OnInit {
   constructor(
@@ -19,27 +18,25 @@ export class UserPreferencesDropdownComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  login() {
-    this.authService
-      .login({ email: 'sysadmin@flashmemo.com', password: 'Flashmemo@123' })
-      .subscribe(
-        (result) => {
-          this.toastr
-            .success('You will soon be redirected.', 'Welcome to FlashMEMO!', {
-              timeOut: 3000,
-            })
-            .onHidden.subscribe(() => this.redirectToHome());
-        },
-        (error: HttpErrorResponse) => {
-          this.toastr.error(
-            this.processErrorsFromAPI(error.error),
-            'Authentication Failure',
-            {
-              timeOut: 3000,
-            }
-          );
-        }
-      );
+  login(email: string, password: string) {
+    this.authService.login({ email, password }).subscribe(
+      (result) => {
+        this.toastr
+          .success('You will soon be redirected.', 'Welcome to FlashMEMO!', {
+            timeOut: 3000,
+          })
+          .onHidden.subscribe(() => this.redirectToHome());
+      },
+      (error: HttpErrorResponse) => {
+        this.toastr.error(
+          this.processErrorsFromAPI(error.error),
+          'Authentication Failure',
+          {
+            timeOut: 3000,
+          }
+        );
+      }
+    );
   }
 
   redirectToHome() {
