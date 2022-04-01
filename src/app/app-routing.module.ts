@@ -21,6 +21,7 @@ const routes: Routes = [
     path: 'deck',
     loadChildren: () => import('./deck/deck.module').then((m) => m.DeckModule),
   },
+  { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
 
 @NgModule({

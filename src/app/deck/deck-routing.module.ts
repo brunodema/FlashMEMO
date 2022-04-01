@@ -4,8 +4,9 @@ import { DeckDetailComponent } from './deck-detail/deck-detail.component';
 import { DeckListComponent } from './deck-list/deck-list.component';
 
 const routes: Routes = [
-  { path: '', component: DeckListComponent },
-  { path: 'id', component: DeckDetailComponent },
+  { path: '', redirectTo: 'list' },
+  { path: 'list', component: DeckListComponent },
+  { path: ':id', component: DeckDetailComponent },
 ];
 
 @NgModule({
