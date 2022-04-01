@@ -5,39 +5,25 @@
                 Geeks of Geeks
             </h4>
             <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-
-                <span aria-hidden="true">
-                    x
-                </span>
+                <span aria-hidden="true">x</span>
             </button>
         </div>
         <div class="modal-body">
-            <form>
-                <div class="form-group">
-                    <label for="dateOfBirth">
-                        Date of birth
-                    </label>
-                    <div class="input-group">
-                        <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker
-                            #dp="ngbDatepicker">
-
-                        <div class="input-group-append">
-                            <button class="btn 
-                            btn-outline-secondary calendar" (click)="dp.toggle()" type="button">
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </form>
+        <div class="card">
+            <img class="card-img-top img-fluid" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg" alt="Card image cap">
+            <div class="card-body">
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                    content.</p>
+            </div>
+        </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">
-                Save
-            </button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Previous</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Next</button>
         </div>
     </ng-template>
 
-    <button class="btn btn-lg btn-outline-primary" (click)="open(content)">
-        Popup using Angular and Bootstrap
+    <button class="btn btn-primary" (click)="open(content)">
+        Create Flashcard
     </button>
 </div>
