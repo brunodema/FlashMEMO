@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { News } from '../models/news.model';
 import { environment } from 'src/environments/environment';
 
-import { map } from 'rxjs/internal/operators/map';
+import { map } from 'rxjs/operators';
 import { PaginatedListResponse } from 'src/app/shared/models/api-response';
 import {
   SortColumn,
