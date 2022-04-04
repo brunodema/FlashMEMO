@@ -1,5 +1,5 @@
 <div class="container my-3">
-    <ng-template #content let-modal>
+    <ng-template #content let-modal class="modal-lg">
         <div class="modal-header">
             <h4 class="modal-title" id="modal-basic-title">
                 Geeks of Geeks
@@ -9,19 +9,29 @@
             </button>
         </div>
         <div class="modal-body">
-            <div>
-                <div class="row justify-content-center">
-                    <!-- Unfortunately, I have to create a custom class to hold the border properties of the container, because Bootstrap's 'border' class apaprently have !important tags in it that simply ignores properties such as border width/color declared separately -->
-                    <div class="col-sm-auto option-icon-container p-3">
-                        <img src="/assets/flashcard_audio_icon.svg" class="img-fluid option-icon">
-                        <p>Add Audio</p>
-                    </div>
-                    <div class="col-sm-auto option-icon-container p-3">
-                        <img src="/assets/flashcard_audio_icon.svg" class="img-fluid option-icon">
-                        <p>Add Audio</p>
+                <div class="container-fluid">
+                    <div class="row justify-content-center">
+                        <!-- Unfortunately, I have to create a custom class to hold the border properties of the container, because Bootstrap's 'border' class apaprently have !important tags in it that simply ignores properties such as border width/color declared separately -->
+                        <div class="card option-icon-container p-3 col">
+                            <img class="card-img-top option-icon" src="/assets/flashcard_audio_icon.svg" alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-text text-center">Add Audio</p>
+                            </div>
+                        </div>
+                        <div class="card option-icon-container p-3 col">
+                            <img class="card-img-top option-icon" src="/assets/flashcard_text_icon.svg" alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-text text-center">Add Text</p>
+                            </div>
+                        </div>
+                        <div class="card option-icon-container p-3 col">
+                            <img class="card-img-top option-icon" src="/assets/flashcard_image_icon.svg" alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-text text-center">Add Image</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
         </div>
 
         <div class="modal-footer">

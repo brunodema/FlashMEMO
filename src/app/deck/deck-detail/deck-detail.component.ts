@@ -13,7 +13,7 @@ export class DeckDetailComponent {
 
   open(content: any) {
     this.modalService
-      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
       .result.then(
         (result) => {
           this.closeResult = `Closed with: ${result}`;
