@@ -1,0 +1,12 @@
+.option-icon-container {
+    border-color: #007bff!important;
+    border-radius: 20px;
+    border-width: 5px;
+    border: solid;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.option-icon {
+    height: 100px;
+}

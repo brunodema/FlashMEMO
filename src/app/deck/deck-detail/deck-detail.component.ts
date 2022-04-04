@@ -3,6 +3,7 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-deck-detail',
+  styleUrls: ['./deck-detail.component.css'],
   templateUrl: './deck-detail.component.html',
 })
 export class DeckDetailComponent {

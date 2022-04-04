@@ -8,69 +8,17 @@
                 <span aria-hidden="true">x</span>
             </button>
         </div>
-        <div class="container py-2 text-right">
-            <button type="button" name="directionToggle" id="directionToggle" class="btn btn-primary">Toggle</button>
-        </div>
         <div class="modal-body">
-            <div class="row border py-2 border-3 border-primary">
-                <div class="col-md-6">
-                    <div class="card">
-                        <i class="fa-solid fa-feather text-center py-2" style="font-size: 4vw;"></i>
-                        <div class="card-body">
-                            <p class="card-text">Add Text</p>
-                        </div>
+            <div>
+                <div class="row justify-content-center">
+                    <!-- Unfortunately, I have to create a custom class to hold the border properties of the container, because Bootstrap's 'border' class apaprently have !important tags in it that simply ignores properties such as border width/color declared separately -->
+                    <div class="col-sm-auto option-icon-container p-3">
+                        <img src="/assets/flashcard_audio_icon.svg" class="img-fluid option-icon">
+                        <p>Add Audio</p>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card">
-                        <i class="fa-solid fa-circle-play text-center py-2" style="font-size: 4vw;"></i>
-                        <div class="card-body">
-                            <p class="card-text">Add Audio</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row border py-2 border-3 border-primary">
-                <div class="col-md-4">
-                    <div class="card">
-                        <i class="fa-solid fa-feather text-center py-2" style="font-size: 4vw;"></i>
-                        <div class="card-body">
-                            <p class="card-text">Add Text</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <i class="fa-solid fa-circle-play text-center py-2" style="font-size: 4vw;"></i>
-                        <div class="card-body">
-                            <p class="card-text">Add Audio</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <i class="fa-solid fa-image text-center py-2" style="font-size: 4vw;"></i>
-                        <div class="card-body">
-                            <p class="card-text">Add Image</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row border py-2 border-3 border-primary">
-                <div class="col-md-6">
-                    <div class="card">
-                        <i class="fa-solid fa-feather text-center py-2" style="font-size: 4vw;"></i>
-                        <div class="card-body">
-                            <p class="card-text">Add Text</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card">
-                        <i class="fa-solid fa-circle-play text-center py-2" style="font-size: 4vw;"></i>
-                        <div class="card-body">
-                            <p class="card-text">Add Audio</p>
-                        </div>
+                    <div class="col-sm-auto option-icon-container p-3">
+                        <img src="/assets/flashcard_audio_icon.svg" class="img-fluid option-icon">
+                        <p>Add Audio</p>
                     </div>
                 </div>
             </div>
