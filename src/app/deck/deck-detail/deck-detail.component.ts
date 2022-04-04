@@ -13,7 +13,11 @@ export class DeckDetailComponent {
 
   open(content: any) {
     this.modalService
-      .open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+      .open(content, {
+        ariaLabelledBy: 'modal-basic-title',
+        size: 'lg',
+        windowClass: 'flashcard-modal',
+      })
       .result.then(
         (result) => {
           this.closeResult = `Closed with: ${result}`;

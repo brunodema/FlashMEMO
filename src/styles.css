@@ -22,3 +22,8 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+ngb-modal-window.flashcard-modal div.modal-dialog div.modal-content
+{
+    height: calc(100vh - 100px);
+}
