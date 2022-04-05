@@ -1,0 +1,21 @@
+<div [ngSwitch]="layout" style="display: contents;">
+    <div *ngSwitchCase="layoutEnum.SINGLE_BLOCK" style="display: contents;">
+        <app-flashcard-content-wizard></app-flashcard-content-wizard>
+    </div>
+    <div *ngSwitchCase="layoutEnum.VERTICAL_SPLIT" style="display: contents;">
+        <app-flashcard-content-wizard></app-flashcard-content-wizard>
+        <app-flashcard-content-wizard></app-flashcard-content-wizard>
+    </div>
+    <div *ngSwitchCase="layoutEnum.TRIPLE_BLOCK" style="display: contents;">
+        <app-flashcard-content-wizard></app-flashcard-content-wizard>
+        <app-flashcard-content-wizard></app-flashcard-content-wizard>
+        <app-flashcard-content-wizard></app-flashcard-content-wizard>
+    </div>
+    <div *ngSwitchCase="layoutEnum.HORIZONTAL_SPLIT" class="d-flex flex-row" style="display: contents;">
+        <app-flashcard-content-wizard></app-flashcard-content-wizard>
+        <app-flashcard-content-wizard></app-flashcard-content-wizard>
+    </div>
+    <!-- <div *ngSwitchCase="layoutEnum.FULL_CARD" style="display: contents;">
+    </div> -->
+    <div *ngSwitchDefault></div>
+</div>

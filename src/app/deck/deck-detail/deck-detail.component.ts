@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FlashcardLayout } from 'src/app/shared/models/Flashcard';
 
 @Component({
   selector: 'app-deck-detail',
@@ -8,6 +9,8 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class DeckDetailComponent {
   closeResult = '';
+  layoutEnum: typeof FlashcardLayout = FlashcardLayout;
+  flashcardLayout: FlashcardLayout = FlashcardLayout.SINGLE_BLOCK;
 
   constructor(private modalService: NgbModal) {}
 

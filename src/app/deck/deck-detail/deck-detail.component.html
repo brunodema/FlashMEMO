@@ -18,26 +18,24 @@
         
         Documentation used: https://getbootstrap.com/docs/5.0/utilities/flex/#align-items -->
         <div class="modal-body d-flex flex-column">
-                <div class="container mb-2 text-right">
-                    <div class="row">
-                        <label for="flashcardLayout" class="col-form-label col-9">Choose your layout:</label>
-                        <div class="col-3">
-                            <select class="form-select" name="flashcardLayout" id="flashcardLayout">
-                                <option value="1">Single</option>
-                                <option value="2">Double</option>
-                                <option value="3">Triple</option>
-                                <option value="4">Card</option>
-                                <option value="5">Full Card</option>
-                            </select>
-                        </div>
+            <div class="container mb-2 text-right">
+                <div class="row">
+                    <label for="flashcardLayout" class="col-form-label col-9">Choose your layout:</label>
+                    <div class="col-3">
+                        <select class="form-select" [(ngModel)]="flashcardLayout">
+                            <option [ngValue]="layoutEnum.SINGLE_BLOCK">Single</option>
+                            <option [ngValue]="layoutEnum.VERTICAL_SPLIT">Double</option>
+                            <option [ngValue]="layoutEnum.TRIPLE_BLOCK">Triple</option>
+                            <option [ngValue]="layoutEnum.HORIZONTAL_SPLIT">Card</option>
+                            <option [ngValue]="layoutEnum.FULL_CARD">Full Card</option>
+                        </select>
                     </div>
                 </div>
-                <div class="flashcard-container d-flex flex-column justify-content-evenly">
-                    <app-flashcard-content-wizard></app-flashcard-content-wizard>
-                    <app-flashcard-content-wizard></app-flashcard-content-wizard>
-                    <app-flashcard-content-wizard></app-flashcard-content-wizard>
-                </div>
             </div>
+            <div class="flashcard-container d-flex flex-column justify-content-evenly">
+                <app-flashcard-layout [layout]="flashcardLayout"></app-flashcard-layout>
+            </div>
+        </div>
 
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Previous</button>

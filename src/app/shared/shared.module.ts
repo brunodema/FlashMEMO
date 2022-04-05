@@ -16,6 +16,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input'; // this one is not mentioned in any tutorial, BUT IS REQUIRED FOR THE SORTABLE/FILTERABLE/PAGINATED TABLE TO WORK!
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { FlashcardContentWizardComponent } from './components/flashcard/flashcard-content-wizard/flashcard-content-wizard.component';
+import { FlashcardLayoutComponent } from './components/flashcard/flashcard-layout/flashcard-layout.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,8 @@ import { FlashcardContentWizardComponent } from './components/flashcard/flashcar
     DataTableComponent,
     UserPreferencesDropdownComponent,
     FlashcardContentWizardComponent,
+    FlashcardLayoutComponent,
+    FlashcardLayoutComponent,
   ],
   imports: [
     CollapseModule,
@@ -48,6 +51,7 @@ import { FlashcardContentWizardComponent } from './components/flashcard/flashcar
     DataTableComponent,
     UserPreferencesDropdownComponent,
     FlashcardContentWizardComponent,
+    FlashcardLayoutComponent,
   ],
   providers: [SafePipe],
 })

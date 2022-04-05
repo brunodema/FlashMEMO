@@ -7,7 +7,7 @@ In this case, I add all those classes so the layout of the rows/columns is the w
 
 @Component({
   selector: 'app-flashcard-content-wizard',
-  host: { class: 'flex-fill d-flex align-items-center justify-content-center' },
+  host: { class: 'd-flex flex-fill align-items-center justify-content-center' },
   templateUrl: './flashcard-content-wizard.component.html',
   styleUrls: ['./flashcard-content-wizard.component.css'],
 })

@@ -3,12 +3,15 @@ export interface Flashcard {
   backside: FlashcardSide;
 }
 
-export enum FlashcardOrientation {
-  VERTICAL,
-  HORIZONTAL,
+export enum FlashcardLayout {
+  SINGLE_BLOCK,
+  VERTICAL_SPLIT,
+  TRIPLE_BLOCK,
+  HORIZONTAL_SPLIT,
+  FULL_CARD,
 }
 
 export interface FlashcardSide {
-  orientation: FlashcardOrientation;
+  layout: FlashcardLayout;
   imageLink: string;
 }
