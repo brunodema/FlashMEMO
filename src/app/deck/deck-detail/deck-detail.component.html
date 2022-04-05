@@ -10,26 +10,18 @@
         </div>
         <div class="modal-body">
                 <div class="container-fluid flashcard-container">
-                    <div class="row justify-content-center">
+                    <div class="row no-gutters justify-content-center">
                         <!-- Unfortunately, I have to create a custom class to hold the border properties of the container, because Bootstrap's 'border' class apaprently have !important tags in it that simply ignores properties such as border width/color declared separately -->
-                        <div class="card option-icon-container p-3 col">
-                            <img class="card-img-top option-icon" src="/assets/flashcard_audio_icon.svg" alt="Card image cap">
-                            <div class="card-body d-none d-sm-block">
-                                <p class="card-text text-center">Add Audio</p>
-                            </div>
-                        </div>
-                        <div class="card option-icon-container p-3 col">
-                            <img class="card-img-top option-icon" src="/assets/flashcard_text_icon.svg" alt="Card image cap">
-                            <div class="card-body d-none d-sm-block">
-                                <p class="card-text text-center">Add Text</p>
-                            </div>
-                        </div>
-                        <div class="card option-icon-container p-3 col">
-                            <img class="card-img-top option-icon" src="/assets/flashcard_image_icon.svg" alt="Card image cap">
-                            <div class="card-body d-none d-sm-block">
-                                <p class="card-text text-center">Add Image</p>
-                            </div>
-                        </div>
+                        <div class="col-auto">
+                            <img class="flashcard-option-container p-3" src="/assets/flashcard_audio_icon.svg" alt="Card image cap">
+                        </div> 
+                        <div class="col-auto">
+                            <img class="flashcard-option-container p-3" src="/assets/flashcard_text_icon.svg" alt="Card image cap">
+                        </div> 
+                        <div class="col-auto">
+                            <img class="flashcard-option-container p-3" src="/assets/flashcard_image_icon.svg" alt="Card image cap">
+                        </div> 
+
                     </div>
                 </div>
         </div>
