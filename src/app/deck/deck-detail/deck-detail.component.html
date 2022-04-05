@@ -8,23 +8,17 @@
                 <span aria-hidden="true">x</span>
             </button>
         </div>
-        <div class="modal-body">
-                <div class="container-fluid flashcard-container">
-                    <div class="row no-gutters justify-content-center">
-                        <!-- Unfortunately, I have to create a custom class to hold the border properties of the container, because Bootstrap's 'border' class apaprently have !important tags in it that simply ignores properties such as border width/color declared separately -->
-                        <div class="col-auto">
-                            <img class="flashcard-option-container p-3" src="/assets/flashcard_audio_icon.svg" alt="Card image cap">
-                        </div> 
-                        <div class="col-auto">
-                            <img class="flashcard-option-container p-3" src="/assets/flashcard_text_icon.svg" alt="Card image cap">
-                        </div> 
-                        <div class="col-auto">
-                            <img class="flashcard-option-container p-3" src="/assets/flashcard_image_icon.svg" alt="Card image cap">
-                        </div> 
-
-                    </div>
+        <div class="modal-body flashcard-container d-flex flex-column justify-content-around">
+                <div class="py-3">
+                    <app-flashcard-content-wizard></app-flashcard-content-wizard>
                 </div>
-        </div>
+                <div class="py-3">
+                    <app-flashcard-content-wizard></app-flashcard-content-wizard>
+                </div>
+                <div class="py-3">
+                    <app-flashcard-content-wizard></app-flashcard-content-wizard>
+                </div>
+            </div>
 
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Previous</button>

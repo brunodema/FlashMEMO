@@ -1,0 +1,11 @@
+
+.flashcard-option-container {
+    border-color: #007bff;
+    border-radius: 20px;
+    border-width: 5px;
+    border: solid;
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 15vh;
+    width: 15vh;
+}
