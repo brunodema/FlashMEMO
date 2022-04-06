@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input'; // this one is not men
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { FlashcardContentWizardComponent } from './components/flashcard/flashcard-content-wizard/flashcard-content-wizard.component';
 import { FlashcardLayoutComponent } from './components/flashcard/flashcard-layout/flashcard-layout.component';
+import { FlashcardContentEditorComponent } from './components/flashcard/flashcard-content-editor/flashcard-content-editor.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { FlashcardLayoutComponent } from './components/flashcard/flashcard-layou
     FlashcardContentWizardComponent,
     FlashcardLayoutComponent,
     FlashcardLayoutComponent,
+    FlashcardContentEditorComponent,
   ],
   imports: [
     CollapseModule,
