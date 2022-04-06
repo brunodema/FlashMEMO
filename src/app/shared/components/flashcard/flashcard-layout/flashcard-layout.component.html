@@ -1,4 +1,4 @@
-<div [ngSwitch]="layout" style="display: contents;">
+<div [ngSwitch]="layout" class= "h-100" style="display: contents;">
     <div *ngSwitchCase="layoutEnum.SINGLE_BLOCK" style="display: contents;">
         <app-flashcard-content-wizard class="w-100"></app-flashcard-content-wizard>
     </div>
@@ -11,9 +11,21 @@
         <app-flashcard-content-wizard class="w-100"></app-flashcard-content-wizard>
         <app-flashcard-content-wizard class="w-100"></app-flashcard-content-wizard>
     </div>
-    <div *ngSwitchCase="layoutEnum.HORIZONTAL_SPLIT" class="d-flex flex-row" style="display: contents;">
-        <app-flashcard-content-wizard></app-flashcard-content-wizard>
-        <app-flashcard-content-wizard></app-flashcard-content-wizard>
+    <div *ngSwitchCase="layoutEnum.HORIZONTAL_SPLIT" class="d-flex flex-row h-100" style="display: contents;">
+        <app-flashcard-content-wizard class="h-100"></app-flashcard-content-wizard>
+        <app-flashcard-content-wizard class="h-100"></app-flashcard-content-wizard>
+    </div>
+    <div *ngSwitchCase="layoutEnum.FULL_CARD" style="display: contents;">
+        <div class="row">
+            <div class="col">
+                <app-flashcard-content-wizard class="h-100"></app-flashcard-content-wizard>
+            </div>
+            <div class="col">
+                <app-flashcard-content-wizard class="w-100"></app-flashcard-content-wizard>
+                <app-flashcard-content-wizard class="w-100"></app-flashcard-content-wizard>
+            </div>
+        </div>
+
     </div>
     <!-- <div *ngSwitchCase="layoutEnum.FULL_CARD" style="display: contents;">
     </div> -->
