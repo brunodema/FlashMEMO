@@ -4,11 +4,11 @@ export interface Flashcard {
 }
 
 export enum FlashcardLayout {
-  SINGLE_BLOCK,
-  VERTICAL_SPLIT,
-  TRIPLE_BLOCK,
-  HORIZONTAL_SPLIT,
-  FULL_CARD,
+  SINGLE_BLOCK = 'Single Block',
+  VERTICAL_SPLIT = 'Vertical Split',
+  TRIPLE_BLOCK = 'Triple Stacked',
+  HORIZONTAL_SPLIT = 'Horizontal Split',
+  FULL_CARD = 'Card Layout',
 }
 
 export interface FlashcardSide {

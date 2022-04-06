@@ -10,6 +10,10 @@ import { FlashcardLayout } from 'src/app/shared/models/Flashcard';
 export class DeckDetailComponent {
   closeResult = '';
   layoutEnum: typeof FlashcardLayout = FlashcardLayout;
+  // implementation stolen from: https://stackoverflow.com/questions/56036446/typescript-enum-values-as-array
+  possibleLayouts = Object.values(FlashcardLayout).filter(
+    (f) => typeof f === 'string'
+  );
   flashcardLayout: FlashcardLayout = FlashcardLayout.SINGLE_BLOCK;
 
   constructor(private modalService: NgbModal) {}

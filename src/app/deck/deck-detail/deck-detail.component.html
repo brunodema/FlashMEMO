@@ -23,11 +23,7 @@
                     <label for="flashcardLayout" class="col-form-label col-9">Choose your layout:</label>
                     <div class="col-3">
                         <select class="form-select" [(ngModel)]="flashcardLayout">
-                            <option [ngValue]="layoutEnum.SINGLE_BLOCK">Single</option>
-                            <option [ngValue]="layoutEnum.VERTICAL_SPLIT">Double</option>
-                            <option [ngValue]="layoutEnum.TRIPLE_BLOCK">Triple</option>
-                            <option [ngValue]="layoutEnum.HORIZONTAL_SPLIT">Card</option>
-                            <option [ngValue]="layoutEnum.FULL_CARD">Full Card</option>
+                            <option *ngFor="let layout of possibleLayouts" [ngValue]="layout">{{ layout }}</option>
                         </select>
                     </div>
                 </div>
