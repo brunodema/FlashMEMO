@@ -8,15 +8,6 @@
                 <span aria-hidden="true">x</span>
             </button>
         </div>
-        <!-- So, what is going on here... My goals are:
-        (1) centralize the input method buttons (image, sound, text, whatever), while also making them visually appealing (as round as possible, pretty borders, etc)
-        (2) distribute the rows EVENLY without gutters... the reason for this is to not waste any space later for images/text/sound/etc
-
-        Classes 'align-items-center' and 'justify-content-evenly' are used to center the icons at the middle of the rows, and evenly throughout the vertical space
-        Class 'flex-fill' is used to replicate the behavior of things such as 'col', but for vertical space
-        Class 'd-flex has to be used for the 'align' and 'justify' directives to work there (this stuff can be seen inside the child component)
-        
-        Documentation used: https://getbootstrap.com/docs/5.0/utilities/flex/#align-items -->
         <div class="modal-body d-flex flex-column">
             <div class="container mb-2 text-right">
                 <div class="row">
@@ -28,6 +19,14 @@
                     </div>
                 </div>
             </div>
+            <!-- So, what is going on here... My goals are:
+            (1) centralize the input method buttons (image, sound, text, whatever), while also making them visually appealing (as round as possible, pretty borders, etc)
+            (2) distribute the rows EVENLY without gutters... the reason for this is to not waste any space later for images/text/sound/etc
+
+            Class 'flex-fill' is used (in children components) to replicate the behavior of things such as 'col', but for vertical space
+            Class 'd-flex has to be used for the 'align' and 'justify' directives to work there (this stuff can be seen inside the child component)
+            
+            Documentation used: https://getbootstrap.com/docs/5.0/utilities/flex/#align-items -->
             <div class="flashcard-container d-flex flex-column justify-content-evenly">
                 <app-flashcard-layout [layout]="flashcardLayout"></app-flashcard-layout>
             </div>
