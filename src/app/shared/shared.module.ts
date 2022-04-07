@@ -15,7 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input'; // this one is not mentioned in any tutorial, BUT IS REQUIRED FOR THE SORTABLE/FILTERABLE/PAGINATED TABLE TO WORK!
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { FlashcardContentWizardComponent } from './components/flashcard/flashcard-content-wizard/flashcard-content-wizard.component';
+import { FlashcardContentOptionsBlock } from './components/flashcard/flashcard-content-options-block/flashcard-content-options-block.component';
 import { FlashcardLayoutComponent } from './components/flashcard/flashcard-layout/flashcard-layout.component';
 import { FlashcardContentEditorComponent } from './components/flashcard/flashcard-content-editor/flashcard-content-editor.component';
 
@@ -28,7 +28,7 @@ import { FlashcardContentEditorComponent } from './components/flashcard/flashcar
     AdminActionsToolbarComponent,
     DataTableComponent,
     UserPreferencesDropdownComponent,
-    FlashcardContentWizardComponent,
+    FlashcardContentOptionsBlock,
     FlashcardLayoutComponent,
     FlashcardLayoutComponent,
     FlashcardContentEditorComponent,
@@ -52,7 +52,7 @@ import { FlashcardContentEditorComponent } from './components/flashcard/flashcar
     AdminActionsToolbarComponent,
     DataTableComponent,
     UserPreferencesDropdownComponent,
-    FlashcardContentWizardComponent,
+    FlashcardContentOptionsBlock,
     FlashcardLayoutComponent,
   ],
   providers: [SafePipe],

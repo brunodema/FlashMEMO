@@ -1,28 +1,28 @@
 <div [ngSwitch]="layout" class= "h-100" style="display: contents;">
     <div *ngSwitchCase="layoutEnum.SINGLE_BLOCK" style="display: contents;">
-        <app-flashcard-content-wizard class="w-100"></app-flashcard-content-wizard>
+        <app-flashcard-content-options-block class="w-100"></app-flashcard-content-options-block>
     </div>
     <div *ngSwitchCase="layoutEnum.VERTICAL_SPLIT" style="display: contents;">
-        <app-flashcard-content-wizard class="w-100"></app-flashcard-content-wizard>
-        <app-flashcard-content-wizard class="w-100"></app-flashcard-content-wizard>
+        <app-flashcard-content-options-block class="w-100"></app-flashcard-content-options-block>
+        <app-flashcard-content-options-block class="w-100"></app-flashcard-content-options-block>
     </div>
     <div *ngSwitchCase="layoutEnum.TRIPLE_BLOCK" style="display: contents;">
-        <app-flashcard-content-wizard class="w-100"></app-flashcard-content-wizard>
-        <app-flashcard-content-wizard class="w-100"></app-flashcard-content-wizard>
-        <app-flashcard-content-wizard class="w-100"></app-flashcard-content-wizard>
+        <app-flashcard-content-options-block class="w-100"></app-flashcard-content-options-block>
+        <app-flashcard-content-options-block class="w-100"></app-flashcard-content-options-block>
+        <app-flashcard-content-options-block class="w-100"></app-flashcard-content-options-block>
     </div>
     <div *ngSwitchCase="layoutEnum.HORIZONTAL_SPLIT" class="d-flex flex-row h-100" style="display: contents;">
-        <app-flashcard-content-wizard class="h-100"></app-flashcard-content-wizard>
-        <app-flashcard-content-wizard class="h-100"></app-flashcard-content-wizard>
+        <app-flashcard-content-options-block class="h-100"></app-flashcard-content-options-block>
+        <app-flashcard-content-options-block class="h-100"></app-flashcard-content-options-block>
     </div>
     <div *ngSwitchCase="layoutEnum.FULL_CARD" style="display: contents;">
         <div class="row h-100">
             <div class="col">
-                <app-flashcard-content-wizard class="h-100"></app-flashcard-content-wizard>
+                <app-flashcard-content-options-block class="h-100"></app-flashcard-content-options-block>
             </div>
             <div class="col d-flex flex-column">
-                <app-flashcard-content-wizard class="w-100"></app-flashcard-content-wizard>
-                <app-flashcard-content-wizard class="w-100"></app-flashcard-content-wizard>
+                <app-flashcard-content-options-block class="w-100"></app-flashcard-content-options-block>
+                <app-flashcard-content-options-block class="w-100"></app-flashcard-content-options-block>
             </div>
         </div>
 

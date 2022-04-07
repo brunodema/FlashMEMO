@@ -1,0 +1,27 @@
+<div class="row justify-content-center w-100">
+    <!-- Unfortunately, I have to create a custom class to hold the border properties of the container, because Bootstrap's 'border' class apparently have !important tags in it that simply ignores properties such as border width/color declared separately -->
+    <div class="col-3 text-center">
+        <img class="flashcard-option-container p-3 btn btn-outline-primary" (click)="openXl(content)" src="/assets/flashcard_audio_icon.svg" alt="Card image cap">
+    </div>
+    <div class="col-3 text-center">
+        <img class="flashcard-option-container p-3 btn btn-outline-primary" (click)="openXl(content)" src="/assets/flashcard_text_icon.svg" alt="Card image cap">
+    </div>
+    <div class="col-3 text-center">
+        <img class="flashcard-option-container p-3 btn btn-outline-primary" (click)="openXl(content)" src="/assets/flashcard_image_icon.svg" alt="Card image cap">
+    </div>
+
+    <!-- Modal code stolen from here: https://ng-bootstrap.github.io/#/components/modal/examples -->
+
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">Modal title</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <p>One fine body&hellip;</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+        </div>
+    </ng-template>
+</div>
