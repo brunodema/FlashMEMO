@@ -14,12 +14,14 @@ In this case, I add all those classes so the layout of the rows/columns is the w
 })
 export class FlashcardContentOptionsBlock implements OnInit {
   closeResult: string;
+  modalTitle: string;
 
   constructor(private modalService: NgbModal) {}
 
   ngOnInit(): void {}
 
-  openXl(content: any) {
+  openXl(content: any, type: string) {
+    this.modalTitle = type;
     this.modalService.open(content, { size: 'xl' });
   }
 }
