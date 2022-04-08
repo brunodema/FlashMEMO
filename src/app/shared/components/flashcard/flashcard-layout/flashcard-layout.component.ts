@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FlashcardLayout } from 'src/app/shared/models/Flashcard';
+import { FlashcardLayout } from 'src/app/shared/models/flashcard';
 
 @Component({
   selector: 'app-flashcard-layout',

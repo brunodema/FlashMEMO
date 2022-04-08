@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouteMap } from 'src/app/shared/models/route-map/route-map';
+import { RouteMap } from 'src/app/shared/models/routing/route-map';
 import { News } from '../../models/news.model';
 import { NewsService } from '../../services/news.service';
 @Component({

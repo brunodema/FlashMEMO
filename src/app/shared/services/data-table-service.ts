@@ -1,6 +1,8 @@
+// To be honest, I'm not even sure what this does at the moment. I'll leave it here for safety reasons
+
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IServiceSearchParams } from 'src/app/shared/models/IServiceSearchParams';
+import { IServiceSearchParams } from '../models/other/api-query-types';
 
 @Injectable({
   providedIn: 'root',

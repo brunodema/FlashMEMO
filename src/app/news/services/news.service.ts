@@ -5,13 +5,14 @@ import { News } from '../models/news.model';
 import { environment } from 'src/environments/environment';
 
 import { map } from 'rxjs/operators';
-import { PaginatedListResponse } from 'src/app/shared/models/api-response';
+
+import { DataTableService } from 'src/app/shared/services/data-table-service';
 import {
+  IServiceSearchParams,
   SortColumn,
   SortType,
-} from 'src/app/shared/models/IServiceSearchParams';
-import { IServiceSearchParams } from 'src/app/shared/models/IServiceSearchParams';
-import { DataTableService } from 'src/app/shared/models/DataTableService';
+} from 'src/app/shared/models/other/api-query-types';
+import { IPaginatedListResponse } from 'src/app/shared/models/http/response-interfaces';
 
 class NewsSearchParams implements IServiceSearchParams {
   pageSize: Number;
@@ -37,7 +38,7 @@ export class NewsService implements DataTableService<News> {
     let pageSize = environment.maxPageSize;
 
     return this.http
-      .get<PaginatedListResponse<News>>(
+      .get<IPaginatedListResponse<News>>(
         `${this.testServiceURL}/list?pageSize=${pageSize}`
       )
       .pipe(map((a) => a.data.results));
@@ -71,7 +72,7 @@ export class NewsService implements DataTableService<News> {
     }
 
     return this.http
-      .get<PaginatedListResponse<News>>(formattedURL)
+      .get<IPaginatedListResponse<News>>(formattedURL)
       .pipe(map((a) => a.data.results));
   }
 }

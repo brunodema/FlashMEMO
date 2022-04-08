@@ -1,3 +1,5 @@
+// This will be eventually moved to its own module. I'll leave this here at the root folder for now.
+
 export interface Flashcard {
   frontSide: FlashcardSide;
   backside: FlashcardSide;

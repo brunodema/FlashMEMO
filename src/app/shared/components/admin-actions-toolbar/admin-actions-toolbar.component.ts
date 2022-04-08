@@ -1,20 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { RouteMap } from 'src/app/shared/models/route-map/route-map';
+import { RouteMap } from 'src/app/shared/models/routing/route-map';
 
 @Component({
   selector: 'app-admin-actions-toolbar',
   templateUrl: './admin-actions-toolbar.component.html',
-  styleUrls: ['./admin-actions-toolbar.component.css']
+  styleUrls: ['./admin-actions-toolbar.component.css'],
 })
-
 export class AdminActionsToolbarComponent implements OnInit {
+  @Input() routes: RouteMap[];
 
-  @Input() routes : RouteMap[];
+  constructor() {}
 
-  constructor() {
-  }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

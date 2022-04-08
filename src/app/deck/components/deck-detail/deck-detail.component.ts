@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FlashcardLayout } from 'src/app/shared/models/Flashcard';
+import { FlashcardLayout } from 'src/app/shared/models/flashcard';
 
 @Component({
   selector: 'app-deck-detail',

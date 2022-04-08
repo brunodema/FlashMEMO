@@ -7,11 +7,13 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import {
-  BaseAPIResponseModel,
-  LoginRequestModel,
-  LoginResponseModel,
-  RegisterRequestModel,
-} from '../models/api-response';
+  ILoginRequest,
+  IRegisterRequest,
+} from '../models/http/request-interfaces';
+import {
+  IBaseAPIResponse,
+  ILoginResponse,
+} from '../models/http/response-interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -33,9 +35,9 @@ export class AuthService {
     return !this.jwtHelper.isTokenExpired(token);
   }
 
-  public login(requestData: LoginRequestModel): Observable<any> {
+  public login(requestData: ILoginRequest): Observable<any> {
     return this.http
-      .post<LoginResponseModel>(`${this.serviceURL}/login`, requestData)
+      .post<ILoginResponse>(`${this.serviceURL}/login`, requestData)
       .pipe(
         map((res) => this.handleSuccessfulLogin(res)),
         catchError((err: HttpErrorResponse) => this.handleFailedLogin(err))
@@ -48,9 +50,9 @@ export class AuthService {
     this.redirectToHome();
   }
 
-  public register(registerData: RegisterRequestModel): Observable<any> {
+  public register(registerData: IRegisterRequest): Observable<any> {
     return this.http
-      .post<BaseAPIResponseModel>(`${this.serviceURL}/register`, registerData)
+      .post<IBaseAPIResponse>(`${this.serviceURL}/register`, registerData)
       .pipe(
         map((res) => {
           this.handleSuccessfulRegistration(res);
@@ -77,7 +79,7 @@ export class AuthService {
     sessionStorage.removeItem('token');
   }
 
-  private handleSuccessfulLogin(res: LoginResponseModel) {
+  private handleSuccessfulLogin(res: ILoginResponse) {
     this.storeJWT(res.jwtToken);
     this.toastr
       .success('You will soon be redirected.', 'Welcome to FlashMEMO!', {
@@ -86,7 +88,7 @@ export class AuthService {
       .onHidden.subscribe(() => this.redirectToHome());
   }
 
-  private handleSuccessfulRegistration(res: BaseAPIResponseModel) {
+  private handleSuccessfulRegistration(res: IBaseAPIResponse) {
     this.toastr.success(
       'User created. You will soon be redirected.',
       'Registration Complete!',
@@ -108,7 +110,7 @@ export class AuthService {
     return throwError(err);
   }
 
-  processErrorsFromAPI(errorResponse: LoginResponseModel): string {
+  processErrorsFromAPI(errorResponse: ILoginResponse): string {
     let resp = errorResponse.message + '\n\n';
     if (errorResponse.errors) {
       errorResponse.errors.forEach((error) => {

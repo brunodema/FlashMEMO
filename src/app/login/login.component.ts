@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { LoginRequestModel } from '../shared/models/api-response';
+import { ILoginRequest } from '../shared/models/http/request-interfaces';
 import { AuthService } from '../shared/services/auth.service';
 
 @Component({
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      let loginRequestData: LoginRequestModel = {
+      let loginRequestData: ILoginRequest = {
         email: this.form.value.email,
         password: this.form.value.password,
       };
