@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserCreateComponent } from './create/user-create.component';
-import { UserComponent } from './user.component';
+import { UserCreateComponent } from '../components/create/user-create.component';
+import { UserListComponent } from '../components/user-list/user-list.component';
 
 const routes: Routes = [
-  { path: '', component: UserComponent },
+  { path: '', component: UserListComponent },
   { path: 'create', component: UserCreateComponent },
 ];
 
