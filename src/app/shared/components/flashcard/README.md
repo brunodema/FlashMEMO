@@ -1,0 +1,1 @@
+Maybe it wasn't a good idea to place these components in the Shared module, to begin with. Rethink this later.
