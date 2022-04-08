@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DeckDetailComponent } from './deck-detail/deck-detail.component';
-import { DeckListComponent } from './deck-list/deck-list.component';
+import { DeckDetailComponent } from '../components/deck-detail/deck-detail.component';
+import { DeckListComponent } from '../components/deck-list/deck-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'list' },
