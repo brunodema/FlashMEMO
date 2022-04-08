@@ -1,5 +1,3 @@
-// Modules
-// base
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -11,20 +9,18 @@ import { ToastrModule } from 'ngx-toastr'; // Toastr
 import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { ConfigOption, FormlyModule } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
-// custom
+
 import { SharedModule } from './shared/shared.module';
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from './root/routing/app-routing.module';
 import { NewsModule } from './news/news.module';
 import { DeckModule } from './deck/deck.module';
 
-// Services and Guards
 import { AuthService } from './shared/services/auth.service';
 import { AuthGuard } from './shared/guards/auth.guard';
 
-// Components
-import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './root/components/login/login.component';
+import { HomeComponent } from './root/components/home/home.component';
+import { AppComponent } from './root/components/app.component';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;

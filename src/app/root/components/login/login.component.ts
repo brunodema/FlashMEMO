@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { ILoginRequest } from '../shared/models/http/request-interfaces';
-import { AuthService } from '../shared/services/auth.service';
+import { ILoginRequest } from '../../../shared/models/http/request-interfaces';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-login',
