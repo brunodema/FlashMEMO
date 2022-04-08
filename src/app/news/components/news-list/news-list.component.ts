@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { RouteMap } from '../shared/models/route-map/route-map';
-import { News } from './models/news.model';
-import { NewsService } from './services/news.service';
-
+import { RouteMap } from 'src/app/shared/models/route-map/route-map';
+import { News } from '../../models/news.model';
+import { NewsService } from '../../services/news.service';
 @Component({
   selector: 'app-news',
-  templateUrl: './news.component.html',
-  styleUrls: ['./news.component.css'],
+  templateUrl: './news-list.component.html',
+  styleUrls: ['./news-list.component.css'],
 })
 export class NewsComponent implements OnInit {
   public newsList: News[];
