@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 
 import { map } from 'rxjs/operators';
 
-import { DataTableService } from 'src/app/shared/services/data-table-service';
+import { GeneralDataTableService } from 'src/app/shared/services/data-table-service';
 import {
   IServiceSearchParams,
   SortColumn,
@@ -29,7 +29,7 @@ class NewsSearchParams implements IServiceSearchParams {
 @Injectable({
   providedIn: 'root',
 })
-export class NewsService implements DataTableService<News> {
+export class NewsService implements GeneralDataTableService<News> {
   protected testServiceURL: string = `${environment.backendRootAddress}/api/v1/News`;
 
   constructor(private http: HttpClient) {}

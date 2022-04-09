@@ -7,6 +7,6 @@ import { IServiceSearchParams } from '../models/other/api-query-types';
 @Injectable({
   providedIn: 'root',
 })
-export class DataTableService<Type> {
+export class GeneralDataTableService<Type> {
   search: (searchParams: IServiceSearchParams) => Observable<Type[]>;
 }
