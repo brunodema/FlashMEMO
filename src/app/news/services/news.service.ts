@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 
 import { map } from 'rxjs/operators';
 
-import { GeneralDataTableService } from 'src/app/shared/services/data-table-service';
+import { GeneralRepositoryService } from 'src/app/shared/services/data-table-service';
 import {
   IServiceSearchParams,
   SortColumn,
@@ -29,28 +29,15 @@ class NewsSearchParams implements IServiceSearchParams {
 @Injectable({
   providedIn: 'root',
 })
-export class NewsService extends GeneralDataTableService<News> {
-  protected testServiceURL: string = `${environment.backendRootAddress}/api/v1/News`;
-
+export class NewsService extends GeneralRepositoryService<News> {
   constructor(private http: HttpClient) {
-    super();
-  }
-
-  getAllNews(sortType: SortType = 0): Observable<News[]> {
-    let pageSize = environment.maxPageSize;
-
-    return this.http
-      .get<IPaginatedListResponse<News>>(
-        `${this.testServiceURL}/list?pageSize=${pageSize}`
-      )
-      .pipe(map((a) => a.data.results));
-    // .pipe(map((a) => a.data.results.sort(comparisonFunction)));
+    super(`${environment.backendRootAddress}/api/v1/News`, http);
   }
 
   search(
     params: NewsSearchParams = { pageSize: 10, pageNumber: 1 }
   ): Observable<News[]> {
-    let formattedURL: string = `${this.testServiceURL}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
+    let formattedURL: string = `${this.endpointURL}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
     if (params.fromDate) {
       formattedURL += `&FromDate=${params.fromDate}`;
     }

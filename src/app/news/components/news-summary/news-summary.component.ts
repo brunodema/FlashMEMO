@@ -15,7 +15,7 @@ export class NewsSummaryComponent implements OnInit {
 
   ngOnInit() {
     this.newsService
-      .getAllNews()
+      .getAll()
       .subscribe((newsList) => (this.newsList = newsList));
   }
 }
