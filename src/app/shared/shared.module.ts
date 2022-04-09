@@ -34,12 +34,11 @@ import { DataTableComponent } from './components/data-table/data-table.component
     CollapseModule,
     CommonModule,
     RouterModule,
-    // Material
-    MatFormFieldModule,
-    MatPaginatorModule,
-    MatTableModule,
-    MatSortModule,
-    MatInputModule,
+    MatFormFieldModule, // Material
+    MatPaginatorModule, // Material
+    MatTableModule, // Material
+    MatSortModule, // Material
+    MatInputModule, // Material
   ],
   exports: [
     SafePipe,
