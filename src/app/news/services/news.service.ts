@@ -6,13 +6,13 @@ import { environment } from 'src/environments/environment';
 
 import { map } from 'rxjs/operators';
 
-import { GeneralRepositoryService } from 'src/app/shared/services/data-table-service';
 import {
   IServiceSearchParams,
   SortColumn,
   SortType,
 } from 'src/app/shared/models/other/api-query-types';
 import { IPaginatedListResponse } from 'src/app/shared/models/http/response-interfaces';
+import { GeneralRepositoryService } from 'src/app/shared/services/general-repository-service';
 
 class NewsSearchParams implements IServiceSearchParams {
   pageSize: Number;

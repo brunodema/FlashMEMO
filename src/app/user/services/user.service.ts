@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IServiceSearchParams } from 'src/app/shared/models/other/api-query-types';
-import { GeneralRepositoryService } from 'src/app/shared/services/data-table-service';
+import { GeneralRepositoryService } from 'src/app/shared/services/general-repository-service';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
 

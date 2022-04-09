@@ -2,7 +2,7 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { GeneralRepositoryService } from 'src/app/shared/services/data-table-service';
+import { GeneralRepositoryService } from 'src/app/shared/services/general-repository-service';
 import { environment } from 'src/environments/environment';
 
 @Component({
