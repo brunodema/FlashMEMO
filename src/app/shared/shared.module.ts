@@ -8,11 +8,9 @@ import { HeaderComponent } from './components/header/header.component';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from './components/footer/footer.component';
 import { UserPreferencesDropdownComponent } from './components/user-preferences-dropdown/user-preferences-dropdown.component';
-
-// Material UI stuff for dynamic tables
-import { MatTableModule } from '@angular/material/table';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table'; // Material UI stuff for dynamic tables
+import { MatFormFieldModule } from '@angular/material/form-field'; // Material UI stuff for dynamic tables
+import { MatSortModule } from '@angular/material/sort'; // Material UI stuff for dynamic tables
 import { MatInputModule } from '@angular/material/input'; // this one is not mentioned in any tutorial, BUT IS REQUIRED FOR THE SORTABLE/FILTERABLE/PAGINATED TABLE TO WORK!
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { FlashcardContentOptionsBlock } from './components/flashcard/flashcard-content-options-block/flashcard-content-options-block.component';
@@ -23,7 +21,6 @@ import { FlashcardContentEditorComponent } from './components/flashcard/flashcar
   declarations: [
     SafePipe,
     HeaderComponent,
-    DataTableComponent,
     FooterComponent,
     AdminActionsToolbarComponent,
     DataTableComponent,
@@ -47,7 +44,6 @@ import { FlashcardContentEditorComponent } from './components/flashcard/flashcar
   exports: [
     SafePipe,
     HeaderComponent,
-    DataTableComponent,
     FooterComponent,
     AdminActionsToolbarComponent,
     DataTableComponent,
