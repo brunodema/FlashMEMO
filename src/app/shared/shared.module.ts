@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SafePipe } from './pipes/safe-pipe.pipe';
 import { AdminActionsToolbarComponent } from './components/admin-actions-toolbar/admin-actions-toolbar.component';
-import { DataTableComponent } from './components/data-table/data-table/data-table.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { HeaderComponent } from './components/header/header.component';
 import { RouterModule } from '@angular/router';
@@ -16,6 +15,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { FlashcardContentOptionsBlock } from './components/flashcard/flashcard-content-options-block/flashcard-content-options-block.component';
 import { FlashcardLayoutComponent } from './components/flashcard/flashcard-layout/flashcard-layout.component';
 import { FlashcardContentEditorComponent } from './components/flashcard/flashcard-content-editor/flashcard-content-editor.component';
+import { DataTableComponent } from './components/data-table/data-table.component';
 
 @NgModule({
   declarations: [
