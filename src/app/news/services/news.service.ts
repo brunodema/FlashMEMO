@@ -29,10 +29,12 @@ class NewsSearchParams implements IServiceSearchParams {
 @Injectable({
   providedIn: 'root',
 })
-export class NewsService implements GeneralDataTableService<News> {
+export class NewsService extends GeneralDataTableService<News> {
   protected testServiceURL: string = `${environment.backendRootAddress}/api/v1/News`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    super();
+  }
 
   getAllNews(sortType: SortType = 0): Observable<News[]> {
     let pageSize = environment.maxPageSize;
