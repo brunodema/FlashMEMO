@@ -31,11 +31,8 @@ export interface ILargePaginatedList<Type> {
   hasNextPage: boolean;
 }
 
-export interface IPaginatedListResponse<Type> {
-  errors: string[];
-  message: string;
+export interface IPaginatedListResponse<Type> extends IBaseAPIResponse {
   data: IPaginatedList<Type> | ILargePaginatedList<Type>; // property name must match with the returned object (lesson learned)
-  status: string;
 }
 
 /**
