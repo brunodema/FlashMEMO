@@ -31,19 +31,6 @@ export interface ILargePaginatedList<Type> {
   hasNextPage: boolean;
 }
 
-/**
- * I have to implement this class so I can declare objects of this type when using implementation outside Angular's libraries.
- */
-export class LargePaginatedList<Type> implements ILargePaginatedList<Type> {
-  results: Type[];
-  pageIndex: string;
-  totalPages: string;
-  resultSize: string; // different naming than the other class, VERY DANGEROUS
-  totalAmount: string; // different naming than the other class, VERY DANGEROUS
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
-}
-
 export interface IPaginatedListResponse<Type> {
   errors: string[];
   message: string;
