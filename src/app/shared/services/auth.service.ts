@@ -9,11 +9,11 @@ import { environment } from 'src/environments/environment';
 import {
   ILoginRequest,
   IRegisterRequest,
-} from '../models/http/request-interfaces';
+} from '../models/http/http-request-types';
 import {
   IBaseAPIResponse,
   ILoginResponse,
-} from '../models/http/response-interfaces';
+} from '../models/http/http-response-types';
 
 @Injectable({
   providedIn: 'root',

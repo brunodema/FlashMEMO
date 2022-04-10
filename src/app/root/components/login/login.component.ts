@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { ILoginRequest } from '../../../shared/models/http/request-interfaces';
+import { ILoginRequest } from '../../../shared/models/http/http-request-types';
 import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({

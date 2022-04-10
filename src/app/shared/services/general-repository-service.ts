@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { IPaginatedListResponse } from '../models/http/response-interfaces';
+import { IPaginatedListResponse } from '../models/http/http-response-types';
 import { IServiceSearchParams } from '../models/other/api-query-types';
 
 // Declaring this as an abstract class per recomendation of other Angular users, since interfaces can't be used for 'providers: [{ provide: NonInterfaceClass, useClass: ActualImplementationClass }]' declarations

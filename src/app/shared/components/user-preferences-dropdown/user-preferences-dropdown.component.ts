@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { ILoginResponse } from '../../models/http/response-interfaces';
+import { ILoginResponse } from '../../models/http/http-response-types';
 
 @Component({
   selector: 'app-user-preferences-dropdown',

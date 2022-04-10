@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import {
   PaginatedListResponse,
   IPaginatedListResponse,
-} from '../models/http/response-interfaces';
+} from '../models/http/http-response-types';
 
 /**
  * Dummy class for testing purposes.

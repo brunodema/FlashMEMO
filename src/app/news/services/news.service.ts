@@ -11,7 +11,7 @@ import {
   SortColumn,
   SortType,
 } from 'src/app/shared/models/other/api-query-types';
-import { IPaginatedListResponse } from 'src/app/shared/models/http/response-interfaces';
+import { IPaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
 import { GeneralRepositoryService } from 'src/app/shared/services/general-repository-service';
 
 class NewsSearchParams implements IServiceSearchParams {
