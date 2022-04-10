@@ -19,7 +19,7 @@ export interface IPaginatedList<Type> {
 }
 
 /**
- * Similar to the common implementaiton, but Uses string properties to hold values, in case they are too large in terms of bits.
+ * Similar to the common implementaiton, but Uses string properties to hold values, in case they are too large in terms of bits. *Must fix this once Image API is operational (front-end and back-end)*
  */
 export interface ILargePaginatedList<Type> {
   results: Type[];
