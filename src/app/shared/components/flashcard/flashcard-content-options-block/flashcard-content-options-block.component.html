@@ -33,9 +33,15 @@
                                     <input type="text" class="form-control" id="search-church"
                                         placeholder="Find your image!">
                                     <span class="input-group-btn ml-2">
-                                        <button class="btn btn-primary" type="submit">Search</button>
+                                        <button class="btn btn-primary" type="submit"
+                                            (click)="searchImage()">Search</button>
                                     </span>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6" *ngFor="let item of imageResults$ | async">
+                                <img class="img-fluid" [src]="item.link">
                             </div>
                         </div>
                     </div>

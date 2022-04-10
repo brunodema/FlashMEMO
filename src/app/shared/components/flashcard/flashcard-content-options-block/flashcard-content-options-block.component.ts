@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, of } from 'rxjs';
+import {
+  GeneralImageAPIService,
+  IImageAPIResult,
+  MockImageAPIService,
+} from 'src/app/shared/services/api-services';
 
 /* TIL about the 'host'property
 
@@ -11,17 +17,32 @@ In this case, I add all those classes so the layout of the rows/columns is the w
   host: { class: 'd-flex flex-fill align-items-center justify-content-center' },
   templateUrl: './flashcard-content-options-block.component.html',
   styleUrls: ['./flashcard-content-options-block.component.css'],
+  providers: [
+    { provide: GeneralImageAPIService, useClass: MockImageAPIService },
+  ],
 })
 export class FlashcardContentOptionsBlock implements OnInit {
   closeResult: string;
   modalTitle: string;
+  imageResults$: Observable<IImageAPIResult[]>;
 
-  constructor(private modalService: NgbModal) {}
+  constructor(
+    private modalService: NgbModal,
+    private imageAPIService: GeneralImageAPIService
+  ) {}
 
   ngOnInit(): void {}
 
   openXl(content: any, type: string) {
     this.modalTitle = type;
     this.modalService.open(content, { size: 'xl' });
+  }
+
+  searchImage() {
+    console.log('search');
+    this.imageResults$ = of(
+      this.imageAPIService.searchImage('lol', 1).data.results
+    );
+    this.imageResults$.subscribe();
   }
 }
