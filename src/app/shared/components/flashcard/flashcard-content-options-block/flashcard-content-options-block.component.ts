@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, of } from 'rxjs';
-import {
-  IPaginatedListResponse,
-  PaginatedListResponse,
-} from 'src/app/shared/models/http/http-response-types';
+import { PaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
 import {
   GeneralImageAPIService,
   IImageAPIResult,
@@ -49,10 +46,8 @@ export class FlashcardContentOptionsBlock implements OnInit {
     this.modalService.open(content, { size: 'xl', scrollable: true });
   }
 
-  searchImage(keyword: string, pageIndex: number) {
-    if (this.currentKeyword !== keyword) pageIndex = 1;
-
-    console.log(pageIndex);
+  searchImage(keyword: string, pageIndex?: number) {
+    if (pageIndex === undefined) pageIndex = 1;
 
     this.imageAPIData$ = of(
       this.imageAPIService.searchImage(keyword, pageIndex)

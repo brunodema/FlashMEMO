@@ -16,6 +16,7 @@ import { FlashcardContentOptionsBlock } from './components/flashcard/flashcard-c
 import { FlashcardLayoutComponent } from './components/flashcard/flashcard-layout/flashcard-layout.component';
 import { FlashcardContentEditorComponent } from './components/flashcard/flashcard-content-editor/flashcard-content-editor.component';
 import { DataTableComponent } from './components/data-table/data-table.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { DataTableComponent } from './components/data-table/data-table.component
     CollapseModule,
     CommonModule,
     RouterModule,
+    FormsModule,
     MatFormFieldModule, // Material
     MatPaginatorModule, // Material
     MatTableModule, // Material

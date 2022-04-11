@@ -31,10 +31,10 @@
                             <div class="col-12">
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="search-church"
-                                        placeholder="Find your image!">
+                                        placeholder="Find your image!" [(ngModel)]="currentKeyword">
                                     <span class="input-group-btn ml-2">
                                         <button class="btn btn-primary" type="submit"
-                                            (click)="searchImage('lol', currentPageIndex)">Search</button>
+                                            (click)="searchImage(currentKeyword)">Search</button>
                                     </span>
                                 </div>
                             </div>
