@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, of } from 'rxjs';
 import {
+  IPaginatedListResponse,
+  PaginatedListResponse,
+} from 'src/app/shared/models/http/http-response-types';
+import {
   GeneralImageAPIService,
   IImageAPIResult,
   MockImageAPIService,
@@ -24,7 +28,12 @@ In this case, I add all those classes so the layout of the rows/columns is the w
 export class FlashcardContentOptionsBlock implements OnInit {
   closeResult: string;
   modalTitle: string;
-  imageResults$: Observable<IImageAPIResult[]>;
+
+  // Image API section
+  imageAPIData$: Observable<PaginatedListResponse<IImageAPIResult>>;
+  imageResults: IImageAPIResult[];
+  hasPrevious: boolean;
+  hasNext: boolean;
 
   constructor(
     private modalService: NgbModal,
@@ -35,14 +44,16 @@ export class FlashcardContentOptionsBlock implements OnInit {
 
   openXl(content: any, type: string) {
     this.modalTitle = type;
-    this.modalService.open(content, { size: 'xl' });
+    this.modalService.open(content, { size: 'xl', scrollable: true });
   }
 
   searchImage() {
     console.log('search');
-    this.imageResults$ = of(
-      this.imageAPIService.searchImage('lol', 1).data.results
-    );
-    this.imageResults$.subscribe();
+    this.imageAPIData$ = of(this.imageAPIService.searchImage('lol', 1));
+    this.imageAPIData$.subscribe((r) => {
+      this.imageResults = r.data.results;
+      this.hasPrevious = r.data.hasPreviousPage;
+      this.hasNext = r.data.hasNextPage;
+    });
   }
 }

@@ -39,9 +39,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6" *ngFor="let item of imageResults$ | async">
-                                <img class="img-fluid" [src]="item.link">
+                        <div class="row mt-3">
+                            <div class="col-6" *ngFor="let item of imageResults">
+                                <img class="img-thumbnail" [src]="item.link">
                             </div>
                         </div>
                     </div>
@@ -50,7 +50,15 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+            <div [ngSwitch]="modalTitle">
+                <div *ngSwitchCase="'Image'">
+                    <button type="button" *ngIf="hasPrevious" class="btn btn-light" (click)="modal.close('Close click')">Previous Page</button>
+                    <button type="button" *ngIf="hasNext" class="btn btn-light" (click)="modal.close('Close click')">Next Page</button>
+                </div>
+                <div *ngSwitchDefault>
+                    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+                </div>
+            </div>
         </div>
     </ng-template>
 </div>
