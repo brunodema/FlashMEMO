@@ -8,10 +8,18 @@ import {
   MockImageAPIService,
 } from 'src/app/shared/services/api-services';
 
-/* TIL about the 'host'property
+export enum FlashcardContentType {
+  NONE = 'NONE',
+  TEXT = 'TEXT',
+  IMAGE = 'IMAGE',
+  AUDIO = 'AUDIO',
+}
 
-Apparently we can use this property to set things related to the wrapper element that Angular will add to the DOM after compiling the app. 
-In this case, I add all those classes so the layout of the rows/columns is the way I want. */
+/**
+ * TIL about the 'host'property
+ * Apparently we can use this property to set things related to the wrapper element that Angular will add to the DOM after compiling the app.
+ * In this case, I add all those classes so the layout of the rows/columns is the way I want.
+ */
 
 @Component({
   selector: 'app-flashcard-content-options-block',
@@ -25,6 +33,8 @@ In this case, I add all those classes so the layout of the rows/columns is the w
 export class FlashcardContentOptionsBlock implements OnInit {
   closeResult: string;
   modalTitle: string;
+  contentType: FlashcardContentType = FlashcardContentType.NONE;
+  contentValue: string;
 
   // Image API section
   imageAPIData$: Observable<PaginatedListResponse<IImageAPIResult>>;
