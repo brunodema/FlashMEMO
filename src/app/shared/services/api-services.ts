@@ -78,7 +78,7 @@ export class MockImageAPIService extends GeneralImageAPIService {
         totalPages: '5',
         results: Array.from(
           { length: 10 },
-          (_) => imageAPIJson[Math.floor(Math.random() * imageAPIJson.length)]
+          (_) => imageAPIJson[Math.floor(Math.random() * imageAPIJson.length)] // this crazyness here takes the data from the test json file, and 'scrambles' it into the results.
         ),
       },
     });
