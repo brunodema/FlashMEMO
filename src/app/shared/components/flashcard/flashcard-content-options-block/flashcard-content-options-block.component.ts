@@ -34,6 +34,8 @@ export class FlashcardContentOptionsBlock implements OnInit {
   imageResults: IImageAPIResult[];
   hasPrevious: boolean;
   hasNext: boolean;
+  currentPageIndex: number;
+  currentKeyword: string = '';
 
   constructor(
     private modalService: NgbModal,
@@ -47,10 +49,17 @@ export class FlashcardContentOptionsBlock implements OnInit {
     this.modalService.open(content, { size: 'xl', scrollable: true });
   }
 
-  searchImage() {
-    console.log('search');
-    this.imageAPIData$ = of(this.imageAPIService.searchImage('lol', 1));
+  searchImage(keyword: string, pageIndex: number) {
+    if (this.currentKeyword !== keyword) pageIndex = 1;
+
+    console.log(pageIndex);
+
+    this.imageAPIData$ = of(
+      this.imageAPIService.searchImage(keyword, pageIndex)
+    );
     this.imageAPIData$.subscribe((r) => {
+      this.currentKeyword = keyword;
+      this.currentPageIndex = r.data.pageIndex as number;
       this.imageResults = r.data.results;
       this.hasPrevious = r.data.hasPreviousPage;
       this.hasNext = r.data.hasNextPage;

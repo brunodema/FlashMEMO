@@ -34,7 +34,7 @@
                                         placeholder="Find your image!">
                                     <span class="input-group-btn ml-2">
                                         <button class="btn btn-primary" type="submit"
-                                            (click)="searchImage()">Search</button>
+                                            (click)="searchImage('lol', currentPageIndex)">Search</button>
                                     </span>
                                 </div>
                             </div>
@@ -52,8 +52,8 @@
         <div class="modal-footer">
             <div [ngSwitch]="modalTitle">
                 <div *ngSwitchCase="'Image'">
-                    <button type="button" *ngIf="hasPrevious" class="btn btn-light" (click)="modal.close('Close click')">Previous Page</button>
-                    <button type="button" *ngIf="hasNext" class="btn btn-light" (click)="modal.close('Close click')">Next Page</button>
+                    <button type="button" *ngIf="hasPrevious" class="btn btn-primary" (click)="searchImage('lol', +currentPageIndex - 1)">Previous Page</button>
+                    <button type="button" *ngIf="hasNext" class="btn btn-primary ml-2" (click)="searchImage('lol', +currentPageIndex + 1)">Next Page</button>
                 </div>
                 <div *ngSwitchDefault>
                     <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
