@@ -16,3 +16,10 @@ input {
   border-color: black;
   border-radius: 0px;
 }
+
+/* Shamelessly stolen from: https://stackoverflow.com/questions/42859313/hover-effects-in-bootstrap */
+
+.img-thumbnail:hover {
+background-color: red;
+opacity: 0.5;
+}
