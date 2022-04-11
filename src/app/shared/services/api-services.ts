@@ -6,6 +6,11 @@ import {
 } from '../models/http/http-response-types';
 
 /**
+ * Simply amazing feature taken from here: https://stackoverflow.com/questions/49996456/importing-json-file-in-typescript. Allows json files to be directly imported as type-safe objects. Requires some changes to the tsconfig.json file.
+ */
+import imageAPIJson from 'src/assets/test_assets/ImageAPI.json';
+
+/**
  * Dummy class for interfacing purposes. For the moment, will completly mimic the Google Image API return object.
  */
 export interface IImageAPIResult {
@@ -57,22 +62,6 @@ export abstract class GeneralImageAPIService {
  * Class for prototyping purposes only
  */
 export class MockImageAPIService extends GeneralImageAPIService {
-  dummyImage: GoogleImageResult = new GoogleImageResult({
-    title: 'L.O.L. Surprise! L.O.L. Surprise OMG Sports Doll- Cheer 577508 ...',
-    link: 'https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6463/6463576_sd.jpg',
-    image: {
-      byteSize: 807147,
-      contextLink:
-        'https://www.bestbuy.com/site/l-o-l-surprise-l-o-l-surprise-omg-sports-doll-cheer/6463576.p?skuId=6463576',
-      height: 4409,
-      thumbnailHeight: 150,
-      thumbnailLink:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcdFWm87QgFJzd0aqHu9r1Lg01S7ca7-_0ijLbfm7ddj-eVcpd1BfbHWU&s',
-      thumbnailWidth: 112,
-      width: 3306,
-    },
-  });
-
   searchImage(
     keyword: string,
     pageIndex: number
@@ -87,7 +76,10 @@ export class MockImageAPIService extends GeneralImageAPIService {
         totalAmount: '50',
         resultSize: '10',
         totalPages: '5',
-        results: new Array(10).fill(this.dummyImage),
+        results: Array.from(
+          { length: 10 },
+          (_) => imageAPIJson[Math.floor(Math.random() * imageAPIJson.length)]
+        ),
       },
     });
   }
