@@ -81,12 +81,12 @@ export class MockImageAPIService extends GeneralImageAPIService {
       message: 'Success',
       status: '200',
       data: {
-        hasNextPage: false,
-        hasPreviousPage: false,
-        pageIndex: '1',
-        totalAmount: '10',
+        hasNextPage: pageIndex < 1000,
+        hasPreviousPage: pageIndex > 2,
+        pageIndex: pageIndex.toString(),
+        totalAmount: '10000',
         resultSize: '10',
-        totalPages: '1',
+        totalPages: '1000',
         results: new Array(10).fill(this.dummyImage),
       },
     });
