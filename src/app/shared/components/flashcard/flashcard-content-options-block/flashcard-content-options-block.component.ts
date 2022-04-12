@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, of } from 'rxjs';
 import { PaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
@@ -30,7 +36,9 @@ export enum FlashcardContentType {
     { provide: GeneralImageAPIService, useClass: MockImageAPIService },
   ],
 })
-export class FlashcardContentOptionsBlock implements OnInit {
+export class FlashcardContentOptionsBlock implements AfterViewInit {
+  componentHeight: string;
+
   closeResult: string;
   modalTitle: string;
   contentType: FlashcardContentType = FlashcardContentType.NONE;
@@ -48,10 +56,14 @@ export class FlashcardContentOptionsBlock implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private imageAPIService: GeneralImageAPIService
+    private imageAPIService: GeneralImageAPIService,
+    private el: ElementRef
   ) {}
 
-  ngOnInit(): void {}
+  ngAfterViewInit(): void {
+    this.componentHeight = this.el.nativeElement.offsetHeight + 'px';
+    console.log(this.componentHeight);
+  }
 
   openXl(content: any, type: string) {
     this.modalTitle = type;
@@ -76,5 +88,6 @@ export class FlashcardContentOptionsBlock implements OnInit {
   selectImage(imageLink: string) {
     this.contentType = this.flashcardContentEnumType.IMAGE;
     this.contentValue = imageLink;
+    console.log(this.componentHeight);
   }
 }

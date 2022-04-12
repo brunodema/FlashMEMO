@@ -62,8 +62,8 @@
       </div>
     </div>
   </ng-template>
-  <div *ngSwitchCase="flashcardContentEnumType.IMAGE" class="container">
-    <img [src]="contentValue" class="img-fluid" />
+  <div *ngSwitchCase="flashcardContentEnumType.IMAGE" class="container text-center">
+    <img [src]="contentValue" [style.maxHeight]="componentHeight" class="img-fluid" />
   </div>
 
 
