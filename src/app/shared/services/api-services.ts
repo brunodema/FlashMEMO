@@ -61,6 +61,7 @@ export abstract class GeneralImageAPIService {
 /**
  * Class for prototyping purposes only
  */
+@Injectable()
 export class MockImageAPIService extends GeneralImageAPIService {
   searchImage(
     keyword: string,
