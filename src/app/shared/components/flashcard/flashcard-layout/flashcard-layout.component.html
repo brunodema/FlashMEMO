@@ -12,17 +12,18 @@
     <app-flashcard-content-options-block></app-flashcard-content-options-block>
   </div>
   <div *ngSwitchCase="layoutEnum.HORIZONTAL_SPLIT" class="d-flex flex-row h-100" style="display: contents;">
-    <app-flashcard-content-options-block class="h-100"></app-flashcard-content-options-block>
-    <app-flashcard-content-options-block class="h-100"></app-flashcard-content-options-block>
+    <app-flashcard-content-options-block></app-flashcard-content-options-block>
+    <app-flashcard-content-options-block ></app-flashcard-content-options-block>
   </div>
   <div *ngSwitchCase="layoutEnum.FULL_CARD" style="display: contents;">
-    <div class="row h-100">
+    <div class="row no-gutters h-100">
       <div class="col">
+        <!-- for some reason, the height declaration is really necessary here -->
         <app-flashcard-content-options-block class="h-100"></app-flashcard-content-options-block>
       </div>
       <div class="col d-flex flex-column">
-        <app-flashcard-content-options-block class="w-100"></app-flashcard-content-options-block>
-        <app-flashcard-content-options-block class="w-100"></app-flashcard-content-options-block>
+        <app-flashcard-content-options-block></app-flashcard-content-options-block>
+        <app-flashcard-content-options-block></app-flashcard-content-options-block>
       </div>
     </div>
 
