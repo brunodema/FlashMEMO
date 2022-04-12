@@ -1,64 +1,69 @@
-<div class="row justify-content-center w-100">
-    <!-- Unfortunately, I have to create a custom class to hold the border properties of the container, because Bootstrap's 'border' class apparently have !important tags in it that simply ignores properties such as border width/color declared separately -->
-    <div class="col-3 text-center">
-        <img class="flashcard-option-container p-3 btn btn-outline-primary" (click)="openXl(content, 'Audio')"
-            src="/assets/flashcard_audio_icon.svg" alt="Card image cap">
-    </div>
-    <div class="col-3 text-center">
-        <img class="flashcard-option-container p-3 btn btn-outline-primary" (click)="openXl(content, 'Text')"
-            src="/assets/flashcard_text_icon.svg" alt="Card image cap">
-    </div>
-    <div class="col-3 text-center">
-        <img class="flashcard-option-container p-3 btn btn-outline-primary" (click)="openXl(content, 'Image')"
-            src="/assets/flashcard_image_icon.svg" alt="Card image cap">
-    </div>
+<div class="row justify-content-center w-100" [ngSwitch]="contentType">
+  <!-- Unfortunately, I have to create a custom class to hold the border properties of the container, because Bootstrap's 'border' class apparently have !important tags in it that simply ignores properties such as border width/color declared separately -->
+  <div *ngSwitchCase="flashcardContentEnumType.NONE" class="col-3 text-center">
+    <img class="flashcard-option-container p-3 btn btn-outline-primary" (click)="openXl(content, 'Audio')"
+      src="/assets/flashcard_audio_icon.svg" alt="Card image cap">
+  </div>
+  <div *ngSwitchCase="flashcardContentEnumType.NONE" class="col-3 text-center">
+    <img class="flashcard-option-container p-3 btn btn-outline-primary" (click)="openXl(content, 'Text')"
+      src="/assets/flashcard_text_icon.svg" alt="Card image cap">
+  </div>
+  <div *ngSwitchCase="flashcardContentEnumType.NONE" class="col-3 text-center">
+    <img class="flashcard-option-container p-3 btn btn-outline-primary" (click)="openXl(content, 'Image')"
+      src="/assets/flashcard_image_icon.svg" alt="Card image cap">
+  </div>
 
-    <!-- Modal code stolen from here: https://ng-bootstrap.github.io/#/components/modal/examples -->
+  <!-- Modal code stolen from here: https://ng-bootstrap.github.io/#/components/modal/examples -->
 
-    <ng-template #content let-modal>
-        <div class="modal-header">
-            <h4 class="modal-title">Add {{ modalTitle }}</h4>
-            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-        </div>
-        <div class="modal-body">
-            <div [ngSwitch]="modalTitle">
-                <div *ngSwitchCase="'Audio'">Audio</div>
-                <div *ngSwitchCase="'Text'">Text</div>
-                <div *ngSwitchCase="'Image'">
-                    <div class="container">
-                        <!-- Implementation for inline search box covering full width stolen from here: https://stackoverflow.com/questions/22774780/bootstrap-full-width-text-input-within-inline-form -->
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="search-church"
-                                        placeholder="Find your image!" [(ngModel)]="currentKeyword">
-                                    <span class="input-group-btn ml-2">
-                                        <button class="btn btn-primary" type="submit"
-                                            (click)="searchImage(currentKeyword)">Search</button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-3 justify-content-center align-items-center">
-                            <div class="col-5" *ngFor="let item of imageResults">
-                                <img class="img-thumbnail my-2" [src]="item.link">
-                            </div>
-                        </div>
-                    </div>
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Add {{ modalTitle }}</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div [ngSwitch]="modalTitle">
+        <div *ngSwitchCase="'Audio'">Audio</div>
+        <div *ngSwitchCase="'Text'">Text</div>
+        <div *ngSwitchCase="'Image'">
+          <div class="container">
+            <!-- Implementation for inline search box covering full width stolen from here: https://stackoverflow.com/questions/22774780/bootstrap-full-width-text-input-within-inline-form -->
+            <div class="row">
+              <div class="col-12">
+                <div class="input-group">
+                  <input type="text" class="form-control" id="search-church" placeholder="Find your image!"
+                    [(ngModel)]="currentKeyword">
+                  <span class="input-group-btn ml-2">
+                    <button class="btn btn-primary" type="submit" (click)="searchImage(currentKeyword)">Search</button>
+                  </span>
                 </div>
-                <div *ngSwitchDefault>output2</div>
+              </div>
             </div>
-        </div>
-        <div class="modal-footer">
-            <div [ngSwitch]="modalTitle">
-                <div *ngSwitchCase="'Image'">
-                    <button type="button" *ngIf="hasPrevious" class="btn btn-primary" (click)="searchImage('lol', +currentPageIndex - 1)">Previous Page</button>
-                    <button type="button" *ngIf="hasNext" class="btn btn-primary ml-2" (click)="searchImage('lol', +currentPageIndex + 1)">Next Page</button>
-                </div>
-                <div *ngSwitchDefault>
-                    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
-                </div>
+            <div class="row mt-3 justify-content-center align-items-center">
+              <div class="col-5" *ngFor="let item of imageResults">
+                <img class="img-thumbnail my-2" [src]="item.link">
+              </div>
             </div>
+          </div>
         </div>
-    </ng-template>
+        <div *ngSwitchDefault>output2</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div [ngSwitch]="modalTitle">
+        <div *ngSwitchCase="'Image'">
+          <button type="button" *ngIf="hasPrevious" class="btn btn-primary"
+            (click)="searchImage('lol', +currentPageIndex - 1)">Previous Page</button>
+          <button type="button" *ngIf="hasNext" class="btn btn-primary ml-2"
+            (click)="searchImage('lol', +currentPageIndex + 1)">Next Page</button>
+        </div>
+        <div *ngSwitchDefault>
+          <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <div *ngSwitchCase="flashcardContentEnumType.IMAGE" style="display: contents;">
+    <img [src]="contentValue" class="img-fluid">
+  </div>
+  <div *ngSwitchDefault>oops, some error must have occured! D:</div>
 </div>

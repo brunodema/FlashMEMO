@@ -34,7 +34,9 @@ export class FlashcardContentOptionsBlock implements OnInit {
   closeResult: string;
   modalTitle: string;
   contentType: FlashcardContentType = FlashcardContentType.NONE;
-  contentValue: string;
+  contentValue: string = '';
+
+  flashcardContentEnumType = FlashcardContentType;
 
   // Image API section
   imageAPIData$: Observable<PaginatedListResponse<IImageAPIResult>>;
