@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, of } from 'rxjs';
 import { PaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
 import {
@@ -51,20 +51,29 @@ export class FlashcardContentOptionsBlock implements AfterViewInit {
   currentPageIndex: number;
   currentKeyword: string = '';
 
+  /**
+   * Access modal element using implementation described here: https://stackoverflow.com/questions/40382319/how-to-programmatically-close-ng-bootstrap-modal
+   * Bonus: in this specific case, using 'ViewChild' to access the element does not work, because after the reference is set on the 'open' call, for some fucking reason, the type of the object becomes 'TemplateRef' instead of the correct 'NgbModalRef'. Using this current approach avoids this.
+   */
+  contentEditor: NgbModalRef;
+
   constructor(
     private modalService: NgbModal,
     private imageAPIService: GeneralImageAPIService,
-    private el: ElementRef
+    private hostElement: ElementRef // A way to check the parent's height, and use it after an image is selected by the user
   ) {}
 
   ngAfterViewInit(): void {
-    this.componentHeight = this.el.nativeElement.offsetHeight + 'px';
+    this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
     console.log(this.componentHeight);
   }
 
   openXl(content: any, type: string) {
     this.modalTitle = type;
-    this.modalService.open(content, { size: 'xl', scrollable: true });
+    this.contentEditor = this.modalService.open(content, {
+      size: 'xl',
+      scrollable: true,
+    });
   }
 
   searchImage(keyword: string, pageIndex?: number) {
@@ -85,6 +94,7 @@ export class FlashcardContentOptionsBlock implements AfterViewInit {
   selectImage(imageLink: string) {
     this.contentType = this.flashcardContentEnumType.IMAGE;
     this.contentValue = imageLink;
-    console.log(this.componentHeight);
+    console.log(this.contentEditor);
+    this.contentEditor.close('image selected');
   }
 }
