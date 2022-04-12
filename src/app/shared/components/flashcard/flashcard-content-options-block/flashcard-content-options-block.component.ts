@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, of } from 'rxjs';
 import { PaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
@@ -29,7 +23,10 @@ export enum FlashcardContentType {
 
 @Component({
   selector: 'app-flashcard-content-options-block',
-  host: { class: 'd-flex flex-fill align-items-center justify-content-center' },
+  host: {
+    class: 'd-flex flex-fill align-items-center justify-content-center',
+    style: 'border: 1px solid black',
+  },
   templateUrl: './flashcard-content-options-block.component.html',
   styleUrls: ['./flashcard-content-options-block.component.css'],
   providers: [
