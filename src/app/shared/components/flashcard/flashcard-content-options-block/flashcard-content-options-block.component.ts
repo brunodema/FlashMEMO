@@ -72,4 +72,9 @@ export class FlashcardContentOptionsBlock implements OnInit {
       this.hasNext = r.data.hasNextPage;
     });
   }
+
+  selectImage(imageLink: string) {
+    this.contentType = this.flashcardContentEnumType.IMAGE;
+    this.contentValue = imageLink;
+  }
 }
