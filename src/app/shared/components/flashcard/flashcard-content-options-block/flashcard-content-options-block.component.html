@@ -18,7 +18,8 @@
   <ng-template #contentEditor let-contentEditor>
     <div class="modal-header">
       <h4 class="modal-title">Add {{ modalTitle }}</h4>
-      <button type="button" class="btn-close" aria-label="Close" (click)="contentEditor.dismiss('Cross click')"></button>
+      <button type="button" class="btn-close" aria-label="Close"
+        (click)="contentEditor.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body">
       <div [ngSwitch]="modalTitle">
@@ -62,8 +63,9 @@
       </div>
     </div>
   </ng-template>
-  <div *ngSwitchCase="flashcardContentEnumType.IMAGE" class="container text-center">
+  <div *ngSwitchCase="flashcardContentEnumType.IMAGE" class="container text-center image-reset-button-parent">
     <img [src]="contentValue" [style.maxHeight]="componentHeight" class="img-fluid" />
+    <a class="image-reset-button fa fa-times-circle fa-5x" href="javascript:void(0);" aria-hidden="true"></a>
   </div>
 
 

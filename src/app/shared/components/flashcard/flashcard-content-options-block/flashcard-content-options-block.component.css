@@ -1,10 +1,9 @@
-
 .flashcard-option-container {
-    border-radius: 20px;
-    border: solid;
-    height: 100%;
-    width: 100%;
-    min-width: 60px;
+  border-radius: 20px;
+  border: solid;
+  height: 100%;
+  width: 100%;
+  min-width: 60px;
 }
 
 /* Attempt to create input following bootstrap visuals but with only bottom border stolen from here: https://stackoverflow.com/questions/37465458/input-text-field-with-only-bottom-border */
@@ -20,6 +19,47 @@ input {
 /* Shamelessly stolen from: https://stackoverflow.com/questions/42859313/hover-effects-in-bootstrap */
 
 .img-thumbnail:hover {
-background-color: red;
-opacity: 0.5;
+  background-color: red;
+  opacity: 0.5;
+}
+
+/* .container {
+    position: relative;
+    width:100%;
+    max-width:100px;
+}
+.container:before {
+  content:"";
+  position:absolute;
+  width:100%;
+  height:100%;
+  top:0;left:0;right:0;
+  background-color:rgba(0,0,0,0);
+}
+.container:hover::before {
+  background-color:rgba(0,0,0,0.5);
+}
+.container img {
+  display:block;
+} */
+
+.image-reset-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+.image-reset-button-parent {
+  position: relative;
+}
+
+.image-reset-button-parent:hover .image-reset-button {
+  opacity: 1;
+}
+
+.image-reset-button-parent:hover .img-fluid {
+  opacity: 0.2;
 }
