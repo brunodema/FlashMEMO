@@ -30,7 +30,7 @@ export class ImageLoaderDirective {
     this.srcAttr = this.imageSrc;
   }
 
-  @HostBinding('attr.src') srcAttr = '../../assets/FlashmemoLogo.png';
+  @HostBinding('attr.src') srcAttr = 'assets/loading.svg';
   constructor() {}
 }
 
@@ -48,7 +48,9 @@ export class ImageLoaderDirective {
   },
   templateUrl: './flashcard-content-options-block.component.html',
   styleUrls: ['./flashcard-content-options-block.component.css'],
-  providers: [{ provide: GeneralImageAPIService, useClass: ImageAPIService }],
+  providers: [
+    { provide: GeneralImageAPIService, useClass: MockImageAPIService },
+  ],
 })
 export class FlashcardContentOptionsBlock implements OnInit {
   componentHeight: string;
