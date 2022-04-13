@@ -21,6 +21,7 @@ import { AuthGuard } from './shared/guards/auth.guard';
 import { LoginComponent } from './root/components/login/login.component';
 import { HomeComponent } from './root/components/home/home.component';
 import { AppComponent } from './root/components/app.component';
+import { NgxSpinner, NgxSpinnerModule } from 'ngx-spinner';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
@@ -57,7 +58,7 @@ const config: ConfigOption = {
     NewsModule,
     DeckModule,
     // boostrap collapsable
-    BrowserAnimationsModule,
+    BrowserAnimationsModule, // (used by NGX-Spinner)
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
     JwtModule.forRoot({
@@ -75,6 +76,7 @@ const config: ConfigOption = {
     ReactiveFormsModule,
     FormlyModule.forRoot(config),
     FormlyBootstrapModule,
+    NgxSpinnerModule, // NGX-Spinner
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent],
