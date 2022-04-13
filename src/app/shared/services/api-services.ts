@@ -9,6 +9,8 @@ import {
  * Simply amazing feature taken from here: https://stackoverflow.com/questions/49996456/importing-json-file-in-typescript. Allows json files to be directly imported as type-safe objects. Requires some changes to the tsconfig.json file.
  */
 import imageAPIJson from 'src/assets/test_assets/ImageAPI.json';
+import { environment } from 'src/environments/environment';
+import { Observable, of } from 'rxjs';
 
 /**
  * Dummy class for interfacing purposes. For the moment, will completly mimic the Google Image API return object.
@@ -55,7 +57,7 @@ export abstract class GeneralImageAPIService {
   abstract searchImage(
     keyword: string,
     pageIndex: number
-  ): IPaginatedListResponse<IImageAPIResult>;
+  ): Observable<IPaginatedListResponse<IImageAPIResult>>;
 }
 
 /**
@@ -66,22 +68,42 @@ export class MockImageAPIService extends GeneralImageAPIService {
   searchImage(
     keyword: string,
     pageIndex: number
-  ): PaginatedListResponse<IImageAPIResult> {
-    return new PaginatedListResponse<GoogleImageResult>({
-      message: 'Success',
-      status: '200',
-      data: {
-        hasNextPage: pageIndex < 5,
-        hasPreviousPage: pageIndex >= 2,
-        pageIndex: pageIndex.toString(),
-        totalAmount: '50',
-        resultSize: '10',
-        totalPages: '5',
-        results: Array.from(
-          { length: 10 },
-          (_) => imageAPIJson[Math.floor(Math.random() * imageAPIJson.length)] // this crazyness here takes the data from the test json file, and 'scrambles' it into the results.
-        ),
-      },
-    });
+  ): Observable<PaginatedListResponse<IImageAPIResult>> {
+    return of(
+      new PaginatedListResponse<GoogleImageResult>({
+        message: 'Success',
+        status: '200',
+        data: {
+          hasNextPage: pageIndex < 5,
+          hasPreviousPage: pageIndex >= 2,
+          pageIndex: pageIndex.toString(),
+          totalAmount: '50',
+          resultSize: '10',
+          totalPages: '5',
+          results: Array.from(
+            { length: 10 },
+            (_) => imageAPIJson[Math.floor(Math.random() * imageAPIJson.length)] // this crazyness here takes the data from the test json file, and 'scrambles' it into the results.
+          ),
+        },
+      })
+    );
+  }
+}
+
+@Injectable()
+export class ImageAPIService extends GeneralImageAPIService {
+  private endpoint = `${environment.backendRootAddress}/api/v1/imageapi`;
+
+  constructor(httpClient: HttpClient) {
+    super(httpClient);
+  }
+
+  searchImage(
+    keyword: string,
+    pageIndex: number
+  ): Observable<IPaginatedListResponse<GoogleImageResult>> {
+    return this.httpClient.get<PaginatedListResponse<GoogleImageResult>>(
+      `${this.endpoint}/search?searchText=${keyword}&pageNumber=${pageIndex}`
+    );
   }
 }
