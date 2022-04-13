@@ -82,3 +82,7 @@ const config: ConfigOption = {
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+
+/**
+ * NGX-Spinner: contains a bunch of spinner templates, and options for them. Main instructions here: https://www.npmjs.com/package/ngx-spinner. Spinner tester here: https://napster2210.github.io/ngx-spinner/
+ */

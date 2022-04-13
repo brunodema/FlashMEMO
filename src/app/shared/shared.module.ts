@@ -17,6 +17,7 @@ import { FlashcardLayoutComponent } from './components/flashcard/flashcard-layou
 import { FlashcardContentEditorComponent } from './components/flashcard/flashcard-content-editor/flashcard-content-editor.component';
 import { DataTableComponent } from './components/data-table/data-table.component';
 import { FormsModule } from '@angular/forms';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { FormsModule } from '@angular/forms';
     MatTableModule, // Material
     MatSortModule, // Material
     MatInputModule, // Material
+    NgxSpinnerModule, // NGX-Spinner
   ],
   exports: [
     SafePipe,

@@ -1,11 +1,6 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, of } from 'rxjs';
 import { PaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
 import {
@@ -66,11 +61,11 @@ export class FlashcardContentOptionsBlock implements OnInit {
   constructor(
     private modalService: NgbModal,
     private imageAPIService: GeneralImageAPIService,
-    private hostElement: ElementRef // A way to check the parent's height, and use it after an image is selected by the user
+    private hostElement: ElementRef, // A way to check the parent's height, and use it after an image is selected by the user
+    private spinnerService: NgxSpinnerService
   ) {}
   ngOnInit(): void {
     this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
-    console.log(this.componentHeight);
   }
 
   openXl(content: any, contentType: string): void {
@@ -88,6 +83,8 @@ export class FlashcardContentOptionsBlock implements OnInit {
       this.imageAPIService.searchImage(keyword, pageIndex)
     );
     this.imageAPIData$.subscribe((r) => {
+      //this.spinnerService.show();
+
       this.currentKeyword = keyword;
       this.currentPageIndex = r.data.pageIndex as number;
       this.imageResults = r.data.results;
@@ -105,5 +102,9 @@ export class FlashcardContentOptionsBlock implements OnInit {
   resetContent(): void {
     this.contentType = this.flashcardContentEnumType.NONE;
     this.contentValue = '';
+  }
+
+  alertLoaded() {
+    console.log('image loaded!');
   }
 }
