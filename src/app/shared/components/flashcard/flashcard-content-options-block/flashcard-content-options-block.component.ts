@@ -1,11 +1,12 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { PaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
 import {
   GeneralImageAPIService,
   IImageAPIResult,
+  ImageAPIService,
   MockImageAPIService,
 } from 'src/app/shared/services/api-services';
 
@@ -15,6 +16,10 @@ export enum FlashcardContentType {
   IMAGE = 'IMAGE',
   AUDIO = 'AUDIO',
 }
+
+/**
+ * Directive idea stolen from here: https://stackoverflow.com/questions/29742508/show-loading-gif-while-image-is-loading. Not sure if working yet tho
+ */
 
 import { Directive, HostListener, Input, HostBinding } from '@angular/core';
 @Directive({ selector: '[imageLoader]' })
@@ -43,9 +48,7 @@ export class ImageLoaderDirective {
   },
   templateUrl: './flashcard-content-options-block.component.html',
   styleUrls: ['./flashcard-content-options-block.component.css'],
-  providers: [
-    { provide: GeneralImageAPIService, useClass: MockImageAPIService },
-  ],
+  providers: [{ provide: GeneralImageAPIService, useClass: ImageAPIService }],
 })
 export class FlashcardContentOptionsBlock implements OnInit {
   componentHeight: string;
@@ -92,9 +95,7 @@ export class FlashcardContentOptionsBlock implements OnInit {
   searchImage(keyword: string, pageIndex?: number): void {
     if (pageIndex === undefined) pageIndex = 1;
 
-    this.imageAPIData$ = of(
-      this.imageAPIService.searchImage(keyword, pageIndex)
-    );
+    this.imageAPIData$ = this.imageAPIService.searchImage(keyword, pageIndex);
     this.imageAPIData$.subscribe((r) => {
       this.currentKeyword = keyword;
       this.currentPageIndex = r.data.pageIndex as number;
