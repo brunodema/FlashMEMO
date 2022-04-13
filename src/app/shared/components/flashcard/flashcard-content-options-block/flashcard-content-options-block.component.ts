@@ -25,7 +25,7 @@ export enum FlashcardContentType {
   selector: 'app-flashcard-content-options-block',
   host: {
     class: 'd-flex flex-fill align-items-center justify-content-center',
-    style: 'border: 1px solid black',
+    style: 'border: 1px solid black', // optional, just to debug section sizes
   },
   templateUrl: './flashcard-content-options-block.component.html',
   styleUrls: ['./flashcard-content-options-block.component.css'],
@@ -68,8 +68,8 @@ export class FlashcardContentOptionsBlock implements AfterViewInit {
     console.log(this.componentHeight);
   }
 
-  openXl(content: any, type: string) {
-    this.modalTitle = type;
+  openXl(content: any, contentType: string) {
+    this.modalTitle = contentType;
     this.contentEditor = this.modalService.open(content, {
       size: 'xl',
       scrollable: true,
@@ -94,7 +94,6 @@ export class FlashcardContentOptionsBlock implements AfterViewInit {
   selectImage(imageLink: string) {
     this.contentType = this.flashcardContentEnumType.IMAGE;
     this.contentValue = imageLink;
-    console.log(this.contentEditor);
     this.contentEditor.close('image selected');
   }
 }
