@@ -23,26 +23,6 @@ input {
   opacity: 0.5;
 }
 
-/* .container {
-    position: relative;
-    width:100%;
-    max-width:100px;
-}
-.container:before {
-  content:"";
-  position:absolute;
-  width:100%;
-  height:100%;
-  top:0;left:0;right:0;
-  background-color:rgba(0,0,0,0);
-}
-.container:hover::before {
-  background-color:rgba(0,0,0,0.5);
-}
-.container img {
-  display:block;
-} */
-
 .image-reset-button {
   position: absolute;
   top: 50%;
@@ -51,6 +31,8 @@ input {
   -ms-transform: translate(-50%, -50%);
   opacity: 0;
 }
+
+/* Show button over image on hover "adapted" from: https://stackoverflow.com/questions/56640043/make-a-button-appear-when-hover-over-a-image */
 
 .image-reset-button-parent {
   position: relative;

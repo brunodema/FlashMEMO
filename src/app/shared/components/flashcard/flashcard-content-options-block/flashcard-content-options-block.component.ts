@@ -73,7 +73,7 @@ export class FlashcardContentOptionsBlock implements OnInit {
     console.log(this.componentHeight);
   }
 
-  openXl(content: any, contentType: string) {
+  openXl(content: any, contentType: string): void {
     this.modalTitle = contentType;
     this.contentEditor = this.modalService.open(content, {
       size: 'xl',
@@ -81,7 +81,7 @@ export class FlashcardContentOptionsBlock implements OnInit {
     });
   }
 
-  searchImage(keyword: string, pageIndex?: number) {
+  searchImage(keyword: string, pageIndex?: number): void {
     if (pageIndex === undefined) pageIndex = 1;
 
     this.imageAPIData$ = of(
@@ -96,9 +96,14 @@ export class FlashcardContentOptionsBlock implements OnInit {
     });
   }
 
-  selectImage(imageLink: string) {
+  selectImage(imageLink: string): void {
     this.contentType = this.flashcardContentEnumType.IMAGE;
     this.contentValue = imageLink;
     this.contentEditor.close('image selected');
+  }
+
+  resetContent(): void {
+    this.contentType = this.flashcardContentEnumType.NONE;
+    this.contentValue = '';
   }
 }

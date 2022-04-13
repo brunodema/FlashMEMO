@@ -65,7 +65,7 @@
   </ng-template>
   <div *ngSwitchCase="flashcardContentEnumType.IMAGE" class="container text-center image-reset-button-parent">
     <img [src]="contentValue" [style.maxHeight]="componentHeight" class="img-fluid" />
-    <a class="image-reset-button fa fa-times-circle fa-5x" href="javascript:void(0);" aria-hidden="true"></a>
+    <a class="image-reset-button fa fa-times-circle fa-5x" href="javascript:void(0);" (click)="resetContent()" aria-hidden="true"></a>
   </div>
   <div *ngSwitchDefault>oops, some error must have occured! D:</div>
 </div>
