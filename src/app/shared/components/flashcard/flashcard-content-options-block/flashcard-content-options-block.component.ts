@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, of } from 'rxjs';
 import { PaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
@@ -33,7 +39,7 @@ export enum FlashcardContentType {
     { provide: GeneralImageAPIService, useClass: MockImageAPIService },
   ],
 })
-export class FlashcardContentOptionsBlock implements AfterViewInit {
+export class FlashcardContentOptionsBlock implements OnInit {
   componentHeight: string;
 
   closeResult: string;
@@ -62,8 +68,7 @@ export class FlashcardContentOptionsBlock implements AfterViewInit {
     private imageAPIService: GeneralImageAPIService,
     private hostElement: ElementRef // A way to check the parent's height, and use it after an image is selected by the user
   ) {}
-
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
     console.log(this.componentHeight);
   }
