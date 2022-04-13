@@ -16,6 +16,19 @@ export enum FlashcardContentType {
   AUDIO = 'AUDIO',
 }
 
+import { Directive, HostListener, Input, HostBinding } from '@angular/core';
+@Directive({ selector: '[imageLoader]' })
+export class ImageLoaderDirective {
+  @Input('src') imageSrc: any;
+  @HostListener('load')
+  loadImage() {
+    this.srcAttr = this.imageSrc;
+  }
+
+  @HostBinding('attr.src') srcAttr = '../../assets/FlashmemoLogo.png';
+  constructor() {}
+}
+
 /**
  * TIL about the 'host'property
  * Apparently we can use this property to set things related to the wrapper element that Angular will add to the DOM after compiling the app.
@@ -83,8 +96,6 @@ export class FlashcardContentOptionsBlock implements OnInit {
       this.imageAPIService.searchImage(keyword, pageIndex)
     );
     this.imageAPIData$.subscribe((r) => {
-      //this.spinnerService.show();
-
       this.currentKeyword = keyword;
       this.currentPageIndex = r.data.pageIndex as number;
       this.imageResults = r.data.results;
@@ -102,9 +113,5 @@ export class FlashcardContentOptionsBlock implements OnInit {
   resetContent(): void {
     this.contentType = this.flashcardContentEnumType.NONE;
     this.contentValue = '';
-  }
-
-  alertLoaded() {
-    console.log('image loaded!');
   }
 }
