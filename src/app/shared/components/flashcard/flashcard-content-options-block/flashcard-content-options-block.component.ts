@@ -9,6 +9,7 @@ import {
   ImageAPIService,
   MockImageAPIService,
 } from 'src/app/shared/services/api-services';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 export enum FlashcardContentType {
   NONE = 'NONE',
@@ -53,6 +54,9 @@ export class FlashcardContentOptionsBlock implements OnInit {
   hasNext: boolean;
   currentPageIndex: number;
   currentKeyword: string = '';
+
+  // Text/Dictionary API section
+  public Editor = ClassicEditor;
 
   /**
    * Access modal element using implementation described here: https://stackoverflow.com/questions/40382319/how-to-programmatically-close-ng-bootstrap-modal

@@ -22,6 +22,7 @@ import { LoginComponent } from './root/components/login/login.component';
 import { HomeComponent } from './root/components/home/home.component';
 import { AppComponent } from './root/components/app.component';
 import { NgxSpinner, NgxSpinnerModule } from 'ngx-spinner';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
@@ -77,6 +78,7 @@ const config: ConfigOption = {
     FormlyModule.forRoot(config),
     FormlyBootstrapModule,
     NgxSpinnerModule, // NGX-Spinner
+    CKEditorModule,
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent],
