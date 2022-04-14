@@ -18,23 +18,6 @@ export enum FlashcardContentType {
 }
 
 /**
- * Directive idea stolen from here: https://stackoverflow.com/questions/29742508/show-loading-gif-while-image-is-loading. Not sure if working yet tho
- */
-
-import { Directive, HostListener, Input, HostBinding } from '@angular/core';
-@Directive({ selector: '[imageLoader]' })
-export class ImageLoaderDirective {
-  @Input('src') imageSrc: any;
-  @HostListener('load')
-  loadImage() {
-    this.srcAttr = this.imageSrc;
-  }
-
-  @HostBinding('attr.src') srcAttr = 'assets/loading.svg';
-  constructor() {}
-}
-
-/**
  * TIL about the 'host'property
  * Apparently we can use this property to set things related to the wrapper element that Angular will add to the DOM after compiling the app.
  * In this case, I add all those classes so the layout of the rows/columns is the way I want.
