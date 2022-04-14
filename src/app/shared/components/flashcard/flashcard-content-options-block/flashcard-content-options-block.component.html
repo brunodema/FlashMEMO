@@ -25,6 +25,7 @@
       <div [ngSwitch]="modalTitle">
         <div *ngSwitchCase="'Audio'">Audio</div>
         <div *ngSwitchCase="'Text'">
+          <!-- Text/Dictionary editor (CKEditor) -->
           <ckeditor [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
         </div>
         <div *ngSwitchCase="'Image'">
@@ -43,6 +44,7 @@
                 </div>
               </div>
             </div>
+            <!-- Image API results -->
             <div class="row mt-3 justify-content-center align-items-center">
               <div class="col-5 text-center" *ngFor="let item of imageResults">
                 <img class="img-thumbnail my-2" imageLoader [src]="item.link" (click)="selectImage(item.link)" />
