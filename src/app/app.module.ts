@@ -23,6 +23,11 @@ import { HomeComponent } from './root/components/home/home.component';
 import { AppComponent } from './root/components/app.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { QuillModule } from 'ngx-quill';
+import Quill from 'quill';
+
+// Add-on for NGX-Quill to allow resizing images inside text boxes, documentation here: https://www.npmjs.com/package/quill-blot-formatter. BTW, I figured out how to import this in the main module file by myself :D
+import BlotFormatter from 'quill-blot-formatter';
+Quill.register('modules/blotFormatter', BlotFormatter);
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
@@ -80,6 +85,7 @@ const config: ConfigOption = {
     NgxSpinnerModule, // NGX-Spinner
     QuillModule.forRoot({
       modules: {
+        blotFormatter: {},
         toolbar: [
           ['bold', 'italic', 'underline', 'strike'], // toggled buttons
           ['blockquote', 'code-block'],
