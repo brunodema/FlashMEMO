@@ -1,16 +1,16 @@
 <div class="row justify-content-center w-100" [ngSwitch]="contentType">
   <!-- Unfortunately, I have to create a custom class to hold the border properties of the container, because Bootstrap's 'border' class apparently have !important tags in it that simply ignores properties such as border width/color declared separately -->
   <div *ngSwitchCase="flashcardContentEnumType.NONE" class="col-3 text-center">
-    <img imageLoader class="flashcard-option-container p-3 btn btn-outline-primary" (click)="openXl(contentEditor, 'Audio')"
-      src="/assets/flashcard_audio_icon.svg" alt="Card image cap">
+    <img imageLoader class="flashcard-option-container p-3 btn btn-outline-primary"
+      (click)="openXl(contentEditor, 'Audio')" src="/assets/flashcard_audio_icon.svg" alt="Card image cap" />
   </div>
   <div *ngSwitchCase="flashcardContentEnumType.NONE" class="col-3 text-center">
-    <img imageLoader class="flashcard-option-container p-3 btn btn-outline-primary" (click)="openXl(contentEditor, 'Text')"
-      src="/assets/flashcard_text_icon.svg" alt="Card image cap">
+    <img imageLoader class="flashcard-option-container p-3 btn btn-outline-primary"
+      (click)="openXl(contentEditor, 'Text')" src="/assets/flashcard_text_icon.svg" alt="Card image cap" />
   </div>
   <div *ngSwitchCase="flashcardContentEnumType.NONE" class="col-3 text-center">
-    <img imageLoader class="flashcard-option-container p-3 btn btn-outline-primary" (click)="openXl(contentEditor, 'Image')"
-      src="/assets/flashcard_image_icon.svg" alt="Card image cap">
+    <img imageLoader class="flashcard-option-container p-3 btn btn-outline-primary"
+      (click)="openXl(contentEditor, 'Image')" src="/assets/flashcard_image_icon.svg" alt="Card image cap" />
   </div>
 
   <!-- Modal code stolen from here: https://ng-bootstrap.github.io/#/components/modal/examples -->
@@ -32,16 +32,18 @@
               <div class="col-12">
                 <div class="input-group">
                   <input type="text" class="form-control" id="search-church" placeholder="Find your image!"
-                    [(ngModel)]="currentKeyword">
+                    [(ngModel)]="currentKeyword" />
                   <span class="input-group-btn ml-2">
-                    <button class="btn btn-primary" type="submit" (click)="searchImage(currentKeyword)">Search</button>
+                    <button class="btn btn-primary" type="submit" (click)="searchImage(currentKeyword)">
+                      Search
+                    </button>
                   </span>
                 </div>
               </div>
             </div>
             <div class="row mt-3 justify-content-center align-items-center">
               <div class="col-5 text-center" *ngFor="let item of imageResults">
-                <img class="img-thumbnail my-2" imageLoader [src]="item.link" (click)="selectImage(item.link);">
+                <img class="img-thumbnail my-2" imageLoader [src]="item.link" (click)="selectImage(item.link)" />
               </div>
             </div>
           </div>
@@ -53,16 +55,27 @@
       <div [ngSwitch]="modalTitle">
         <div *ngSwitchCase="'Image'">
           <button type="button" *ngIf="hasPrevious" class="btn btn-primary"
-            (click)="searchImage(currentKeyword, +currentPageIndex - 1)">Previous Page</button>
+            (click)="searchImage(currentKeyword, +currentPageIndex - 1)">
+            Previous Page
+          </button>
           <button type="button" *ngIf="hasNext" class="btn btn-primary ml-2"
-            (click)="searchImage(currentKeyword, +currentPageIndex + 1)">Next Page</button>
+            (click)="searchImage(currentKeyword, +currentPageIndex + 1)">
+            Next Page
+          </button>
         </div>
         <div *ngSwitchDefault>
-          <button type="button" class="btn btn-light" (click)="contentEditor.close('Close click')">Close</button>
+          <button type="button" class="btn btn-light" (click)="contentEditor.close('Close click')">
+            Close
+          </button>
         </div>
       </div>
     </div>
   </ng-template>
+  <div *ngSwitchCase="flashcardContentEnumType.IMAGE" class="container text-center image-reset-button-parent">
+    <img [src]="contentValue" [style.maxHeight]="componentHeight" class="img-fluid" />
+    <a class="image-reset-button fa fa-times-circle fa-5x" href="javascript:void(0);" (click)="resetContent()"
+      aria-hidden="true"></a>
+  </div>
   <div *ngSwitchCase="flashcardContentEnumType.IMAGE" class="container text-center image-reset-button-parent">
     <img [src]="contentValue" [style.maxHeight]="componentHeight" class="img-fluid" />
     <a class="image-reset-button fa fa-times-circle fa-5x" href="javascript:void(0);" (click)="resetContent()"
