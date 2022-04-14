@@ -1,15 +1,15 @@
 <div class="row justify-content-center w-100" [ngSwitch]="contentType">
   <!-- Unfortunately, I have to create a custom class to hold the border properties of the container, because Bootstrap's 'border' class apparently have !important tags in it that simply ignores properties such as border width/color declared separately -->
   <div *ngSwitchCase="flashcardContentEnumType.NONE" class="col-3 text-center">
-    <img class="flashcard-option-container p-3 btn btn-outline-primary" (click)="openXl(contentEditor, 'Audio')"
+    <img imageLoader class="flashcard-option-container p-3 btn btn-outline-primary" (click)="openXl(contentEditor, 'Audio')"
       src="/assets/flashcard_audio_icon.svg" alt="Card image cap">
   </div>
   <div *ngSwitchCase="flashcardContentEnumType.NONE" class="col-3 text-center">
-    <img class="flashcard-option-container p-3 btn btn-outline-primary" (click)="openXl(contentEditor, 'Text')"
+    <img imageLoader class="flashcard-option-container p-3 btn btn-outline-primary" (click)="openXl(contentEditor, 'Text')"
       src="/assets/flashcard_text_icon.svg" alt="Card image cap">
   </div>
   <div *ngSwitchCase="flashcardContentEnumType.NONE" class="col-3 text-center">
-    <img class="flashcard-option-container p-3 btn btn-outline-primary" (click)="openXl(contentEditor, 'Image')"
+    <img imageLoader class="flashcard-option-container p-3 btn btn-outline-primary" (click)="openXl(contentEditor, 'Image')"
       src="/assets/flashcard_image_icon.svg" alt="Card image cap">
   </div>
 
