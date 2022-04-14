@@ -23,8 +23,6 @@
     "@angular/platform-browser-dynamic": "~13.3.1",
     "@angular/router": "~13.3.1",
     "@auth0/angular-jwt": "^5.0.2",
-    "@ckeditor/ckeditor5-angular": "^2.0.1",
-    "@ckeditor/ckeditor5-build-classic": "^27.1.0",
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "@ngx-formly/bootstrap": "^5.0.0",
     "@ngx-formly/core": "^5.0.0",

@@ -40,9 +40,8 @@ export class FlashcardContentOptionsBlock implements OnInit {
 
   closeResult: string;
   modalTitle: string;
-  contentType: FlashcardContentType = FlashcardContentType.TEXT;
-  contentValue: string =
-    'Sint sint velit tempor ad. Cillum laborum dolore officia sint cillum aliquip reprehenderit. Qui labore eu quis sunt laborum proident non ipsum est elit eu commodo exercitation incididunt. Ex in pariatur est do ea enim. Ut dolor laborum duis adipisicing ullamco labore id Lorem ex pariatur dolor ipsum. Et ex ex velit sunt id ex irure. Adipisicing sit consequat officia amet irure ut nulla qui ipsum exercitation eu nostrud mollit.';
+  contentType: FlashcardContentType = FlashcardContentType.NONE;
+  contentValue: string = '';
 
   flashcardContentEnumType = FlashcardContentType;
 
@@ -53,6 +52,8 @@ export class FlashcardContentOptionsBlock implements OnInit {
   hasNext: boolean;
   currentPageIndex: number;
   currentKeyword: string = '';
+
+  // Text/Dictionary API section
 
   /**
    * Access modal element using implementation described here: https://stackoverflow.com/questions/40382319/how-to-programmatically-close-ng-bootstrap-modal
