@@ -19,6 +19,7 @@ import { DataTableComponent } from './components/data-table/data-table.component
 import { FormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from 'ngx-spinner'; // NGX-Spinner
 import { ImageLoaderDirective } from './directives/image-loader.directive';
+import { QuillModule } from 'ngx-quill';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { ImageLoaderDirective } from './directives/image-loader.directive';
     MatSortModule, // Material
     MatInputModule, // Material
     NgxSpinnerModule, // NGX-Spinner
+    QuillModule, // NGX-Quill
   ],
   exports: [
     SafePipe,

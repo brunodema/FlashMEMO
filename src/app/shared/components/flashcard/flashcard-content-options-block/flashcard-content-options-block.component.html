@@ -24,7 +24,9 @@
     <div class="modal-body">
       <div [ngSwitch]="modalTitle">
         <div *ngSwitchCase="'Audio'">Audio</div>
-        <div *ngSwitchCase="'Text'">Text</div>
+        <div *ngSwitchCase="'Text'">
+          <quill-editor></quill-editor>
+        </div>
         <div *ngSwitchCase="'Image'">
           <div class="container">
             <!-- Implementation for inline search box covering full width stolen from here: https://stackoverflow.com/questions/22774780/bootstrap-full-width-text-input-within-inline-form -->
