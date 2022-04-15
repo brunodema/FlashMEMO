@@ -15,6 +15,75 @@ import {
   ILoginResponse,
 } from '../models/http/http-response-types';
 
+export abstract class IAuthService {
+  protected homeAddress = '/home';
+
+  constructor(
+    private jwtHelper: JwtHelperService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
+
+  abstract isAuthenticated(): boolean;
+  abstract login(): Observable<any>;
+  abstract logout(): void;
+
+  abstract register(registerData: IRegisterRequest): Observable<any>;
+
+  private storeJWT(JWTToken: string) {
+    this.clearPreExistingJWT();
+    localStorage.setItem('token', JWTToken);
+  }
+
+  private getJWT() {
+    this.jwtHelper.tokenGetter();
+  }
+
+  private clearPreExistingJWT() {
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
+  }
+
+  private handleSuccessfulLogin(res: ILoginResponse) {
+    this.storeJWT(res.jwtToken);
+    this.toastr
+      .success('You will soon be redirected.', 'Welcome to FlashMEMO!', {
+        timeOut: 3000,
+      })
+      .onHidden.subscribe(() => this.redirectToHome());
+  }
+
+  private handleSuccessfulRegistration(res: IBaseAPIResponse) {
+    this.toastr.success(
+      'User created. You will soon be redirected.',
+      'Registration Complete!',
+      {
+        timeOut: 3000,
+      }
+    );
+  }
+
+  private handleFailedLogin(err: HttpErrorResponse) {
+    this.clearPreExistingJWT();
+    this.toastr.error(
+      this.processErrorsFromAPI(err.error),
+      'Authentication Failure',
+      {
+        timeOut: 3000,
+      }
+    );
+    return throwError(err);
+  }
+
+  abstract processErrorsFromAPI(errorResponse: ILoginResponse): string;
+
+  redirectToHome() {
+    this.router.navigate([this.homeAddress]);
+  }
+}
+
+export class MockAuthService {}
+
 @Injectable({
   providedIn: 'root',
 })

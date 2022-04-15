@@ -56,7 +56,36 @@ export class FlashcardContentOptionsBlock implements OnInit {
   currentKeyword: string = '';
 
   // Text/Dictionary API section
-  public Editor = ClassicEditor;
+  public editor = ClassicEditor;
+  // public editorConfig = {
+  //   toolbarGroups: [
+  //     { name: 'document', groups: ['mode', 'document', 'doctools'] },
+  //     { name: 'clipboard', groups: ['clipboard', 'undo'] },
+  //     {
+  //       name: 'editing',
+  //       groups: ['find', 'selection', 'spellchecker', 'editing'],
+  //     },
+  //     { name: 'forms', groups: ['forms'] },
+  //     '/',
+  //     { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+  //     {
+  //       name: 'paragraph',
+  //       groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'],
+  //     },
+  //     { name: 'links', groups: ['links'] },
+  //     { name: 'insert', groups: ['insert'] },
+  //     '/',
+  //     { name: 'styles', groups: ['styles'] },
+  //     { name: 'colors', groups: ['colors'] },
+  //     { name: 'tools', groups: ['tools'] },
+  //     { name: 'others', groups: ['others'] },
+  //     { name: 'about', groups: ['about'] },
+  //   ],
+  // };
+
+  public editorConfig = {
+    toolbar: ['bold', 'mode', 'document', 'doctools'],
+  };
 
   /**
    * Access modal element using implementation described here: https://stackoverflow.com/questions/40382319/how-to-programmatically-close-ng-bootstrap-modal
@@ -104,5 +133,10 @@ export class FlashcardContentOptionsBlock implements OnInit {
   resetContent(): void {
     this.contentType = this.flashcardContentEnumType.NONE;
     this.contentValue = '';
+  }
+
+  lol() {
+    console.log(this.editor);
+    Array.from(this.editor.ui.componentFactory.names());
   }
 }

@@ -29,6 +29,7 @@
     "@ngx-formly/bootstrap": "^5.0.0",
     "@ngx-formly/core": "^5.0.0",
     "bootstrap": "^4.5.0",
+    "ckeditor4-angular": "^3.0.0",
     "json-server": "^0.16.3",
     "ngx-bootstrap": "^6.2.0",
     "ngx-spinner": "^13.1.1",

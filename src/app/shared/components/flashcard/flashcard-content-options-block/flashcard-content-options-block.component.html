@@ -26,7 +26,7 @@
         <div *ngSwitchCase="'Audio'">Audio</div>
         <div *ngSwitchCase="'Text'">
           <!-- Text/Dictionary editor (CKEditor) -->
-          <ckeditor [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
+          <ckeditor [config]="editorConfig" (focus)="lol()" [editor]="editor" data="<p>Hello, world!</p>"></ckeditor>
         </div>
         <div *ngSwitchCase="'Image'">
           <div class="container">
