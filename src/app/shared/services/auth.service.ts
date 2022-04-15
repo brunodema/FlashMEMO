@@ -111,6 +111,7 @@ export abstract class IAuthService {
   }
 }
 
+@Injectable()
 export class MockAuthService extends IAuthService {
   constructor(
     protected jwtHelper: JwtHelperService,
@@ -123,7 +124,8 @@ export class MockAuthService extends IAuthService {
   login(requestData: ILoginRequest): Observable<any> {
     return of(
       this.handleSuccessfulLogin({
-        jwtToken: this.jwtHelper.tokenGetter(),
+        jwtToken:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJKb2huIERvZSIsImlhdCI6MTUxNjIzOTAyMn0.p5Csu2THYW5zJys2CWdbGM8GaWjpY6lOQpdLoP4D7V4',
         status: '200',
         errors: [],
         message: 'success',

@@ -15,7 +15,11 @@ import { AppRoutingModule } from './root/routing/app-routing.module';
 import { NewsModule } from './news/news.module';
 import { DeckModule } from './deck/deck.module';
 
-import { AuthService, IAuthService } from './shared/services/auth.service';
+import {
+  AuthService,
+  IAuthService,
+  MockAuthService,
+} from './shared/services/auth.service';
 import { AuthGuard } from './shared/guards/auth.guard';
 
 import { LoginComponent } from './root/components/login/login.component';
@@ -54,13 +58,11 @@ const config: ConfigOption = {
   imports: [
     BrowserModule,
     HttpClientModule,
-    // custom modules
     SharedModule,
     AppRoutingModule,
     NewsModule,
     DeckModule,
-    // boostrap collapsable
-    BrowserAnimationsModule, // (used by NGX-Spinner)
+    BrowserAnimationsModule,
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
     JwtModule.forRoot({
