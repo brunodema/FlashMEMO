@@ -20,6 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ImageLoaderDirective } from './directives/image-loader.directive';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     MatInputModule, // Material
     NgxSpinnerModule, // NGX-Spinner
     CKEditorModule,
+    NgbModule,
   ],
   exports: [
     SafePipe,

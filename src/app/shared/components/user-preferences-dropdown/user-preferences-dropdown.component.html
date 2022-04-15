@@ -7,17 +7,11 @@
   </li>
 </ul>
 
-
-<div *ngIf="this.authService.isAuthenticated()" class="btn-group" dropdown>
-  <button id="button-animated" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
-          aria-controls="dropdown-animated">
-    Hello User <span class="caret"></span>
-  </button>
-  <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu"
-      role="menu" aria-labelledby="button-animated">
-    <li role="menuitem"><a class="dropdown-item" href="#">My Profile</a></li>
-    <li role="menuitem"><a class="dropdown-item" href="#">Change Password</a>
-    </li>
-    <li role="menuitem"><a class="dropdown-item" href="javascript:void(0)" (click)="logout()">Logout</a></li>
-  </ul>
+<div *ngIf="this.authService.isAuthenticated()" ngbDropdown class="d-inline-block">
+  <button type="button" class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>Welcome {{ username }}</button>
+  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+    <button ngbDropdownItem>My Profile</button>
+    <button ngbDropdownItem>Change Password</button>
+    <button ngbDropdownItem (click)="logout()">Logout</button>
+  </div>
 </div>
