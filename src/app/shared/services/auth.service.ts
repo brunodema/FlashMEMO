@@ -27,6 +27,10 @@ export abstract class IAuthService {
   abstract login(requestData: ILoginRequest): Observable<any>;
   abstract register(registerData: IRegisterRequest): Observable<any>;
 
+  public getUserName(): string {
+    return this.jwtHelper.decodeToken(this.getJWT())['username'];
+  }
+
   public isAuthenticated(): boolean {
     const token = localStorage.getItem('token')!; // non-null assertion operator
     return !this.jwtHelper.isTokenExpired(token);
@@ -43,8 +47,8 @@ export abstract class IAuthService {
     localStorage.setItem('token', JWTToken);
   }
 
-  protected getJWT() {
-    this.jwtHelper.tokenGetter();
+  protected getJWT(): string {
+    return this.jwtHelper.tokenGetter();
   }
 
   protected clearPreExistingJWT() {

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { of } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -14,9 +15,13 @@ export class UserPreferencesDropdownComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
-  @Input() username: string = '?';
+  @Input() username: string = '';
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    of(this.authService.isAuthenticated()).subscribe(
+      () => (this.username = this.authService.getUserName())
+    );
+  }
 
   logout() {
     this.authService.logout();
