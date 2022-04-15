@@ -15,13 +15,13 @@ import { AppRoutingModule } from './root/routing/app-routing.module';
 import { NewsModule } from './news/news.module';
 import { DeckModule } from './deck/deck.module';
 
-import { AuthService } from './shared/services/auth.service';
+import { AuthService, IAuthService } from './shared/services/auth.service';
 import { AuthGuard } from './shared/guards/auth.guard';
 
 import { LoginComponent } from './root/components/login/login.component';
 import { HomeComponent } from './root/components/home/home.component';
 import { AppComponent } from './root/components/app.component';
-import { NgxSpinner, NgxSpinnerModule } from 'ngx-spinner';
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -82,7 +82,7 @@ const config: ConfigOption = {
     CKEditorModule,
     NgbModule,
   ],
-  providers: [AuthService, AuthGuard],
+  providers: [{ provide: IAuthService, useClass: AuthService }, AuthGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
