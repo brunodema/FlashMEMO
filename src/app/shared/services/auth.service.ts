@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import {
@@ -15,24 +15,152 @@ import {
   ILoginResponse,
 } from '../models/http/http-response-types';
 
+export abstract class IAuthService {
+  protected homeAddress = '/home';
+
+  constructor(
+    protected jwtHelper: JwtHelperService,
+    protected router: Router,
+    protected toastr: ToastrService
+  ) {}
+
+  // TIL about Subject/BehaviorSubject. "A Subject is like an Observable, but can multicast to many Observers. Subjects are like EventEmitters: they maintain a registry of many listeners" (source: https://rxjs.dev/guide/subject). Implementation taken from here: https://netbasal.com/angular-2-persist-your-login-status-with-behaviorsubject-45da9ec43243
+
+  public loggedUsername = new BehaviorSubject<string>(
+    this.getUsernameFromToken()
+  );
+
+  abstract login(requestData: ILoginRequest): Observable<any>;
+  abstract register(registerData: IRegisterRequest): Observable<any>;
+
+  public getUsernameFromToken(): string {
+    return this.jwtHelper.decodeToken(this.getJWT())['username'];
+  }
+
+  public isAuthenticated(): boolean {
+    const token = localStorage.getItem('token')!; // non-null assertion operator
+    return !this.jwtHelper.isTokenExpired(token);
+  }
+
+  public logout() {
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
+    this.loggedUsername.next('?');
+    this.redirectToHome();
+  }
+
+  protected storeJWT(JWTToken: string) {
+    this.clearPreExistingJWT();
+    localStorage.setItem('token', JWTToken);
+  }
+
+  protected getJWT(): string {
+    return this.jwtHelper.tokenGetter();
+  }
+
+  protected clearPreExistingJWT() {
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
+  }
+
+  protected handleSuccessfulLogin(res: ILoginResponse) {
+    this.storeJWT(res.jwtToken);
+    this.loggedUsername.next(this.getUsernameFromToken());
+    this.toastr
+      .success('You will soon be redirected.', 'Welcome to FlashMEMO!', {
+        timeOut: 3000,
+      })
+      .onHidden.subscribe(() => this.redirectToHome());
+  }
+
+  protected handleSuccessfulRegistration(res: IBaseAPIResponse) {
+    this.toastr.success(
+      'User created. You will soon be redirected.',
+      'Registration Complete!',
+      {
+        timeOut: 3000,
+      }
+    );
+  }
+
+  protected handleFailedLogin(err: HttpErrorResponse) {
+    this.clearPreExistingJWT();
+    this.toastr.error(
+      this.processErrorsFromAPI(err.error),
+      'Authentication Failure',
+      {
+        timeOut: 3000,
+      }
+    );
+    return throwError(err);
+  }
+
+  protected processErrorsFromAPI(errorResponse: ILoginResponse): string {
+    let resp = errorResponse.message + '\n\n';
+    if (errorResponse.errors) {
+      errorResponse.errors.forEach((error) => {
+        resp += `\n${error}`;
+      });
+    }
+    return resp;
+  }
+
+  protected redirectToHome() {
+    this.router.navigate([this.homeAddress]);
+  }
+}
+
+export class MockAuthService extends IAuthService {
+  constructor(
+    protected jwtHelper: JwtHelperService,
+    protected router: Router,
+    protected toastr: ToastrService
+  ) {
+    super(jwtHelper, router, toastr);
+  }
+
+  login(requestData: ILoginRequest): Observable<any> {
+    return of(
+      this.handleSuccessfulLogin({
+        jwtToken: this.jwtHelper.tokenGetter(),
+        status: '200',
+        errors: [],
+        message: 'success',
+      })
+    );
+  }
+
+  register(registerData: IRegisterRequest): Observable<any> {
+    return of(
+      () =>
+        this.handleSuccessfulRegistration({
+          errors: [],
+          message: 'Success',
+          status: '200',
+        }),
+      this.login({
+        email: registerData.email,
+        password: registerData.password,
+      })
+    );
+  }
+}
+
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthService extends IAuthService {
   protected serviceURL: string = `${environment.backendRootAddress}/api/v1/Auth`;
   protected customHeaders = { 'content-type': 'application/json' }; // check the need for it (and start using if necessary)
   protected homeAddress = '/home';
 
   constructor(
-    private jwtHelper: JwtHelperService,
-    private http: HttpClient,
-    private router: Router,
-    private toastr: ToastrService
-  ) {}
-
-  public isAuthenticated(): boolean {
-    const token = localStorage.getItem('token')!; // non-null assertion operator
-    return !this.jwtHelper.isTokenExpired(token);
+    protected jwtHelper: JwtHelperService,
+    protected http: HttpClient,
+    protected router: Router,
+    protected toastr: ToastrService
+  ) {
+    super(jwtHelper, router, toastr);
   }
 
   public login(requestData: ILoginRequest): Observable<any> {
@@ -42,12 +170,6 @@ export class AuthService {
         map((res) => this.handleSuccessfulLogin(res)),
         catchError((err: HttpErrorResponse) => this.handleFailedLogin(err))
       );
-  }
-
-  public logout() {
-    localStorage.removeItem('token');
-    sessionStorage.removeItem('token');
-    this.redirectToHome();
   }
 
   public register(registerData: IRegisterRequest): Observable<any> {
@@ -63,64 +185,5 @@ export class AuthService {
         }),
         catchError((err: HttpErrorResponse) => this.handleFailedLogin(err))
       );
-  }
-
-  private storeJWT(JWTToken: string) {
-    this.clearPreExistingJWT();
-    localStorage.setItem('token', JWTToken);
-  }
-
-  private getJWT() {
-    this.jwtHelper.tokenGetter();
-  }
-
-  private clearPreExistingJWT() {
-    localStorage.removeItem('token');
-    sessionStorage.removeItem('token');
-  }
-
-  private handleSuccessfulLogin(res: ILoginResponse) {
-    this.storeJWT(res.jwtToken);
-    this.toastr
-      .success('You will soon be redirected.', 'Welcome to FlashMEMO!', {
-        timeOut: 3000,
-      })
-      .onHidden.subscribe(() => this.redirectToHome());
-  }
-
-  private handleSuccessfulRegistration(res: IBaseAPIResponse) {
-    this.toastr.success(
-      'User created. You will soon be redirected.',
-      'Registration Complete!',
-      {
-        timeOut: 3000,
-      }
-    );
-  }
-
-  private handleFailedLogin(err: HttpErrorResponse) {
-    this.clearPreExistingJWT();
-    this.toastr.error(
-      this.processErrorsFromAPI(err.error),
-      'Authentication Failure',
-      {
-        timeOut: 3000,
-      }
-    );
-    return throwError(err);
-  }
-
-  processErrorsFromAPI(errorResponse: ILoginResponse): string {
-    let resp = errorResponse.message + '\n\n';
-    if (errorResponse.errors) {
-      errorResponse.errors.forEach((error) => {
-        resp += `\n${error}`;
-      });
-    }
-    return resp;
-  }
-
-  redirectToHome() {
-    this.router.navigate([this.homeAddress]);
   }
 }

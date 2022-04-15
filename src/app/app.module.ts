@@ -15,19 +15,15 @@ import { AppRoutingModule } from './root/routing/app-routing.module';
 import { NewsModule } from './news/news.module';
 import { DeckModule } from './deck/deck.module';
 
-import { AuthService } from './shared/services/auth.service';
+import { AuthService, IAuthService } from './shared/services/auth.service';
 import { AuthGuard } from './shared/guards/auth.guard';
 
 import { LoginComponent } from './root/components/login/login.component';
 import { HomeComponent } from './root/components/home/home.component';
 import { AppComponent } from './root/components/app.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { QuillModule } from 'ngx-quill';
-import Quill from 'quill';
-
-// Add-on for NGX-Quill to allow resizing images inside text boxes, documentation here: https://www.npmjs.com/package/quill-blot-formatter. BTW, I figured out how to import this in the main module file by myself :D
-import BlotFormatter from 'quill-blot-formatter';
-Quill.register('modules/blotFormatter', BlotFormatter);
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
@@ -83,34 +79,16 @@ const config: ConfigOption = {
     FormlyModule.forRoot(config),
     FormlyBootstrapModule,
     NgxSpinnerModule, // NGX-Spinner
-    QuillModule.forRoot({
-      modules: {
-        blotFormatter: {},
-        toolbar: [
-          ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-          ['blockquote', 'code-block'],
-          [{ header: 1 }, { header: 2 }], // custom button values
-          [{ list: 'ordered' }, { list: 'bullet' }],
-          [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-          [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-          [{ direction: 'rtl' }], // text direction
-          [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
-          [{ header: [1, 2, 3, 4, 5, 6, false] }],
-          [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-          [{ font: [] }],
-          [{ align: [] }],
-          ['clean'], // remove formatting button
-          ['link', 'image', 'video'], // link and image, video
-        ],
-      },
-    }), // NGX-Quill
+    CKEditorModule,
+    NgbModule,
   ],
-  providers: [AuthService, AuthGuard],
+  providers: [{ provide: IAuthService, useClass: AuthService }, AuthGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
 
 /**
  * NGX-Spinner: contains a bunch of spinner templates, and options for them. Main instructions here: https://www.npmjs.com/package/ngx-spinner. Spinner tester here: https://napster2210.github.io/ngx-spinner/
- * NGX-Quill: alternative text editor in place of CKEditor (2022 and no proper TypeScript support). Documentation here: https://openbase.com/js/ngx-quill. Had to follow steps from here to fix installation issue: https://github.com/KillerCodeMonkey/ngx-quill/issues/247.
+ * CKEditor: common use RTE. Main documentation here: . This link has some instructions on how to set up a custom build of the widget: https://stackoverflow.com/questions/55654872/create-a-custom-plugin-on-ckeditor-for-angular-application. ***Might come in handy for setting up a version with template menu.***
+ * NG-Bootstrap and NGX-Bootstrap: two modules that offer bootstrap components with Angular implementation. After much investigation, it is now assumed that using both libraries is not conceptually wrong, since they offer different components between each other.
  */
