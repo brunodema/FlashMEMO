@@ -27,13 +27,14 @@ export abstract class IAuthService {
   // TIL about Subject/BehaviorSubject. "A Subject is like an Observable, but can multicast to many Observers. Subjects are like EventEmitters: they maintain a registry of many listeners" (source: https://rxjs.dev/guide/subject). Implementation taken from here: https://netbasal.com/angular-2-persist-your-login-status-with-behaviorsubject-45da9ec43243
 
   public loggedUsername = new BehaviorSubject<string>(
-    this.getUsernameFromToken()
+    this.getUsernameFromToken() ?? ''
   );
 
   abstract login(requestData: ILoginRequest): Observable<any>;
   abstract register(registerData: IRegisterRequest): Observable<any>;
 
   public getUsernameFromToken(): string {
+    if (this.getJWT() === null) return '';
     return this.jwtHelper.decodeToken(this.getJWT())['username'];
   }
 
