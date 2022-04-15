@@ -23,6 +23,7 @@ import { HomeComponent } from './root/components/home/home.component';
 import { AppComponent } from './root/components/app.component';
 import { NgxSpinner, NgxSpinnerModule } from 'ngx-spinner';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
@@ -79,6 +80,7 @@ const config: ConfigOption = {
     FormlyBootstrapModule,
     NgxSpinnerModule, // NGX-Spinner
     CKEditorModule,
+    NgbModule,
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent],
@@ -88,4 +90,5 @@ export class AppModule {}
 /**
  * NGX-Spinner: contains a bunch of spinner templates, and options for them. Main instructions here: https://www.npmjs.com/package/ngx-spinner. Spinner tester here: https://napster2210.github.io/ngx-spinner/
  * CKEditor: common use RTE. Main documentation here: . This link has some instructions on how to set up a custom build of the widget: https://stackoverflow.com/questions/55654872/create-a-custom-plugin-on-ckeditor-for-angular-application. ***Might come in handy for setting up a version with template menu.***
+ * NG-Bootstrap and NGX-Bootstrap: two modules that offer bootstrap components with Angular implementation. After much investigation, it is now assumed that using both libraries is not conceptually wrong, since they offer different components between each other.
  */
