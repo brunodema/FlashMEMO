@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import {
@@ -24,10 +24,16 @@ export abstract class IAuthService {
     protected toastr: ToastrService
   ) {}
 
+  // TIL about Subject/BehaviorSubject. "A Subject is like an Observable, but can multicast to many Observers. Subjects are like EventEmitters: they maintain a registry of many listeners" (source: https://rxjs.dev/guide/subject). Implementation taken from here: https://netbasal.com/angular-2-persist-your-login-status-with-behaviorsubject-45da9ec43243
+
+  public loggedUsername = new BehaviorSubject<string>(
+    this.getUsernameFromToken()
+  );
+
   abstract login(requestData: ILoginRequest): Observable<any>;
   abstract register(registerData: IRegisterRequest): Observable<any>;
 
-  public getUserName(): string {
+  public getUsernameFromToken(): string {
     return this.jwtHelper.decodeToken(this.getJWT())['username'];
   }
 
@@ -39,6 +45,7 @@ export abstract class IAuthService {
   public logout() {
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
+    this.loggedUsername.next('?');
     this.redirectToHome();
   }
 
@@ -58,6 +65,7 @@ export abstract class IAuthService {
 
   protected handleSuccessfulLogin(res: ILoginResponse) {
     this.storeJWT(res.jwtToken);
+    this.loggedUsername.next(this.getUsernameFromToken());
     this.toastr
       .success('You will soon be redirected.', 'Welcome to FlashMEMO!', {
         timeOut: 3000,
