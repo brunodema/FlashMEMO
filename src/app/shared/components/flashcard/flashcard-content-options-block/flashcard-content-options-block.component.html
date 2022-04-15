@@ -81,8 +81,8 @@
   </div>
   <div *ngSwitchCase="flashcardContentEnumType.TEXT" class="container image-reset-button-parent">
     <p [style.maxHeight]="componentHeight">{{ contentValue }}</p>
-    <a class="image-reset-button-2 fa fa-times-circle fa-5x" (click)="resetContent()" aria-hidden="true"></a>
     <a class="image-reset-button-1 fa fa-pen-nib fa-5x" (click)="resetContent()" aria-hidden="true"></a>
+    <a class="image-reset-button-2 fa fa-times-circle fa-5x" (click)="resetContent()" aria-hidden="true"></a>
   </div>
   <div *ngSwitchDefault>oops, some error must have occured! D:</div>
 </div>
