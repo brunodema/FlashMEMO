@@ -19,8 +19,8 @@ import { DataTableComponent } from './components/data-table/data-table.component
 import { FormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from 'ngx-spinner'; // NGX-Spinner
 import { ImageLoaderDirective } from './directives/image-loader.directive';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CKEditorModule } from 'ckeditor4-angular';
 
 @NgModule({
   declarations: [

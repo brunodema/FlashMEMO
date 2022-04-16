@@ -26,8 +26,8 @@ import { LoginComponent } from './root/components/login/login.component';
 import { HomeComponent } from './root/components/home/home.component';
 import { AppComponent } from './root/components/app.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CKEditorModule } from 'ckeditor4-angular';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
