@@ -11,6 +11,7 @@ import {
 } from 'src/app/shared/services/api-services';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor4, CKEditorComponent } from 'ckeditor4-angular';
+import { ControlValueAccessor } from '@angular/forms';
 
 export enum FlashcardContentType {
   NONE = 'NONE',
@@ -56,6 +57,7 @@ export class FlashcardContentOptionsBlock implements OnInit {
   currentKeyword: string = '';
 
   // Text/Dictionary API section
+  textEditorContent: any = '<p>Insert your text here! </p>';
   editorType: CKEditor4.EditorType = CKEditor4.EditorType.CLASSIC;
   editorConfig: CKEditor4.Config = {
     toolbar: [
