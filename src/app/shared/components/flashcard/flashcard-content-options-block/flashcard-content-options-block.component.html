@@ -70,8 +70,8 @@
           </button>
         </div>
         <div *ngSwitchDefault>
-          <button type="button" class="btn btn-light" (click)="contentEditor.close('Close click')">
-            Close
+          <button type="button" class="btn btn-primary" (click)="saveText()">
+            Save
           </button>
         </div>
       </div>
@@ -81,8 +81,9 @@
     <img [src]="contentValue" [style.maxHeight]="componentHeight" class="img-fluid" />
     <a class="image-reset-button fa fa-times-circle fa-5x" (click)="resetContent()" aria-hidden="true"></a>
   </div>
-  <div *ngSwitchCase="flashcardContentEnumType.TEXT" class="container image-reset-button-parent">
-    <p [style.maxHeight]="componentHeight">{{ contentValue }}</p>
+  <div *ngSwitchCase="flashcardContentEnumType.TEXT" [style.maxHeight]="componentHeight"
+    class="container image-reset-button-parent overflow-auto">
+    <p [innerHTML]="contentValue"></p>
     <a class="image-reset-button-1 fa fa-pen-nib fa-5x" (click)="resetContent()" aria-hidden="true"></a>
     <a class="image-reset-button-2 fa fa-times-circle fa-5x" (click)="resetContent()" aria-hidden="true"></a>
   </div>

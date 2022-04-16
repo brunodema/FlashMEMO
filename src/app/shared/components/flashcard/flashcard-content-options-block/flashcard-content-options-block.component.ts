@@ -127,4 +127,10 @@ export class FlashcardContentOptionsBlock implements OnInit {
     this.contentType = this.flashcardContentEnumType.NONE;
     this.contentValue = '';
   }
+
+  saveText() {
+    this.contentType = this.flashcardContentEnumType.TEXT;
+    this.contentValue = this.textEditorContent;
+    this.contentEditor.close('text selected');
+  }
 }
