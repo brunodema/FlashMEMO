@@ -4,7 +4,7 @@
       <div class="container d-flex justify-content-center align-items-center">
         <div class="card">
           <div class="ratio ratio-4x3">
-            <img class="img-fluid" [src]="item.thumbnailPath | safe: 'url'" allowfullscreen>
+            <img class="img-fluid" [src]="item.thumbnailPath | safeBypass: 'url'" allowfullscreen>
           </div>
 
           <div class="p-3 content">

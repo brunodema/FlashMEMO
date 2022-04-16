@@ -8,7 +8,7 @@ import {
   SafeUrl,
 } from '@angular/platform-browser';
 
-@Pipe({ name: 'safe' })
+@Pipe({ name: 'safeBypass' })
 export class SafePipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
   public transform(
