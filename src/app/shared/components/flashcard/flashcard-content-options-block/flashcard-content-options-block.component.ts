@@ -57,6 +57,31 @@ export class FlashcardContentOptionsBlock implements OnInit {
 
   // Text/Dictionary API section
   editorType: CKEditor4.EditorType = CKEditor4.EditorType.CLASSIC;
+  editorConfig: CKEditor4.Config = {
+    toolbarGroups: [
+      { name: 'document', groups: ['mode', 'document', 'doctools'] },
+      { name: 'clipboard', groups: ['clipboard', 'undo'] },
+      {
+        name: 'editing',
+        groups: ['find', 'selection', 'spellchecker', 'editing'],
+      },
+      { name: 'forms', groups: ['forms'] },
+      '/',
+      { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+      {
+        name: 'paragraph',
+        groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'],
+      },
+      { name: 'links', groups: ['links'] },
+      { name: 'insert', groups: ['insert'] },
+      '/',
+      { name: 'styles', groups: ['styles'] },
+      { name: 'colors', groups: ['colors'] },
+      { name: 'tools', groups: ['tools'] },
+      { name: 'others', groups: ['others'] },
+      { name: 'about', groups: ['about'] },
+    ],
+  };
 
   /**
    * Access modal element using implementation described here: https://stackoverflow.com/questions/40382319/how-to-programmatically-close-ng-bootstrap-modal
