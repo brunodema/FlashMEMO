@@ -58,28 +58,23 @@ export class FlashcardContentOptionsBlock implements OnInit {
   // Text/Dictionary API section
   editorType: CKEditor4.EditorType = CKEditor4.EditorType.CLASSIC;
   editorConfig: CKEditor4.Config = {
-    toolbarGroups: [
-      { name: 'document', groups: ['mode', 'document', 'doctools'] },
-      { name: 'clipboard', groups: ['clipboard', 'undo'] },
-      {
-        name: 'editing',
-        groups: ['find', 'selection', 'spellchecker', 'editing'],
-      },
-      { name: 'forms', groups: ['forms'] },
-      '/',
-      { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+    toolbar: [
+      { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike'] },
       {
         name: 'paragraph',
-        groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'],
+        items: [
+          'NumberedList',
+          'BulletedList',
+          'Blockquote',
+          'JustifyLeft',
+          'JustifyCenter',
+          'JustifyRight',
+          'JustifyBlock',
+          'Language',
+        ],
       },
-      { name: 'links', groups: ['links'] },
-      { name: 'insert', groups: ['insert'] },
-      '/',
-      { name: 'styles', groups: ['styles'] },
-      { name: 'colors', groups: ['colors'] },
-      { name: 'tools', groups: ['tools'] },
-      { name: 'others', groups: ['others'] },
-      { name: 'about', groups: ['about'] },
+      { name: 'colors', items: ['TextColor', 'BGColor'] },
+      { name: 'about', items: ['About'] },
     ],
   };
 
