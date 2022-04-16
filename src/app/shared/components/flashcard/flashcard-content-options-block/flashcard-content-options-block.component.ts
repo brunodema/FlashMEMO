@@ -1,16 +1,4 @@
-import {
-  AfterContentInit,
-  AfterViewInit,
-  Component,
-  ContentChild,
-  ContentChildren,
-  ElementRef,
-  forwardRef,
-  OnInit,
-  QueryList,
-  ViewChild,
-  ViewChildren,
-} from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
@@ -67,7 +55,6 @@ export class FlashcardContentOptionsBlock implements OnInit {
   currentKeyword: string = '';
 
   // Text/Dictionary API section
-  editorComponent: string;
   textEditorContent: string = '<p>Insert your text here! </p>';
   editorType: CKEditor4.EditorType = CKEditor4.EditorType.CLASSIC;
   editorConfig: CKEditor4.Config = {
@@ -141,6 +128,8 @@ export class FlashcardContentOptionsBlock implements OnInit {
   }
 
   saveText() {
+    console.log(this.textEditorContent);
+
     if (this.textEditorContent.trim().length === 0) {
       this.contentType = this.flashcardContentEnumType.NONE;
       this.contentValue = '';

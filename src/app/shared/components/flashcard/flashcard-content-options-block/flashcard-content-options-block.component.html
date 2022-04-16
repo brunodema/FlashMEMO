@@ -84,7 +84,7 @@
   </div>
   <div *ngSwitchCase="flashcardContentEnumType.TEXT" [style.minHeight]="componentHeight"
     class="container image-reset-button-parent" style="overflow-y: auto; word-break: break-all;">
-    <div [innerHTML]="contentValue"></div>
+    <div [innerHTML]="contentValue | safe: 'html'"></div>
     <a class="image-reset-button-1 fa fa-pen-nib fa-5x" (click)="openXl(contentEditor, 'Text')" aria-hidden="true"></a>
     <a class="image-reset-button-2 fa fa-times-circle fa-5x" (click)="resetContent()" aria-hidden="true"></a>
   </div>
