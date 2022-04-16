@@ -1,4 +1,16 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import {
+  AfterContentInit,
+  AfterViewInit,
+  Component,
+  ContentChild,
+  ContentChildren,
+  ElementRef,
+  forwardRef,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
@@ -9,9 +21,7 @@ import {
   ImageAPIService,
   MockImageAPIService,
 } from 'src/app/shared/services/api-services';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor4, CKEditorComponent } from 'ckeditor4-angular';
-import { ControlValueAccessor } from '@angular/forms';
 
 export enum FlashcardContentType {
   NONE = 'NONE',
@@ -57,7 +67,8 @@ export class FlashcardContentOptionsBlock implements OnInit {
   currentKeyword: string = '';
 
   // Text/Dictionary API section
-  textEditorContent: any = '<p>Insert your text here! </p>';
+  editorComponent: string;
+  textEditorContent: string = '<p>Insert your text here! </p>';
   editorType: CKEditor4.EditorType = CKEditor4.EditorType.CLASSIC;
   editorConfig: CKEditor4.Config = {
     toolbar: [
@@ -92,6 +103,7 @@ export class FlashcardContentOptionsBlock implements OnInit {
     private hostElement: ElementRef, // A way to check the parent's height, and use it after an image is selected by the user
     private spinnerService: NgxSpinnerService
   ) {}
+
   ngOnInit(): void {
     this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
   }
@@ -129,8 +141,14 @@ export class FlashcardContentOptionsBlock implements OnInit {
   }
 
   saveText() {
-    this.contentType = this.flashcardContentEnumType.TEXT;
-    this.contentValue = this.textEditorContent;
-    this.contentEditor.close('text selected');
+    if (this.textEditorContent.trim().length === 0) {
+      this.contentType = this.flashcardContentEnumType.NONE;
+      this.contentValue = '';
+      this.contentEditor.close('empty text input');
+    } else {
+      this.contentType = this.flashcardContentEnumType.TEXT;
+      this.contentValue = this.textEditorContent;
+      this.contentEditor.close('text selected');
+    }
   }
 }

@@ -26,8 +26,9 @@
         <div *ngSwitchCase="'Audio'">Audio</div>
         <div *ngSwitchCase="'Text'">
           <!-- Text/Dictionary editor (CKEditor) -->
-          <ckeditor [(ngModel)]="textEditorContent" editorUrl="https://cdn.ckeditor.com/4.18.0/full-all/ckeditor.js"
-            [config]="editorConfig" [type]="editorType"></ckeditor>
+          <ckeditor #editorComponent [(ngModel)]="textEditorContent"
+            editorUrl="https://cdn.ckeditor.com/4.18.0/full-all/ckeditor.js" [config]="editorConfig"
+            [type]="editorType"></ckeditor>
         </div>
         <div *ngSwitchCase="'Image'">
           <div class="container">
@@ -81,10 +82,10 @@
     <img [src]="contentValue" [style.maxHeight]="componentHeight" class="img-fluid" />
     <a class="image-reset-button fa fa-times-circle fa-5x" (click)="resetContent()" aria-hidden="true"></a>
   </div>
-  <div *ngSwitchCase="flashcardContentEnumType.TEXT" [style.maxHeight]="componentHeight"
-    class="container image-reset-button-parent overflow-auto">
-    <p [innerHTML]="contentValue"></p>
-    <a class="image-reset-button-1 fa fa-pen-nib fa-5x" (click)="resetContent()" aria-hidden="true"></a>
+  <div *ngSwitchCase="flashcardContentEnumType.TEXT" [style.minHeight]="componentHeight"
+    class="container image-reset-button-parent" style="overflow-y: auto; word-break: break-all;">
+    <div [innerHTML]="contentValue"></div>
+    <a class="image-reset-button-1 fa fa-pen-nib fa-5x" (click)="openXl(contentEditor, 'Text')" aria-hidden="true"></a>
     <a class="image-reset-button-2 fa fa-times-circle fa-5x" (click)="resetContent()" aria-hidden="true"></a>
   </div>
   <div *ngSwitchDefault>oops, some error must have occured! D:</div>
