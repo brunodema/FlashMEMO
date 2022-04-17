@@ -30,22 +30,26 @@ ngb-modal-window.flashcard-modal div.modal-dialog div.modal-content {
 /******************************************************************************/
 
 /* These classes are used in case there needs to be an 'Edit' and one 'Remove' button. Maybe there's a better way to do this? */
+/* The text-decoration magic was stolen from here: https://stackoverflow.com/questions/11828829/twitter-bootstrap-how-to-get-rid-of-underlined-button-text-when-hovering-over-a. It was too painful to look at those underlines under the icons... */
+
 .image-reset-button {
   position: absolute;
-  top: 3%;
-  left: 97%;
+  top: 22px;
+  right: 0px;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   opacity: 0;
+  text-decoration: none !important
 }
 
 .image-edit-button {
   position: absolute;
-  top: 3%;
-  left: 92%;
+  top: 22px;
+  right: 42px;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   opacity: 0;
+  text-decoration: none !important
 }
 
 
