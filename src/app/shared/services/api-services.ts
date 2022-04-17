@@ -12,6 +12,10 @@ import imageAPIJson from 'src/assets/test_assets/ImageAPI.json';
 import { environment } from 'src/environments/environment';
 import { Observable, of } from 'rxjs';
 
+/**************************************************************************************/
+/* Image API stuff */
+/**************************************************************************************/
+
 /**
  * Dummy class for interfacing purposes. For the moment, will completly mimic the Google Image API return object.
  */
@@ -29,6 +33,9 @@ export interface IImageAPIResult {
   };
 }
 
+/**
+ * Image API implementation that uses the Google Custom Search web search provider.
+ */
 export class GoogleImageResult implements IImageAPIResult {
   public constructor(init?: Partial<GoogleImageResult>) {
     Object.assign(this, init);
@@ -108,7 +115,65 @@ export class ImageAPIService extends GeneralImageAPIService {
   }
 }
 
+/**************************************************************************************/
+/* Dictionary API stuff */
+/**************************************************************************************/
+
+/**
+ * Enum used to show the provider options to the user ('Select' elements).
+ */
 export enum DictionaryAPIProvider {
   OXFORD = 'Oxford',
   LEXICALA = 'Lexicala',
+}
+
+/**
+ * Interface containing the main properties returned by the dictionary APIs.
+ */
+export interface IDictionaryAPIResult {
+  searchText: string;
+  languageCode: string;
+  results: {
+    lexicalCategory: string;
+    pronunciationFile: string;
+    phoneticSpelling: string;
+    definitions: string[];
+    examples: string[];
+  };
+}
+
+/**
+ * Dictionary API implementation that uses the Lexicala dictionary provider.
+ */
+export class LexicalaAPIResult implements IDictionaryAPIResult {
+  public constructor(init?: Partial<LexicalaAPIResult>) {
+    Object.assign(this, init);
+  }
+  searchText: string;
+  languageCode: string;
+  results: {
+    lexicalCategory: string;
+    pronunciationFile: string;
+    phoneticSpelling: string;
+    definitions: string[];
+    examples: string[];
+  };
+}
+
+/**
+ * Dictionary API implementation that uses the Oxford dictionary provider.
+ */
+export class OxfordAPIResult implements IDictionaryAPIResult {
+  public constructor(init?: Partial<OxfordAPIResult>) {
+    Object.assign(this, init);
+  }
+  searchText: string;
+  languageCode: string;
+  results: {
+    lexicalCategory: string;
+    pronunciationFile: string;
+    phoneticSpelling: string;
+    definitions: string[];
+    examples: string[];
+  };
 }
