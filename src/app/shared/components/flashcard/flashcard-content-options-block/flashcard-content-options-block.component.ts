@@ -28,7 +28,7 @@ export enum FlashcardContentType {
   selector: 'app-flashcard-content-options-block',
   host: {
     class:
-      'd-flex flex-fill align-items-center justify-content-center image-reset-button-parent',
+      'd-flex flex-fill align-items-center justify-content-center image-reset-button-parent', // having this 'handler' class here forced me to pass all associated CSS to the main styles sheet :/
     style: 'border: 1px solid black', // optional, just to debug section sizes
   },
   templateUrl: './flashcard-content-options-block.component.html',
@@ -129,8 +129,6 @@ export class FlashcardContentOptionsBlock implements OnInit {
   }
 
   saveText() {
-    console.log(this.textEditorContent);
-
     if (this.textEditorContent.trim().length === 0) {
       this.contentType = this.flashcardContentEnumType.NONE;
       this.contentValue = '';

@@ -29,29 +29,20 @@ ngb-modal-window.flashcard-modal div.modal-dialog div.modal-content {
 /* CSS associated with my magical solution for hover icons */
 /******************************************************************************/
 
+/* These classes are used in case there needs to be an 'Edit' and one 'Remove' button. Maybe there's a better way to do this? */
 .image-reset-button {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 3%;
+  left: 97%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   opacity: 0;
 }
 
-/* These classes are used in case there needs to be an 'Edit' and one 'Remove' button. Maybe there's a better way to do this? */
-.image-reset-button-1 {
+.image-edit-button {
   position: absolute;
-  top: 50%;
-  left: 43%;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  opacity: 0;
-}
-
-.image-reset-button-2 {
-  position: absolute;
-  top: 50%;
-  left: 58%;
+  top: 3%;
+  left: 92%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   opacity: 0;
@@ -65,8 +56,7 @@ ngb-modal-window.flashcard-modal div.modal-dialog div.modal-content {
 }
 
 .image-reset-button-parent:hover .image-reset-button,
-.image-reset-button-parent:hover .image-reset-button-1,
-.image-reset-button-parent:hover .image-reset-button-2 {
+.image-reset-button-parent:hover .image-edit-button {
   opacity: 1;
 }
 
