@@ -24,13 +24,13 @@
     <div class="modal-body">
       <div [ngSwitch]="modalTitle">
         <div *ngSwitchCase="'Audio'">Audio</div>
-        <div *ngSwitchCase="'Text'">
+        <ng-container *ngSwitchCase="'Text'">
           <!-- Text/Dictionary editor (CKEditor) -->
           <ckeditor #editorComponent [(ngModel)]="textEditorContent"
             editorUrl="https://cdn.ckeditor.com/4.18.0/full-all/ckeditor.js" [config]="editorConfig"
             [type]="editorType"></ckeditor>
-        </div>
-        <div *ngSwitchCase="'Image'">
+        </ng-container>
+        <ng-container *ngSwitchCase="'Image'">
           <div class="container">
             <!-- Implementation for inline search box covering full width stolen from here: https://stackoverflow.com/questions/22774780/bootstrap-full-width-text-input-within-inline-form -->
             <div class="row">
@@ -54,13 +54,13 @@
               </div>
             </div>
           </div>
-        </div>
-        <div *ngSwitchDefault>output2</div>
+        </ng-container>
+        <ng-container *ngSwitchDefault>output2</ng-container>
       </div>
     </div>
     <div class="modal-footer">
       <div [ngSwitch]="modalTitle">
-        <div *ngSwitchCase="'Image'">
+        <ng-container *ngSwitchCase="'Image'">
           <button type="button" *ngIf="hasPrevious" class="btn btn-primary"
             (click)="searchImage(currentKeyword, +currentPageIndex - 1)">
             Previous Page
@@ -69,7 +69,7 @@
             (click)="searchImage(currentKeyword, +currentPageIndex + 1)">
             Next Page
           </button>
-        </div>
+        </ng-container>
         <div *ngSwitchDefault>
           <button type="button" class="btn btn-primary" (click)="saveText()">
             Save
@@ -85,7 +85,7 @@
     style="overflow-y: auto; word-break: break-word;">
     <div [innerHTML]="contentValue | safeBypass: 'html'"></div>
   </div>
-  <div *ngSwitchDefault>oops, some error must have occured! D:</div>
+  <ng-container *ngSwitchDefault>oops, some error must have occured! D:</ng-container>
 </div>
 <a [hidden]="!showEditButton()" class="image-edit-button fa fa-pen-nib fa-2x" (click)="openXl(contentEditor, 'Text')"
   aria-hidden="true"></a>
