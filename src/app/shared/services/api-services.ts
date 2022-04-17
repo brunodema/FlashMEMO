@@ -120,6 +120,65 @@ export class ImageAPIService extends GeneralImageAPIService {
 /**************************************************************************************/
 
 /**
+ * Contains the codes for the supported languages for each existing Dictionary API provider. These codes were taken from the back-end project (17/04/2022), which in turn were taken from the official documentation of the APIs. They might not reflect the most recent array of supported languages, as they are static values in the code files. This will need to either be used as a back-up option, or transitioned towards a full programatic check using HTTP requests.
+ */
+const dictAPISupportedLanguages = {
+  Lexicala: [
+    'af',
+    'ar',
+    'az',
+    'bg',
+    'br',
+    'ca',
+    'cs',
+    'da',
+    'de',
+    'dk',
+    'el',
+    'en',
+    'es',
+    'et',
+    'fa',
+    'fi',
+    'fr',
+    'fy',
+    'he',
+    'hi',
+    'hr',
+    'hu',
+    'id',
+    'is',
+    'it',
+    'ja',
+    'ko',
+    'la',
+    'lt',
+    'lv',
+    'ml',
+    'nl',
+    'no',
+    'pl',
+    'prs',
+    'ps',
+    'pt',
+    'ro',
+    'ru',
+    'sk',
+    'sl',
+    'sr',
+    'sv',
+    'th',
+    'tr',
+    'tw',
+    'uk',
+    'ur',
+    'vi',
+    'zh',
+  ],
+  Oxford: ['en-gb', 'en-us', 'fr', 'gu', 'hi', 'lv', 'ro', 'es', 'sw', 'ta'],
+};
+
+/**
  * Enum used to show the provider options to the user ('Select' elements).
  */
 export enum DictionaryAPIProvider {
@@ -143,10 +202,10 @@ export interface IDictionaryAPIResult {
 }
 
 /**
- * Dictionary API implementation that uses the Lexicala dictionary provider.
+ * Dictionary API result implementation used by multiple  dictionary providers (Lexicala, Oxford).
  */
-export class LexicalaAPIResult implements IDictionaryAPIResult {
-  public constructor(init?: Partial<LexicalaAPIResult>) {
+export class CommonAPIResult implements IDictionaryAPIResult {
+  public constructor(init?: Partial<CommonAPIResult>) {
     Object.assign(this, init);
   }
   searchText: string;
@@ -161,19 +220,29 @@ export class LexicalaAPIResult implements IDictionaryAPIResult {
 }
 
 /**
- * Dictionary API implementation that uses the Oxford dictionary provider.
+ * Abstract class representing the expected behavior of the Dictionary API service.
  */
-export class OxfordAPIResult implements IDictionaryAPIResult {
-  public constructor(init?: Partial<OxfordAPIResult>) {
-    Object.assign(this, init);
+@Injectable()
+export abstract class GeneralDictionaryAPIService {
+  constructor(protected httpClient: HttpClient) {}
+
+  abstract searchWord(
+    keyword: string,
+    languageCode: string
+  ): Observable<IPaginatedListResponse<IDictionaryAPIResult>>;
+
+  protected checkIfLanguageIsSupported(
+    provider: DictionaryAPIProvider,
+    languageCode: string
+  ): boolean {
+    switch (provider) {
+      case DictionaryAPIProvider.LEXICALA:
+        return dictAPISupportedLanguages.Lexicala.includes(languageCode);
+      case DictionaryAPIProvider.OXFORD:
+        return dictAPISupportedLanguages.Oxford.includes(languageCode);
+
+      default:
+        throw new Error('The dictionary API provider selected does not exist.');
+    }
   }
-  searchText: string;
-  languageCode: string;
-  results: {
-    lexicalCategory: string;
-    pronunciationFile: string;
-    phoneticSpelling: string;
-    definitions: string[];
-    examples: string[];
-  };
 }
