@@ -14,12 +14,60 @@ html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-ngb-modal-window.flashcard-modal div.modal-dialog div.modal-content
-{
-    height: calc(100vh - 100px);
+ngb-modal-window.flashcard-modal div.modal-dialog div.modal-content {
+  height: calc(100vh - 100px);
+}
+
+
+
+
+.image-reset-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+/* These classes are used in case there needs to be an 'Edit' and one 'Remove' button. Maybe there's a better way to do this? */
+.image-reset-button-1 {
+  position: absolute;
+  top: 50%;
+  left: 43%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+.image-reset-button-2 {
+  position: absolute;
+  top: 50%;
+  left: 58%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+
+/* Show button over image on hover "adapted" from: https://stackoverflow.com/questions/56640043/make-a-button-appear-when-hover-over-a-image */
+
+.image-reset-button-parent {
+  position: relative;
+}
+
+.image-reset-button-parent:hover .image-reset-button,
+.image-reset-button-parent:hover .image-reset-button-1,
+.image-reset-button-parent:hover .image-reset-button-2 {
+  opacity: 1;
+}
+
+.image-reset-button-parent:hover .img-fluid {
+  opacity: 0.2;
 }

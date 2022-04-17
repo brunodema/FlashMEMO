@@ -27,7 +27,8 @@ export enum FlashcardContentType {
 @Component({
   selector: 'app-flashcard-content-options-block',
   host: {
-    class: 'd-flex flex-fill align-items-center justify-content-center',
+    class:
+      'd-flex flex-fill align-items-center justify-content-center image-reset-button-parent',
     style: 'border: 1px solid black', // optional, just to debug section sizes
   },
   templateUrl: './flashcard-content-options-block.component.html',
@@ -139,5 +140,12 @@ export class FlashcardContentOptionsBlock implements OnInit {
       this.contentValue = this.textEditorContent;
       this.contentEditor.close('text selected');
     }
+  }
+
+  showEditButton(): boolean {
+    return this.contentType === this.flashcardContentEnumType.TEXT;
+  }
+  showResetButton(): boolean {
+    return this.contentType !== this.flashcardContentEnumType.NONE;
   }
 }
