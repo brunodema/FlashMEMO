@@ -228,6 +228,19 @@ export abstract class GeneralDictionaryAPIService {
         throw new Error('The dictionary API provider selected does not exist.');
     }
   }
+
+  protected ParseResultsIntoHTML(apiResult: IDictionaryAPIResult) {
+    let htmlText: string = '';
+    htmlText += `<p><b>${apiResult.searchText}</b></p>`; // append search word as 'headline'
+
+    apiResult.results.forEach((r) => {
+      htmlText += `<p>category: ${r.lexicalCategory}</p><p>spelling: ${r.phoneticSpelling}</p>`;
+      htmlText += `<p>definitions:</p>`;
+      r.definitions.forEach((d) => (htmlText += `<ul>${d}</ul>`));
+      htmlText += `<p>examples:</p>`;
+      r.examples.forEach((e) => (htmlText += `<ul>${e}</ul>`));
+    });
+  }
 }
 
 /**
