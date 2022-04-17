@@ -8,6 +8,13 @@ export interface ILoginResponse extends IBaseAPIResponse {
   jwtToken: string;
 }
 
+/**
+ * New interface used to represent responses from the back-end that includes the basic metada, plus some data structure of some sort (ex: dictionary API results).
+ */
+export interface IDataAPIResponse<T> extends IBaseAPIResponse {
+  data: T;
+}
+
 export interface IPaginatedList<Type> {
   results: Type[];
   pageIndex: number;
