@@ -5,13 +5,14 @@ import {
   IPaginatedListResponse,
   IDataAPIResponse,
 } from '../models/http/http-response-types';
+import { environment } from 'src/environments/environment';
+import { Observable, of } from 'rxjs';
 
 /**
  * Simply amazing feature taken from here: https://stackoverflow.com/questions/49996456/importing-json-file-in-typescript. Allows json files to be directly imported as type-safe objects. Requires some changes to the tsconfig.json file.
  */
 import imageAPIJson from 'src/assets/test_assets/ImageAPI.json';
-import { environment } from 'src/environments/environment';
-import { Observable, of } from 'rxjs';
+import dictAPIJson from 'src/assets/test_assets/DictAPI.json';
 
 /**************************************************************************************/
 /* Image API stuff */
@@ -69,7 +70,7 @@ export abstract class GeneralImageAPIService {
 }
 
 /**
- * Class for prototyping purposes only
+ * Class for testing purposes only
  */
 @Injectable()
 export class MockImageAPIService extends GeneralImageAPIService {
@@ -230,7 +231,7 @@ export abstract class GeneralDictionaryAPIService {
   abstract searchWord(
     keyword: string,
     languageCode: string
-  ): Observable<IDataAPIResponse<DictionaryAPIResult[]>>;
+  ): Observable<IDataAPIResponse<DictionaryAPIResult>>;
 
   protected checkIfLanguageIsSupported(
     provider: DictionaryAPIProvider,
@@ -248,16 +249,30 @@ export abstract class GeneralDictionaryAPIService {
   }
 }
 
+/**
+ * Class for testing purposes only
+ */
+@Injectable()
 export class MockDictionaryService extends GeneralDictionaryAPIService {
   searchWord(
     keyword: string,
     languageCode: string
-  ): Observable<IDataAPIResponse<DictionaryAPIResult[]>> {
+  ): Observable<IDataAPIResponse<DictionaryAPIResult>> {
     return of({
       message: 'Success',
       status: '200',
       errors: [],
-      data: [],
+      data: {
+        searchText: '',
+        languageCode: '',
+        results: {
+          lexicalCategory: '',
+          pronunciationFile: '',
+          phoneticSpelling: '',
+          definitions: [],
+          examples: [],
+        },
+      },
     });
   }
 }
