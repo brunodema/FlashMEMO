@@ -26,9 +26,28 @@
         <div *ngSwitchCase="'Audio'">Audio</div>
         <ng-container *ngSwitchCase="'Text'">
           <!-- Text/Dictionary editor (CKEditor) -->
-          <ckeditor #editorComponent [(ngModel)]="textEditorContent"
-            editorUrl="https://cdn.ckeditor.com/4.18.0/full-all/ckeditor.js" [config]="editorConfig"
-            [type]="editorType"></ckeditor>
+          <div class="container">
+            <!-- copy of w-100 inline search box (see below) -->
+            <div class="row">
+              <div class="col-12">
+                <div class="input-group">
+                  <input type="text" class="form-control" id="search-church"
+                    placeholder="Type what you want to search in the dictionary!" [(ngModel)]="currentKeyword" />
+                  <span class="input-group-btn ms-2">
+                    <button class="btn btn-primary" type="submit" (click)="searchImage(currentKeyword)">
+                      Search
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <span>Results from the Dictionary API...</span>
+            </div>
+            <ckeditor #editorComponent [(ngModel)]="textEditorContent"
+              editorUrl="https://cdn.ckeditor.com/4.18.0/full-all/ckeditor.js" [config]="editorConfig"
+              [type]="editorType"></ckeditor>
+          </div>
         </ng-container>
         <ng-container *ngSwitchCase="'Image'">
           <div class="container">
