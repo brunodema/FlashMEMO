@@ -1,0 +1,132 @@
+[
+  {
+    "searchText": "love",
+    "languageCode": "en-us",
+    "results": [
+      {
+        "lexicalCategory": "Noun",
+        "pronunciationFile": "",
+        "phoneticSpelling": "ləv",
+        "definitions": [
+          "an intense feeling of deep affection",
+          "a great interest and pleasure in something",
+          "a person or thing that one loves",
+          "(in tennis, squash, and some other sports) a score of zero; nil"
+        ],
+        "examples": [
+          "babies fill parents with feelings of love",
+          "their love for their country",
+          "his love for football",
+          "we share a love of music",
+          "she was the love of his life",
+          "their two great loves are tobacco and whiskey",
+          "love fifteen",
+          "he was down two sets to love"
+        ]
+      },
+      {
+        "lexicalCategory": "Verb",
+        "pronunciationFile": "",
+        "phoneticSpelling": "ləv",
+        "definitions": [
+          "feel deep affection for (someone)",
+          "like or enjoy very much"
+        ],
+        "examples": [
+          "he loved his sister dearly",
+          "there were four memorial pages set up by her friends in honor of Phoebe, saying how much they loved and missed her",
+          "I just love dancing",
+          "I'd love a cup of tea",
+          "I love this job",
+          "they love to play golf"
+        ]
+      }
+    ]
+  },
+  {
+    "searchText": "arbol",
+    "languageCode": "es",
+    "results": [
+      {
+        "lexicalCategory": "Noun",
+        "pronunciationFile": "",
+        "phoneticSpelling": "",
+        "definitions": [
+          "Planta de tronco leñoso, grueso y elevado que se ramifica a cierta altura del suelo formando la copa",
+          "Cuadro descriptivo que representa de forma gráfica las relaciones que tienen los elementos de un conjunto o las variaciones de un fenómeno",
+          "Barra fija o giratoria que en una máquina sirve para soportar piezas rotativas o para transmitir fuerza motriz de unos órganos a otros",
+          "Barra o eje que se usa en posición vertical y sirve de apoyo a una estructura que se desarrolla alrededor del mismo, como el árbol de una escalera de caracol",
+          "Madero que junto con otros se coloca perpendicularmente a la quilla de una embarcación y está destinado a sujetar las velas",
+          "Eje del órgano (instrumento musical) que, movido a voluntad del ejecutante, hace que suene o deje de sonar un registro",
+          "Punzón que usan los relojeros para perforar el metal y que tiene el mango de madera y la punta de acero",
+          "Pieza de hierro en la parte superior del husillo de la prensa de imprimir"
+        ],
+        "examples": [
+          "el Ministerio de Medio Ambiente tiene previsto plantar un millón de árboles en el próximo año",
+          "diagrama en árbol"
+        ]
+      }
+    ]
+  },
+  {
+    "searchText": "calcio",
+    "languageCode": "it",
+    "results": [
+      {
+        "lexicalCategory": "noun",
+        "pronunciationFile": "",
+        "phoneticSpelling": "ˈkaltʃo",
+        "definitions": [
+          "impugnatura della pistola",
+          "parte del fucile che si appoggia alla spalla"
+        ],
+        "examples": [
+          "carabina con calcio in legno",
+          "L'aggressore lo colpì con il calcio della pistola."
+        ]
+      },
+      {
+        "lexicalCategory": "noun",
+        "pronunciationFile": "",
+        "phoneticSpelling": "ˈkaltʃo",
+        "definitions": [
+          "colpo dato con il piede",
+          "colpo dato con la zampa da animali forniti di zoccoli",
+          "il gioco del pallone",
+          "tiro effettuato colpendo col piede il pallone"
+        ],
+        "examples": [
+          "dare un calcio",
+          "prendere a calci",
+          "Il mulo tira calci se infastidito.",
+          "una partita di calcio",
+          "la nazionale di calcio",
+          "calcio d'angolo",
+          "calcio di punizione"
+        ]
+      },
+      {
+        "lexicalCategory": "noun",
+        "pronunciationFile": "",
+        "phoneticSpelling": "ˈkaltʃo",
+        "definitions": ["elemento chimico di colore bianco"],
+        "examples": ["Il latte è ricco di calcio."]
+      }
+    ]
+  },
+  {
+    "searchText": "car",
+    "languageCode": "en-gb",
+    "results": [
+      {
+        "lexicalCategory": "Noun",
+        "pronunciationFile": "https://audio.oxforddictionaries.com/en/mp3/car_gb_1.mp3",
+        "phoneticSpelling": "kɑː",
+        "definitions": [
+          "a four-wheeled road vehicle that is powered by an engine and is able to carry a small number of people"
+        ],
+        "examples": ["she drove up in a car", "we're going by car"]
+      }
+    ]
+  }
+]
