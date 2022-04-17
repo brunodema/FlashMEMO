@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import {
   PaginatedListResponse,
   IPaginatedListResponse,
+  IDataAPIResponse,
 } from '../models/http/http-response-types';
 
 /**
@@ -204,8 +205,8 @@ export interface IDictionaryAPIResult {
 /**
  * Dictionary API result implementation used by multiple  dictionary providers (Lexicala, Oxford).
  */
-export class CommonAPIResult implements IDictionaryAPIResult {
-  public constructor(init?: Partial<CommonAPIResult>) {
+export class DictionaryAPIResult implements IDictionaryAPIResult {
+  public constructor(init?: Partial<DictionaryAPIResult>) {
     Object.assign(this, init);
   }
   searchText: string;
@@ -229,7 +230,7 @@ export abstract class GeneralDictionaryAPIService {
   abstract searchWord(
     keyword: string,
     languageCode: string
-  ): Observable<IPaginatedListResponse<IDictionaryAPIResult>>;
+  ): Observable<IDataAPIResponse<DictionaryAPIResult[]>>;
 
   protected checkIfLanguageIsSupported(
     provider: DictionaryAPIProvider,
@@ -244,5 +245,19 @@ export abstract class GeneralDictionaryAPIService {
       default:
         throw new Error('The dictionary API provider selected does not exist.');
     }
+  }
+}
+
+export class MockDictionaryService extends GeneralDictionaryAPIService {
+  searchWord(
+    keyword: string,
+    languageCode: string
+  ): Observable<IDataAPIResponse<DictionaryAPIResult[]>> {
+    return of({
+      message: 'Success',
+      status: '200',
+      errors: [],
+      data: [],
+    });
   }
 }
