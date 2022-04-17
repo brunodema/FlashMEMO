@@ -4,6 +4,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
 import { PaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
 import {
+  DictionaryAPIProvider,
   GeneralImageAPIService,
   IImageAPIResult,
   ImageAPIService,
@@ -44,6 +45,7 @@ export class FlashcardContentOptionsBlock implements OnInit {
   modalTitle: string;
   contentType: FlashcardContentType = FlashcardContentType.NONE;
   contentValue: string = '';
+  currentKeyword: string = ''; // shared between search boxes
 
   flashcardContentEnumType = FlashcardContentType;
 
@@ -53,9 +55,15 @@ export class FlashcardContentOptionsBlock implements OnInit {
   hasPrevious: boolean;
   hasNext: boolean;
   currentPageIndex: number;
-  currentKeyword: string = '';
 
   // Text/Dictionary API section
+  dictProviderEnum: typeof DictionaryAPIProvider = DictionaryAPIProvider;
+  // implementation stolen from: https://stackoverflow.com/questions/56036446/typescript-enum-values-as-array
+  possibleDictProviders = Object.values(DictionaryAPIProvider).filter(
+    (f) => typeof f === 'string'
+  );
+  dictProvider: DictionaryAPIProvider = DictionaryAPIProvider.OXFORD;
+
   textEditorContent: string = '<p>Insert your text here! </p>';
   editorType: CKEditor4.EditorType = CKEditor4.EditorType.CLASSIC;
   editorConfig: CKEditor4.Config = {

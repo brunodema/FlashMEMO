@@ -29,9 +29,19 @@
           <div class="container">
             <!-- copy of w-100 inline search box (see below) -->
             <div class="row">
+              <div class="input-group">
+                <label for="dictProvider" class="col-form-label col-auto">Choose the dictionary provider:</label>
+                <div class="ms-2 col-auto">
+                  <select class="form-select" [(ngModel)]="dictProvider">
+                    <option *ngFor="let layout of possibleDictProviders" [ngValue]="layout">{{ layout }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-2">
               <div class="col-12">
                 <div class="input-group">
-                  <input type="text" class="form-control" id="search-church"
+                  <input type="text" class="p-0 form-control" id="search-church"
                     placeholder="Type what you want to search in the dictionary!" [(ngModel)]="currentKeyword" />
                   <span class="input-group-btn ms-2">
                     <button class="btn btn-primary" type="submit" (click)="searchImage(currentKeyword)">
@@ -41,12 +51,14 @@
                 </div>
               </div>
             </div>
-            <div class="row">
+            <div class="row mt-2">
               <span>Results from the Dictionary API...</span>
             </div>
-            <ckeditor #editorComponent [(ngModel)]="textEditorContent"
-              editorUrl="https://cdn.ckeditor.com/4.18.0/full-all/ckeditor.js" [config]="editorConfig"
-              [type]="editorType"></ckeditor>
+            <div class="row mt-2">
+              <ckeditor #editorComponent [(ngModel)]="textEditorContent"
+                editorUrl="https://cdn.ckeditor.com/4.18.0/full-all/ckeditor.js" [config]="editorConfig"
+                [type]="editorType"></ckeditor>
+            </div>
           </div>
         </ng-container>
         <ng-container *ngSwitchCase="'Image'">
@@ -55,7 +67,7 @@
             <div class="row">
               <div class="col-12">
                 <div class="input-group">
-                  <input type="text" class="form-control" id="search-church" placeholder="Find your image!"
+                  <input type="text" class="p-0 form-control" id="search-church" placeholder="Find your image!"
                     [(ngModel)]="currentKeyword" />
                   <!-- TIL it's 'ms' (margin-start), not 'ml' for left margins -->
                   <span class="input-group-btn ms-2">

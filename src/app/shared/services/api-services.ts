@@ -107,3 +107,8 @@ export class ImageAPIService extends GeneralImageAPIService {
     );
   }
 }
+
+export enum DictionaryAPIProvider {
+  OXFORD = 'Oxford',
+  LEXICALA = 'Lexicala',
+}
