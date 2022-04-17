@@ -200,27 +200,8 @@ export interface IDictionaryAPIResult {
     phoneticSpelling: string;
     definitions: string[];
     examples: string[];
-  };
+  }[];
 }
-
-/**
- * Dictionary API result implementation used by multiple  dictionary providers (Lexicala, Oxford).
- */
-export class DictionaryAPIResult implements IDictionaryAPIResult {
-  public constructor(init?: Partial<DictionaryAPIResult>) {
-    Object.assign(this, init);
-  }
-  searchText: string;
-  languageCode: string;
-  results: {
-    lexicalCategory: string;
-    pronunciationFile: string;
-    phoneticSpelling: string;
-    definitions: string[];
-    examples: string[];
-  };
-}
-
 /**
  * Abstract class representing the expected behavior of the Dictionary API service.
  */
@@ -231,7 +212,7 @@ export abstract class GeneralDictionaryAPIService {
   abstract searchWord(
     keyword: string,
     languageCode: string
-  ): Observable<IDataAPIResponse<DictionaryAPIResult>>;
+  ): Observable<IDataAPIResponse<IDictionaryAPIResult>>;
 
   protected checkIfLanguageIsSupported(
     provider: DictionaryAPIProvider,
@@ -257,22 +238,12 @@ export class MockDictionaryService extends GeneralDictionaryAPIService {
   searchWord(
     keyword: string,
     languageCode: string
-  ): Observable<IDataAPIResponse<DictionaryAPIResult>> {
+  ): Observable<IDataAPIResponse<IDictionaryAPIResult>> {
     return of({
       message: 'Success',
       status: '200',
       errors: [],
-      data: {
-        searchText: '',
-        languageCode: '',
-        results: {
-          lexicalCategory: '',
-          pronunciationFile: '',
-          phoneticSpelling: '',
-          definitions: [],
-          examples: [],
-        },
-      },
+      data: dictAPIJson[Math.floor(Math.random() * dictAPIJson.length)],
     });
   }
 }
