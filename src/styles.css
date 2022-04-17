@@ -25,7 +25,9 @@ ngb-modal-window.flashcard-modal div.modal-dialog div.modal-content {
 }
 
 
-
+/******************************************************************************/
+/* CSS associated with my magical solution for hover icons */
+/******************************************************************************/
 
 .image-reset-button {
   position: absolute;
