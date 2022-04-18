@@ -28,6 +28,7 @@ import { AppComponent } from './root/components/app.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CKEditorModule } from 'ckeditor4-angular';
+import { ClipboardModule } from 'ngx-clipboard';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
@@ -83,6 +84,7 @@ const config: ConfigOption = {
     NgxSpinnerModule, // NGX-Spinner
     CKEditorModule,
     NgbModule,
+    ClipboardModule,
   ],
   providers: [{ provide: IAuthService, useClass: AuthService }, AuthGuard],
   bootstrap: [AppComponent],
@@ -93,4 +95,5 @@ export class AppModule {}
  * NGX-Spinner: contains a bunch of spinner templates, and options for them. Main instructions here: https://www.npmjs.com/package/ngx-spinner. Spinner tester here: https://napster2210.github.io/ngx-spinner/
  * CKEditor: common use RTE. Main documentation here: . This link has some instructions on how to set up a custom build of the widget: https://stackoverflow.com/questions/55654872/create-a-custom-plugin-on-ckeditor-for-angular-application. Main documentation for the widget here: https://ckeditor.com/docs/ckeditor4/latest/guide/dev_angular.html#customizing-ckeditor-preset-or-version. *** Something that crossed my mind was using the template tools from the widget to make fully customizable content blocks... ***
  * NG-Bootstrap and NGX-Bootstrap: two modules that offer bootstrap components with Angular implementation. After much investigation, it is now assumed that using both libraries is not conceptually wrong, since they offer different components between each other.
+ * NGX-Clipboard: allows to implement functions that copy contents to the user's clipboard. Source: https://www.npmjs.com/package/ngx-clipboard.
  */
