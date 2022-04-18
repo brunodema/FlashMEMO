@@ -267,3 +267,96 @@ export class MockDictionaryService extends GeneralDictionaryAPIService {
     });
   }
 }
+
+// STILL MISSING THE ACTUAL IMPLEMENTATION OF THE DICTIONARY API. GOT TOO CURIOUS ABOUT AUDIO STUFF :p
+
+/**************************************************************************************/
+/* Dictionary API stuff */
+/**************************************************************************************/
+
+/**
+ * It's a copy of the one used for the Dictionary API. This is still WIP, since the [REDACTED] API is still being developed (conceptually).
+ */
+const AudioAPISupportedLanguages = {
+  Redacted: [''], // nothing for now
+  Oxford: ['en-gb', 'en-us', 'fr', 'gu', 'hi', 'lv', 'ro', 'es', 'sw', 'ta'], // same as from the other ones, even though it seems that only 'en-gb' brings any results
+};
+
+/**
+ * Enum used to show the provider options to the user ('Select' elements).
+ */
+export enum AudioAPIProvider {
+  OXFORD = 'Oxford',
+  REDACTED = '[REDACTED]',
+}
+
+/**
+ * Interface containing the main properties returned by the audio APIs. It is meant to be a duplicate of the Dictionary API counterpart, but focusing on the associated audio files found.
+ */
+export interface IAudioAPIResult {
+  searchText: string;
+  languageCode: string;
+  results: {
+    audioFiles: string[];
+  };
+}
+
+/**
+ * Abstract class representing the expected behavior of the Audio API service.
+ */
+@Injectable()
+export abstract class GeneralAudioAPIService {
+  constructor(protected httpClient: HttpClient) {}
+
+  abstract searchAudio(
+    keyword: string,
+    languageCode: string
+  ): Observable<IDataAPIResponse<IAudioAPIResult>>;
+
+  protected checkIfLanguageIsSupported(
+    provider: AudioAPIProvider,
+    languageCode: string
+  ): boolean {
+    switch (provider) {
+      case AudioAPIProvider.OXFORD:
+        return AudioAPISupportedLanguages.Oxford.includes(languageCode);
+      case AudioAPIProvider.REDACTED:
+        return AudioAPISupportedLanguages.Redacted.includes(languageCode); // shouldn't do anything for now
+
+      default:
+        throw new Error('The audio API provider selected does not exist.');
+    }
+  }
+
+  public ParseResultsIntoHTML(apiResult: IDictionaryAPIResult): string {
+    let htmlText: string = '';
+
+    // WIP
+
+    return htmlText;
+  }
+}
+
+/**
+ * Class for testing purposes only
+ */
+@Injectable()
+export class MockAudioService extends GeneralAudioAPIService {
+  searchAudio(
+    keyword: string,
+    languageCode: string
+  ): Observable<IDataAPIResponse<IAudioAPIResult>> {
+    return of({
+      message: 'Success',
+      status: '200',
+      errors: [],
+      data: {
+        searchText: '',
+        languageCode: '',
+        results: {
+          audioFiles: [],
+        },
+      },
+    });
+  }
+}
