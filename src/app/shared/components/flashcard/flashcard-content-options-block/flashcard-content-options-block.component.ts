@@ -9,12 +9,14 @@ import {
 import {
   AudioAPIProvider,
   DictionaryAPIProvider,
+  GeneralAudioAPIService,
   GeneralDictionaryAPIService,
   GeneralImageAPIService,
   IAudioAPIResult,
   IDictionaryAPIResult,
   IImageAPIResult,
   ImageAPIService,
+  MockAudioService,
   MockDictionaryService,
   MockImageAPIService,
 } from 'src/app/shared/services/api-services';
@@ -46,6 +48,7 @@ export enum FlashcardContentType {
   providers: [
     { provide: GeneralImageAPIService, useClass: MockImageAPIService },
     { provide: GeneralDictionaryAPIService, useClass: MockDictionaryService },
+    { provide: GeneralAudioAPIService, useClass: MockAudioService },
   ],
 })
 export class FlashcardContentOptionsBlock implements OnInit {
@@ -67,13 +70,14 @@ export class FlashcardContentOptionsBlock implements OnInit {
   currentPageIndex: number;
 
   // Audio API section
-  AudioProviderEnum: typeof AudioAPIProvider = AudioAPIProvider;
+  audioProviderEnum: typeof AudioAPIProvider = AudioAPIProvider;
   // implementation stolen from: https://stackoverflow.com/questions/56036446/typescript-enum-values-as-array
   possibleAudioProviders = Object.values(AudioAPIProvider).filter(
     (f) => typeof f === 'string'
   );
-  AudioProvider: AudioAPIProvider = AudioAPIProvider.OXFORD;
-  AudioAPIData$: Observable<IDataAPIResponse<IAudioAPIResult>>;
+  audioProvider: AudioAPIProvider = AudioAPIProvider.OXFORD;
+  audioAPIData$: Observable<IDataAPIResponse<IAudioAPIResult>>;
+  audioAPIResults: string[];
 
   // Text/Dictionary API section
   dictProviderEnum: typeof DictionaryAPIProvider = DictionaryAPIProvider;
@@ -117,7 +121,8 @@ export class FlashcardContentOptionsBlock implements OnInit {
   constructor(
     private modalService: NgbModal,
     private imageAPIService: GeneralImageAPIService,
-    private DictAPIService: GeneralDictionaryAPIService,
+    private dictAPIService: GeneralDictionaryAPIService,
+    private audioAPIService: GeneralAudioAPIService,
     private hostElement: ElementRef, // A way to check the parent's height, and use it after an image is selected by the user
     private spinnerService: NgxSpinnerService,
     private clipboardService: ClipboardService
@@ -179,18 +184,16 @@ export class FlashcardContentOptionsBlock implements OnInit {
   }
 
   searchWord(keyword: string, languageCode: string): void {
-    this.dictAPIData$ = this.DictAPIService.searchWord(keyword, languageCode);
+    this.dictAPIData$ = this.dictAPIService.searchWord(keyword, languageCode);
     this.dictAPIData$.subscribe(
       (r) =>
-        (this.dictAPIparsedHMTL = this.DictAPIService.ParseResultsIntoHTML(
+        (this.dictAPIparsedHMTL = this.dictAPIService.ParseResultsIntoHTML(
           r.data
         ))
     );
   }
 
   showDictionaryToolbar(): boolean {
-    console.log(this.dictAPIparsedHMTL);
-    console.log(this.dictAPIparsedHMTL !== '');
     return this.dictAPIparsedHMTL !== '' ? true : false;
   }
 
@@ -201,5 +204,23 @@ export class FlashcardContentOptionsBlock implements OnInit {
   copyToRTE(): void {
     this.clipboardService.copyFromContent(this.dictAPIparsedHMTL); // copies to user's clipboard as an extra, even though it copies the HTML content, which is wonky for the un-initiated
     this.textEditorContent += '\n\n' + this.dictAPIparsedHMTL;
+  }
+
+  searchAudio(keyword: string, languageCode: string): void {
+    this.audioAPIData$ = this.audioAPIService.searchAudio(
+      keyword,
+      languageCode
+    );
+    this.audioAPIData$.subscribe(
+      (r) => (this.audioAPIResults = r.data.results.audioFiles)
+    );
+  }
+
+  showAudioToolbar(): boolean {
+    return this.audioAPIResults?.length > 0 ? true : false;
+  }
+
+  clearAudioResults(): void {
+    this.audioAPIResults = [];
   }
 }

@@ -23,7 +23,42 @@
     </div>
     <div class="modal-body">
       <div [ngSwitch]="modalTitle">
-        <div *ngSwitchCase="'Audio'">Audio</div>
+        <!-- AUDIO API SECTION -->
+        <ng-container *ngSwitchCase="'Audio'">
+          <div class="container">
+            <!-- copy of full width inline search box (see below) -->
+            <div class="row">
+              <div class="input-group">
+                <label for="audioProvider" class="col-form-label col-auto">Choose the Audio provider:</label>
+                <div class="ms-2 col-auto">
+                  <select class="form-select" [(ngModel)]="audioProvider">
+                    <option *ngFor="let layout of possibleAudioProviders" [ngValue]="layout">{{ layout }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-12">
+                <div class="input-group">
+                  <input type="text" class="p-0 form-control" id="search-church"
+                    placeholder="Type what audio you want to search!" [(ngModel)]="currentKeyword" />
+                  <span class="input-group-btn ms-2">
+                    <button class="btn btn-primary" type="submit" (click)="searchAudio(currentKeyword, 'en-gb')">
+                      Search
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="showAudioToolbar()" class="mt-2 d-flex justify-content-end">
+              <i href="#" class="bi bi-x-circle" (click)="clearAudioResults()" style="font-size: 2em;"></i>
+            </div>
+            <div class="row mt-2">
+              <div [innerHTML]="audioAPIResults" class="container"></div>
+            </div>
+          </div>
+        </ng-container>
+        <!-- TEXT/DICTIONARY API SECTION -->
         <ng-container *ngSwitchCase="'Text'">
           <!-- Text/Dictionary editor (CKEditor) -->
           <div class="container">
@@ -65,6 +100,7 @@
             </div>
           </div>
         </ng-container>
+        <!-- IMAGE API SECTION -->
         <ng-container *ngSwitchCase="'Image'">
           <div class="container">
             <!-- Implementation for inline search box covering full width stolen from here: https://stackoverflow.com/questions/22774780/bootstrap-full-width-text-input-within-inline-form -->

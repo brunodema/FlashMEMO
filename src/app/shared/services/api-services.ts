@@ -329,7 +329,7 @@ export abstract class GeneralAudioAPIService {
     }
   }
 
-  public ParseResultsIntoHTML(apiResult: IDictionaryAPIResult): string {
+  public ParseResultsIntoHTML(apiResult: IAudioAPIResult): string {
     let htmlText: string = '';
 
     // WIP
