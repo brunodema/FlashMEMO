@@ -19,6 +19,11 @@ input {
 /* Shamelessly stolen from: https://stackoverflow.com/questions/42859313/hover-effects-in-bootstrap */
 
 .img-thumbnail:hover {
-  background-color: red;
+  background-color: #007bff;
+  opacity: 0.5;
+}
+
+.bi:hover {
+  color: #007bff;
   opacity: 0.5;
 }
