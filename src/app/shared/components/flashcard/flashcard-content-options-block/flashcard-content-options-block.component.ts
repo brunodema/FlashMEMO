@@ -2,12 +2,18 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
-import { PaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
+import {
+  IDataAPIResponse,
+  PaginatedListResponse,
+} from 'src/app/shared/models/http/http-response-types';
 import {
   DictionaryAPIProvider,
+  GeneralDictionaryAPIService,
   GeneralImageAPIService,
+  IDictionaryAPIResult,
   IImageAPIResult,
   ImageAPIService,
+  MockDictionaryService,
   MockImageAPIService,
 } from 'src/app/shared/services/api-services';
 import { CKEditor4, CKEditorComponent } from 'ckeditor4-angular';
@@ -36,6 +42,7 @@ export enum FlashcardContentType {
   styleUrls: ['./flashcard-content-options-block.component.css'],
   providers: [
     { provide: GeneralImageAPIService, useClass: MockImageAPIService },
+    { provide: GeneralDictionaryAPIService, useClass: MockDictionaryService },
   ],
 })
 export class FlashcardContentOptionsBlock implements OnInit {
@@ -63,6 +70,8 @@ export class FlashcardContentOptionsBlock implements OnInit {
     (f) => typeof f === 'string'
   );
   dictProvider: DictionaryAPIProvider = DictionaryAPIProvider.OXFORD;
+  dictAPIData$: Observable<IDataAPIResponse<IDictionaryAPIResult>>;
+  dictAPIparsedHMTL: string = '';
 
   textEditorContent: string = '<p>Insert your text here! </p>';
   editorType: CKEditor4.EditorType = CKEditor4.EditorType.CLASSIC;
@@ -96,6 +105,7 @@ export class FlashcardContentOptionsBlock implements OnInit {
   constructor(
     private modalService: NgbModal,
     private imageAPIService: GeneralImageAPIService,
+    private DictAPIService: GeneralDictionaryAPIService,
     private hostElement: ElementRef, // A way to check the parent's height, and use it after an image is selected by the user
     private spinnerService: NgxSpinnerService
   ) {}
@@ -153,5 +163,15 @@ export class FlashcardContentOptionsBlock implements OnInit {
   }
   showResetButton(): boolean {
     return this.contentType !== this.flashcardContentEnumType.NONE;
+  }
+
+  searchWord(keyword: string, languageCode: string): void {
+    this.dictAPIData$ = this.DictAPIService.searchWord(keyword, languageCode);
+    this.dictAPIData$.subscribe(
+      (r) =>
+        (this.dictAPIparsedHMTL = this.DictAPIService.ParseResultsIntoHTML(
+          r.data
+        ))
+    );
   }
 }

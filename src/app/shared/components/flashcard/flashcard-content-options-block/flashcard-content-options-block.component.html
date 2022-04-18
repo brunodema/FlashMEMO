@@ -27,7 +27,7 @@
         <ng-container *ngSwitchCase="'Text'">
           <!-- Text/Dictionary editor (CKEditor) -->
           <div class="container">
-            <!-- copy of w-100 inline search box (see below) -->
+            <!-- copy of full width inline search box (see below) -->
             <div class="row">
               <div class="input-group">
                 <label for="dictProvider" class="col-form-label col-auto">Choose the dictionary provider:</label>
@@ -44,7 +44,7 @@
                   <input type="text" class="p-0 form-control" id="search-church"
                     placeholder="Type what you want to search in the dictionary!" [(ngModel)]="currentKeyword" />
                   <span class="input-group-btn ms-2">
-                    <button class="btn btn-primary" type="submit" (click)="searchImage(currentKeyword)">
+                    <button class="btn btn-primary" type="submit" (click)="searchWord(currentKeyword, 'en-gb')">
                       Search
                     </button>
                   </span>
@@ -52,7 +52,7 @@
               </div>
             </div>
             <div class="row mt-2">
-              <span>Results from the Dictionary API...</span>
+              <div [innerHTML]="dictAPIparsedHMTL" class="container"></div>
             </div>
             <div class="row mt-2">
               <ckeditor #editorComponent [(ngModel)]="textEditorContent"
