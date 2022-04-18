@@ -54,7 +54,9 @@
               <i href="#" class="bi bi-x-circle" (click)="clearAudioResults()" style="font-size: 2em;"></i>
             </div>
             <div class="row mt-2">
-              <div [innerHTML]="audioAPIResults" class="container"></div>
+              <ng-container *ngFor="let audio of audioAPIResults">
+                <audio [src]="audio" controls>Oops, your browser is having problems rendering the audio! 🤔</audio>
+              </ng-container>
             </div>
           </div>
         </ng-container>
