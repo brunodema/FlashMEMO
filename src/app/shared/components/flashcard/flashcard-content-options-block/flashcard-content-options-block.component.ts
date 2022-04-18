@@ -69,7 +69,7 @@ export class FlashcardContentOptionsBlock implements OnInit {
   // Audio API section
   AudioProviderEnum: typeof AudioAPIProvider = AudioAPIProvider;
   // implementation stolen from: https://stackoverflow.com/questions/56036446/typescript-enum-values-as-array
-  possibleAudioProviders = Object.values(DictionaryAPIProvider).filter(
+  possibleAudioProviders = Object.values(AudioAPIProvider).filter(
     (f) => typeof f === 'string'
   );
   AudioProvider: AudioAPIProvider = AudioAPIProvider.OXFORD;
