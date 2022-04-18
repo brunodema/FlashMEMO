@@ -7,9 +7,11 @@ import {
   PaginatedListResponse,
 } from 'src/app/shared/models/http/http-response-types';
 import {
+  AudioAPIProvider,
   DictionaryAPIProvider,
   GeneralDictionaryAPIService,
   GeneralImageAPIService,
+  IAudioAPIResult,
   IDictionaryAPIResult,
   IImageAPIResult,
   ImageAPIService,
@@ -63,6 +65,15 @@ export class FlashcardContentOptionsBlock implements OnInit {
   hasPrevious: boolean;
   hasNext: boolean;
   currentPageIndex: number;
+
+  // Audio API section
+  AudioProviderEnum: typeof AudioAPIProvider = AudioAPIProvider;
+  // implementation stolen from: https://stackoverflow.com/questions/56036446/typescript-enum-values-as-array
+  possibleAudioProviders = Object.values(DictionaryAPIProvider).filter(
+    (f) => typeof f === 'string'
+  );
+  AudioProvider: AudioAPIProvider = AudioAPIProvider.OXFORD;
+  AudioAPIData$: Observable<IDataAPIResponse<IAudioAPIResult>>;
 
   // Text/Dictionary API section
   dictProviderEnum: typeof DictionaryAPIProvider = DictionaryAPIProvider;
