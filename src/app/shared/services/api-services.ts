@@ -13,6 +13,7 @@ import { Observable, of } from 'rxjs';
  */
 import imageAPIJson from 'src/assets/test_assets/ImageAPI.json';
 import dictAPIJson from 'src/assets/test_assets/DictAPI.json';
+import AudioAPIJson from 'src/assets/test_assets/AudioAPI.json';
 
 /**************************************************************************************/
 /* Image API stuff */
@@ -350,13 +351,7 @@ export class MockAudioService extends GeneralAudioAPIService {
       message: 'Success',
       status: '200',
       errors: [],
-      data: {
-        searchText: '',
-        languageCode: '',
-        results: {
-          audioFiles: [],
-        },
-      },
+      data: AudioAPIJson[Math.floor(Math.random() * AudioAPIJson.length)],
     });
   }
 }
