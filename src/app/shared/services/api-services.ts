@@ -229,17 +229,24 @@ export abstract class GeneralDictionaryAPIService {
     }
   }
 
-  protected ParseResultsIntoHTML(apiResult: IDictionaryAPIResult) {
+  public ParseResultsIntoHTML(apiResult: IDictionaryAPIResult): string {
     let htmlText: string = '';
     htmlText += `<p><b>${apiResult.searchText}</b></p>`; // append search word as 'headline'
 
     apiResult.results.forEach((r) => {
-      htmlText += `<p>category: ${r.lexicalCategory}</p><p>spelling: ${r.phoneticSpelling}</p>`;
-      htmlText += `<p>definitions:</p>`;
-      r.definitions.forEach((d) => (htmlText += `<ul>${d}</ul>`));
-      htmlText += `<p>examples:</p>`;
-      r.examples.forEach((e) => (htmlText += `<ul>${e}</ul>`));
+      // might include more than one 'result'
+      htmlText += `<p>Category: ${r.lexicalCategory}</p><p>Spelling: ${r.phoneticSpelling}</p>`; // non-array properties
+      htmlText += `<p>Definitions:</p>`;
+      htmlText += '<ul>';
+      r.definitions.forEach((d) => (htmlText += `<li>${d}</li>`)); // list with definitions
+      htmlText += '</ul>';
+      htmlText += `<p>Examples:</p>`;
+      htmlText += '<ul>';
+      r.examples.forEach((e) => (htmlText += `<li>${e}</li>`)); // list with examples
+      htmlText += '</ul>';
     });
+
+    return htmlText;
   }
 }
 
