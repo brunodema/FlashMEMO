@@ -51,9 +51,9 @@
                 </div>
               </div>
             </div>
-            <div class="mt-2 d-flex justify-content-end">
-              <i class="me-2 bi bi-clipboard-check" style="font-size: 2em;"></i>
-              <i class="bi bi-x-circle" style="font-size: 2em;"></i>
+            <div *ngIf="showDictionaryToolbar()" class="mt-2 d-flex justify-content-end">
+              <i href="#" class="me-2 bi bi-clipboard-check" (click)="copyToRTE()" style="font-size: 2em;"></i>
+              <i href="#" class="bi bi-x-circle" (click)="clearDictionaryResults()" style="font-size: 2em;"></i>
             </div>
             <div class="row mt-2">
               <div [innerHTML]="dictAPIparsedHMTL" class="container"></div>

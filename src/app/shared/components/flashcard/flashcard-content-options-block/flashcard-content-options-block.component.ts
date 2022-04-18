@@ -16,7 +16,8 @@ import {
   MockDictionaryService,
   MockImageAPIService,
 } from 'src/app/shared/services/api-services';
-import { CKEditor4, CKEditorComponent } from 'ckeditor4-angular';
+import { CKEditor4 } from 'ckeditor4-angular';
+import { ClipboardService } from 'ngx-clipboard';
 
 export enum FlashcardContentType {
   NONE = 'NONE',
@@ -73,7 +74,7 @@ export class FlashcardContentOptionsBlock implements OnInit {
   dictAPIData$: Observable<IDataAPIResponse<IDictionaryAPIResult>>;
   dictAPIparsedHMTL: string = '';
 
-  textEditorContent: string = '<p>Insert your text here! </p>';
+  textEditorContent: string;
   editorType: CKEditor4.EditorType = CKEditor4.EditorType.CLASSIC;
   editorConfig: CKEditor4.Config = {
     toolbar: [
@@ -107,7 +108,8 @@ export class FlashcardContentOptionsBlock implements OnInit {
     private imageAPIService: GeneralImageAPIService,
     private DictAPIService: GeneralDictionaryAPIService,
     private hostElement: ElementRef, // A way to check the parent's height, and use it after an image is selected by the user
-    private spinnerService: NgxSpinnerService
+    private spinnerService: NgxSpinnerService,
+    private clipboardService: ClipboardService
   ) {}
 
   ngOnInit(): void {
@@ -173,5 +175,20 @@ export class FlashcardContentOptionsBlock implements OnInit {
           r.data
         ))
     );
+  }
+
+  showDictionaryToolbar(): boolean {
+    console.log(this.dictAPIparsedHMTL);
+    console.log(this.dictAPIparsedHMTL !== '');
+    return this.dictAPIparsedHMTL !== '' ? true : false;
+  }
+
+  clearDictionaryResults(): void {
+    this.dictAPIparsedHMTL = '';
+  }
+
+  copyToRTE(): void {
+    this.clipboardService.copyFromContent(this.dictAPIparsedHMTL); // copies to user's clipboard as an extra, even though it copies the HTML content, which is wonky for the un-initiated
+    this.textEditorContent += '\n\n' + this.dictAPIparsedHMTL;
   }
 }
