@@ -55,7 +55,11 @@
             </div>
             <div class="row mt-2">
               <ng-container *ngFor="let audio of audioAPIResults">
-                <audio [src]="audio" controls>Oops, your browser is having problems rendering the audio! 🤔</audio>
+                <div class="row mb-1">
+                  <audio class="col-6" [src]="audio" controls>Oops, your browser is having problems rendering the audio!
+                    🤔</audio>
+                  <i href="#" class="col-auto bi bi-check2-square" style="font-size: 2em;"></i>
+                </div>
               </ng-container>
             </div>
           </div>
