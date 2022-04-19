@@ -223,4 +223,10 @@ export class FlashcardContentOptionsBlock implements OnInit {
   clearAudioResults(): void {
     this.audioAPIResults = [];
   }
+
+  selectAudio(audioURL: string): void {
+    this.contentType = FlashcardContentType.AUDIO;
+    this.contentValue = audioURL;
+    this.contentEditor.close('audio selected');
+  }
 }

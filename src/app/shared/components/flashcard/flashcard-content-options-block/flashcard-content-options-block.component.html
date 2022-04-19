@@ -58,7 +58,8 @@
                 <div class="row mb-1">
                   <audio class="col-6" [src]="audio" controls>Oops, your browser is having problems rendering the audio!
                     🤔</audio>
-                  <i href="#" class="col-auto bi bi-check2-square" style="font-size: 2em;"></i>
+                  <i href="#" class="col-auto bi bi-check2-square" (click)="selectAudio(audio)"
+                    style="font-size: 2em;"></i>
                 </div>
               </ng-container>
             </div>
@@ -161,6 +162,10 @@
   <div *ngSwitchCase="flashcardContentEnumType.TEXT" [style.maxHeight]="componentHeight" class="container"
     style="overflow-y: auto; word-break: break-word;">
     <div [innerHTML]="contentValue | safeBypass: 'html'"></div>
+  </div>
+  <div *ngSwitchCase="flashcardContentEnumType.AUDIO" class="container text-center image-reset-button-parent">
+    <audio [src]="contentValue" controls>Oops, your browser is having problems rendering the audio!
+      🤔</audio>
   </div>
   <ng-container *ngSwitchDefault>oops, some error must have occured! D:</ng-container>
 </div>
