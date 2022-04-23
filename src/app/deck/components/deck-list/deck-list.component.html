@@ -1,4 +1,5 @@
 <div class="container my-3">
-    <p>deck-list works!</p>
-    <button type="button" class="btn btn-primary" routerLink="/deck/1">Test</button>
+  <app-admin-actions-toolbar [routes]=routes></app-admin-actions-toolbar>
+
+  <app-data-table [displayedColumns]='this.displayedColumns' [pageSizeOptions]='this.pageSizeOptions'></app-data-table>
 </div>

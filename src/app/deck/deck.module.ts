@@ -6,9 +6,10 @@ import { DeckRoutingModule } from './routing/deck-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
+import { DeckCreateComponent } from './components/deck-create/deck-create.component';
 
 @NgModule({
-  declarations: [DeckListComponent, DeckDetailComponent],
+  declarations: [DeckListComponent, DeckDetailComponent, DeckCreateComponent],
   imports: [
     CommonModule,
     NgbModule,
