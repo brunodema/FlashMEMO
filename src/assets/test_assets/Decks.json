@@ -1,0 +1,902 @@
+[
+  {
+    "deckId": "193AD0B2-8393-6A42-431B-3FA38CDEAAC9",
+    "ownerId": "75A3AC38-A5DC-2919-E3A6-2E78D9B646CF",
+    "languageISOCode": "en",
+    "name": "Subaru",
+    "description": "Mauris vel turpis. Aliquam",
+    "creationDate": "2020-07-18 18:19:08",
+    "lastUpdated": "2023-01-16 10:53:56"
+  },
+  {
+    "deckId": "C88EB791-B750-9D8D-746E-EED241E336A0",
+    "ownerId": "BD11D1A1-7B81-3B84-7A64-28BD59DA5D38",
+    "languageISOCode": "fr",
+    "name": "Mazda, Toyota",
+    "description": "erat volutpat.",
+    "creationDate": "2021-02-04 16:23:03",
+    "lastUpdated": "2022-07-22 03:48:22"
+  },
+  {
+    "deckId": "1E26B5F7-3570-6038-CB65-5961DB9FA747",
+    "ownerId": "E6DA2F48-A311-6C6A-185C-B848B9A662FA",
+    "languageISOCode": "en",
+    "name": "Nissan, Kia Motors",
+    "description": "Phasellus vitae mauris",
+    "creationDate": "2020-09-03 13:16:46",
+    "lastUpdated": "2022-07-14 15:44:43"
+  },
+  {
+    "deckId": "2B8E1357-827A-14E4-3DFF-AF5B47F43732",
+    "ownerId": "564EEB83-107D-BC0A-3D08-E2BB142DD074",
+    "languageISOCode": "it",
+    "name": "Isuzu, General Motors",
+    "description": "mi. Duis",
+    "creationDate": "2020-05-04 14:22:15",
+    "lastUpdated": "2022-06-19 07:50:09"
+  },
+  {
+    "deckId": "E4646A3E-994D-476C-7849-E68C1186314A",
+    "ownerId": "3720E61B-5225-E6DF-665D-B8C225226BCD",
+    "languageISOCode": "fr",
+    "name": "Seat, JLR",
+    "description": "nibh. Phasellus nulla.",
+    "creationDate": "2021-03-22 06:32:21",
+    "lastUpdated": "2023-01-25 09:30:34"
+  },
+  {
+    "deckId": "C1C4ABA4-D102-DDEE-576C-ACBFC5B416C7",
+    "ownerId": "EBD7813E-CBFE-5945-10BD-B183627EF3FA",
+    "languageISOCode": "fr",
+    "name": "Honda, Kia Motors",
+    "description": "tellus justo sit amet",
+    "creationDate": "2020-10-25 18:46:42",
+    "lastUpdated": "2022-09-13 17:19:31"
+  },
+  {
+    "deckId": "E2AC8AD9-6C4E-0BDF-EA65-F766A88249A6",
+    "ownerId": "970755D5-B6E6-E0E4-33AE-C417D4E6549A",
+    "languageISOCode": "pt",
+    "name": "FAW",
+    "description": "et netus et malesuada fames ac turpis egestas.",
+    "creationDate": "2020-08-15 02:57:37",
+    "lastUpdated": "2022-07-11 05:15:05"
+  },
+  {
+    "deckId": "15253215-3317-9448-DEAA-905A9C06B827",
+    "ownerId": "FD505535-D812-4352-02ED-A54C52476C0D",
+    "languageISOCode": "en",
+    "name": "Renault, Lincoln",
+    "description": "ut, pharetra sed, hendrerit a, arcu. Sed",
+    "creationDate": "2020-12-05 12:30:41",
+    "lastUpdated": "2022-12-01 09:55:49"
+  },
+  {
+    "deckId": "AAC2C6AE-5C98-71EF-0186-C3B986EB5461",
+    "ownerId": "F5324699-7CD3-9809-2805-6D1C1A897D1A",
+    "languageISOCode": "pt",
+    "name": "Maruti Suzuki",
+    "description": "Phasellus ornare. Fusce mollis. Duis sit",
+    "creationDate": "2020-06-05 06:11:24",
+    "lastUpdated": "2022-10-07 03:12:43"
+  },
+  {
+    "deckId": "356DFA5C-689E-E94A-8A07-E57E2F2C1F42",
+    "ownerId": "3984ED77-ECB3-7B51-2477-2AC344663668",
+    "languageISOCode": "it",
+    "name": "RAM Trucks, Renault",
+    "description": "quis massa. Mauris vestibulum, neque",
+    "creationDate": "2020-12-08 18:51:32",
+    "lastUpdated": "2023-02-20 18:36:57"
+  },
+  {
+    "deckId": "884EEBBB-ED6C-3804-5243-A4B26CA9C791",
+    "ownerId": "113A9DB7-75A5-93B1-3739-2E83F40F9A7A",
+    "languageISOCode": "it",
+    "name": "Isuzu, BMW",
+    "description": "egestas a, dui. Cras",
+    "creationDate": "2020-12-14 12:48:49",
+    "lastUpdated": "2022-11-26 19:26:34"
+  },
+  {
+    "deckId": "179C2822-8364-BB1A-BD61-330BC5651817",
+    "ownerId": "1B670BBE-4B1A-248A-DB32-2D4A1793E267",
+    "languageISOCode": "hi",
+    "name": "MINI",
+    "description": "tincidunt pede ac urna. Ut tincidunt",
+    "creationDate": "2020-11-06 05:42:40",
+    "lastUpdated": "2023-01-06 09:02:25"
+  },
+  {
+    "deckId": "DC753A75-5DCE-EDEF-EDB3-2A856D4914C6",
+    "ownerId": "91FBBB6B-A270-16AA-92D4-19D27A381FD5",
+    "languageISOCode": "en",
+    "name": "Buick, Fiat",
+    "description": "Cras pellentesque. Sed dictum. Proin eget odio. Aliquam vulputate",
+    "creationDate": "2021-01-31 07:54:45",
+    "lastUpdated": "2022-08-24 17:31:28"
+  },
+  {
+    "deckId": "4601D124-99A9-4D94-57D1-96D8A6DB417B",
+    "ownerId": "D839A9B5-A0FD-016D-4FE2-9BAFC97EB7B5",
+    "languageISOCode": "it",
+    "name": "Buick, Vauxhall",
+    "description": "purus. Nullam",
+    "creationDate": "2020-10-01 16:50:53",
+    "lastUpdated": "2022-10-01 05:44:11"
+  },
+  {
+    "deckId": "DF4B9ECA-16CA-D9E5-8989-C1E64008CC8C",
+    "ownerId": "94CC4178-3365-4676-40B9-B9A55DAF80B7",
+    "languageISOCode": "it",
+    "name": "Mahindra and Mahindra, Lincoln",
+    "description": "orci quis lectus. Nullam suscipit,",
+    "creationDate": "2020-10-03 19:39:55",
+    "lastUpdated": "2022-11-26 20:40:25"
+  },
+  {
+    "deckId": "D7E69FAA-9549-7BB0-0629-9257A256622A",
+    "ownerId": "53F4A5E8-57D4-E0FE-4F4D-E8C471AB8687",
+    "languageISOCode": "it",
+    "name": "Isuzu, Lincoln",
+    "description": "eu tellus eu augue",
+    "creationDate": "2020-08-04 09:17:16",
+    "lastUpdated": "2022-12-16 11:40:42"
+  },
+  {
+    "deckId": "2CC7EC32-C092-2E1D-8361-2B7417730256",
+    "ownerId": "29C92758-7B88-EAD2-6CB8-361923EEDE13",
+    "languageISOCode": "hi",
+    "name": "Toyota, FAW",
+    "description": "lacinia vitae, sodales at, velit.",
+    "creationDate": "2020-12-15 11:52:08",
+    "lastUpdated": "2022-04-24 15:41:39"
+  },
+  {
+    "deckId": "DF27B13C-5759-469B-1B1E-E05D072C12CB",
+    "ownerId": "698A1572-425A-D267-78BF-A835B17668C2",
+    "languageISOCode": "pt",
+    "name": "Audi, Jeep",
+    "description": "rutrum urna, nec",
+    "creationDate": "2020-12-28 10:42:11",
+    "lastUpdated": "2023-03-24 20:06:20"
+  },
+  {
+    "deckId": "91FE3FBA-533C-941E-857D-DCDEBF137593",
+    "ownerId": "C17C846E-29A1-0D79-0B5A-DEA7C290930D",
+    "languageISOCode": "hi",
+    "name": "Vauxhall",
+    "description": "tellus id nunc interdum",
+    "creationDate": "2020-06-10 02:52:50",
+    "lastUpdated": "2023-04-16 04:23:13"
+  },
+  {
+    "deckId": "CE9DA816-3DC9-F2C4-AEEF-616794A3EC5D",
+    "ownerId": "594AC2AD-7E66-B2BC-13B6-6DACFC62B93C",
+    "languageISOCode": "it",
+    "name": "Renault, Ford",
+    "description": "at arcu. Vestibulum ante ipsum primis in faucibus orci luctus",
+    "creationDate": "2020-07-18 23:25:15",
+    "lastUpdated": "2022-08-14 04:49:08"
+  },
+  {
+    "deckId": "A08A117A-79A8-28B4-0728-CECE9EB95231",
+    "ownerId": "29897C16-695C-A68A-0792-CD58C80EE6E7",
+    "languageISOCode": "hi",
+    "name": "Hyundai Motors",
+    "description": "Suspendisse aliquet molestie tellus. Aenean egestas hendrerit",
+    "creationDate": "2020-06-09 18:35:08",
+    "lastUpdated": "2022-05-28 17:03:13"
+  },
+  {
+    "deckId": "2D96CC98-DB3C-B28A-C337-F85A85AC7978",
+    "ownerId": "CB29D739-9351-3BE6-7326-BED22C12266A",
+    "languageISOCode": "hi",
+    "name": "JLR",
+    "description": "vulputate ullamcorper",
+    "creationDate": "2021-04-05 12:03:54",
+    "lastUpdated": "2023-04-09 12:33:35"
+  },
+  {
+    "deckId": "29645CA6-33B4-5492-EE53-2F197ED2E6B3",
+    "ownerId": "F3CD9CB9-F8BD-F73C-64EA-CA50DD5833C1",
+    "languageISOCode": "it",
+    "name": "Skoda",
+    "description": "at auctor ullamcorper, nisl arcu",
+    "creationDate": "2020-06-16 22:37:47",
+    "lastUpdated": "2022-09-13 21:05:10"
+  },
+  {
+    "deckId": "6C7A57BA-29FB-D989-5B79-41EE6AD286E6",
+    "ownerId": "B43C925C-7199-3C6F-82B4-402E3A54CA64",
+    "languageISOCode": "fr",
+    "name": "GMC, Chevrolet",
+    "description": "et pede. Nunc sed orci lobortis",
+    "creationDate": "2021-04-07 04:50:26",
+    "lastUpdated": "2023-01-19 23:42:12"
+  },
+  {
+    "deckId": "A48A7C18-3C47-2192-AD50-D3926988C2AA",
+    "ownerId": "599C9D83-566E-11ED-2701-8E6EFDA3255F",
+    "languageISOCode": "en",
+    "name": "Dacia",
+    "description": "massa. Integer vitae nibh. Donec est mauris,",
+    "creationDate": "2020-11-20 22:12:42",
+    "lastUpdated": "2022-06-29 17:34:59"
+  },
+  {
+    "deckId": "98644E36-DDBC-2AAA-D528-56BE43DE7A8E",
+    "ownerId": "566F3BA5-E2B5-8FB2-14EE-B25869C844B5",
+    "languageISOCode": "hi",
+    "name": "Subaru, Dodge",
+    "description": "vulputate, posuere vulputate, lacus. Cras interdum. Nunc sollicitudin commodo",
+    "creationDate": "2021-03-10 04:00:43",
+    "lastUpdated": "2023-01-04 20:26:56"
+  },
+  {
+    "deckId": "80D361D7-1B96-8955-1587-8B2499AB9586",
+    "ownerId": "BA1A39D1-5631-BD0D-546E-FD1C597FBB7C",
+    "languageISOCode": "pt",
+    "name": "Subaru, Acura",
+    "description": "Integer aliquam adipiscing lacus. Ut",
+    "creationDate": "2021-02-06 03:28:04",
+    "lastUpdated": "2022-09-07 14:38:44"
+  },
+  {
+    "deckId": "2D3A6780-66CB-84DD-4BE4-836C6B6C9316",
+    "ownerId": "6D51923D-B243-39B1-7D07-259E37B72FBF",
+    "languageISOCode": "pt",
+    "name": "Tata Motors",
+    "description": "tincidunt orci quis lectus. Nullam suscipit, est ac facilisis",
+    "creationDate": "2020-05-07 18:54:57",
+    "lastUpdated": "2022-07-25 13:04:28"
+  },
+  {
+    "deckId": "2AA6A633-48EE-5937-4B01-9E631AB46D78",
+    "ownerId": "0F6E3278-4DA1-9231-C058-37737CDC4C3C",
+    "languageISOCode": "pt",
+    "name": "Subaru, Maruti Suzuki",
+    "description": "Nam nulla magna, malesuada vel, convallis in,",
+    "creationDate": "2021-03-18 15:59:07",
+    "lastUpdated": "2023-03-20 10:02:46"
+  },
+  {
+    "deckId": "D8C0DD1B-C1EC-C002-9DE2-26C3BEA385C6",
+    "ownerId": "EB313CAE-C6F5-51C1-6E95-6205946A45A1",
+    "languageISOCode": "fr",
+    "name": "Lincoln, Lexus",
+    "description": "auctor, nunc nulla vulputate dui, nec tempus mauris erat eget",
+    "creationDate": "2020-07-30 06:40:51",
+    "lastUpdated": "2022-05-19 12:35:09"
+  },
+  {
+    "deckId": "6B3BFD5A-6E84-1D52-4C53-A61E9D386B2B",
+    "ownerId": "C683DFC2-C4AD-DE83-839A-69D9A5ADB195",
+    "languageISOCode": "it",
+    "name": "Hyundai Motors",
+    "description": "Suspendisse ac metus",
+    "creationDate": "2020-05-06 10:23:29",
+    "lastUpdated": "2022-12-23 15:03:00"
+  },
+  {
+    "deckId": "83AD89FC-AC85-7E77-48B6-DC3EB0EB4A49",
+    "ownerId": "43C156E1-68AE-59FD-9DC1-61541C37C7A5",
+    "languageISOCode": "it",
+    "name": "Volkswagen",
+    "description": "et ipsum cursus vestibulum. Mauris magna. Duis",
+    "creationDate": "2021-04-05 20:19:45",
+    "lastUpdated": "2022-10-11 09:06:33"
+  },
+  {
+    "deckId": "16DB8832-E558-F78C-8043-9D4791EF4296",
+    "ownerId": "ED91921E-708B-7A4A-BB14-64698E399BCC",
+    "languageISOCode": "fr",
+    "name": "GMC, Infiniti",
+    "description": "Cras dolor dolor, tempus non, lacinia",
+    "creationDate": "2020-06-26 07:59:47",
+    "lastUpdated": "2023-02-04 07:30:10"
+  },
+  {
+    "deckId": "6BA68CB3-3DAD-CB78-1477-610E9CC137C3",
+    "ownerId": "2379A9B3-F655-0834-525B-D55221D12876",
+    "languageISOCode": "it",
+    "name": "Ferrari",
+    "description": "dolor dolor, tempus non, lacinia at, iaculis quis, pede. Praesent",
+    "creationDate": "2021-02-14 13:05:46",
+    "lastUpdated": "2022-05-18 03:16:11"
+  },
+  {
+    "deckId": "62C09B26-584D-5698-0577-54143CB6252D",
+    "ownerId": "4AB8BA8A-260C-A4F6-06C2-95DDDE503DD2",
+    "languageISOCode": "en",
+    "name": "Ford",
+    "description": "placerat. Cras dictum ultricies ligula. Nullam enim.",
+    "creationDate": "2021-03-03 19:41:37",
+    "lastUpdated": "2023-02-12 06:14:54"
+  },
+  {
+    "deckId": "1AD3C2A3-3E51-CE04-8D4B-2425E7462FE2",
+    "ownerId": "C5A8694C-FD90-ED67-6A9B-EA7482AB2BD3",
+    "languageISOCode": "it",
+    "name": "RAM Trucks, Fiat",
+    "description": "malesuada malesuada. Integer id magna et ipsum",
+    "creationDate": "2020-11-27 18:03:50",
+    "lastUpdated": "2022-11-10 10:41:18"
+  },
+  {
+    "deckId": "D999560E-4E68-EC98-D6DE-FD7584A43AB7",
+    "ownerId": "FFE0D0EA-E3B4-E6DF-D65D-1A9299AA2133",
+    "languageISOCode": "en",
+    "name": "Dodge",
+    "description": "penatibus et magnis dis parturient montes, nascetur ridiculus",
+    "creationDate": "2021-02-23 00:44:41",
+    "lastUpdated": "2023-03-18 01:15:51"
+  },
+  {
+    "deckId": "8546DCCD-64CE-787B-2627-C703226193C5",
+    "ownerId": "048B1122-C37D-95AF-D461-5E45C5BB7BD3",
+    "languageISOCode": "fr",
+    "name": "Suzuki",
+    "description": "nec urna suscipit",
+    "creationDate": "2020-11-26 05:07:23",
+    "lastUpdated": "2023-01-14 07:54:08"
+  },
+  {
+    "deckId": "243C9CBC-9B8D-7315-D26D-934DD3D7677D",
+    "ownerId": "92AC3C73-EB91-C649-338B-6C8E28267BF9",
+    "languageISOCode": "it",
+    "name": "GMC",
+    "description": "litora torquent per conubia nostra,",
+    "creationDate": "2020-10-12 15:10:26",
+    "lastUpdated": "2023-02-09 13:08:32"
+  },
+  {
+    "deckId": "B755221C-2E58-8AF7-C6C6-7B782723D322",
+    "ownerId": "80052E65-C5EE-9246-1763-B36511CEED44",
+    "languageISOCode": "it",
+    "name": "Lexus, Dodge",
+    "description": "eu, euismod ac,",
+    "creationDate": "2020-11-05 08:27:23",
+    "lastUpdated": "2022-10-19 20:55:28"
+  },
+  {
+    "deckId": "C938ED44-267B-2699-EB75-2855D5EC5412",
+    "ownerId": "6B74A386-7AAE-EA8A-681D-63D4EA1C9B21",
+    "languageISOCode": "en",
+    "name": "Mitsubishi Motors",
+    "description": "Fusce diam nunc, ullamcorper eu, euismod ac, fermentum vel,",
+    "creationDate": "2021-02-18 06:02:54",
+    "lastUpdated": "2022-12-15 09:53:00"
+  },
+  {
+    "deckId": "B581B9BB-2C1D-3BD9-71AA-B2A8983EBC74",
+    "ownerId": "F29A6BCB-5DAF-CE66-F82E-37295AD2115C",
+    "languageISOCode": "it",
+    "name": "Volvo",
+    "description": "fringilla ornare placerat, orci lacus",
+    "creationDate": "2020-06-25 01:17:04",
+    "lastUpdated": "2023-01-30 07:16:54"
+  },
+  {
+    "deckId": "39942484-98A5-5617-9E8E-939E23B1D1F6",
+    "ownerId": "DC983F52-2EEF-56A9-ED56-7256E6C77CAE",
+    "languageISOCode": "hi",
+    "name": "Fiat, Dodge",
+    "description": "mollis. Duis sit amet diam",
+    "creationDate": "2020-06-01 20:45:05",
+    "lastUpdated": "2022-09-30 16:23:01"
+  },
+  {
+    "deckId": "089403FF-CDEB-68B0-2D82-8DCEB60DE41C",
+    "ownerId": "E3D74E55-8551-33D4-DCAA-82DA39C35949",
+    "languageISOCode": "pt",
+    "name": "Daihatsu, FAW",
+    "description": "elit erat",
+    "creationDate": "2020-07-31 12:05:25",
+    "lastUpdated": "2022-10-15 15:15:37"
+  },
+  {
+    "deckId": "C2AA1496-7536-1335-3A6B-3999B59CC5D1",
+    "ownerId": "959D1EF6-1F5B-3FD4-62CD-D92FCDC193D6",
+    "languageISOCode": "pt",
+    "name": "Hyundai Motors, Kenworth",
+    "description": "erat eget ipsum. Suspendisse sagittis. Nullam vitae",
+    "creationDate": "2020-04-28 18:51:47",
+    "lastUpdated": "2023-01-17 19:40:15"
+  },
+  {
+    "deckId": "9B6B2EC8-8177-F777-71C0-8542A3AC92B7",
+    "ownerId": "67C2C071-41FA-CE07-58D5-403AC5743E5B",
+    "languageISOCode": "en",
+    "name": "Lexus, JLR",
+    "description": "ligula. Donec luctus aliquet odio.",
+    "creationDate": "2020-06-05 03:55:24",
+    "lastUpdated": "2023-04-15 07:23:54"
+  },
+  {
+    "deckId": "ABD58CDE-23EB-E47D-EDA8-642720F35BAA",
+    "ownerId": "6D463DBC-B491-D392-F545-EE99BE7E3B19",
+    "languageISOCode": "hi",
+    "name": "Daihatsu",
+    "description": "in",
+    "creationDate": "2020-08-13 23:58:16",
+    "lastUpdated": "2022-12-11 09:09:27"
+  },
+  {
+    "deckId": "CA592550-3028-7C4B-6323-A9B8D2931AD9",
+    "ownerId": "8ADBD95E-C3E3-4552-D29E-CD26C986AA9B",
+    "languageISOCode": "it",
+    "name": "Dacia, Chrysler",
+    "description": "dis parturient montes,",
+    "creationDate": "2020-05-20 14:20:21",
+    "lastUpdated": "2022-11-14 11:44:48"
+  },
+  {
+    "deckId": "EDEE34EB-B76A-1DD5-0724-9D3DC3183537",
+    "ownerId": "DA10A7E4-09C1-C131-E236-8E2B9D80D8B2",
+    "languageISOCode": "it",
+    "name": "Mitsubishi Motors, RAM Trucks",
+    "description": "dictum augue",
+    "creationDate": "2020-06-02 15:29:24",
+    "lastUpdated": "2022-07-26 23:00:54"
+  },
+  {
+    "deckId": "1C141CA3-9042-16DC-7142-8DE15582FEC5",
+    "ownerId": "31EB2E1B-078A-2294-34D2-6DA690D5A49F",
+    "languageISOCode": "pt",
+    "name": "Honda",
+    "description": "molestie in, tempus eu, ligula. Aenean euismod mauris eu",
+    "creationDate": "2020-05-24 14:08:42",
+    "lastUpdated": "2022-06-29 11:57:10"
+  },
+  {
+    "deckId": "B5422321-9152-8BB6-43EC-8564D1468C55",
+    "ownerId": "DA1D8833-E0D3-C43A-7E8C-CA7DD314CB6D",
+    "languageISOCode": "pt",
+    "name": "Smart, Suzuki",
+    "description": "fames ac turpis",
+    "creationDate": "2020-09-10 03:45:56",
+    "lastUpdated": "2022-07-11 02:09:24"
+  },
+  {
+    "deckId": "B15DBD5C-9F43-A8C3-18B5-BD249527BDEA",
+    "ownerId": "DF250AF9-2DC5-1AB0-82C4-38D45E0C2212",
+    "languageISOCode": "hi",
+    "name": "Maruti Suzuki, Kenworth",
+    "description": "pede sagittis augue, eu",
+    "creationDate": "2020-09-09 18:38:48",
+    "lastUpdated": "2022-06-25 10:09:05"
+  },
+  {
+    "deckId": "3EB73928-62DD-B884-A4DA-2FEC246AB3AD",
+    "ownerId": "61205459-D8D5-A4C3-311D-E1EC3A659EC1",
+    "languageISOCode": "it",
+    "name": "Volkswagen",
+    "description": "dis",
+    "creationDate": "2020-05-28 09:01:07",
+    "lastUpdated": "2022-04-28 08:11:10"
+  },
+  {
+    "deckId": "7F06A327-56B8-1CEB-E7BA-8C1E1B97EAE0",
+    "ownerId": "A49AD25F-5B8D-BADA-5DA5-5523593556BC",
+    "languageISOCode": "it",
+    "name": "Isuzu, Citroën",
+    "description": "hendrerit",
+    "creationDate": "2020-08-01 00:01:53",
+    "lastUpdated": "2023-01-13 18:05:16"
+  },
+  {
+    "deckId": "8311408E-DA06-0016-C425-38E985782DC9",
+    "ownerId": "7387381E-2567-89CB-013F-B4D8297B94C8",
+    "languageISOCode": "it",
+    "name": "Isuzu",
+    "description": "arcu. Vestibulum ante ipsum primis",
+    "creationDate": "2021-04-13 16:14:18",
+    "lastUpdated": "2022-05-19 14:18:23"
+  },
+  {
+    "deckId": "F747E926-835A-E687-4B49-1CE57CDE934C",
+    "ownerId": "B3C9C9B1-9B56-D0BB-6439-7E2AFE654B31",
+    "languageISOCode": "hi",
+    "name": "Dongfeng Motor",
+    "description": "sit amet ultricies sem magna nec quam.",
+    "creationDate": "2020-09-11 09:10:34",
+    "lastUpdated": "2022-10-29 10:34:43"
+  },
+  {
+    "deckId": "66201C64-9767-75C7-B3E2-A73353552E7C",
+    "ownerId": "68D61711-BD89-AFCA-2815-E6BFAD3E4268",
+    "languageISOCode": "fr",
+    "name": "Kenworth, FAW",
+    "description": "egestas. Aliquam nec enim. Nunc",
+    "creationDate": "2020-07-09 04:55:52",
+    "lastUpdated": "2023-04-05 16:39:23"
+  },
+  {
+    "deckId": "F58B44E3-526B-D54E-CD69-9DEECEA1D7D4",
+    "ownerId": "84C598D8-1188-82FB-C67C-97142189A5D3",
+    "languageISOCode": "it",
+    "name": "Peugeot, Lincoln",
+    "description": "netus et malesuada fames",
+    "creationDate": "2020-10-06 20:02:30",
+    "lastUpdated": "2022-11-27 07:02:04"
+  },
+  {
+    "deckId": "91721D89-6132-D39E-69F9-DD734C416503",
+    "ownerId": "A467F15A-C766-95D0-D51B-B466E7B51A4D",
+    "languageISOCode": "it",
+    "name": "GMC, BMW",
+    "description": "Aliquam nec",
+    "creationDate": "2020-05-03 21:15:39",
+    "lastUpdated": "2022-06-26 04:27:09"
+  },
+  {
+    "deckId": "86D4241A-8934-5726-DC16-AC853E1858D7",
+    "ownerId": "5C709958-6089-DD56-79C4-4EABC15AEB61",
+    "languageISOCode": "en",
+    "name": "Maruti Suzuki",
+    "description": "Aliquam ultrices iaculis odio. Nam interdum enim non",
+    "creationDate": "2020-10-23 15:09:31",
+    "lastUpdated": "2022-09-25 19:17:36"
+  },
+  {
+    "deckId": "69BF799B-E64C-2C2B-6E79-A5FD123C128E",
+    "ownerId": "7ABE6CDC-4C1D-1BEC-D477-89301DAAA2AD",
+    "languageISOCode": "en",
+    "name": "Toyota",
+    "description": "libero. Integer in",
+    "creationDate": "2020-04-25 23:14:57",
+    "lastUpdated": "2022-06-27 03:13:36"
+  },
+  {
+    "deckId": "61963123-885E-4B35-6DA8-8B34F3C34856",
+    "ownerId": "C956B497-4382-7C51-DBA6-728E9A311D48",
+    "languageISOCode": "pt",
+    "name": "Lincoln, Porsche",
+    "description": "rutrum urna, nec luctus felis purus ac tellus. Suspendisse sed",
+    "creationDate": "2020-10-18 09:08:47",
+    "lastUpdated": "2022-12-24 12:47:05"
+  },
+  {
+    "deckId": "1DD382A0-3E75-CC7D-92CB-9F84C8CD916E",
+    "ownerId": "0BED5668-95EE-F5AD-1DFA-4460BF1BD8CD",
+    "languageISOCode": "hi",
+    "name": "Daihatsu",
+    "description": "Aliquam erat volutpat. Nulla dignissim.",
+    "creationDate": "2020-11-26 15:13:32",
+    "lastUpdated": "2022-11-24 23:52:57"
+  },
+  {
+    "deckId": "7177B686-1644-FEAD-AABB-574E41AE6313",
+    "ownerId": "B73550C6-D369-3238-303B-AD4F4EAA18CF",
+    "languageISOCode": "pt",
+    "name": "Daimler, Chrysler",
+    "description": "hendrerit a,",
+    "creationDate": "2020-10-05 13:10:56",
+    "lastUpdated": "2022-12-20 03:21:00"
+  },
+  {
+    "deckId": "D1C05092-F703-6E17-9F1D-8ED9B283852F",
+    "ownerId": "7AEB5D97-A889-8728-66BA-A1B878FD96B5",
+    "languageISOCode": "en",
+    "name": "RAM Trucks, Mercedes-Benz",
+    "description": "ridiculus mus. Proin vel nisl. Quisque fringilla euismod enim.",
+    "creationDate": "2020-09-22 19:21:55",
+    "lastUpdated": "2022-07-08 09:08:47"
+  },
+  {
+    "deckId": "20125F1D-08AE-0BEA-123E-5DB3D14681DC",
+    "ownerId": "B5A81C46-5671-A600-1B06-5D87791C8691",
+    "languageISOCode": "fr",
+    "name": "Volkswagen",
+    "description": "mollis lectus pede",
+    "creationDate": "2020-05-03 23:37:16",
+    "lastUpdated": "2023-01-31 20:10:10"
+  },
+  {
+    "deckId": "B092B934-5EC7-5468-AA1B-6EAF022345F0",
+    "ownerId": "EDABFEB3-3E8A-577D-BD68-A20AF61797DC",
+    "languageISOCode": "fr",
+    "name": "Chevrolet, Suzuki",
+    "description": "arcu vel quam dignissim pharetra. Nam ac nulla. In",
+    "creationDate": "2021-03-24 18:59:11",
+    "lastUpdated": "2022-10-30 16:47:51"
+  },
+  {
+    "deckId": "2E2471BE-C1F7-9BAB-8C38-E31C5A4278EE",
+    "ownerId": "5236886C-A562-8B11-42C3-CAC53DC89456",
+    "languageISOCode": "it",
+    "name": "Toyota, Renault",
+    "description": "erat. Sed nunc est, mollis non,",
+    "creationDate": "2021-02-02 15:48:21",
+    "lastUpdated": "2022-06-29 02:13:54"
+  },
+  {
+    "deckId": "D2D9178F-24C5-87E8-FF62-1AFE68FBB34A",
+    "ownerId": "ACB21D2B-16A7-0020-D716-ED5F907C2156",
+    "languageISOCode": "en",
+    "name": "Dodge, JLR",
+    "description": "nonummy ultricies ornare, elit",
+    "creationDate": "2021-03-04 08:23:08",
+    "lastUpdated": "2022-06-23 05:26:13"
+  },
+  {
+    "deckId": "EDD035B0-3F97-DE02-83CA-C5225C317CA3",
+    "ownerId": "D548832A-F838-B847-456F-CF45EFCE2639",
+    "languageISOCode": "it",
+    "name": "Audi, Daimler",
+    "description": "nibh. Phasellus nulla. Integer",
+    "creationDate": "2020-08-13 12:04:15",
+    "lastUpdated": "2022-11-10 23:53:02"
+  },
+  {
+    "deckId": "BBBE3F1E-0C63-A777-A3BA-5373DE183ED4",
+    "ownerId": "27501CDA-D302-93D2-2393-9B53B43C5478",
+    "languageISOCode": "it",
+    "name": "Mahindra and Mahindra",
+    "description": "et libero. Proin mi.",
+    "creationDate": "2021-02-28 12:52:35",
+    "lastUpdated": "2022-07-15 13:00:50"
+  },
+  {
+    "deckId": "6CA7681B-B281-C07C-ACB0-159988007B18",
+    "ownerId": "7DE322E6-E5B2-4B52-4F25-DB85872D1B00",
+    "languageISOCode": "fr",
+    "name": "Porsche",
+    "description": "aliquet lobortis,",
+    "creationDate": "2020-10-31 15:22:19",
+    "lastUpdated": "2023-01-12 03:53:33"
+  },
+  {
+    "deckId": "9C7570CF-2743-299F-3A5B-1B588636C20A",
+    "ownerId": "99289144-1CF1-D97A-5483-5F2A98714339",
+    "languageISOCode": "en",
+    "name": "Chrysler, MINI",
+    "description": "nec orci. Donec",
+    "creationDate": "2020-08-22 19:54:12",
+    "lastUpdated": "2023-03-31 19:39:59"
+  },
+  {
+    "deckId": "3076A589-2728-3852-FB0C-D067A418BAD9",
+    "ownerId": "14CB5B86-9F02-A2A9-D2BE-AF203D215786",
+    "languageISOCode": "it",
+    "name": "Porsche",
+    "description": "mi. Duis risus odio, auctor vitae, aliquet nec, imperdiet",
+    "creationDate": "2020-08-31 06:17:19",
+    "lastUpdated": "2023-01-17 08:57:40"
+  },
+  {
+    "deckId": "DC746822-2C1F-144E-2089-B4B15656CC22",
+    "ownerId": "D4C77132-96ED-04C8-52D1-D47C8EBCCD25",
+    "languageISOCode": "pt",
+    "name": "Mercedes-Benz, Seat",
+    "description": "eros",
+    "creationDate": "2020-08-11 20:05:09",
+    "lastUpdated": "2022-05-01 15:22:27"
+  },
+  {
+    "deckId": "A2B6D4B6-9722-568A-887A-E7E655310352",
+    "ownerId": "3BDE9603-7445-5407-6A98-6C3598E8A99B",
+    "languageISOCode": "fr",
+    "name": "MINI, Mitsubishi Motors",
+    "description": "Aliquam",
+    "creationDate": "2020-09-27 05:27:51",
+    "lastUpdated": "2023-01-14 00:50:43"
+  },
+  {
+    "deckId": "BE084BF5-96B9-41A7-809C-3353C2A61ABD",
+    "ownerId": "E3A712E1-4B1A-D22D-6164-E954EB9DA815",
+    "languageISOCode": "en",
+    "name": "Volvo",
+    "description": "diam nunc, ullamcorper eu, euismod ac,",
+    "creationDate": "2020-10-13 20:13:39",
+    "lastUpdated": "2022-12-25 18:04:08"
+  },
+  {
+    "deckId": "38C777D8-4709-A4A1-D67E-6980AD2A4BA4",
+    "ownerId": "BEB44B7E-312C-1D53-F284-D4BA660A2D12",
+    "languageISOCode": "en",
+    "name": "Infiniti",
+    "description": "Praesent eu",
+    "creationDate": "2020-07-18 08:54:05",
+    "lastUpdated": "2022-05-17 10:54:38"
+  },
+  {
+    "deckId": "DBBE871E-8682-5243-98FC-148DD6753E3C",
+    "ownerId": "D4515029-A62B-11A4-7D23-2C7773A49CDC",
+    "languageISOCode": "en",
+    "name": "Renault",
+    "description": "lobortis. Class aptent",
+    "creationDate": "2020-05-20 09:48:22",
+    "lastUpdated": "2022-09-13 04:23:02"
+  },
+  {
+    "deckId": "D3EB68BD-9AE6-C42A-C287-FCA85C4E542B",
+    "ownerId": "9A0E8C4E-864C-D188-9A83-477FB3DEB286",
+    "languageISOCode": "it",
+    "name": "Volvo, Jeep",
+    "description": "quis, tristique ac,",
+    "creationDate": "2020-12-15 22:08:54",
+    "lastUpdated": "2022-11-09 03:42:30"
+  },
+  {
+    "deckId": "3B8EE1F6-73F3-58D9-F1CA-25B2D5C99E0A",
+    "ownerId": "FD0A34A0-8DB5-BC89-627D-0732B2AE3634",
+    "languageISOCode": "fr",
+    "name": "Peugeot, Audi",
+    "description": "porta elit, a feugiat",
+    "creationDate": "2020-11-25 15:43:46",
+    "lastUpdated": "2022-08-18 15:17:19"
+  },
+  {
+    "deckId": "B7534464-8DD3-1E4B-4A38-ED085CFD47C9",
+    "ownerId": "4CD75E86-C5A2-D753-282C-2026DA123306",
+    "languageISOCode": "pt",
+    "name": "Daimler",
+    "description": "eu, placerat eget, venenatis a,",
+    "creationDate": "2020-06-08 00:38:17",
+    "lastUpdated": "2022-10-16 16:46:33"
+  },
+  {
+    "deckId": "E5389C74-B778-E152-57D2-326596993C00",
+    "ownerId": "28014041-D5B3-A03E-562B-74247C1B8967",
+    "languageISOCode": "pt",
+    "name": "Acura",
+    "description": "semper egestas, urna justo faucibus lectus, a sollicitudin orci",
+    "creationDate": "2020-10-20 09:52:45",
+    "lastUpdated": "2023-03-10 12:20:50"
+  },
+  {
+    "deckId": "7174B422-5734-8D5A-7157-16325B8E5058",
+    "ownerId": "42EF11A7-E966-925E-5D58-584CDF0C6141",
+    "languageISOCode": "it",
+    "name": "Mitsubishi Motors",
+    "description": "Cras convallis convallis",
+    "creationDate": "2021-01-07 14:22:41",
+    "lastUpdated": "2023-01-10 18:29:55"
+  },
+  {
+    "deckId": "EFA19F3D-E265-C1B7-E27B-DA1A981755AD",
+    "ownerId": "ED1898C1-FA55-5D82-FA76-C9605D0407F5",
+    "languageISOCode": "it",
+    "name": "Kia Motors",
+    "description": "rutrum eu,",
+    "creationDate": "2021-03-22 02:20:29",
+    "lastUpdated": "2022-09-09 01:13:18"
+  },
+  {
+    "deckId": "1A3DD78F-2E51-919A-9489-65A53C594713",
+    "ownerId": "907ADE1B-955B-50AC-179D-C1AC3BD8443D",
+    "languageISOCode": "en",
+    "name": "Peugeot, Isuzu",
+    "description": "lacus. Cras interdum. Nunc sollicitudin commodo",
+    "creationDate": "2021-03-03 09:44:28",
+    "lastUpdated": "2022-09-02 09:55:55"
+  },
+  {
+    "deckId": "3ADED97D-EB82-202D-AE4D-44A82FB35D8B",
+    "ownerId": "98F6C8EB-8353-BC16-1109-374EBE22D2E1",
+    "languageISOCode": "hi",
+    "name": "Lexus",
+    "description": "tellus. Suspendisse sed dolor. Fusce mi lorem, vehicula et,",
+    "creationDate": "2020-07-23 23:04:29",
+    "lastUpdated": "2022-06-19 09:51:20"
+  },
+  {
+    "deckId": "965D573D-953B-D6E6-2692-35B0965BC469",
+    "ownerId": "578DCFE8-D26A-5A0A-2F37-E613AF9CEE3D",
+    "languageISOCode": "fr",
+    "name": "Cadillac, Chrysler",
+    "description": "aliquet lobortis, nisi nibh lacinia orci,",
+    "creationDate": "2021-04-11 06:23:59",
+    "lastUpdated": "2022-09-13 10:05:17"
+  },
+  {
+    "deckId": "32D6E20F-8821-EDC8-3E1D-1C791A3968C2",
+    "ownerId": "2475E62E-CFC8-8D38-2952-5641B4CEAB75",
+    "languageISOCode": "it",
+    "name": "Mitsubishi Motors",
+    "description": "dictum eleifend, nunc risus varius orci,",
+    "creationDate": "2021-03-04 13:23:30",
+    "lastUpdated": "2022-06-14 22:27:16"
+  },
+  {
+    "deckId": "97B1CA5C-6BEC-63C1-507D-48432C0848D9",
+    "ownerId": "386F59EA-0A57-B462-B799-B92C4EC577BB",
+    "languageISOCode": "en",
+    "name": "Fiat",
+    "description": "velit in aliquet lobortis,",
+    "creationDate": "2020-05-23 08:50:52",
+    "lastUpdated": "2022-07-06 10:11:21"
+  },
+  {
+    "deckId": "CA59DEE4-1CAE-FEA3-D064-29FD65926283",
+    "ownerId": "4A3FE4C8-BE4C-0C89-6BAC-C527CA3C7D7C",
+    "languageISOCode": "pt",
+    "name": "Daihatsu, Skoda",
+    "description": "neque. In ornare sagittis felis. Donec tempor,",
+    "creationDate": "2020-05-24 06:40:26",
+    "lastUpdated": "2023-03-01 11:08:37"
+  },
+  {
+    "deckId": "A61C6345-B3AA-9996-67D1-D7B22A50DB93",
+    "ownerId": "709490A4-8491-6E56-EB9E-1DC98AAF5471",
+    "languageISOCode": "hi",
+    "name": "General Motors, Hyundai Motors",
+    "description": "Nunc lectus pede, ultrices",
+    "creationDate": "2021-03-08 21:18:02",
+    "lastUpdated": "2022-07-28 17:54:44"
+  },
+  {
+    "deckId": "B9919401-BFC2-4B48-2069-02C3C6129E73",
+    "ownerId": "FC375E51-EC31-2D4D-F16D-E9925C11BA60",
+    "languageISOCode": "en",
+    "name": "BMW, Dongfeng Motor",
+    "description": "aliquam, enim nec tempus",
+    "creationDate": "2020-08-07 05:54:28",
+    "lastUpdated": "2022-07-13 23:17:40"
+  },
+  {
+    "deckId": "0BC4E118-1755-27E2-4EA9-D8ED792CA68A",
+    "ownerId": "3EED0FC8-D125-CEC4-F444-5EEB7B899D37",
+    "languageISOCode": "hi",
+    "name": "Isuzu, General Motors",
+    "description": "interdum libero dui",
+    "creationDate": "2021-01-30 01:27:00",
+    "lastUpdated": "2022-05-11 20:22:54"
+  },
+  {
+    "deckId": "A1333A8B-BB27-ABBF-CB82-DF192A7A95E5",
+    "ownerId": "1C205AE3-4F32-3016-B632-131A68BE3A93",
+    "languageISOCode": "en",
+    "name": "Volvo",
+    "description": "orci luctus et",
+    "creationDate": "2020-09-27 18:23:56",
+    "lastUpdated": "2023-03-27 19:28:59"
+  },
+  {
+    "deckId": "86658E2D-D1E6-8996-D33B-9329472EA252",
+    "ownerId": "A3B23777-1ABC-3688-CEEA-3A8721C4410B",
+    "languageISOCode": "fr",
+    "name": "Hyundai Motors",
+    "description": "litora torquent per conubia nostra,",
+    "creationDate": "2020-12-20 06:15:05",
+    "lastUpdated": "2022-11-14 21:37:03"
+  },
+  {
+    "deckId": "0FBAED51-2F37-DD08-4D62-6426E3FBD51A",
+    "ownerId": "755CCE4F-A7FC-43C2-12AD-1691FBCD3D68",
+    "languageISOCode": "pt",
+    "name": "Mercedes-Benz, Dacia",
+    "description": "sodales purus, in molestie tortor",
+    "creationDate": "2020-11-08 18:39:20",
+    "lastUpdated": "2022-09-17 19:04:27"
+  },
+  {
+    "deckId": "06CD0D14-D842-27F6-BD0E-C634194FC788",
+    "ownerId": "450EE991-72B4-684A-331D-9D6AC024887E",
+    "languageISOCode": "hi",
+    "name": "Dacia",
+    "description": "placerat velit. Quisque varius. Nam porttitor",
+    "creationDate": "2020-12-04 01:43:55",
+    "lastUpdated": "2022-11-11 07:54:38"
+  },
+  {
+    "deckId": "5A79342D-DFBB-297D-4911-4688989CBB4C",
+    "ownerId": "6A845224-C7EE-B376-8539-9CEB9E319AFE",
+    "languageISOCode": "pt",
+    "name": "Daimler, Ford",
+    "description": "a, auctor non, feugiat nec, diam. Duis mi",
+    "creationDate": "2021-01-31 15:20:27",
+    "lastUpdated": "2022-12-31 20:42:04"
+  },
+  {
+    "deckId": "7CEDCC8C-E152-D5AA-1FC4-D6D97F9666E3",
+    "ownerId": "9E018C15-1F34-4DC2-91CC-1168AD2819A4",
+    "languageISOCode": "en",
+    "name": "Chevrolet",
+    "description": "egestas lacinia. Sed",
+    "creationDate": "2020-09-29 06:13:34",
+    "lastUpdated": "2023-02-15 18:53:09"
+  }
+]
