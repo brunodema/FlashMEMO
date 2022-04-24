@@ -11,7 +11,10 @@
       <ng-container matColumnDef={{item}}>
         <th mat-header-cell *matHeaderCellDef mat-sort-header> {{item}} </th>
         <td mat-cell *matCellDef="let row">
-          <div class="line-clamp-3">{{row[item]}}</div> <!-- had to add a div inside it otherwise clamping wouldn't work-->
+          <div class="line-clamp-3">
+            <a>{{row[item]}}</a>
+          </div>
+          <!-- had to add a div inside it otherwise clamping wouldn't work-->
         </td>
       </ng-container>
     </ng-container>
