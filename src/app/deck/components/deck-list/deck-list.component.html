@@ -1,5 +1,6 @@
 <div class="container my-3">
   <app-admin-actions-toolbar [routes]=routes></app-admin-actions-toolbar>
 
-  <app-data-table [displayedColumns]='this.displayedColumns' [pageSizeOptions]='this.pageSizeOptions'></app-data-table>
+  <app-data-table [redirectionOptions]="redirectionOptions" [displayedColumns]='this.displayedColumns'
+    [pageSizeOptions]='this.pageSizeOptions'></app-data-table>
 </div>

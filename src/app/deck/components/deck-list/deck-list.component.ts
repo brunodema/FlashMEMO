@@ -1,9 +1,13 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { DataTableComponent } from 'src/app/shared/components/data-table/data-table.component';
+import {
+  DataTableComponent,
+  lol,
+} from 'src/app/shared/components/data-table/data-table.component';
 import { RouteMap } from 'src/app/shared/models/routing/route-map';
 import { GeneralRepositoryService } from 'src/app/shared/services/general-repository-service';
 import { Deck } from '../../models/deck.model';
 import { DeckService, MockDeckService } from '../../services/deck.service';
+import { DeckDetailComponent } from '../deck-detail/deck-detail.component';
 
 @Component({
   selector: 'app-deck-list',
@@ -20,7 +24,9 @@ export class DeckListComponent implements AfterViewInit {
     'lastUpdated',
   ];
   pageSizeOptions: number[] = [5, 10, 25];
-
+  redirectionOptions: lol = {
+    name: { path: '/deck/:id' },
+  };
   routes: RouteMap[] = [{ label: 'Create Deck', route: 'create' }];
 
   @ViewChild(DataTableComponent) dataTable: DataTableComponent<Deck>;

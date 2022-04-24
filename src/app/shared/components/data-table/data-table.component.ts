@@ -2,8 +2,13 @@ import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { GeneralRepositoryService } from 'src/app/shared/services/general-repository-service';
 import { environment } from 'src/environments/environment';
+
+export type lol = {
+  [key: string]: { path: string };
+};
 
 @Component({
   selector: 'app-data-table',
@@ -15,6 +20,7 @@ export class DataTableComponent<Type> implements AfterViewInit {
 
   @Input() displayedColumns: string[];
   @Input() pageSizeOptions: number[];
+  @Input() redirectionOptions: lol = {};
 
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
