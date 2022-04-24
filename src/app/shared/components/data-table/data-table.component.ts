@@ -24,11 +24,11 @@ export class DataTableComponent<Type> implements AfterViewInit {
       .search({ pageSize: environment.maxPageSize, pageNumber: 1 })
       .subscribe((res) => {
         this.dataSource = new MatTableDataSource(res);
-        this.dataSource.sort = this.sort;
       });
   }
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   applyFilter(event: Event) {
