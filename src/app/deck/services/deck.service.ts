@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IPaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
 import {
@@ -11,6 +11,8 @@ import {
 import { GeneralRepositoryService } from 'src/app/shared/services/general-repository-service';
 import { environment } from 'src/environments/environment';
 import { Deck } from '../models/deck.model';
+
+import DeckJson from 'src/assets/test_assets/Decks.json';
 
 class DeckSearchParams implements IServiceSearchParams {
   pageSize: Number;
@@ -27,9 +29,19 @@ class DeckSearchParams implements IServiceSearchParams {
   columnToSort?: SortColumn;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
+export class MockDeckService extends GeneralRepositoryService<Deck> {
+  constructor(private http: HttpClient) {
+    super(`${environment.backendRootAddress}/api/v1/Deck`, http);
+  }
+  search(
+    params: DeckSearchParams = { pageSize: 10, pageNumber: 1 }
+  ): Observable<Deck[]> {
+    return of(DeckJson);
+  }
+}
+
+@Injectable()
 export class DeckService extends GeneralRepositoryService<Deck> {
   constructor(private http: HttpClient) {
     super(`${environment.backendRootAddress}/api/v1/Deck`, http);

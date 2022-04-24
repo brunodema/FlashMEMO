@@ -4,8 +4,8 @@ export class Deck {
   languageISOCode: string = '';
   name: string = '';
   description: string = '';
-  creationDate: number = Date.now();
-  lastUpdated: number = Date.now();
+  creationDate: string = Date.now().toString();
+  lastUpdated: string = Date.now().toString();
 
   constructor() {}
 }

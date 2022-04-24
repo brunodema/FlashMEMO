@@ -3,12 +3,12 @@ import { DataTableComponent } from 'src/app/shared/components/data-table/data-ta
 import { RouteMap } from 'src/app/shared/models/routing/route-map';
 import { GeneralRepositoryService } from 'src/app/shared/services/general-repository-service';
 import { Deck } from '../../models/deck.model';
-import { DeckService } from '../../services/deck.service';
+import { DeckService, MockDeckService } from '../../services/deck.service';
 
 @Component({
   selector: 'app-deck-list',
   templateUrl: './deck-list.component.html',
-  providers: [{ provide: GeneralRepositoryService, useClass: DeckService }],
+  providers: [{ provide: GeneralRepositoryService, useClass: MockDeckService }],
 })
 export class DeckListComponent implements AfterViewInit {
   displayedColumns: string[] = [
