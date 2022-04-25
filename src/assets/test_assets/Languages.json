@@ -1,0 +1,46 @@
+[
+  {
+    "name": "N/A",
+    "languageISOCode": ""
+  },
+  {
+    "name": "English",
+    "languageISOCode": "en"
+  },
+  {
+    "name": "Portuguese",
+    "languageISOCode": "pt"
+  },
+  {
+    "name": "Spanish",
+    "languageISOCode": "es"
+  },
+  {
+    "name": "Italian",
+    "languageISOCode": "it"
+  },
+  {
+    "name": "French",
+    "languageISOCode": "fr"
+  },
+  {
+    "name": "German",
+    "languageISOCode": "de"
+  },
+  {
+    "name": "Dutch",
+    "languageISOCode": "nl"
+  },
+  {
+    "name": "Russian",
+    "languageISOCode": "ru"
+  },
+  {
+    "name": "Chinese",
+    "languageISOCode": "ch"
+  },
+  {
+    "name": "Hindi",
+    "languageISOCode": "hi"
+  }
+]
