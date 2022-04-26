@@ -10,23 +10,40 @@ import {
   DeckService,
   MockDeckService,
 } from 'src/app/deck/services/deck.service';
+import { MockFlashcardService } from 'src/app/shared/services/shared-services';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css'],
-  providers: [{ provide: GeneralRepositoryService, useClass: MockDeckService }],
+  providers: [
+    { provide: 'DeckService', useClass: MockDeckService },
+    { provide: 'FlashcardService', useClass: MockFlashcardService },
+  ],
 })
+
+// this component is a complete shitshow at the moment... pretty much a sandbox for weird shit I want to implement
 export class UserListComponent implements AfterViewInit {
   routes: RouteMap[] = [{ label: 'Create User', route: 'create' }];
 
   @ViewChild('lol') dataTable: DataTableComponent<Deck>;
   @ViewChild('lolo') dataTable2: DataTableComponent<Flashcard>;
 
-  constructor(public service: GeneralRepositoryService<News>) {}
+  deckData: Deck[];
+  flashcardData: Flashcard[];
 
-  ngAfterViewInit(): void {
-    console.log(this.dataTable);
-    console.log(this.dataTable2);
+  constructor(
+    @Inject('DeckService') public deckService: GeneralRepositoryService<Deck>,
+    @Inject('FlashcardService')
+    public flashcardService: GeneralRepositoryService<Flashcard>
+  ) {
+    this.deckService
+      .search({ pageSize: 100, pageNumber: 1 })
+      .subscribe((r) => (this.deckData = r));
+    this.flashcardService
+      .search({ pageSize: 100, pageNumber: 1 })
+      .subscribe((r) => (this.flashcardData = r));
   }
+
+  ngAfterViewInit(): void {}
 }

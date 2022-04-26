@@ -18,17 +18,16 @@ import {
   templateUrl: './deck-detail.component.html',
   providers: [
     {
-      provide: 'LService',
-      useFactory: (httpClient: HttpClient) =>
-        new MockLanguageService(httpClient),
+      provide: 'LanguageService',
+      useClass: MockLanguageService,
     },
     {
-      provide: GeneralRepositoryService,
+      provide: 'FlashcardService',
       useClass: MockFlashcardService,
     },
   ],
 })
-export class DeckDetailComponent implements AfterViewInit {
+export class DeckDetailComponent {
   closeResult = '';
   layoutEnum: typeof FlashcardLayout = FlashcardLayout;
   // implementation stolen from: https://stackoverflow.com/questions/56036446/typescript-enum-values-as-array
@@ -75,7 +74,7 @@ export class DeckDetailComponent implements AfterViewInit {
   ];
 
   // flashcard info
-  flashcards: Flashcard[];
+  flashcardData: Flashcard[];
   displayedColumns: string[] = ['flashcardId'];
   pageSizeOptions: number[] = [5, 10, 25];
 
@@ -83,8 +82,10 @@ export class DeckDetailComponent implements AfterViewInit {
 
   constructor(
     private modalService: NgbModal,
-    @Inject('LService')
-    private languageService: GeneralRepositoryService<Language>
+    @Inject('LanguageService')
+    private languageService: GeneralRepositoryService<Language>,
+    @Inject('FlashcardService')
+    private flashcardService: GeneralRepositoryService<Flashcard>
   ) {
     this.languageService
       .search({ pageSize: 1, pageNumber: 1 })
@@ -101,12 +102,9 @@ export class DeckDetailComponent implements AfterViewInit {
           }), // this 'map' operation translates what is coming from the service to the structure used by the 'options' property
         ];
       });
-  }
-
-  ngAfterViewInit(): void {
-    this.dataTable.displayedColumns = this.displayedColumns;
-    this.dataTable.pageSizeOptions = this.pageSizeOptions;
-    console.log(this.dataTable.dataSource);
+    this.flashcardService
+      .search({ pageNumber: 1, pageSize: 1000 })
+      .subscribe((x) => (this.flashcardData = x));
   }
 
   open(content: any) {
