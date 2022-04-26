@@ -1,45 +1,44 @@
-<div class="container my-3">
-  <!-- Deck info section (form layout) -->
-  <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-
-
-
-  <ng-template #content let-modal class="modal-lg">
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">
-        Customize your Flashcard!
-      </h4>
-      <button type="button" class="btn btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="container h-100 d-flex flex-column">
-        <div class="row mb-2 text-right">
-          <label for="flashcardLayout" class="col-form-label col-9">Choose your layout:</label>
-          <div class="col-3">
-            <select class="form-select" [(ngModel)]="flashcardLayout">
-              <option *ngFor="let layout of possibleLayouts" [ngValue]="layout">{{ layout }}</option>
-            </select>
-          </div>
+<ng-template #content let-modal class="modal-lg">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Customize your Flashcard!
+    </h4>
+    <button type="button" class="btn btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container h-100 d-flex flex-column">
+      <div class="row mb-2 text-right">
+        <label for="flashcardLayout" class="col-form-label col-9">Choose your layout:</label>
+        <div class="col-3">
+          <select class="form-select" [(ngModel)]="flashcardLayout">
+            <option *ngFor="let layout of possibleLayouts" [ngValue]="layout">{{ layout }}</option>
+          </select>
         </div>
-        <!-- So, what is going on here... My goals are:
+      </div>
+      <!-- So, what is going on here... My goals are:
               (1) centralize the input method buttons (image, sound, text, whatever), while also making them visually appealing (as round as possible, pretty borders, etc)
               (2) distribute the rows EVENLY without gutters... the reason for this is to not waste any space later for images/text/sound/etc
               Class 'flex-fill' is used (in children components) to replicate the behavior of things such as 'col', but for vertical space
               Class 'd-flex has to be used for the 'align' and 'justify' directives to work there (this stuff can be seen inside the child component)
 
               Documentation used: https://getbootstrap.com/docs/5.0/utilities/flex/#align-items -->
-        <div class="flashcard-container h-100 d-flex flex-column justify-content-evenly">
-          <app-flashcard-layout [layout]="flashcardLayout"></app-flashcard-layout>
-        </div>
+      <div class="flashcard-container h-100 d-flex flex-column justify-content-evenly">
+        <app-flashcard-layout [layout]="flashcardLayout"></app-flashcard-layout>
       </div>
     </div>
+  </div>
 
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Previous</button>
-      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Next</button>
-    </div>
-  </ng-template>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Previous</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Next</button>
+  </div>
+</ng-template>
+
+<div class="container my-3">
+  <!-- Deck info section (form layout) -->
+  <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+
 
   <button class="btn btn-primary" (click)="open(content)">
     Create Flashcard
