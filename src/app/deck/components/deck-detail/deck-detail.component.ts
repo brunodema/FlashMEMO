@@ -1,11 +1,15 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { FlashcardLayout } from 'src/app/shared/models/flashcard';
+import { DataTableComponent } from 'src/app/shared/components/data-table/data-table.component';
+import { Flashcard, FlashcardLayout } from 'src/app/shared/models/flashcard';
 import { Language } from 'src/app/shared/models/shared-models';
 import { GeneralRepositoryService } from 'src/app/shared/services/general-repository-service';
-import { MockLanguageService } from 'src/app/shared/services/shared-services';
+import {
+  MockFlashcardService,
+  MockLanguageService,
+} from 'src/app/shared/services/shared-services';
 
 @Component({
   selector: 'app-deck-detail',
@@ -13,9 +17,10 @@ import { MockLanguageService } from 'src/app/shared/services/shared-services';
   templateUrl: './deck-detail.component.html',
   providers: [
     { provide: GeneralRepositoryService, useClass: MockLanguageService },
+    { provide: GeneralRepositoryService, useClass: MockFlashcardService },
   ],
 })
-export class DeckDetailComponent {
+export class DeckDetailComponent implements AfterViewInit {
   closeResult = '';
   layoutEnum: typeof FlashcardLayout = FlashcardLayout;
   // implementation stolen from: https://stackoverflow.com/questions/56036446/typescript-enum-values-as-array
@@ -61,9 +66,17 @@ export class DeckDetailComponent {
     },
   ];
 
+  // flashcard info
+  flashcards: Flashcard[];
+  displayedColumns: string[] = ['flashcardId'];
+  pageSizeOptions: number[] = [5, 10, 25];
+
+  @ViewChild(DataTableComponent) dataTable: DataTableComponent<Flashcard>;
+
   constructor(
     private modalService: NgbModal,
-    private languageService: GeneralRepositoryService<Language>
+    private languageService: GeneralRepositoryService<Language>,
+    private flashcardService: GeneralRepositoryService<Flashcard>
   ) {
     this.languageService
       .search({ pageSize: 1, pageNumber: 1 })
@@ -80,6 +93,12 @@ export class DeckDetailComponent {
           }), // this 'map' operation translates what is coming from the service to the structure used by the 'options' property
         ];
       });
+  }
+
+  ngAfterViewInit(): void {
+    this.dataTable.displayedColumns = this.displayedColumns;
+    this.dataTable.pageSizeOptions = this.pageSizeOptions;
+    console.log(this.dataTable.dataSource);
   }
 
   open(content: any) {

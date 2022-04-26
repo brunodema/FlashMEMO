@@ -8,6 +8,17 @@
   <button class="btn btn-primary" (click)="open(content)">
     Create Flashcard
   </button>
+
+  <div class="row mt-5">
+    <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+      <ngb-panel title="Flashcards">
+        <ng-template ngbPanelContent>
+          <app-data-table [displayedColumns]='this.displayedColumns' [pageSizeOptions]='this.pageSizeOptions'>
+          </app-data-table>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+  </div>
 </div>
 
 <!-- Modal section -->
