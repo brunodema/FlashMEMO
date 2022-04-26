@@ -1,10 +1,8 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SafePipe } from './pipes/safe-pipe.pipe';
 import { AdminActionsToolbarComponent } from './components/admin-actions-toolbar/admin-actions-toolbar.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { HeaderComponent } from './components/header/header.component';
-import { RouterModule } from '@angular/router';
 import { FooterComponent } from './components/footer/footer.component';
 import { UserPreferencesDropdownComponent } from './components/user-preferences-dropdown/user-preferences-dropdown.component';
 import { MatTableModule } from '@angular/material/table'; // Material UI stuff for dynamic tables
@@ -16,11 +14,13 @@ import { FlashcardContentOptionsBlock } from './components/flashcard/flashcard-c
 import { FlashcardLayoutComponent } from './components/flashcard/flashcard-layout/flashcard-layout.component';
 import { FlashcardContentEditorComponent } from './components/flashcard/flashcard-content-editor/flashcard-content-editor.component';
 import { DataTableComponent } from './components/data-table/data-table.component';
-import { FormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from 'ngx-spinner'; // NGX-Spinner
 import { ImageLoaderDirective } from './directives/image-loader.directive';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CKEditorModule } from 'ckeditor4-angular';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
 
 @NgModule({
   declarations: [

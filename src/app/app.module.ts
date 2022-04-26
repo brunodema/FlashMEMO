@@ -1,15 +1,10 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // for bootstrap animations
 import { CollapseModule } from 'ngx-bootstrap/collapse'; // boostrap collapsable
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown'; // boostrap dropbdown
 import { ToastrModule } from 'ngx-toastr'; // Toastr
-import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { ConfigOption, FormlyModule } from '@ngx-formly/core';
-import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './root/routing/app-routing.module';
 import { NewsModule } from './news/news.module';
@@ -28,7 +23,11 @@ import { AppComponent } from './root/components/app.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CKEditorModule } from 'ckeditor4-angular';
+import { BrowserModule } from '@angular/platform-browser';
+import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { ClipboardModule } from 'ngx-clipboard';
+import { NgModule } from '@angular/core';
+import { FormlyMaterialModule } from '@ngx-formly/material';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
@@ -80,7 +79,7 @@ const config: ConfigOption = {
     }),
     ReactiveFormsModule,
     FormlyModule.forRoot(config),
-    FormlyBootstrapModule,
+    FormlyMaterialModule,
     NgxSpinnerModule, // NGX-Spinner
     CKEditorModule,
     NgbModule,
