@@ -1,8 +1,4 @@
 <div class="container my-3">
-  <button class="btn btn-primary" (click)="open(content)">
-    Create Flashcard
-  </button>
-
   <!-- Deck info section (form layout) -->
   <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
 
@@ -44,4 +40,8 @@
       <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Next</button>
     </div>
   </ng-template>
+
+  <button class="btn btn-primary" (click)="open(content)">
+    Create Flashcard
+  </button>
 </div>

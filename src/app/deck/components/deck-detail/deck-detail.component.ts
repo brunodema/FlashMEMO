@@ -54,7 +54,7 @@ export class DeckDetailComponent {
       type: 'select',
       templateOptions: {
         label: 'Language',
-        options: [],
+        options: [], // is assigned in constructor
       },
     },
   ];
