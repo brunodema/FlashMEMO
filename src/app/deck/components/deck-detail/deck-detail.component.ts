@@ -46,6 +46,8 @@ export class DeckDetailComponent {
         label: 'Description',
         placeholder: 'Describe your deck',
         required: false,
+        rows: 5,
+        grow: false,
       },
       className: 'd-block mb-2',
     },

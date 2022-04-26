@@ -1,3 +1,16 @@
+<div class="container my-3">
+  <div class="row">
+    <!-- Deck info section (form layout) -->
+    <div class="col-6">
+      <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+    </div>
+  </div>
+  <button class="btn btn-primary" (click)="open(content)">
+    Create Flashcard
+  </button>
+</div>
+
+<!-- Modal section -->
 <ng-template #content let-modal class="modal-lg">
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">
@@ -34,13 +47,3 @@
     <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Next</button>
   </div>
 </ng-template>
-
-<div class="container my-3">
-  <!-- Deck info section (form layout) -->
-  <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-
-
-  <button class="btn btn-primary" (click)="open(content)">
-    Create Flashcard
-  </button>
-</div>
