@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -16,8 +17,15 @@ import {
   styleUrls: ['./deck-detail.component.css'],
   templateUrl: './deck-detail.component.html',
   providers: [
-    { provide: GeneralRepositoryService, useClass: MockLanguageService },
-    { provide: GeneralRepositoryService, useClass: MockFlashcardService },
+    {
+      provide: 'LService',
+      useFactory: (httpClient: HttpClient) =>
+        new MockLanguageService(httpClient),
+    },
+    {
+      provide: GeneralRepositoryService,
+      useClass: MockFlashcardService,
+    },
   ],
 })
 export class DeckDetailComponent implements AfterViewInit {
@@ -75,8 +83,8 @@ export class DeckDetailComponent implements AfterViewInit {
 
   constructor(
     private modalService: NgbModal,
-    private languageService: GeneralRepositoryService<Language>,
-    private flashcardService: GeneralRepositoryService<Flashcard>
+    @Inject('LService')
+    private languageService: GeneralRepositoryService<Language>
   ) {
     this.languageService
       .search({ pageSize: 1, pageNumber: 1 })
