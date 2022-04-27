@@ -32,9 +32,7 @@ export class DeckListComponent implements AfterViewInit {
   @ViewChild(DataTableComponent) dataTable: DataTableComponent<Deck>;
 
   constructor(public service: GeneralRepositoryService<Deck>) {
-    this.service
-      .search({ pageSize: 1000, pageNumber: 1 })
-      .subscribe((x) => (this.deckData = x));
+    this.service.getAll().subscribe((x) => (this.deckData = x));
   }
 
   ngAfterViewInit(): void {

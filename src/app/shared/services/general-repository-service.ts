@@ -17,8 +17,6 @@ export abstract class GeneralRepositoryService<Type> {
     protected httpClient: HttpClient
   ) {}
 
-  abstract search(searchParams: IServiceSearchParams): Observable<Type[]>;
-
   getAll(): Observable<Type[]> {
     return this.httpClient
       .get<IPaginatedListResponse<Type>>(

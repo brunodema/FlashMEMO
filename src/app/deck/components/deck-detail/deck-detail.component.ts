@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { DataTableComponent } from 'src/app/shared/components/data-table/data-table.component';
@@ -8,6 +9,7 @@ import { Flashcard, FlashcardLayout } from 'src/app/shared/models/flashcard';
 import { Language } from 'src/app/shared/models/shared-models';
 import { GeneralRepositoryService } from 'src/app/shared/services/general-repository-service';
 import {
+  GenericFlashcardService,
   MockFlashcardService,
   MockLanguageService,
 } from 'src/app/shared/services/shared-services';
@@ -85,25 +87,24 @@ export class DeckDetailComponent {
     @Inject('LanguageService')
     private languageService: GeneralRepositoryService<Language>,
     @Inject('FlashcardService')
-    private flashcardService: GeneralRepositoryService<Flashcard>
+    private flashcardService: GenericFlashcardService,
+    private route: ActivatedRoute
   ) {
-    this.languageService
-      .search({ pageSize: 1, pageNumber: 1 })
-      .subscribe((x) => {
-        this.fields.find(
-          (f) => f.key === 'language' // this 'find' commands gets the corresponding 'field' object
-        )!.templateOptions!.options = [
-          // all these '!' signifies that the coder ensures that 'null' won't re returned for the nullable objects
-          ...x.map((r) => {
-            return {
-              label: r.name,
-              value: r.languageISOCode,
-            };
-          }), // this 'map' operation translates what is coming from the service to the structure used by the 'options' property
-        ];
-      });
+    this.languageService.getAll().subscribe((x) => {
+      this.fields.find(
+        (f) => f.key === 'language' // this 'find' commands gets the corresponding 'field' object
+      )!.templateOptions!.options = [
+        // all these '!' signifies that the coder ensures that 'null' won't re returned for the nullable objects
+        ...x.map((r) => {
+          return {
+            label: r.name,
+            value: r.languageISOCode,
+          };
+        }), // this 'map' operation translates what is coming from the service to the structure used by the 'options' property
+      ];
+    });
     this.flashcardService
-      .search({ pageNumber: 1, pageSize: 1000 })
+      .getAllFlashcardsFromDeck(this.route.snapshot.params['id'])
       .subscribe((x) => (this.flashcardData = x));
   }
 

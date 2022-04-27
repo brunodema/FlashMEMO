@@ -37,12 +37,8 @@ export class UserListComponent implements AfterViewInit {
     @Inject('FlashcardService')
     public flashcardService: GeneralRepositoryService<Flashcard>
   ) {
-    this.deckService
-      .search({ pageSize: 100, pageNumber: 1 })
-      .subscribe((r) => (this.deckData = r));
-    this.flashcardService
-      .search({ pageSize: 100, pageNumber: 1 })
-      .subscribe((r) => (this.flashcardData = r));
+    this.deckService.getAll().subscribe((r) => (this.deckData = r));
+    this.flashcardService.getAll().subscribe((r) => (this.flashcardData = r));
   }
 
   ngAfterViewInit(): void {}

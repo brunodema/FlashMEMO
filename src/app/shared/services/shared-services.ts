@@ -31,6 +31,10 @@ export class MockLanguageService extends GeneralRepositoryService<Language> {
   search(searchParams: LanguageSearchParams): Observable<Language[]> {
     return of(languageJson);
   }
+
+  getAll(): Observable<Language[]> {
+    return of(languageJson);
+  }
 }
 
 // add real LanguageService here!
@@ -49,13 +53,29 @@ export class FlashcardSearchParams implements IServiceSearchParams {
   answer: string;
 }
 
-@Injectable()
-export class MockFlashcardService extends GeneralRepositoryService<Flashcard> {
+export abstract class GenericFlashcardService extends GeneralRepositoryService<Flashcard> {
   constructor(protected httpClient: HttpClient) {
     super(`${environment.backendRootAddress}/api/v1/flashcard`, httpClient);
   }
+  abstract search(searchParams: FlashcardSearchParams): Observable<Flashcard[]>;
+  abstract getAllFlashcardsFromDeck(deckId: string): Observable<Flashcard[]>;
+}
 
+@Injectable()
+export class MockFlashcardService extends GenericFlashcardService {
+  constructor(protected httpClient: HttpClient) {
+    super(httpClient);
+  }
+  getAllFlashcardsFromDeck(deckId: string): Observable<Flashcard[]> {
+    return of(flashcardJson.filter((f) => f.deckId == deckId));
+  }
   search(searchParams: FlashcardSearchParams): Observable<Flashcard[]> {
+    throw new Error('Method not implemented.');
+  }
+
+  getAll(): Observable<Flashcard[]> {
     return of(flashcardJson);
   }
 }
+
+// add real FlashcardService here!

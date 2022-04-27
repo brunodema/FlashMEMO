@@ -39,6 +39,10 @@ export class MockDeckService extends GeneralRepositoryService<Deck> {
   ): Observable<Deck[]> {
     return of(DeckJson);
   }
+
+  getAll(): Observable<Deck[]> {
+    return of(DeckJson);
+  }
 }
 
 @Injectable()
