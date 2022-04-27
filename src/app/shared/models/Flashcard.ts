@@ -21,8 +21,3 @@ export enum FlashcardLayout {
   HORIZONTAL_SPLIT = 'Horizontal Split',
   FULL_CARD = 'Card Layout',
 }
-
-export interface FlashcardSide {
-  layout: FlashcardLayout;
-  imageLink: string;
-}

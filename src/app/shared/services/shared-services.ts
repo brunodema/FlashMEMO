@@ -11,6 +11,7 @@ import { Flashcard } from '../models/flashcard';
 
 import languageJson from 'src/assets/test_assets/Languages.json';
 import flashcardJson from 'src/assets/test_assets/Flashcards.json';
+import { environment } from 'src/environments/environment';
 
 export class LanguageSearchParams implements IServiceSearchParams {
   name: string;
@@ -24,7 +25,7 @@ export class LanguageSearchParams implements IServiceSearchParams {
 @Injectable()
 export class MockLanguageService extends GeneralRepositoryService<Language> {
   constructor(protected httpClient: HttpClient) {
-    super('', httpClient);
+    super(`${environment.backendRootAddress}/api/v1/language`, httpClient);
   }
 
   search(searchParams: LanguageSearchParams): Observable<Language[]> {
@@ -51,11 +52,10 @@ export class FlashcardSearchParams implements IServiceSearchParams {
 @Injectable()
 export class MockFlashcardService extends GeneralRepositoryService<Flashcard> {
   constructor(protected httpClient: HttpClient) {
-    super('', httpClient);
+    super(`${environment.backendRootAddress}/api/v1/flashcard`, httpClient);
   }
 
   search(searchParams: FlashcardSearchParams): Observable<Flashcard[]> {
-    //return of(flashcardJson.filter((f) => (f.deckId = searchParams.deckId)));
     return of(flashcardJson);
   }
 }
