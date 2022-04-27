@@ -1,8 +1,10 @@
 import {
   AfterViewInit,
   Component,
+  EventEmitter,
   Input,
   OnChanges,
+  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -26,6 +28,8 @@ export class DataTableComponent<Type> implements AfterViewInit, OnChanges {
   @Input() displayedColumns: string[];
   @Input() pageSizeOptions: number[];
   @Input() redirectionOptions: DataTableRedirectionOptions = {};
+
+  @Output() columnClicked: EventEmitter<any> = new EventEmitter();
 
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
@@ -59,5 +63,10 @@ export class DataTableComponent<Type> implements AfterViewInit, OnChanges {
     row: any
   ): string[] {
     return [args.path, ...(args.params?.map((x) => row[x]) as string[])]; // so, what the heck is going on here... first, I set the main route as the prefix for redirection. Then, I check every content of the 'params' array, and use them to select the corresponding data from the properties of the templated entity (ex: get the Deck GUID via row['deckId']). Finally, the resulting any[] object is cast into string[], so TS stops annoying me.
+  }
+
+  handle(item: any) {
+    this.columnClicked.emit(item);
+    console.log(item);
   }
 }
