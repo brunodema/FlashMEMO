@@ -12,7 +12,7 @@ import {
   SortType,
 } from 'src/app/shared/models/other/api-query-types';
 import { IPaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
-import { GeneralRepositoryService } from 'src/app/shared/services/general-repository-service';
+import { GenericRepositoryService } from 'src/app/shared/services/general-repository-service';
 
 class NewsSearchParams implements IServiceSearchParams {
   pageSize: Number;
@@ -29,7 +29,7 @@ class NewsSearchParams implements IServiceSearchParams {
 @Injectable({
   providedIn: 'root',
 })
-export class NewsService extends GeneralRepositoryService<News> {
+export class NewsService extends GenericRepositoryService<News> {
   constructor(private http: HttpClient) {
     super(`${environment.backendRootAddress}/api/v1/News`, http);
   }

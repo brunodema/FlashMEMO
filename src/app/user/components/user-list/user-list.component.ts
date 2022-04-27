@@ -1,16 +1,9 @@
 import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
-import { News } from 'src/app/news/models/news.model';
-import { NewsService } from 'src/app/news/services/news.service';
-import { GeneralRepositoryService } from 'src/app/shared/services/general-repository-service';
 import { RouteMap } from 'src/app/shared/models/routing/route-map';
 import { DataTableComponent } from 'src/app/shared/components/data-table/data-table.component';
 import { Deck } from 'src/app/deck/models/deck.model';
 import { Flashcard } from 'src/app/shared/models/flashcard';
-import {
-  DeckService,
-  GenericDeckService,
-  MockDeckService,
-} from 'src/app/deck/services/deck.service';
+import { GenericDeckService } from 'src/app/deck/services/deck.service';
 import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
 
 @Component({

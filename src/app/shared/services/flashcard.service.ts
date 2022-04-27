@@ -8,7 +8,7 @@ import {
   IServiceSearchParams,
   SortType,
 } from '../models/other/api-query-types';
-import { GeneralRepositoryService } from './general-repository-service';
+import { GenericRepositoryService } from './general-repository-service';
 import flashcardJson from 'src/assets/test_assets/Flashcards.json';
 
 export class FlashcardSearchParams implements IServiceSearchParams {
@@ -25,7 +25,7 @@ export class FlashcardSearchParams implements IServiceSearchParams {
   answer: string;
 }
 
-export abstract class GenericFlashcardService extends GeneralRepositoryService<Flashcard> {
+export abstract class GenericFlashcardService extends GenericRepositoryService<Flashcard> {
   constructor(protected httpClient: HttpClient) {
     super(`${environment.backendRootAddress}/api/v1/flashcard`, httpClient);
   }

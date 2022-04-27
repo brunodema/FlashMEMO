@@ -6,9 +6,7 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { DataTableComponent } from 'src/app/shared/components/data-table/data-table.component';
 import { Flashcard, FlashcardLayout } from 'src/app/shared/models/flashcard';
-import { Language } from 'src/app/shared/models/shared-models';
 import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
-import { GeneralRepositoryService } from 'src/app/shared/services/general-repository-service';
 import { GenericLanguageService } from 'src/app/shared/services/language.service';
 
 @Component({

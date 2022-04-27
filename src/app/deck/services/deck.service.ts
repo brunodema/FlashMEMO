@@ -8,7 +8,7 @@ import {
   SortColumn,
   SortType,
 } from 'src/app/shared/models/other/api-query-types';
-import { GeneralRepositoryService } from 'src/app/shared/services/general-repository-service';
+import { GenericRepositoryService } from 'src/app/shared/services/general-repository-service';
 import { environment } from 'src/environments/environment';
 import { Deck } from '../models/deck.model';
 
@@ -29,7 +29,7 @@ class DeckSearchParams implements IServiceSearchParams {
   columnToSort?: SortColumn;
 }
 
-export abstract class GenericDeckService extends GeneralRepositoryService<Deck> {
+export abstract class GenericDeckService extends GenericRepositoryService<Deck> {
   constructor(protected httpClient: HttpClient) {
     super(`${environment.backendRootAddress}/api/v1/deck`, httpClient);
   }

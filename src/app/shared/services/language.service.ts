@@ -6,7 +6,7 @@ import {
   SortType,
 } from '../models/other/api-query-types';
 import { Language } from '../models/shared-models';
-import { GeneralRepositoryService } from './general-repository-service';
+import { GenericRepositoryService } from './general-repository-service';
 import languageJson from 'src/assets/test_assets/Languages.json';
 import { environment } from 'src/environments/environment';
 
@@ -19,7 +19,7 @@ export class LanguageSearchParams implements IServiceSearchParams {
   columnToSort?: '' | undefined;
 }
 
-export abstract class GenericLanguageService extends GeneralRepositoryService<Language> {
+export abstract class GenericLanguageService extends GenericRepositoryService<Language> {
   constructor(protected httpClient: HttpClient) {
     super(`${environment.backendRootAddress}/api/v1/language`, httpClient);
   }
