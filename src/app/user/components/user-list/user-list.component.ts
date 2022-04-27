@@ -8,18 +8,15 @@ import { Deck } from 'src/app/deck/models/deck.model';
 import { Flashcard } from 'src/app/shared/models/flashcard';
 import {
   DeckService,
+  GenericDeckService,
   MockDeckService,
 } from 'src/app/deck/services/deck.service';
-import { MockFlashcardService } from 'src/app/shared/services/shared-services';
+import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css'],
-  providers: [
-    { provide: 'DeckService', useClass: MockDeckService },
-    { provide: 'FlashcardService', useClass: MockFlashcardService },
-  ],
 })
 
 // this component is a complete shitshow at the moment... pretty much a sandbox for weird shit I want to implement
@@ -33,9 +30,8 @@ export class UserListComponent implements AfterViewInit {
   flashcardData: Flashcard[];
 
   constructor(
-    @Inject('DeckService') public deckService: GeneralRepositoryService<Deck>,
-    @Inject('FlashcardService')
-    public flashcardService: GeneralRepositoryService<Flashcard>
+    public deckService: GenericDeckService,
+    public flashcardService: GenericFlashcardService
   ) {
     this.deckService.getAll().subscribe((r) => (this.deckData = r));
     this.flashcardService.getAll().subscribe((r) => (this.flashcardData = r));
