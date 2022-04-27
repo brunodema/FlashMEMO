@@ -7,27 +7,14 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { DataTableComponent } from 'src/app/shared/components/data-table/data-table.component';
 import { Flashcard, FlashcardLayout } from 'src/app/shared/models/flashcard';
 import { Language } from 'src/app/shared/models/shared-models';
+import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
 import { GeneralRepositoryService } from 'src/app/shared/services/general-repository-service';
-import {
-  GenericFlashcardService,
-  MockFlashcardService,
-  MockLanguageService,
-} from 'src/app/shared/services/shared-services';
+import { GenericLanguageService } from 'src/app/shared/services/language.service';
 
 @Component({
   selector: 'app-deck-detail',
   styleUrls: ['./deck-detail.component.css'],
   templateUrl: './deck-detail.component.html',
-  providers: [
-    {
-      provide: 'LanguageService',
-      useClass: MockLanguageService,
-    },
-    {
-      provide: 'FlashcardService',
-      useClass: MockFlashcardService,
-    },
-  ],
 })
 export class DeckDetailComponent {
   closeResult = '';
@@ -84,9 +71,7 @@ export class DeckDetailComponent {
 
   constructor(
     private modalService: NgbModal,
-    @Inject('LanguageService')
-    private languageService: GeneralRepositoryService<Language>,
-    @Inject('FlashcardService')
+    private languageService: GenericLanguageService,
     private flashcardService: GenericFlashcardService,
     private route: ActivatedRoute
   ) {

@@ -29,10 +29,17 @@ class DeckSearchParams implements IServiceSearchParams {
   columnToSort?: SortColumn;
 }
 
+export abstract class GenericDeckService extends GeneralRepositoryService<Deck> {
+  constructor(protected httpClient: HttpClient) {
+    super(`${environment.backendRootAddress}/api/v1/deck`, httpClient);
+  }
+  abstract search(searchParams: DeckSearchParams): Observable<Deck[]>;
+}
+
 @Injectable()
-export class MockDeckService extends GeneralRepositoryService<Deck> {
+export class MockDeckService extends GenericDeckService {
   constructor(private http: HttpClient) {
-    super(`${environment.backendRootAddress}/api/v1/Deck`, http);
+    super(http);
   }
   search(
     params: DeckSearchParams = { pageSize: 10, pageNumber: 1 }
@@ -46,9 +53,9 @@ export class MockDeckService extends GeneralRepositoryService<Deck> {
 }
 
 @Injectable()
-export class DeckService extends GeneralRepositoryService<Deck> {
+export class DeckService extends GenericDeckService {
   constructor(private http: HttpClient) {
-    super(`${environment.backendRootAddress}/api/v1/Deck`, http);
+    super(http);
   }
 
   search(

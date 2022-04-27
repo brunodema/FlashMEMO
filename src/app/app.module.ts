@@ -28,6 +28,18 @@ import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgModule } from '@angular/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
+import {
+  GenericDeckService,
+  MockDeckService,
+} from './deck/services/deck.service';
+import {
+  GenericLanguageService,
+  MockLanguageService,
+} from './shared/services/language.service';
+import {
+  GenericFlashcardService,
+  MockFlashcardService,
+} from './shared/services/flashcard.service';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
@@ -85,7 +97,13 @@ const config: ConfigOption = {
     NgbModule,
     ClipboardModule,
   ],
-  providers: [{ provide: IAuthService, useClass: AuthService }, AuthGuard],
+  providers: [
+    { provide: IAuthService, useClass: AuthService },
+    AuthGuard,
+    { provide: GenericDeckService, useClass: MockDeckService },
+    { provide: GenericFlashcardService, useClass: MockFlashcardService },
+    { provide: GenericLanguageService, useClass: MockLanguageService },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
