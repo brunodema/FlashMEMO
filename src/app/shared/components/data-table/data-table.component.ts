@@ -13,7 +13,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 export type DataTableRedirectionOptions = {
-  [key: string]: { path: string; params?: string[] };
+  [key: string]: { emitOnly?: boolean; path: string; params?: string[] };
 };
 
 export type DataTableComponentColumnClickEventArgs<Type> = {
