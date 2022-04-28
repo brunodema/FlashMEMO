@@ -4,6 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { TouchSequence } from 'selenium-webdriver';
 import {
   DataTableColumnOptions,
   DataTableComponent,
@@ -11,6 +12,8 @@ import {
 import { Flashcard, FlashcardLayout } from 'src/app/shared/models/flashcard';
 import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
 import { GenericLanguageService } from 'src/app/shared/services/language.service';
+import { Deck } from '../../models/deck.model';
+import { GenericDeckService } from '../../services/deck.service';
 
 @Component({
   selector: 'app-deck-detail',
@@ -63,6 +66,9 @@ export class DeckDetailComponent {
     },
   ];
 
+  // deck info
+  deck: Deck;
+
   // flashcard info
   flashcardData: Flashcard[];
   columnOptions: DataTableColumnOptions[] = [{ name: 'flashcardId' }];
@@ -74,8 +80,17 @@ export class DeckDetailComponent {
     private modalService: NgbModal,
     private languageService: GenericLanguageService,
     private flashcardService: GenericFlashcardService,
+    private deckService: GenericDeckService,
     private route: ActivatedRoute
   ) {
+    this.deckService
+      .getById(this.route.snapshot.params['id'])
+      .subscribe((r) => {
+        if (r === undefined || null)
+          throw Error('what the fuck is this id bro');
+        this.deck = r;
+      });
+
     this.languageService.getAll().subscribe((x) => {
       this.fields.find(
         (f) => f.key === 'language' // this 'find' commands gets the corresponding 'field' object

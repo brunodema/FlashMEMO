@@ -50,6 +50,10 @@ export class MockDeckService extends GenericDeckService {
   getAll(): Observable<Deck[]> {
     return of(DeckJson);
   }
+
+  getById(id: string): Observable<Deck> {
+    return of(DeckJson.filter((x) => x.deckId == id)[0]);
+  }
 }
 
 @Injectable()
