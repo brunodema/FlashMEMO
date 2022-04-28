@@ -40,6 +40,7 @@ import {
   GenericFlashcardService,
   MockFlashcardService,
 } from './shared/services/flashcard.service';
+import { DeckRepositoryResolverService } from './shared/resolvers/generic-repository.resolver';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
@@ -103,6 +104,10 @@ const config: ConfigOption = {
     { provide: GenericDeckService, useClass: MockDeckService },
     { provide: GenericFlashcardService, useClass: MockFlashcardService },
     { provide: GenericLanguageService, useClass: MockLanguageService },
+    {
+      provide: DeckRepositoryResolverService,
+      useClass: DeckRepositoryResolverService,
+    },
   ],
   bootstrap: [AppComponent],
 })

@@ -83,14 +83,7 @@ export class DeckDetailComponent {
     private deckService: GenericDeckService,
     private route: ActivatedRoute
   ) {
-    this.deckService
-      .getById(this.route.snapshot.params['id'])
-      .subscribe((r) => {
-        if (r === undefined || null)
-          throw Error('what the fuck is this id bro');
-        this.deck = r;
-      });
-
+    this.deck = this.route.snapshot.data['deck'];
     this.languageService.getAll().subscribe((x) => {
       this.fields.find(
         (f) => f.key === 'language' // this 'find' commands gets the corresponding 'field' object

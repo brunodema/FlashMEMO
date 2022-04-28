@@ -1,5 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import {
+  DeckRepositoryResolverService,
+  GenericRepositoryResolverService,
+} from 'src/app/shared/resolvers/generic-repository.resolver';
 import { DeckCreateComponent } from '../components/deck-create/deck-create.component';
 import { DeckDetailComponent } from '../components/deck-detail/deck-detail.component';
 import { DeckListComponent } from '../components/deck-list/deck-list.component';
@@ -7,7 +11,11 @@ import { DeckListComponent } from '../components/deck-list/deck-list.component';
 const routes: Routes = [
   { path: '', redirectTo: 'list', pathMatch: 'full' },
   { path: 'list', component: DeckListComponent },
-  { path: ':id', component: DeckDetailComponent },
+  {
+    path: ':id',
+    component: DeckDetailComponent,
+    resolve: { deck: DeckRepositoryResolverService },
+  },
   { path: 'create', component: DeckCreateComponent },
 ];
 
