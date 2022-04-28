@@ -15,13 +15,13 @@
         </div>
       </td>
     </ng-container>
-    <ng-container *ngIf="addEditColumn" matColumnDef="edit">
+    <ng-container *ngIf="editColumnProperty" matColumnDef="edit">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let row" class="text-center">
         <a (click)="raiseEdit(row)" class="fa fa-pen-nib fa-2x text-decoration-none"></a>
       </td>
     </ng-container>
-    <ng-container *ngIf="addDeleteColumn" matColumnDef="delete">
+    <ng-container *ngIf="deleteColumnProperty" matColumnDef="delete">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let row" class="text-center">
         <a (click)="raiseDelete(row)" class="fa fa-trash fa-2x text-decoration-none"></a>

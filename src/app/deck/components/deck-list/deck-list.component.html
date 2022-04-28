@@ -2,5 +2,6 @@
   <app-admin-actions-toolbar [routes]=routes></app-admin-actions-toolbar>
 
   <app-data-table [dataSource]="this.deckData" [columnOptions]='this.columnOptions'
-    [pageSizeOptions]='this.pageSizeOptions' [addEditColumn]="'deckId'" [addDeleteColumn]="'deckId'"></app-data-table>
+    [pageSizeOptions]='this.pageSizeOptions' [editColumnProperty]="'deckId'" [deleteColumnProperty]="'deckId'">
+  </app-data-table>
 </div>

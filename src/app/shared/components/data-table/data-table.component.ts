@@ -19,7 +19,7 @@ export class DataTableColumnOptions {
   redirectParams?: string[];
 }
 
-export type DataTableComponentColumnClickEventArgs<Type> = {
+export type DataTableComponentClickEventArgs<Type> = {
   columnName: string;
   rowData: Type;
 };
@@ -37,12 +37,15 @@ export class DataTableComponent<Type>
   @Input() dataSource: Type[];
   @Input() columnOptions: DataTableColumnOptions[];
   @Input() pageSizeOptions: number[];
-  @Input() addEditColumn: string;
-  @Input() addDeleteColumn: string;
+  @Input() editColumnProperty: string;
+  @Input() deleteColumnProperty: string;
 
-  @Output() columnClicked: EventEmitter<
-    DataTableComponentColumnClickEventArgs<Type>
-  > = new EventEmitter();
+  @Output() rowClick: EventEmitter<DataTableComponentClickEventArgs<Type>> =
+    new EventEmitter();
+  @Output() editClick: EventEmitter<DataTableComponentClickEventArgs<Type>> =
+    new EventEmitter();
+  @Output() deleteClick: EventEmitter<DataTableComponentClickEventArgs<Type>> =
+    new EventEmitter();
 
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
@@ -78,15 +81,20 @@ export class DataTableComponent<Type>
   }
 
   handle(columnName: string, row: Type) {
-    this.columnClicked.emit({ columnName: columnName, rowData: row });
+    this.rowClick.emit({ columnName: columnName, rowData: row });
   }
 
   raiseEdit(row: Type) {
     console.log('edit');
+    this.editClick.emit({ columnName: this.editColumnProperty, rowData: row });
   }
 
   raiseDelete(row: Type) {
     console.log('delete');
+    this.deleteClick.emit({
+      columnName: this.deleteColumnProperty,
+      rowData: row,
+    });
   }
 
   /**
@@ -95,8 +103,8 @@ export class DataTableComponent<Type>
    */
   getColumnNames(): string[] {
     let columnNames = this.columnOptions.map((x) => x.name);
-    if (this.addEditColumn) columnNames.push('edit');
-    if (this.addDeleteColumn) columnNames.push('delete');
+    if (this.editColumnProperty) columnNames.push('edit');
+    if (this.deleteColumnProperty) columnNames.push('delete');
 
     return columnNames;
   }
