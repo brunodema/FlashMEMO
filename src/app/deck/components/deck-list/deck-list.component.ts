@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import {
+  DataTableColumnOptions,
   DataTableComponent,
-  DataTableRedirectionOptions,
 } from 'src/app/shared/components/data-table/data-table.component';
 import { RouteMap } from 'src/app/shared/models/routing/route-map';
 import { Deck } from '../../models/deck.model';
@@ -13,18 +13,16 @@ import { GenericDeckService } from '../../services/deck.service';
 })
 export class DeckListComponent implements AfterViewInit {
   deckData: Deck[];
-  displayedColumns: string[] = [
-    'name',
-    'description',
-    'ownerId',
-    'languageISOCode',
-    'creationDate',
-    'lastUpdated',
+  columnOptions: DataTableColumnOptions[] = [
+    { name: 'name', redirectParams: ['/deck/', 'deckId'] },
+    { name: 'description' },
+    { name: 'ownerId', emitOnly: true },
+    { name: 'languageISOCode' },
+    { name: 'creationDate' },
+    { name: 'lastUpdated' },
   ];
   pageSizeOptions: number[] = [5, 10, 25];
-  redirectionOptions: DataTableRedirectionOptions = {
-    name: { path: '/deck', params: ['deckId'] },
-  };
+
   routes: RouteMap[] = [{ label: 'Create Deck', route: 'create' }];
 
   @ViewChild(DataTableComponent) dataTable: DataTableComponent<Deck>;
@@ -34,7 +32,7 @@ export class DeckListComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.dataTable.displayedColumns = this.displayedColumns;
+    this.dataTable.columnOptions = this.columnOptions;
     this.dataTable.pageSizeOptions = this.pageSizeOptions;
   }
 }

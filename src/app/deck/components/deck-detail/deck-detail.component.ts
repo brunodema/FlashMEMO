@@ -4,7 +4,10 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { DataTableComponent } from 'src/app/shared/components/data-table/data-table.component';
+import {
+  DataTableColumnOptions,
+  DataTableComponent,
+} from 'src/app/shared/components/data-table/data-table.component';
 import { Flashcard, FlashcardLayout } from 'src/app/shared/models/flashcard';
 import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
 import { GenericLanguageService } from 'src/app/shared/services/language.service';
@@ -62,7 +65,7 @@ export class DeckDetailComponent {
 
   // flashcard info
   flashcardData: Flashcard[];
-  displayedColumns: string[] = ['flashcardId'];
+  columnOptions: DataTableColumnOptions[] = [{ name: 'flashcardId' }];
   pageSizeOptions: number[] = [5, 10, 25];
 
   @ViewChild(DataTableComponent) dataTable: DataTableComponent<Flashcard>;

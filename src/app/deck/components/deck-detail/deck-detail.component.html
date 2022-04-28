@@ -13,7 +13,7 @@
     <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
       <ngb-panel title="Flashcards">
         <ng-template ngbPanelContent>
-          <app-data-table [dataSource]="this.flashcardData" [displayedColumns]='this.displayedColumns'
+          <app-data-table [dataSource]="this.flashcardData" [columnOptions]='this.columnOptions'
             [pageSizeOptions]='this.pageSizeOptions'>
           </app-data-table>
         </ng-template>
