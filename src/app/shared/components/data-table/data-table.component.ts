@@ -85,13 +85,22 @@ export class DataTableComponent<Type>
   }
 
   raiseEdit(row: Type) {
-    console.log('edit');
-    this.editClick.emit({ columnName: this.editColumnProperty, rowData: row });
+    this.editClick.emit({
+      columnName: this.editColumnProperty,
+      rowData: row,
+    });
+    console.log({
+      columnName: this.editColumnProperty,
+      rowData: row,
+    });
   }
 
   raiseDelete(row: Type) {
-    console.log('delete');
     this.deleteClick.emit({
+      columnName: this.deleteColumnProperty,
+      rowData: row,
+    });
+    console.log({
       columnName: this.deleteColumnProperty,
       rowData: row,
     });

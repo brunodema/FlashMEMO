@@ -11,7 +11,7 @@ import { GenericDeckService } from '../../services/deck.service';
   selector: 'app-deck-list',
   templateUrl: './deck-list.component.html',
 })
-export class DeckListComponent implements AfterViewInit {
+export class DeckListComponent {
   deckData: Deck[];
   columnOptions: DataTableColumnOptions[] = [
     { name: 'name', redirectParams: ['/deck/', 'deckId'] },
@@ -29,10 +29,5 @@ export class DeckListComponent implements AfterViewInit {
 
   constructor(public service: GenericDeckService) {
     this.service.getAll().subscribe((x) => (this.deckData = x));
-  }
-
-  ngAfterViewInit(): void {
-    this.dataTable.columnOptions = this.columnOptions;
-    this.dataTable.pageSizeOptions = this.pageSizeOptions;
   }
 }
