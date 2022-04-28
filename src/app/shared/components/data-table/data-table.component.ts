@@ -60,6 +60,12 @@ export class DataTableComponent<Type> implements AfterViewInit, OnChanges {
     }
   }
 
+  /**
+   * Takes the redirection arguments provided and parse them into a valid URL.
+   * @param args array that contains the main route (ex: /deck/) in the first position, and any arguments to be extracted directly from the entitiy's properties in the following positions (ex: 'deckId').
+   * @param row object representing an individual entity, taken from the DataTable.
+   * @returns the correctly parsed URL.
+   */
   parseRedirectArgs(args: string[], row: any): string[] {
     return [args[0], ...(args.slice(1).map((x) => row[x]) as string[])];
   }
@@ -68,6 +74,10 @@ export class DataTableComponent<Type> implements AfterViewInit, OnChanges {
     this.columnClicked.emit({ columnName: columnName, rowData: row });
   }
 
+  /**
+   * I need to declare this function here because it is not possible to call a 'map' operation directly on the HTML file.
+   * @returns
+   */
   getColumnNames(): string[] {
     return this.columnOptions.map((x) => x.name);
   }
