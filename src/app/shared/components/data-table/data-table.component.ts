@@ -81,9 +81,13 @@ export class DataTableComponent<Type>
     this.columnClicked.emit({ columnName: columnName, rowData: row });
   }
 
-  raiseEdit(row: Type) {}
+  raiseEdit(row: Type) {
+    console.log('edit');
+  }
 
-  raiseDelete(row: Type) {}
+  raiseDelete(row: Type) {
+    console.log('delete');
+  }
 
   /**
    * I need to declare this function here because it is not possible to call a 'map' operation directly on the HTML file.
