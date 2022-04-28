@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges,
   ViewChild,
@@ -28,12 +29,16 @@ export type DataTableComponentColumnClickEventArgs<Type> = {
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.css'],
 })
-export class DataTableComponent<Type> implements AfterViewInit, OnChanges {
+export class DataTableComponent<Type>
+  implements AfterViewInit, OnChanges, OnInit
+{
   tableDataSource: MatTableDataSource<Type>;
 
   @Input() dataSource: Type[];
   @Input() columnOptions: DataTableColumnOptions[];
   @Input() pageSizeOptions: number[];
+  @Input() addEditColumn: string;
+  @Input() addDeleteColumn: string;
 
   @Output() columnClicked: EventEmitter<
     DataTableComponentColumnClickEventArgs<Type>
@@ -43,6 +48,8 @@ export class DataTableComponent<Type> implements AfterViewInit, OnChanges {
   @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   constructor() {}
+  ngOnInit(): void {}
+
   ngOnChanges(changes: SimpleChanges): void {
     this.tableDataSource = new MatTableDataSource(this.dataSource);
   }
@@ -74,11 +81,19 @@ export class DataTableComponent<Type> implements AfterViewInit, OnChanges {
     this.columnClicked.emit({ columnName: columnName, rowData: row });
   }
 
+  raiseEdit(row: Type) {}
+
+  raiseDelete(row: Type) {}
+
   /**
    * I need to declare this function here because it is not possible to call a 'map' operation directly on the HTML file.
    * @returns
    */
   getColumnNames(): string[] {
-    return this.columnOptions.map((x) => x.name);
+    let columnNames = this.columnOptions.map((x) => x.name);
+    if (this.addEditColumn) columnNames.push('edit');
+    if (this.addDeleteColumn) columnNames.push('delete');
+
+    return columnNames;
   }
 }

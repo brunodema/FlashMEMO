@@ -6,18 +6,26 @@
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]='this.tableDataSource' matSort>
 
-    <!-- newsId Column -->
-    <ng-container *ngFor="let item of this.columnOptions">
-      <ng-container matColumnDef={{item.name}}>
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{item.name}} </th>
-        <td mat-cell *matCellDef="let row">
-          <div class="line-clamp-3">
-            <a (click)="item.emitOnly ? this.handle(item.name, row) : undefined"
-              [routerLink]="item.redirectParams ? parseRedirectArgs(item.redirectParams!, row) : undefined">{{row[item.name]}}</a>
-          </div>
-          <!-- had to add a div inside it otherwise clamping wouldn't work-->
-        </td>
-      </ng-container>
+    <ng-container *ngFor="let item of this.columnOptions" matColumnDef={{item.name}}>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{item.name}} </th>
+      <td mat-cell *matCellDef="let row">
+        <div class="line-clamp-3">
+          <a (click)="item.emitOnly ? this.handle(item.name, row) : undefined"
+            [routerLink]="item.redirectParams ? parseRedirectArgs(item.redirectParams!, row) : undefined">{{row[item.name]}}</a>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container *ngIf="addEditColumn" matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef> edit </th>
+      <td mat-cell *matCellDef="let row">
+        <a>edit</a>
+      </td>
+    </ng-container>
+    <ng-container *ngIf="addDeleteColumn" matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef> delete </th>
+      <td mat-cell *matCellDef="let row">
+        <a>delete</a>
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="getColumnNames()"></tr>
