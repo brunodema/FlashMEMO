@@ -1,7 +1,7 @@
 <div class="container my-3">
   <app-admin-actions-toolbar [routes]=routes></app-admin-actions-toolbar>
 
-  <app-data-table [dataSource]="this.deckData" [columnOptions]='this.columnOptions'
-    [pageSizeOptions]='this.pageSizeOptions' [deleteColumnProperty]="'deckId'">
+  <app-data-table (deleteClick)="handleDeleteDeck($event)" [dataSource]="this.deckData"
+    [columnOptions]='this.columnOptions' [pageSizeOptions]='this.pageSizeOptions' [deleteColumnProperty]="'deckId'">
   </app-data-table>
 </div>

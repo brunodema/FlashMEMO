@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import {
   DataTableColumnOptions,
   DataTableComponent,
+  DataTableComponentClickEventArgs,
 } from 'src/app/shared/components/data-table/data-table.component';
 import { RouteMap } from 'src/app/shared/models/routing/route-map';
 import { Deck } from '../../models/deck.model';
@@ -29,5 +30,10 @@ export class DeckListComponent {
 
   constructor(public service: GenericDeckService) {
     this.service.getAll().subscribe((x) => (this.deckData = x));
+  }
+
+  handleDeleteDeck(args: DataTableComponentClickEventArgs<Deck>) {
+    if (confirm(`Are you sure you want to delete deck '${args.rowData.name}'?`))
+      console.log('deck deleted! (but actually not)');
   }
 }
