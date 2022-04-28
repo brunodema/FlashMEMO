@@ -12,3 +12,10 @@ td,
 th {
   width: auto;
 }
+
+/* btw, em = element width */
+/* doing this to **try** to better format these icons when they are required */
+.mat-column-edit,
+.mat-column-delete {
+  width: 5em;
+}

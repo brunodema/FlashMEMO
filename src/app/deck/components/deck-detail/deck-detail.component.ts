@@ -8,6 +8,7 @@ import { TouchSequence } from 'selenium-webdriver';
 import {
   DataTableColumnOptions,
   DataTableComponent,
+  DataTableComponentClickEventArgs,
 } from 'src/app/shared/components/data-table/data-table.component';
 import { Flashcard, FlashcardLayout } from 'src/app/shared/models/flashcard';
 import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
@@ -126,4 +127,8 @@ export class DeckDetailComponent {
       return `with: ${reason}`;
     }
   }
+
+  handleFlashcardEdit(args: DataTableComponentClickEventArgs<Flashcard>) {}
+
+  handleFlashcardDelete(args: DataTableComponentClickEventArgs<Flashcard>) {}
 }
