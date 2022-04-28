@@ -17,7 +17,7 @@ export class DeckListComponent {
   columnOptions: DataTableColumnOptions[] = [
     { name: 'name', redirectParams: ['/deck/', 'deckId'] },
     { name: 'description' },
-    { name: 'ownerId', emitOnly: true },
+    { name: 'ownerId', emitValue: true },
     { name: 'languageISOCode' },
     { name: 'creationDate' },
     { name: 'lastUpdated' },

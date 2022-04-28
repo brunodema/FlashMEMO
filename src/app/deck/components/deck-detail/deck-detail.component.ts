@@ -68,7 +68,9 @@ export class DeckDetailComponent {
 
   // flashcard info
   flashcardData: Flashcard[];
-  columnOptions: DataTableColumnOptions[] = [{ name: 'flashcardId' }];
+  columnOptions: DataTableColumnOptions[] = [
+    { name: 'flashcardId', emitValue: true },
+  ];
   pageSizeOptions: number[] = [5, 10, 25];
 
   @ViewChild(DataTableComponent) dataTable: DataTableComponent<Flashcard>;

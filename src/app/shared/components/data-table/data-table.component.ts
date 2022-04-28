@@ -15,7 +15,7 @@ import { MatTableDataSource } from '@angular/material/table';
 
 export class DataTableColumnOptions {
   name: string;
-  emitOnly?: boolean;
+  emitValue?: boolean;
   redirectParams?: string[];
 }
 
