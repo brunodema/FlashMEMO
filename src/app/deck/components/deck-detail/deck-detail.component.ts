@@ -66,9 +66,6 @@ export class DeckDetailComponent {
     },
   ];
 
-  // deck info
-  deck: Deck;
-
   // flashcard info
   flashcardData: Flashcard[];
   columnOptions: DataTableColumnOptions[] = [{ name: 'flashcardId' }];
@@ -80,10 +77,9 @@ export class DeckDetailComponent {
     private modalService: NgbModal,
     private languageService: GenericLanguageService,
     private flashcardService: GenericFlashcardService,
-    private deckService: GenericDeckService,
     private route: ActivatedRoute
   ) {
-    this.deck = this.route.snapshot.data['deck'];
+    this.model = this.route.snapshot.data['deck'];
     this.languageService.getAll().subscribe((x) => {
       this.fields.find(
         (f) => f.key === 'language' // this 'find' commands gets the corresponding 'field' object
