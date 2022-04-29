@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
 import { RouteMap } from 'src/app/shared/models/routing/route-map';
 import { DataTableComponent } from 'src/app/shared/components/data-table/data-table.component';
 import { Deck } from 'src/app/deck/models/deck.model';
-import { IFlashcard } from 'src/app/shared/models/flashcard.model';
+import { IFlashcard } from 'src/app/shared/models/flashcard-models';
 import { GenericDeckService } from 'src/app/deck/services/deck.service';
 import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
 

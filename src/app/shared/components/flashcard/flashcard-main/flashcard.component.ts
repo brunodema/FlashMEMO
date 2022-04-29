@@ -2,7 +2,8 @@ import { AfterViewInit, Component, Input } from '@angular/core';
 import {
   IFlashcard,
   FlashcardLayout,
-} from 'src/app/shared/models/flashcard.model';
+} from 'src/app/shared/models/flashcard-models';
+import { flashcardLayoutDisplayName } from 'src/app/shared/models/flashcard-models';
 
 @Component({
   selector: 'app-flashcard',
@@ -15,6 +16,7 @@ export class FlashcardComponent implements AfterViewInit {
   possibleLayouts = Object.values(FlashcardLayout).filter(
     (f) => typeof f === 'string'
   );
+  readonly layoutDisplayNames = flashcardLayoutDisplayName;
 
   @Input() flashcard: IFlashcard;
 

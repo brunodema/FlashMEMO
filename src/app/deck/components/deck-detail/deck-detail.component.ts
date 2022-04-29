@@ -8,7 +8,7 @@ import {
   DataTableComponent,
   DataTableComponentClickEventArgs,
 } from 'src/app/shared/components/data-table/data-table.component';
-import { Flashcard, IFlashcard } from 'src/app/shared/models/flashcard.model';
+import { Flashcard, IFlashcard } from 'src/app/shared/models/flashcard-models';
 import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
 import { GenericLanguageService } from 'src/app/shared/services/language.service';
 

@@ -1,21 +1,21 @@
 <div [ngSwitch]="flashcard.contentLayout" class="h-100">
-  <div *ngSwitchCase="'SINGLE_BLOCK'" class="d-flex flex-column h-100">
+  <div *ngSwitchCase="layoutEnum.SINGLE_BLOCK" class="d-flex flex-column h-100">
     <app-flashcard-content-options-block></app-flashcard-content-options-block>
   </div>
-  <div *ngSwitchCase="'VERTICAL_SPLIT'" class="d-flex flex-column h-100">
+  <div *ngSwitchCase="layoutEnum.VERTICAL_SPLIT" class="d-flex flex-column h-100">
     <app-flashcard-content-options-block class="h-50"></app-flashcard-content-options-block>
     <app-flashcard-content-options-block class="h-50"></app-flashcard-content-options-block>
   </div>
-  <div *ngSwitchCase="'TRIPLE_BLOCK'" class="d-flex flex-column h-100">
+  <div *ngSwitchCase="layoutEnum.TRIPLE_BLOCK" class="d-flex flex-column h-100">
     <app-flashcard-content-options-block class="h-33"></app-flashcard-content-options-block>
     <app-flashcard-content-options-block class="h-33"></app-flashcard-content-options-block>
     <app-flashcard-content-options-block class="h-33"></app-flashcard-content-options-block>
   </div>
-  <div *ngSwitchCase="'HORIZONTAL_SPLIT'" class="d-flex flex-row h-100">
+  <div *ngSwitchCase="layoutEnum.HORIZONTAL_SPLIT" class="d-flex flex-row h-100">
     <app-flashcard-content-options-block class="w-50"></app-flashcard-content-options-block>
     <app-flashcard-content-options-block class="w-50"></app-flashcard-content-options-block>
   </div>
-  <div *ngSwitchCase="'FULL_CARD'" class="row g-0 h-100">
+  <div *ngSwitchCase="layoutEnum.FULL_CARD" class="row g-0 h-100">
     <div class="col-6">
       <!-- for some reason, the height declaration is really necessary here -->
       <app-flashcard-content-options-block class="h-100"></app-flashcard-content-options-block>

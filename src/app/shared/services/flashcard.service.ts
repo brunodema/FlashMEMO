@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
-import { IFlashcard } from '../models/flashcard.model';
+import { IFlashcard } from '../models/flashcard-models';
 import {
   IServiceSearchParams,
   SortType,

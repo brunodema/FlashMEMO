@@ -3,7 +3,8 @@
     <label for="flashcardLayout" class="col-form-label col-9">Choose your layout:</label>
     <div class="col-3">
       <select class="form-select" [(ngModel)]="flashcard.contentLayout">
-        <option *ngFor="let layout of possibleLayouts" [ngValue]="layout">{{ layout }}</option>
+        <option *ngFor="let layout of possibleLayouts" [ngValue]="layout">{{ layoutDisplayNames[layout] }}
+        </option>
       </select>
     </div>
   </div>

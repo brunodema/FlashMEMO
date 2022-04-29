@@ -35,3 +35,11 @@ export enum FlashcardLayout {
   HORIZONTAL_SPLIT = 'HORIZONTAL_SPLIT',
   FULL_CARD = 'FULL_CARD',
 }
+
+export const flashcardLayoutDisplayName = {
+  SINGLE_BLOCK: 'Single Block',
+  VERTICAL_SPLIT: 'Vertical Split',
+  TRIPLE_BLOCK: 'Triple Block',
+  HORIZONTAL_SPLIT: 'Horizontal Split',
+  FULL_CARD: 'Full Card',
+};

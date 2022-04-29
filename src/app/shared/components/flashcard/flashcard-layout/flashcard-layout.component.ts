@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import {
   IFlashcard,
   FlashcardLayout,
-} from 'src/app/shared/models/flashcard.model';
+} from 'src/app/shared/models/flashcard-models';
 
 @Component({
   selector: 'app-flashcard-layout',
