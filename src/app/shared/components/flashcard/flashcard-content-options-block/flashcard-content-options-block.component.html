@@ -58,7 +58,7 @@
                 <div class="row mb-1">
                   <audio class="col-6" [src]="audio" controls>Oops, your browser is having problems rendering the audio!
                     🤔</audio>
-                  <i href="#" class="col-auto bi bi-check2-square" (click)="selectAudio(audio)"
+                  <i href="#" class="col-auto bi bi-check2-square" (click)="saveAudio(audio)"
                     style="font-size: 2em;"></i>
                 </div>
               </ng-container>
@@ -128,7 +128,7 @@
             <!-- Image API results -->
             <div class="row mt-3 justify-content-center align-items-center">
               <div class="col-5 text-center" *ngFor="let item of imageResults">
-                <img class="img-thumbnail my-2" imageLoader [src]="item.link" (click)="selectImage(item.link)" />
+                <img class="img-thumbnail my-2" imageLoader [src]="item.link" (click)="saveImage(item.link)" />
               </div>
             </div>
           </div>

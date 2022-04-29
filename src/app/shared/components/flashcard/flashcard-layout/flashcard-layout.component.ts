@@ -16,6 +16,7 @@ export class FlashcardLayoutComponent implements OnInit {
   layoutEnum: typeof FlashcardLayout = FlashcardLayout;
 
   @Input() flashcard: IFlashcard;
+  @Input() isFlashcardFront: boolean;
 
   constructor() {}
 

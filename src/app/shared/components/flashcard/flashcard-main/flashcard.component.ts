@@ -17,6 +17,8 @@ import { flashcardLayoutDisplayName } from 'src/app/shared/models/flashcard-mode
   styleUrls: ['./flashcard.component.css'],
 })
 export class FlashcardComponent implements AfterViewInit {
+  // auxiliary variables for Flashcard handling
+  isFlashcardFront: boolean = true;
   layoutEnum: typeof FlashcardLayout = FlashcardLayout;
   // implementation stolen from: https://stackoverflow.com/questions/56036446/typescript-enum-values-as-array
   possibleLayouts = Object.values(FlashcardLayout).filter(

@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
@@ -28,6 +34,10 @@ export enum FlashcardContentType {
   TEXT = 'TEXT',
   IMAGE = 'IMAGE',
   AUDIO = 'AUDIO',
+}
+
+export class FlashcardContentOptionsBlockContentSaveEventArgs {
+  contentValue: string;
 }
 
 /**
@@ -118,6 +128,8 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
    */
   contentEditor: NgbModalRef;
 
+  @Output() contentSave: EventEmitter<any> = new EventEmitter();
+
   constructor(
     private modalService: NgbModal,
     private imageAPIService: GeneralImageAPIService,
@@ -153,15 +165,23 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
     });
   }
 
-  selectImage(imageLink: string): void {
+  emitValue(contentValue: string) {
+    this.contentSave.emit(this.contentValue);
+    console.log('emitting: ' + this.contentValue);
+  }
+
+  saveAudio(audioURL: string): void {
+    this.contentType = FlashcardContentType.AUDIO;
+    this.contentValue = audioURL;
+    this.contentEditor.close('audio selected');
+    this.emitValue(this.contentValue);
+  }
+
+  saveImage(imageLink: string): void {
     this.contentType = this.flashcardContentEnumType.IMAGE;
     this.contentValue = imageLink;
     this.contentEditor.close('image selected');
-  }
-
-  resetContent(): void {
-    this.contentType = this.flashcardContentEnumType.NONE;
-    this.contentValue = '';
+    this.emitValue(this.contentValue);
   }
 
   saveText() {
@@ -173,7 +193,14 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
       this.contentType = this.flashcardContentEnumType.TEXT;
       this.contentValue = this.textEditorContent;
       this.contentEditor.close('text selected');
+      this.emitValue(this.contentValue);
     }
+  }
+
+  resetContent(): void {
+    this.contentType = this.flashcardContentEnumType.NONE;
+    this.contentValue = '';
+    this.emitValue(this.contentValue);
   }
 
   showEditButton(): boolean {
@@ -222,11 +249,5 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
 
   clearAudioResults(): void {
     this.audioAPIResults = [];
-  }
-
-  selectAudio(audioURL: string): void {
-    this.contentType = FlashcardContentType.AUDIO;
-    this.contentValue = audioURL;
-    this.contentEditor.close('audio selected');
   }
 }
