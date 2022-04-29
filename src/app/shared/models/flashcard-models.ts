@@ -8,6 +8,9 @@ export interface IFlashcard {
   content1: string;
   content2: string;
   content3: string;
+  content4: string;
+  content5: string;
+  content6: string;
   creationDate: string;
   lastUpdated: string;
   dueDate: string;
@@ -22,6 +25,9 @@ export class Flashcard implements IFlashcard {
   content1: string = '';
   content2: string = '';
   content3: string = '';
+  content4: string = '';
+  content5: string = '';
+  content6: string = '';
   creationDate: string = new Date().toISOString();
   lastUpdated: string = new Date().toISOString();
   dueDate: string = new Date().toISOString();

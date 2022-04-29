@@ -11,6 +11,7 @@ import {
 import { Flashcard, IFlashcard } from 'src/app/shared/models/flashcard-models';
 import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
 import { GenericLanguageService } from 'src/app/shared/services/language.service';
+import { flashcardSeeder } from 'src/assets/test_assets/flashcard-seeder';
 
 @Component({
   selector: 'app-deck-detail',
