@@ -4548,6 +4548,8 @@ let flashcardJson = [
 
 // this code aims to make the flashcard data a bit more believable. Even though the content assignments won't make nay sense, they are correctly attached to the DeckId pool, and the due dates are calculated based on the LastUpdated date and flashcard levels.
 
+// update: this code has become a shitshow recently. Not even gonna try to explain it... just know it is used to generate flashcard data
+
 export function flashcardSeeder(): typeof flashcardJson {
   let deckIdPool = deckJson.map((x) => x.deckId); // sets ID pool from Decks
   flashcardJson.map(
@@ -4584,6 +4586,20 @@ export function flashcardSeeder(): typeof flashcardJson {
     if (f.content4 === '.') f.content4 = '';
     if (f.content5 === '.') f.content5 = '';
     if (f.content6 === '.') f.content6 = '';
+  });
+
+  flashcardJson.map((f) => {
+    let possibleValues = [
+      'SINGLE_BLOCK',
+      'VERTICAL_SPLIT',
+      'TRIPLE_BLOCK',
+      'HORIZONTAL_SPLIT',
+      'FULL_CARD',
+    ];
+    Object.assign(f, {
+      backContentLayout:
+        possibleValues[Math.floor(Math.random() * possibleValues.length)],
+    });
   });
 
   //console.log(flashcardJson.map(f => {return { lu: f.lastUpdated , dt: f.dueDate}})) // for debugging
