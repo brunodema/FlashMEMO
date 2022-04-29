@@ -10,7 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field'; // Material U
 import { MatSortModule } from '@angular/material/sort'; // Material UI stuff for dynamic tables
 import { MatInputModule } from '@angular/material/input'; // this one is not mentioned in any tutorial, BUT IS REQUIRED FOR THE SORTABLE/FILTERABLE/PAGINATED TABLE TO WORK!
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { FlashcardContentOptionsBlock } from './components/flashcard/flashcard-content-options-block/flashcard-content-options-block.component';
+import { FlashcardContentOptionsBlockComponent } from './components/flashcard/flashcard-content-options-block/flashcard-content-options-block.component';
 import { FlashcardLayoutComponent } from './components/flashcard/flashcard-layout/flashcard-layout.component';
 import { FlashcardContentEditorComponent } from './components/flashcard/flashcard-content-editor/flashcard-content-editor.component';
 import { DataTableComponent } from './components/data-table/data-table.component';
@@ -21,6 +21,7 @@ import { CKEditorModule } from 'ckeditor4-angular';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
+import { FlashcardComponent } from './components/flashcard/flashcard-main/flashcard.component';
 
 @NgModule({
   declarations: [
@@ -30,11 +31,12 @@ import { NgModule } from '@angular/core';
     AdminActionsToolbarComponent,
     DataTableComponent,
     UserPreferencesDropdownComponent,
-    FlashcardContentOptionsBlock,
+    FlashcardContentOptionsBlockComponent,
     FlashcardLayoutComponent,
     FlashcardLayoutComponent,
     FlashcardContentEditorComponent,
     ImageLoaderDirective,
+    FlashcardComponent,
   ],
   imports: [
     CollapseModule,
@@ -57,7 +59,8 @@ import { NgModule } from '@angular/core';
     AdminActionsToolbarComponent,
     DataTableComponent,
     UserPreferencesDropdownComponent,
-    FlashcardContentOptionsBlock,
+    FlashcardContentOptionsBlockComponent,
+    FlashcardComponent,
     FlashcardLayoutComponent,
     ImageLoaderDirective,
   ],

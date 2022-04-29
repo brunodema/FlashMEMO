@@ -51,7 +51,7 @@ export enum FlashcardContentType {
     { provide: GeneralAudioAPIService, useClass: MockAudioService },
   ],
 })
-export class FlashcardContentOptionsBlock implements OnInit {
+export class FlashcardContentOptionsBlockComponent implements OnInit {
   componentHeight: string;
 
   closeResult: string;

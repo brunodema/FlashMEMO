@@ -1,20 +1,16 @@
-import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { TouchSequence } from 'selenium-webdriver';
 import {
   DataTableColumnOptions,
   DataTableComponent,
   DataTableComponentClickEventArgs,
 } from 'src/app/shared/components/data-table/data-table.component';
-import { Flashcard, FlashcardLayout } from 'src/app/shared/models/flashcard';
+import { Flashcard } from 'src/app/shared/models/flashcard';
 import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
 import { GenericLanguageService } from 'src/app/shared/services/language.service';
-import { Deck } from '../../models/deck.model';
-import { GenericDeckService } from '../../services/deck.service';
 
 @Component({
   selector: 'app-deck-detail',
@@ -23,12 +19,6 @@ import { GenericDeckService } from '../../services/deck.service';
 })
 export class DeckDetailComponent {
   closeResult = '';
-  layoutEnum: typeof FlashcardLayout = FlashcardLayout;
-  // implementation stolen from: https://stackoverflow.com/questions/56036446/typescript-enum-values-as-array
-  possibleLayouts = Object.values(FlashcardLayout).filter(
-    (f) => typeof f === 'string'
-  );
-  flashcardLayout: FlashcardLayout = FlashcardLayout.SINGLE_BLOCK;
 
   // form stuff for deck info
   form = new FormGroup({});
