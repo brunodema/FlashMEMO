@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import {
   IFlashcard,
   FlashcardLayout,
@@ -19,6 +25,9 @@ export class FlashcardComponent implements AfterViewInit {
   readonly layoutDisplayNames = flashcardLayoutDisplayName;
 
   @Input() flashcard: IFlashcard;
+
+  @Output() nextClick: EventEmitter<any> = new EventEmitter();
+  @Output() previousClick: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
   ngAfterViewInit(): void {
