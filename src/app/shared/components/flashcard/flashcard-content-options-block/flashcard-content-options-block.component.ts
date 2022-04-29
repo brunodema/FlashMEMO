@@ -128,7 +128,9 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
    */
   contentEditor: NgbModalRef;
 
-  @Output() contentSave: EventEmitter<any> = new EventEmitter();
+  @Output()
+  contentSave: EventEmitter<FlashcardContentOptionsBlockContentSaveEventArgs> =
+    new EventEmitter();
 
   constructor(
     private modalService: NgbModal,
@@ -166,7 +168,7 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
   }
 
   emitValue(contentValue: string) {
-    this.contentSave.emit(this.contentValue);
+    this.contentSave.emit({ contentValue: this.contentValue });
     console.log('emitting: ' + this.contentValue);
   }
 
