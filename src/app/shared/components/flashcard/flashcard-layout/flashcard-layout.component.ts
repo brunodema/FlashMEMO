@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FlashcardLayout } from 'src/app/shared/models/flashcard';
+import {
+  IFlashcard,
+  FlashcardLayout,
+} from 'src/app/shared/models/flashcard.model';
 
 @Component({
   selector: 'app-flashcard-layout',
@@ -10,8 +13,9 @@ import { FlashcardLayout } from 'src/app/shared/models/flashcard';
   styleUrls: ['./flashcard-layout.component.css'],
 })
 export class FlashcardLayoutComponent implements OnInit {
-  @Input() layout: FlashcardLayout = FlashcardLayout.SINGLE_BLOCK;
   layoutEnum: typeof FlashcardLayout = FlashcardLayout;
+
+  @Input() flashcard: IFlashcard;
 
   constructor() {}
 

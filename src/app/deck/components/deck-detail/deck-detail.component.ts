@@ -8,7 +8,7 @@ import {
   DataTableComponent,
   DataTableComponentClickEventArgs,
 } from 'src/app/shared/components/data-table/data-table.component';
-import { Flashcard } from 'src/app/shared/models/flashcard';
+import { Flashcard, IFlashcard } from 'src/app/shared/models/flashcard.model';
 import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
 import { GenericLanguageService } from 'src/app/shared/services/language.service';
 
@@ -58,13 +58,14 @@ export class DeckDetailComponent {
   ];
 
   // flashcard info
-  flashcardData: Flashcard[];
+  activeFlashcard: IFlashcard;
+  flashcardData: IFlashcard[];
   columnOptions: DataTableColumnOptions[] = [
     { name: 'flashcardId', emitValue: true },
   ];
   pageSizeOptions: number[] = [5, 10, 25];
 
-  @ViewChild(DataTableComponent) dataTable: DataTableComponent<Flashcard>;
+  @ViewChild(DataTableComponent) dataTable: DataTableComponent<IFlashcard>;
 
   constructor(
     private modalService: NgbModal,
@@ -92,6 +93,8 @@ export class DeckDetailComponent {
   }
 
   open(content: any) {
+    this.activeFlashcard = new Flashcard();
+    console.log(this.activeFlashcard);
     this.modalService
       .open(content, {
         ariaLabelledBy: 'modal-basic-title',
@@ -118,7 +121,7 @@ export class DeckDetailComponent {
     }
   }
 
-  handleFlashcardEdit(args: DataTableComponentClickEventArgs<Flashcard>) {}
+  handleFlashcardEdit(args: DataTableComponentClickEventArgs<IFlashcard>) {}
 
-  handleFlashcardDelete(args: DataTableComponentClickEventArgs<Flashcard>) {}
+  handleFlashcardDelete(args: DataTableComponentClickEventArgs<IFlashcard>) {}
 }

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
-import { Flashcard } from '../models/flashcard';
+import { IFlashcard } from '../models/flashcard.model';
 import {
   IServiceSearchParams,
   SortType,
@@ -25,12 +25,14 @@ export class FlashcardSearchParams implements IServiceSearchParams {
   answer: string;
 }
 
-export abstract class GenericFlashcardService extends GenericRepositoryService<Flashcard> {
+export abstract class GenericFlashcardService extends GenericRepositoryService<IFlashcard> {
   constructor(protected httpClient: HttpClient) {
     super(`${environment.backendRootAddress}/api/v1/flashcard`, httpClient);
   }
-  abstract search(searchParams: FlashcardSearchParams): Observable<Flashcard[]>;
-  abstract getAllFlashcardsFromDeck(deckId: string): Observable<Flashcard[]>;
+  abstract search(
+    searchParams: FlashcardSearchParams
+  ): Observable<IFlashcard[]>;
+  abstract getAllFlashcardsFromDeck(deckId: string): Observable<IFlashcard[]>;
 }
 
 @Injectable()
@@ -38,14 +40,14 @@ export class MockFlashcardService extends GenericFlashcardService {
   constructor(protected httpClient: HttpClient) {
     super(httpClient);
   }
-  getAllFlashcardsFromDeck(deckId: string): Observable<Flashcard[]> {
+  getAllFlashcardsFromDeck(deckId: string): Observable<IFlashcard[]> {
     return of(flashcardJson.filter((f) => f.deckId == deckId));
   }
-  search(searchParams: FlashcardSearchParams): Observable<Flashcard[]> {
+  search(searchParams: FlashcardSearchParams): Observable<IFlashcard[]> {
     throw new Error('Method not implemented.');
   }
 
-  getAll(): Observable<Flashcard[]> {
+  getAll(): Observable<IFlashcard[]> {
     return of(flashcardJson);
   }
 }

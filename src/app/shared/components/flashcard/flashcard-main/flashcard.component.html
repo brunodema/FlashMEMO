@@ -2,7 +2,7 @@
   <div class="row mb-2 text-right">
     <label for="flashcardLayout" class="col-form-label col-9">Choose your layout:</label>
     <div class="col-3">
-      <select class="form-select" [(ngModel)]="flashcardLayout">
+      <select class="form-select" [(ngModel)]="flashcard.contentLayout">
         <option *ngFor="let layout of possibleLayouts" [ngValue]="layout">{{ layout }}</option>
       </select>
     </div>
@@ -15,6 +15,6 @@
 
               Documentation used: https://getbootstrap.com/docs/5.0/utilities/flex/#align-items -->
   <div class="flashcard-container h-100 d-flex flex-column justify-content-evenly">
-    <app-flashcard-layout [layout]="flashcardLayout"></app-flashcard-layout>
+    <app-flashcard-layout [flashcard]="flashcard"></app-flashcard-layout>
   </div>
 </div>

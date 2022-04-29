@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
 import { RouteMap } from 'src/app/shared/models/routing/route-map';
 import { DataTableComponent } from 'src/app/shared/components/data-table/data-table.component';
 import { Deck } from 'src/app/deck/models/deck.model';
-import { Flashcard } from 'src/app/shared/models/flashcard';
+import { IFlashcard } from 'src/app/shared/models/flashcard.model';
 import { GenericDeckService } from 'src/app/deck/services/deck.service';
 import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
 
@@ -17,10 +17,10 @@ export class UserListComponent implements AfterViewInit {
   routes: RouteMap[] = [{ label: 'Create User', route: 'create' }];
 
   @ViewChild('lol') dataTable: DataTableComponent<Deck>;
-  @ViewChild('lolo') dataTable2: DataTableComponent<Flashcard>;
+  @ViewChild('lolo') dataTable2: DataTableComponent<IFlashcard>;
 
   deckData: Deck[];
-  flashcardData: Flashcard[];
+  flashcardData: IFlashcard[];
 
   constructor(
     public deckService: GenericDeckService,
