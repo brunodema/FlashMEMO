@@ -10,6 +10,10 @@ import {
   FlashcardLayout,
 } from 'src/app/shared/models/flashcard-models';
 import { flashcardLayoutDisplayName } from 'src/app/shared/models/flashcard-models';
+import {
+  FlashcardLayoutContentChangeEventArgs,
+  FlashcardLayoutSection,
+} from '../flashcard-layout/flashcard-layout.component';
 
 @Component({
   selector: 'app-flashcard',
@@ -34,5 +38,36 @@ export class FlashcardComponent implements AfterViewInit {
   constructor() {}
   ngAfterViewInit(): void {
     console.log(this.flashcard);
+  }
+
+  private updateFlashcardContent(
+    isFlashcardFront: boolean,
+    args: FlashcardLayoutContentChangeEventArgs
+  ) {
+    switch (args.sectionChanged) {
+      case FlashcardLayoutSection.FIRST:
+        if (this.isFlashcardFront) this.flashcard.content1 = args.contentValue;
+        else this.flashcard.content4 = args.contentValue;
+        break;
+      case FlashcardLayoutSection.SECOND:
+        if (this.isFlashcardFront) this.flashcard.content2 = args.contentValue;
+        else this.flashcard.content5 = args.contentValue;
+        break;
+      case FlashcardLayoutSection.THIRD:
+        if (this.isFlashcardFront) this.flashcard.content3 = args.contentValue;
+        else this.flashcard.content6 = args.contentValue;
+        break;
+      default:
+        throw new Error("The provided 'FlashcardLayoutSection' does not exist");
+    }
+  }
+
+  onContentChange(args: FlashcardLayoutContentChangeEventArgs) {
+    this.updateFlashcardContent(this.isFlashcardFront, args);
+    this.flashcard.lastUpdated = new Date().toISOString();
+    console.log(
+      'the flashcard was changed from the inside! wow: ',
+      this.flashcard
+    );
   }
 }

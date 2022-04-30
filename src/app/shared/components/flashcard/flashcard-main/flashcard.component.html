@@ -17,7 +17,8 @@
 
               Documentation used: https://getbootstrap.com/docs/5.0/utilities/flex/#align-items -->
   <div class="flashcard-container h-100 d-flex flex-column justify-content-evenly">
-    <app-flashcard-layout [isFlashcardFront]="isFlashcardFront" [flashcard]="flashcard"></app-flashcard-layout>
+    <app-flashcard-layout (contentChange)="onContentChange($event)" [isFlashcardFront]="isFlashcardFront"
+      [flashcard]="flashcard"></app-flashcard-layout>
   </div>
   <div class="d-flex justify-content-between p-0 mt-3">
     <button [style.visibility]="!isFlashcardFront ? 'visible' : 'hidden'" type="button"
