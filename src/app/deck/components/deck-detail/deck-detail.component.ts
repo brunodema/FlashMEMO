@@ -95,7 +95,6 @@ export class DeckDetailComponent {
 
   open(content: any) {
     this.activeFlashcard = new Flashcard();
-    console.log(this.activeFlashcard);
     this.modalService
       .open(content, {
         ariaLabelledBy: 'modal-basic-title',

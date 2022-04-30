@@ -1,4 +1,4 @@
-<div [ngSwitch]="flashcard.contentLayout" class="h-100">
+<div [ngSwitch]="currentLayout" class="h-100">
   <div *ngSwitchCase="layoutEnum.SINGLE_BLOCK" class="d-flex flex-column h-100">
     <app-flashcard-content-options-block (contentSave)="relayContentChange($event, layoutSectionEnum.FIRST)">
     </app-flashcard-content-options-block>

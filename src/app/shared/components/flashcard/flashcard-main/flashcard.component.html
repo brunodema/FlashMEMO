@@ -3,7 +3,10 @@
     <span>Now editing: {{ isFlashcardFront ? 'Front' : 'Back' }}</span>
     <label for="flashcardLayout" class="col-form-label col-9">Choose your layout:</label>
     <div class="col-3">
-      <select class="form-select" [(ngModel)]="flashcard.contentLayout">
+      <!-- I managed to stumble into a very obscure Angular bug when attempting to deal with ternary operators in a [(ngModel)] declaration: https://medium.com/programming-beasts/ternary-operator-in-angular-two-way-binding-1da312916779. To 'fix' this, I just changed the implementation to what you currently see here (the example on the link is pretty much what I first attempted to do). Separating the two-way binding seems to be the solution here (taken from: https://www.quora.com/Angular-How-can-you-conditionally-bind-a-model-with-ngModel). -->
+      <select class="form-select"
+        [ngModel]="isFlashcardFront ? flashcard.frontContentLayout :  flashcard.backContentLayout "
+        (ngModelChange)="isFlashcardFront ? flashcard.frontContentLayout = $event : flashcard.backContentLayout = $event ">
         <option *ngFor="let layout of possibleLayouts" [ngValue]="layout">{{ layoutDisplayNames[layout] }}
         </option>
       </select>
@@ -17,8 +20,9 @@
 
               Documentation used: https://getbootstrap.com/docs/5.0/utilities/flex/#align-items -->
   <div class="flashcard-container h-100 d-flex flex-column justify-content-evenly">
-    <app-flashcard-layout (contentChange)="onContentChange($event)" [isFlashcardFront]="isFlashcardFront"
-      [flashcard]="flashcard"></app-flashcard-layout>
+    <app-flashcard-layout (contentChange)="onContentChange($event)"
+      [currentLayout]="isFlashcardFront ? flashcard.frontContentLayout : flashcard.backContentLayout">
+    </app-flashcard-layout>
   </div>
   <div class="d-flex justify-content-between p-0 mt-3">
     <button [style.visibility]="!isFlashcardFront ? 'visible' : 'hidden'" type="button"

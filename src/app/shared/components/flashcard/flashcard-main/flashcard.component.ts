@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   IFlashcard,
   FlashcardLayout,
@@ -20,7 +14,7 @@ import {
   templateUrl: './flashcard.component.html',
   styleUrls: ['./flashcard.component.css'],
 })
-export class FlashcardComponent implements AfterViewInit {
+export class FlashcardComponent {
   // auxiliary variables for Flashcard handling
   isFlashcardFront: boolean = true;
   layoutEnum: typeof FlashcardLayout = FlashcardLayout;
@@ -36,9 +30,6 @@ export class FlashcardComponent implements AfterViewInit {
   @Output() previousClick: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
-  ngAfterViewInit(): void {
-    console.log(this.flashcard);
-  }
 
   private updateFlashcardContent(
     isFlashcardFront: boolean,
