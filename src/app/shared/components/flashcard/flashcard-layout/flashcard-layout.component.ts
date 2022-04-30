@@ -31,7 +31,8 @@ export class FlashcardLayoutComponent implements OnInit {
   layoutEnum: typeof FlashcardLayout = FlashcardLayout;
   layoutSectionEnum: typeof FlashcardLayoutSection = FlashcardLayoutSection;
 
-  @Input() currentLayout: string;
+  @Input() layout: string;
+  @Input() contents: string[];
 
   @Output() contentChange: EventEmitter<FlashcardLayoutContentChangeEventArgs> =
     new EventEmitter();

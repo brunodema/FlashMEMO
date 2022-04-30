@@ -2,11 +2,11 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   OnInit,
   Output,
 } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
 import {
   IDataAPIResponse,
@@ -67,7 +67,6 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
   closeResult: string;
   modalTitle: string;
   contentType: FlashcardContentType = FlashcardContentType.NONE;
-  contentValue: string = '';
   currentKeyword: string = ''; // shared between search boxes
 
   flashcardContentEnumType = FlashcardContentType;
@@ -128,6 +127,16 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
    */
   contentEditor: NgbModalRef;
 
+  // getter + setter implementation taken from here: https://stackoverflow.com/questions/36653678/angular2-input-to-a-property-with-get-set
+  private _contentValue: string = '';
+  @Input() set contentValue(value: string) {
+    this.contentType = this.determineContentType(value);
+    this._contentValue = value;
+  }
+  get contentValue(): string {
+    return this._contentValue;
+  }
+
   @Output()
   contentSave: EventEmitter<FlashcardContentOptionsBlockContentSaveEventArgs> =
     new EventEmitter();
@@ -138,12 +147,29 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
     private dictAPIService: GeneralDictionaryAPIService,
     private audioAPIService: GeneralAudioAPIService,
     private hostElement: ElementRef, // A way to check the parent's height, and use it after an image is selected by the user
-    private spinnerService: NgxSpinnerService,
     private clipboardService: ClipboardService
   ) {}
 
   ngOnInit(): void {
     this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+  }
+
+  determineContentType(contentValue: string): FlashcardContentType {
+    contentValue = contentValue.trim();
+    if (contentValue.length === 0) return FlashcardContentType.NONE;
+    if (!contentValue.includes('\\s')) {
+      if (contentValue.match(/.mp3$/)) {
+        return FlashcardContentType.AUDIO;
+      }
+      if (contentValue.match(/(\.(jpeg|jpg|gif|png))|(pjpeg)$/)) {
+        // this is a pretty terrible way to check if the string is an internet image, but apparently there are no TS ways to do it properly. Refactor this in the future.
+        return FlashcardContentType.IMAGE;
+      }
+      return FlashcardContentType.TEXT;
+    }
+    throw new Error(
+      'Content provided does not contain a string without whitespaces, nor content wrapped in <p></p>.'
+    ); // needless to say, this is a HORRENDOUS error to be shown to the end-user, but great for debugging.
   }
 
   openXl(content: any, contentType: string): void {

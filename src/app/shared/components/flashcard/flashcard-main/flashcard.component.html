@@ -20,8 +20,10 @@
 
               Documentation used: https://getbootstrap.com/docs/5.0/utilities/flex/#align-items -->
   <div class="flashcard-container h-100 d-flex flex-column justify-content-evenly">
-    <app-flashcard-layout (contentChange)="onContentChange($event)"
-      [currentLayout]="isFlashcardFront ? flashcard.frontContentLayout : flashcard.backContentLayout">
+    <app-flashcard-layout
+      [contents]="isFlashcardFront ? [flashcard.content1,flashcard.content2,flashcard.content3] : [flashcard.content4,flashcard.content5,flashcard.content6]"
+      (contentChange)="onContentChange($event)"
+      [layout]="isFlashcardFront ? flashcard.frontContentLayout : flashcard.backContentLayout">
     </app-flashcard-layout>
   </div>
   <div class="d-flex justify-content-between p-0 mt-3">
