@@ -4,7 +4,8 @@ export interface IFlashcard {
   flashcardId: string;
   deckId: string;
   level: number;
-  contentLayout: string;
+  frontContentLayout: string;
+  backContentLayout: string;
   content1: string;
   content2: string;
   content3: string;
@@ -21,7 +22,8 @@ export class Flashcard implements IFlashcard {
   flashcardId: string = '';
   deckId: string = '';
   level: number = 0;
-  contentLayout: string = FlashcardLayout.SINGLE_BLOCK;
+  frontContentLayout: string = FlashcardLayout.SINGLE_BLOCK;
+  backContentLayout: string = FlashcardLayout.SINGLE_BLOCK;
   content1: string = '';
   content2: string = '';
   content3: string = '';
