@@ -93,8 +93,12 @@ export class DeckDetailComponent {
       .subscribe((x) => (this.flashcardData = x));
   }
 
-  open(content: any) {
-    this.activeFlashcard = new Flashcard();
+  openFlashcardModal(content: any, flashcard: IFlashcard | null) {
+    console.log(flashcard);
+
+    if (flashcard === null) this.activeFlashcard = new Flashcard();
+    else this.activeFlashcard = flashcard!;
+
     this.modalService
       .open(content, {
         ariaLabelledBy: 'modal-basic-title',
@@ -124,4 +128,6 @@ export class DeckDetailComponent {
   handleFlashcardEdit(args: DataTableComponentClickEventArgs<IFlashcard>) {}
 
   handleFlashcardDelete(args: DataTableComponentClickEventArgs<IFlashcard>) {}
+
+  handleFlashcardClick(args: DataTableComponentClickEventArgs<IFlashcard>) {}
 }

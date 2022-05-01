@@ -5,7 +5,7 @@
       <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
     </div>
   </div>
-  <button class="btn btn-primary" (click)="open(content)">
+  <button class="btn btn-primary" (click)="openFlashcardModal(content, null)">
     Create Flashcard
   </button>
 
@@ -13,10 +13,10 @@
     <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
       <ngb-panel title="Flashcards">
         <ng-template ngbPanelContent>
-          <app-data-table [editColumnProperty]="'flashcardId'" [deleteColumnProperty]="'flashcardId'"
-            (editClick)="handleFlashcardEdit($event)" (deleteClick)="handleFlashcardDelete($event)"
-            [dataSource]="this.flashcardData" [columnOptions]='this.columnOptions'
-            [pageSizeOptions]='this.pageSizeOptions'>
+          <app-data-table (rowClick)="openFlashcardModal(content, $event.rowData)" [editColumnProperty]="'flashcardId'"
+            [deleteColumnProperty]="'flashcardId'" (editClick)="handleFlashcardEdit($event)"
+            (deleteClick)="handleFlashcardDelete($event)" [dataSource]="this.flashcardData"
+            [columnOptions]='this.columnOptions' [pageSizeOptions]='this.pageSizeOptions'>
           </app-data-table>
         </ng-template>
       </ngb-panel>
