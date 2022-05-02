@@ -11,7 +11,7 @@ import {
 import { Flashcard, IFlashcard } from 'src/app/shared/models/flashcard-models';
 import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
 import { GenericLanguageService } from 'src/app/shared/services/language.service';
-import { flashcardSeeder } from 'src/assets/test_assets/flashcard-seeder';
+import { theNewFlashcardSeeder } from 'src/assets/test_assets/flashcard-seeder';
 
 @Component({
   selector: 'app-deck-detail',
@@ -94,10 +94,10 @@ export class DeckDetailComponent {
   }
 
   openFlashcardModal(content: any, flashcard: IFlashcard | null) {
-    console.log(flashcard);
-
     if (flashcard === null) this.activeFlashcard = new Flashcard();
     else this.activeFlashcard = flashcard!;
+
+    //console.log(theNewFlashcardSeeder(250));
 
     this.modalService
       .open(content, {
