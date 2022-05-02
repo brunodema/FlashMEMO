@@ -44,6 +44,9 @@ export enum FlashcardLayout {
   FULL_CARD = 'FULL_CARD',
 }
 
+/**
+ * Variable used to hold the string values of the FlashcardLayout enum. This is used for the select widget on the flashcar editor.
+ */
 export const flashcardLayoutDisplayName = {
   SINGLE_BLOCK: 'Single Block',
   VERTICAL_SPLIT: 'Vertical Split',
