@@ -3,7 +3,14 @@
     "searchText": "car",
     "languageCode": "en-gb",
     "results": {
-      "audioFiles": ["https://audio.oxforddictionaries.com/en/mp3/car_gb_1.mp3"]
+      "audioFiles": [
+        "https://audio.oxforddictionaries.com/en/mp3/car_gb_1.mp3",
+        "https://audio12.forvo.com/audios/mp3/l/i/li_9002112_133_543430_266179.mp3",
+        "https://audio12.forvo.com/audios/mp3/4/r/4r_20_74_136_1.mp3",
+        "https://audio12.forvo.com/audios/mp3/u/n/un_9523171_118_7665857.mp3",
+        "https://audio12.forvo.com/audios/mp3/p/v/pv_8979922_49_607322_1.mp3",
+        "https://audio12.forvo.com/audios/mp3/6/o/6o_9014612_41_617305_1.mp3"
+      ]
     }
   }
 ]
