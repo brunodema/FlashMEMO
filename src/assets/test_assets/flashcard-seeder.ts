@@ -1,6 +1,7 @@
 import { Guid } from 'guid-ts';
 import { LoremIpsum, loremIpsum } from 'lorem-ipsum';
 import { Flashcard } from 'src/app/shared/models/flashcard-models';
+import internal from 'stream';
 
 let deckJson = [
   {
@@ -4618,22 +4619,82 @@ function getRandomElementFromArray<Type>(array: Array<Type>): Type {
  * @param to Finish date
  * @returns Random date
  */
-function getRandomDate(from: Date, to: Date) {
+function getRandomDate(from: Date, to: Date): Date {
   const fromTime = from.getTime();
   const toTime = to.getTime();
   return new Date(fromTime + Math.random() * (toTime - fromTime));
 }
 
+function randomValueWithCuttof<Type>(
+  cutoff: number,
+  fixedValue: Type,
+  predicate: (...args: any[]) => Type,
+  ...args: any[]
+): Type {
+  let rng = Math.random();
+  if (rng < cutoff) {
+    console.log('rng value of' + rng + ', returning fixed value...');
+    return fixedValue;
+  }
+  console.log('rng value of' + rng + ', returning predicate value...');
+  return predicate(args);
+}
+
 export function theNewFlashcardSeeder(amount: number) {
   let deckIdPool = deckJson.map((x) => x.deckId); // sets ID pool from Decks
   let levelPool = Array.from(Array(11).keys()); // array from 0 to 10 (stolen from here: https://stackoverflow.com/questions/3746725/how-to-create-an-array-containing-1-n)
+  let answerPool = [
+    'thing',
+    'macchina',
+    'kirche',
+    'mel',
+    'ni hao',
+    '¿Cómo está señor?',
+    'Tarte',
+    'Restaurant',
+    'kill',
+    'Gelsenkirchen',
+    'onda',
+    'Hi, how are you?',
+    'nuage',
+    'el pueblo',
+    'vecchia signora',
+  ];
+  let layoutPool = [
+    'SINGLE_BLOCK',
+    'VERTICAL_SPLIT',
+    'TRIPLE_BLOCK',
+    'HORIZONTAL_SPLIT',
+    'FULL_CARD',
+  ];
   let referenceDate = new Date(2020, 1, 1, 12, 0, 0, 0);
+  let startDateRange = new Date(
+    referenceDate.setDate(referenceDate.getDate() - 30)
+  );
+  let endDateRange = new Date(
+    referenceDate.setDate(referenceDate.getDate() + 30)
+  );
 
   for (let index = 0; index < amount; index++) {
     const element = new Flashcard();
     element.flashcardId = Guid.newGuid().toString();
     element.deckId = getRandomElementFromArray(deckIdPool);
     element.level = getRandomElementFromArray(levelPool);
-    element.creationDate = referenceDate.toISOString();
+    element.creationDate = getRandomDate(
+      startDateRange,
+      endDateRange
+    ).toISOString();
+    element.lastUpdated = randomValueWithCuttof(0.8, element.creationDate, () =>
+      getRandomDate(referenceDate, endDateRange).toISOString()
+    );
+    element.dueDate = new Date(
+      referenceDate.setDate(referenceDate.getDate() + element.level ** 2)
+    ).toISOString();
+
+    element.answer = randomValueWithCuttof(0.5, '', () =>
+      getRandomElementFromArray(answerPool)
+    );
+    element.frontContentLayout = '';
+    element.backContentLayout = '';
   }
 }
