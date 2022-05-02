@@ -1,4 +1,6 @@
+import { Guid } from 'guid-ts';
 import { LoremIpsum, loremIpsum } from 'lorem-ipsum';
+import { Flashcard } from 'src/app/shared/models/flashcard-models';
 
 let deckJson = [
   {
@@ -4604,4 +4606,34 @@ export function flashcardSeeder(): typeof flashcardJson {
 
   //console.log(flashcardJson.map(f => {return { lu: f.lastUpdated , dt: f.dueDate}})) // for debugging
   return flashcardJson;
+}
+
+function getRandomElementFromArray<Type>(array: Array<Type>): Type {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+/**
+ * Function shamelessly stolen from: https://stackoverflow.com/questions/31378526/generate-random-date-between-two-dates-and-times-in-javascript.
+ * @param from Starting date
+ * @param to Finish date
+ * @returns Random date
+ */
+function getRandomDate(from: Date, to: Date) {
+  const fromTime = from.getTime();
+  const toTime = to.getTime();
+  return new Date(fromTime + Math.random() * (toTime - fromTime));
+}
+
+export function theNewFlashcardSeeder(amount: number) {
+  let deckIdPool = deckJson.map((x) => x.deckId); // sets ID pool from Decks
+  let levelPool = Array.from(Array(11).keys()); // array from 0 to 10 (stolen from here: https://stackoverflow.com/questions/3746725/how-to-create-an-array-containing-1-n)
+  let referenceDate = new Date(2020, 1, 1, 12, 0, 0, 0);
+
+  for (let index = 0; index < amount; index++) {
+    const element = new Flashcard();
+    element.flashcardId = Guid.newGuid().toString();
+    element.deckId = getRandomElementFromArray(deckIdPool);
+    element.level = getRandomElementFromArray(levelPool);
+    element.creationDate = referenceDate.toISOString();
+  }
 }
