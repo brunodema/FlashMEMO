@@ -20,6 +20,33 @@ export abstract class GenericRepositoryService<Type> {
     protected httpClient: HttpClient
   ) {}
 
+  create(object: Type): Observable<IDataAPIResponse<string>> {
+    return this.httpClient.post<IDataAPIResponse<string>>(
+      `${this.endpointURL}/create`,
+      JSON.stringify(object)
+    );
+  }
+
+  get(id: string): Observable<IDataAPIResponse<Type>> {
+    return this.httpClient.get<IDataAPIResponse<Type>>(
+      `${this.endpointURL}/${id}`
+    );
+  }
+
+  update(id: string, object: Type): Observable<IDataAPIResponse<string>> {
+    return this.httpClient.put<IDataAPIResponse<string>>(
+      `${this.endpointURL}/${id}`,
+      JSON.stringify(object)
+    );
+  }
+
+  delete(id: string): Observable<IBaseAPIResponse> {
+    return this.httpClient.post<IDataAPIResponse<IBaseAPIResponse>>(
+      `${this.endpointURL}/delete`,
+      id
+    );
+  }
+
   getAll(): Observable<Type[]> {
     return this.httpClient
       .get<IPaginatedListResponse<Type>>(

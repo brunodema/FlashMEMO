@@ -10,6 +10,10 @@ import {
 } from '../models/other/api-query-types';
 import { GenericRepositoryService } from './general-repository-service';
 import flashcardJson from 'src/assets/test_assets/Flashcards.json';
+import {
+  IBaseAPIResponse,
+  IDataAPIResponse,
+} from '../models/http/http-response-types';
 
 export class FlashcardSearchParams implements IServiceSearchParams {
   pageSize: Number;
@@ -46,9 +50,45 @@ export class MockFlashcardService extends GenericFlashcardService {
   search(searchParams: FlashcardSearchParams): Observable<IFlashcard[]> {
     throw new Error('Method not implemented.');
   }
-
   getAll(): Observable<IFlashcard[]> {
     return of(flashcardJson);
+  }
+
+  create(object: IFlashcard): Observable<IDataAPIResponse<string>> {
+    return of({ status: '200', message: '', errors: [], data: '' });
+  }
+
+  get(id: string): Observable<IDataAPIResponse<IFlashcard>> {
+    return of({
+      status: '200',
+      message: '',
+      errors: [],
+      data: {
+        flashcardId: '',
+        deckId: '',
+        level: 0,
+        frontContentLayout: 'SINGLE_BLOCK',
+        backContentLayout: 'SINGLE_BLOCK',
+        content1: '',
+        content2: '',
+        content3: '',
+        content4: '',
+        content5: '',
+        content6: '',
+        creationDate: '',
+        lastUpdated: '',
+        dueDate: '',
+        answer: '',
+      },
+    });
+  }
+
+  update(id: string, object: IFlashcard): Observable<IDataAPIResponse<string>> {
+    return of({ status: '200', message: '', errors: [], data: '' });
+  }
+
+  delete(id: string): Observable<IBaseAPIResponse> {
+    return of({ status: '200', message: '', errors: [] });
   }
 }
 
