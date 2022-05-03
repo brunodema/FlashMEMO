@@ -61,4 +61,37 @@ export class FlashcardComponent {
       this.flashcard
     );
   }
+
+  flashcardHasAnyContentOn(frontSide: boolean): boolean {
+    if (frontSide)
+      return (
+        this.flashcard.content1.trim().length > 0 ||
+        this.flashcard.content2.trim().length > 0 ||
+        this.flashcard.content3.trim().length > 0
+      );
+    return (
+      this.flashcard.content4.trim().length > 0 ||
+      this.flashcard.content5.trim().length > 0 ||
+      this.flashcard.content6.trim().length > 0
+    );
+  }
+
+  showFlashcardBack() {
+    if (!this.flashcardHasAnyContentOn(this.isFlashcardFront)) {
+      console.log(
+        'Your Flashcard has no content on this side! Please fill it with something 😢'
+      );
+      return;
+    }
+    this.isFlashcardFront = false;
+  }
+
+  saveFlashcard(flashcard: IFlashcard) {
+    if (!this.flashcardHasAnyContentOn(this.isFlashcardFront)) {
+      console.log(
+        'Your Flashcard has no content on this side! Please fill it with something 😢'
+      );
+      return;
+    }
+  }
 }

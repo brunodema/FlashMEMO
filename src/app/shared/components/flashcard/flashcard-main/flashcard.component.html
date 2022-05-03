@@ -32,8 +32,8 @@
       class="btn btn-outline-dark col-2" (click)="isFlashcardFront = true">Previous</button>
     <input [(ngModel)]="flashcard.answer" class="form-control mx-3 text-center" type="text" placeholder="Answer">
     <button [hidden]="!isFlashcardFront" [style.visibility]="isFlashcardFront ? 'visible' : 'hidden'" type="button"
-      class="btn btn-outline-dark col-2" (click)="isFlashcardFront = false">Next</button>
+      class="btn btn-outline-dark col-2" (click)="showFlashcardBack()">Next</button>
     <button [hidden]="isFlashcardFront" [style.visibility]="isFlashcardFront ? 'hidden' : 'visible'" type="button"
-      class="btn btn-primary col-2" (click)="isFlashcardFront = false">Save</button>
+      class="btn btn-primary col-2" (click)="saveFlashcard(flashcard)">Save</button>
   </div>
 </div>
