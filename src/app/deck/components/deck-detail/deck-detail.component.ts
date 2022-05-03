@@ -1,7 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+  ModalDismissReasons,
+  NgbModal,
+  NgbModalRef,
+} from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import {
   DataTableColumnOptions,
@@ -67,6 +71,7 @@ export class DeckDetailComponent {
   pageSizeOptions: number[] = [5, 10, 25];
 
   @ViewChild(DataTableComponent) dataTable: DataTableComponent<IFlashcard>;
+  flashcardModal: NgbModalRef; // this variable is assigned as soon as the modal is opened (return of the 'open' method)
 
   constructor(
     private modalService: NgbModal,
@@ -99,20 +104,19 @@ export class DeckDetailComponent {
 
     //console.log(theNewFlashcardSeeder(250));
 
-    this.modalService
-      .open(content, {
-        ariaLabelledBy: 'modal-basic-title',
-        size: 'lg',
-        windowClass: 'flashcard-modal',
-      })
-      .result.then(
-        (result) => {
-          this.closeResult = `Closed with: ${result}`;
-        },
-        (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
+    this.flashcardModal = this.modalService.open(content, {
+      ariaLabelledBy: 'modal-basic-title',
+      size: 'lg',
+      windowClass: 'flashcard-modal',
+    });
+    this.flashcardModal.result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }
+    );
   }
 
   private getDismissReason(reason: any): string {
@@ -130,4 +134,8 @@ export class DeckDetailComponent {
   handleFlashcardDelete(args: DataTableComponentClickEventArgs<IFlashcard>) {}
 
   handleFlashcardClick(args: DataTableComponentClickEventArgs<IFlashcard>) {}
+
+  handleFlashcardSave() {
+    this.flashcardModal.close('content saved');
+  }
 }

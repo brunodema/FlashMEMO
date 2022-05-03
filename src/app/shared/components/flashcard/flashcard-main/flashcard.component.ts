@@ -30,8 +30,7 @@ export class FlashcardComponent {
 
   @Input() flashcard: IFlashcard;
 
-  @Output() nextClick: EventEmitter<any> = new EventEmitter();
-  @Output() previousClick: EventEmitter<any> = new EventEmitter();
+  @Output() save: EventEmitter<any> = new EventEmitter();
 
   constructor(private flashcardService: GenericFlashcardService) {}
 
@@ -106,6 +105,7 @@ export class FlashcardComponent {
     response.subscribe(
       (r) => {
         if (r.status === '200') console.log(r.message);
+        this.save.emit();
       },
       (error) => console.log('an error ocurred:' + error)
     );
