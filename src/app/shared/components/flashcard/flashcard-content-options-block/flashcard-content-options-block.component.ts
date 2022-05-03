@@ -178,6 +178,9 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
       size: 'xl',
       scrollable: true,
     });
+    // work-around so editor shows existing text if applicable (possibly there is a 'cleaner' way to implement this?)
+    if ((contentType = FlashcardContentType.IMAGE))
+      this.textEditorContent = this.contentValue;
   }
 
   searchImage(keyword: string, pageIndex?: number): void {
