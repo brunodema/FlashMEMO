@@ -131,65 +131,87 @@ export function theNewFlashcardSeeder(amount: number) {
       case FlashcardLayout.SINGLE_BLOCK:
         element.content1 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         break;
       case FlashcardLayout.HORIZONTAL_SPLIT:
         element.content1 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         element.content2 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         break;
       case FlashcardLayout.TRIPLE_BLOCK:
         element.content1 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         element.content2 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         element.content3 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         break;
       case FlashcardLayout.VERTICAL_SPLIT:
         element.content1 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         element.content2 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         break;
       case FlashcardLayout.FULL_CARD:
         element.content1 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         element.content2 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         element.content3 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         break;
@@ -199,65 +221,87 @@ export function theNewFlashcardSeeder(amount: number) {
       case FlashcardLayout.SINGLE_BLOCK:
         element.content4 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         break;
       case FlashcardLayout.HORIZONTAL_SPLIT:
         element.content4 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         element.content5 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         break;
       case FlashcardLayout.TRIPLE_BLOCK:
         element.content4 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         element.content5 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         element.content6 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         break;
       case FlashcardLayout.VERTICAL_SPLIT:
         element.content4 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         element.content5 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         break;
       case FlashcardLayout.FULL_CARD:
         element.content4 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         element.content5 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         element.content6 = randomValueWithCuttof(
           0.5,
-          getRandomElementFromArray(flashcardContentpool),
+          getRandomElementFromArray(
+            flashcardContentpool.concat(flashcardDictPool)
+          ),
           () => loremIpsum.generateSentences()
         );
         break;
