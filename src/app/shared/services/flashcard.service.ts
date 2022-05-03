@@ -12,7 +12,7 @@ import { GenericRepositoryService } from './general-repository-service';
 import flashcardJson from 'src/assets/test_assets/Flashcards.json';
 import {
   IBaseAPIResponse,
-  IDataAPIResponse,
+  IDataResponse,
 } from '../models/http/http-response-types';
 
 export class FlashcardSearchParams implements IServiceSearchParams {
@@ -54,14 +54,19 @@ export class MockFlashcardService extends GenericFlashcardService {
     return of(flashcardJson);
   }
 
-  create(object: IFlashcard): Observable<IDataAPIResponse<string>> {
-    return of({ status: '200', message: '', errors: [], data: '' });
-  }
-
-  get(id: string): Observable<IDataAPIResponse<IFlashcard>> {
+  create(object: IFlashcard): Observable<IDataResponse<string>> {
     return of({
       status: '200',
-      message: '',
+      message: 'Dummy Flashcard has been created.',
+      errors: [],
+      data: '',
+    });
+  }
+
+  get(id: string): Observable<IDataResponse<IFlashcard>> {
+    return of({
+      status: '200',
+      message: 'Dummy Flashcard object retrieved.',
       errors: [],
       data: {
         flashcardId: '',
@@ -83,12 +88,21 @@ export class MockFlashcardService extends GenericFlashcardService {
     });
   }
 
-  update(id: string, object: IFlashcard): Observable<IDataAPIResponse<string>> {
-    return of({ status: '200', message: '', errors: [], data: '' });
+  update(id: string, object: IFlashcard): Observable<IDataResponse<string>> {
+    return of({
+      status: '200',
+      message: 'Dummy Flashcard has been updated.',
+      errors: [],
+      data: '',
+    });
   }
 
   delete(id: string): Observable<IBaseAPIResponse> {
-    return of({ status: '200', message: '', errors: [] });
+    return of({
+      status: '200',
+      message: 'Dummy Flashcard has been deleted.',
+      errors: [],
+    });
   }
 }
 

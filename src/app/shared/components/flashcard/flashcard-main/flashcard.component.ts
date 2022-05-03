@@ -1,9 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Observable } from 'rxjs';
+import { DeckService } from 'src/app/deck/services/deck.service';
 import {
   IFlashcard,
   FlashcardLayout,
 } from 'src/app/shared/models/flashcard-models';
 import { flashcardLayoutDisplayName } from 'src/app/shared/models/flashcard-models';
+import { IDataResponse } from 'src/app/shared/models/http/http-response-types';
+import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
 import {
   FlashcardLayoutContentChangeEventArgs,
   FlashcardLayoutSection,
@@ -29,7 +33,7 @@ export class FlashcardComponent {
   @Output() nextClick: EventEmitter<any> = new EventEmitter();
   @Output() previousClick: EventEmitter<any> = new EventEmitter();
 
-  constructor() {}
+  constructor(private flashcardService: GenericFlashcardService) {}
 
   private updateFlashcardContent(
     isFlashcardFront: boolean,
@@ -93,5 +97,17 @@ export class FlashcardComponent {
       );
       return;
     }
+    let response: Observable<IDataResponse<string>>;
+    if (flashcard.flashcardId === '')
+      response = this.flashcardService.create(flashcard);
+    else
+      response = this.flashcardService.update(flashcard.flashcardId, flashcard);
+
+    response.subscribe(
+      (r) => {
+        if (r.status === '200') console.log(r.message);
+      },
+      (error) => console.log('an error ocurred:' + error)
+    );
   }
 }

@@ -9,7 +9,7 @@ import {
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import {
-  IDataAPIResponse,
+  IDataResponse,
   PaginatedListResponse,
 } from 'src/app/shared/models/http/http-response-types';
 import {
@@ -85,7 +85,7 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
     (f) => typeof f === 'string'
   );
   audioProvider: AudioAPIProvider = AudioAPIProvider.OXFORD;
-  audioAPIData$: Observable<IDataAPIResponse<IAudioAPIResult>>;
+  audioAPIData$: Observable<IDataResponse<IAudioAPIResult>>;
   audioAPIResults: string[];
 
   // Text/Dictionary API section
@@ -95,7 +95,7 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
     (f) => typeof f === 'string'
   );
   dictProvider: DictionaryAPIProvider = DictionaryAPIProvider.OXFORD;
-  dictAPIData$: Observable<IDataAPIResponse<IDictionaryAPIResult>>;
+  dictAPIData$: Observable<IDataResponse<IDictionaryAPIResult>>;
   dictAPIparsedHMTL: string = '';
 
   textEditorContent: string;

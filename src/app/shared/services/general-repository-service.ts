@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import {
   IBaseAPIResponse,
-  IDataAPIResponse,
+  IDataResponse,
   IPaginatedListResponse,
 } from '../models/http/http-response-types';
 
@@ -20,28 +20,28 @@ export abstract class GenericRepositoryService<Type> {
     protected httpClient: HttpClient
   ) {}
 
-  create(object: Type): Observable<IDataAPIResponse<string>> {
-    return this.httpClient.post<IDataAPIResponse<string>>(
+  create(object: Type): Observable<IDataResponse<string>> {
+    return this.httpClient.post<IDataResponse<string>>(
       `${this.endpointURL}/create`,
       JSON.stringify(object)
     );
   }
 
-  get(id: string): Observable<IDataAPIResponse<Type>> {
-    return this.httpClient.get<IDataAPIResponse<Type>>(
+  get(id: string): Observable<IDataResponse<Type>> {
+    return this.httpClient.get<IDataResponse<Type>>(
       `${this.endpointURL}/${id}`
     );
   }
 
-  update(id: string, object: Type): Observable<IDataAPIResponse<string>> {
-    return this.httpClient.put<IDataAPIResponse<string>>(
+  update(id: string, object: Type): Observable<IDataResponse<string>> {
+    return this.httpClient.put<IDataResponse<string>>(
       `${this.endpointURL}/${id}`,
       JSON.stringify(object)
     );
   }
 
   delete(id: string): Observable<IBaseAPIResponse> {
-    return this.httpClient.post<IDataAPIResponse<IBaseAPIResponse>>(
+    return this.httpClient.post<IDataResponse<IBaseAPIResponse>>(
       `${this.endpointURL}/delete`,
       id
     );
@@ -57,7 +57,7 @@ export abstract class GenericRepositoryService<Type> {
 
   getById(id: string): Observable<Type> {
     return this.httpClient
-      .get<IDataAPIResponse<Type>>(`${this.endpointURL}/${id}`)
+      .get<IDataResponse<Type>>(`${this.endpointURL}/${id}`)
       .pipe(map((a) => a.data));
   }
 }

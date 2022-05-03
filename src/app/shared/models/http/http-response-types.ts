@@ -11,7 +11,7 @@ export interface ILoginResponse extends IBaseAPIResponse {
 /**
  * New interface used to represent responses from the back-end that includes the basic metada, plus some data structure of some sort (ex: dictionary API results).
  */
-export interface IDataAPIResponse<T> extends IBaseAPIResponse {
+export interface IDataResponse<T> extends IBaseAPIResponse {
   data: T;
 }
 

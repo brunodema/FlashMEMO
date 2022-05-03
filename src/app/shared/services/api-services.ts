@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import {
   PaginatedListResponse,
   IPaginatedListResponse,
-  IDataAPIResponse,
+  IDataResponse,
 } from '../models/http/http-response-types';
 import { environment } from 'src/environments/environment';
 import { Observable, of } from 'rxjs';
@@ -213,7 +213,7 @@ export abstract class GeneralDictionaryAPIService {
   abstract searchWord(
     keyword: string,
     languageCode: string
-  ): Observable<IDataAPIResponse<IDictionaryAPIResult>>;
+  ): Observable<IDataResponse<IDictionaryAPIResult>>;
 
   protected checkIfLanguageIsSupported(
     provider: DictionaryAPIProvider,
@@ -259,7 +259,7 @@ export class MockDictionaryService extends GeneralDictionaryAPIService {
   searchWord(
     keyword: string,
     languageCode: string
-  ): Observable<IDataAPIResponse<IDictionaryAPIResult>> {
+  ): Observable<IDataResponse<IDictionaryAPIResult>> {
     return of({
       message: 'Success',
       status: '200',
@@ -312,7 +312,7 @@ export abstract class GeneralAudioAPIService {
   abstract searchAudio(
     keyword: string,
     languageCode: string
-  ): Observable<IDataAPIResponse<IAudioAPIResult>>;
+  ): Observable<IDataResponse<IAudioAPIResult>>;
 
   protected checkIfLanguageIsSupported(
     provider: AudioAPIProvider,
@@ -346,7 +346,7 @@ export class MockAudioService extends GeneralAudioAPIService {
   searchAudio(
     keyword: string,
     languageCode: string
-  ): Observable<IDataAPIResponse<IAudioAPIResult>> {
+  ): Observable<IDataResponse<IAudioAPIResult>> {
     return of({
       message: 'Success',
       status: '200',
