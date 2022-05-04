@@ -24,6 +24,7 @@ import { theNewFlashcardSeeder } from 'src/assets/test_assets/flashcard-seeder';
 })
 export class DeckDetailComponent {
   closeResult = '';
+  isNewDeck: boolean = false;
 
   // form stuff for deck info
   form = new FormGroup({});
@@ -79,7 +80,6 @@ export class DeckDetailComponent {
     private flashcardService: GenericFlashcardService,
     private route: ActivatedRoute
   ) {
-    this.deckModel = this.route.snapshot.data['deck'];
     this.languageService.getAll().subscribe((x) => {
       this.fields.find(
         (f) => f.key === 'language' // this 'find' commands gets the corresponding 'field' object
@@ -93,9 +93,17 @@ export class DeckDetailComponent {
         }), // this 'map' operation translates what is coming from the service to the structure used by the 'options' property
       ];
     });
-    this.flashcardService
-      .getAllFlashcardsFromDeck(this.route.snapshot.params['id'])
-      .subscribe((x) => (this.flashcardData = x));
+
+    this.deckModel = this.route.snapshot.data['deck'];
+    if (this.deckModel) {
+      // 'detail' mode
+      this.flashcardService
+        .getAllFlashcardsFromDeck(this.route.snapshot.params['id'])
+        .subscribe((x) => (this.flashcardData = x));
+    } else {
+      this.isNewDeck = true;
+      // 'create' mode
+    }
   }
 
   openFlashcardModal(content: any, flashcard: IFlashcard | null) {
@@ -138,4 +146,6 @@ export class DeckDetailComponent {
   handleFlashcardSave() {
     this.flashcardModal.close('content saved');
   }
+
+  saveDeck() {}
 }

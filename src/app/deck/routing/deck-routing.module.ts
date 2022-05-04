@@ -10,7 +10,7 @@ import { DeckListComponent } from '../components/deck-list/deck-list.component';
 
 const routes: Routes = [
   { path: 'list', component: DeckListComponent },
-  { path: 'create', component: DeckCreateComponent },
+  { path: 'create', component: DeckDetailComponent },
   {
     path: ':id',
     component: DeckDetailComponent,

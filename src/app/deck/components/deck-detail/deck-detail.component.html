@@ -3,14 +3,21 @@
     <!-- Deck info section (form layout) -->
     <div class="col-6">
       <formly-form [form]="form" [fields]="fields" [model]="deckModel"></formly-form>
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-primary" (click)="saveDeck()">
+          Save Deck
+        </button>
+      </div>
     </div>
   </div>
-  <button class="btn btn-primary" (click)="openFlashcardModal(flashcardModal, null)">
-    Create Flashcard
-  </button>
 
   <div class="row mt-5">
-    <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-primary" (click)="openFlashcardModal(flashcardModal, null)">
+        Create Flashcard
+      </button>
+    </div>
+    <ngb-accordion class="mt-2" #acc="ngbAccordion" activeIds="ngb-panel-0">
       <ngb-panel title="Flashcards">
         <ng-template ngbPanelContent>
           <app-data-table (rowClick)="openFlashcardModal(flashcardModal, $event.rowData)"
