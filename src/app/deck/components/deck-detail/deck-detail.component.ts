@@ -27,7 +27,7 @@ export class DeckDetailComponent {
 
   // form stuff for deck info
   form = new FormGroup({});
-  model = {}; // apparently has to be of 'any' type
+  deckModel = {}; // apparently has to be of 'any' type
   fields: FormlyFieldConfig[] = [
     {
       // id is not necessary
@@ -79,7 +79,7 @@ export class DeckDetailComponent {
     private flashcardService: GenericFlashcardService,
     private route: ActivatedRoute
   ) {
-    this.model = this.route.snapshot.data['deck'];
+    this.deckModel = this.route.snapshot.data['deck'];
     this.languageService.getAll().subscribe((x) => {
       this.fields.find(
         (f) => f.key === 'language' // this 'find' commands gets the corresponding 'field' object
