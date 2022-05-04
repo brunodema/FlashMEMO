@@ -24,7 +24,7 @@ export class DeckListComponent {
   ];
   pageSizeOptions: number[] = [5, 10, 25];
 
-  routes: RouteMap[] = [{ label: 'Create Deck', route: 'create' }];
+  routes: RouteMap[] = [{ label: 'Create Deck', route: '/deck/create' }];
 
   @ViewChild(DataTableComponent) dataTable: DataTableComponent<Deck>;
 

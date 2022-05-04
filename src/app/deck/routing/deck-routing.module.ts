@@ -9,14 +9,14 @@ import { DeckDetailComponent } from '../components/deck-detail/deck-detail.compo
 import { DeckListComponent } from '../components/deck-list/deck-list.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'list', pathMatch: 'full' },
   { path: 'list', component: DeckListComponent },
+  { path: 'create', component: DeckCreateComponent },
   {
     path: ':id',
     component: DeckDetailComponent,
     resolve: { deck: DeckRepositoryResolverService },
   },
-  { path: 'create', component: DeckCreateComponent },
+  { path: '', redirectTo: 'list', pathMatch: 'full' },
 ];
 
 @NgModule({
