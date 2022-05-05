@@ -156,24 +156,28 @@ export class DeckDetailComponent {
 
   saveDeck() {
     if (this.form.valid) {
-      let response: Observable<IDataResponse<string>>;
       if (this.deckModel?.deckId) {
-        response = this.deckService.update(
-          this.deckModel.deckId,
-          this.deckModel
-        );
+        this.deckService
+          .update(this.deckModel.deckId, this.deckModel)
+          .subscribe(
+            (r) => {
+              if (r.status === '200') {
+                console.log('Deck successfully updated.');
+              }
+            },
+            (e) => console.log(e)
+          );
       } else {
-        response = this.deckService.create(this.deckModel);
+        this.deckService.create(this.deckModel).subscribe(
+          (r) => {
+            if (r.status === '200') {
+              console.log('Deck successfully created.');
+              this.router.navigate(['/deck', r.data]);
+            }
+          },
+          (e) => console.log(e)
+        );
       }
-      response.subscribe(
-        (r) => {
-          if (r.status === '200') {
-            console.log('Deck successfully created.');
-            this.router.navigate(['/deck', r.data]);
-          }
-        },
-        (e) => console.log(e)
-      );
     } else {
       console.log(
         'there is something wrong with the form 🙄',
