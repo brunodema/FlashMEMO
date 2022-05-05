@@ -29,12 +29,14 @@ export class GenericRepositoryResolverService<Type> implements Resolve<Type> {
             return r;
           } else {
             this.router.navigate(['']);
+            console.log('Provided id does not provide a valid object.');
             throw new Error('Provided id does not provide a valid object.');
           }
         })
       );
     }
     this.router.navigate(['']);
+    console.log('Provided id does not provide a valid object.');
     throw new Error('Provided id does not provide a valid object.');
   }
 }

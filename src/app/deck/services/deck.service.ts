@@ -2,7 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IPaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
+import {
+  IBaseAPIResponse,
+  IDataResponse,
+  IPaginatedListResponse,
+} from 'src/app/shared/models/http/http-response-types';
 import {
   IServiceSearchParams,
   SortColumn,
@@ -53,6 +57,41 @@ export class MockDeckService extends GenericDeckService {
 
   getById(id: string): Observable<Deck> {
     return of(DeckJson.filter((x) => x.deckId == id)[0]);
+  }
+
+  create(object: Deck): Observable<IDataResponse<string>> {
+    return of({
+      status: '200',
+      message: 'Dummy Deck has been created.',
+      errors: [],
+      data: '',
+    });
+  }
+
+  get(id: string): Observable<IDataResponse<Deck>> {
+    return of({
+      status: '200',
+      message: 'Dummy Deck object retrieved.',
+      errors: [],
+      data: {} as Deck,
+    });
+  }
+
+  update(id: string, object: Deck): Observable<IDataResponse<string>> {
+    return of({
+      status: '200',
+      message: 'Dummy Deck has been updated.',
+      errors: [],
+      data: '',
+    });
+  }
+
+  delete(id: string): Observable<IBaseAPIResponse> {
+    return of({
+      status: '200',
+      message: 'Dummy Deck has been deleted.',
+      errors: [],
+    });
   }
 }
 

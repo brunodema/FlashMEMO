@@ -1,21 +1,25 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   ModalDismissReasons,
   NgbModal,
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Observable } from 'rxjs';
 import {
   DataTableColumnOptions,
   DataTableComponent,
   DataTableComponentClickEventArgs,
 } from 'src/app/shared/components/data-table/data-table.component';
 import { Flashcard, IFlashcard } from 'src/app/shared/models/flashcard-models';
+import { IDataResponse } from 'src/app/shared/models/http/http-response-types';
 import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
 import { GenericLanguageService } from 'src/app/shared/services/language.service';
 import { theNewFlashcardSeeder } from 'src/assets/test_assets/flashcard-seeder';
+import { Deck } from '../../models/deck.model';
+import { GenericDeckService } from '../../services/deck.service';
 
 @Component({
   selector: 'app-deck-detail',
@@ -28,7 +32,7 @@ export class DeckDetailComponent {
 
   // form stuff for deck info
   form = new FormGroup({});
-  deckModel = {}; // apparently has to be of 'any' type
+  deckModel: Deck = {} as Deck; // apparently has to be of 'any' type
   fields: FormlyFieldConfig[] = [
     {
       // id is not necessary
@@ -59,6 +63,7 @@ export class DeckDetailComponent {
       templateOptions: {
         label: 'Language',
         options: [], // is assigned in constructor
+        required: true,
       },
     },
   ];
@@ -78,7 +83,9 @@ export class DeckDetailComponent {
     private modalService: NgbModal,
     private languageService: GenericLanguageService,
     private flashcardService: GenericFlashcardService,
-    private route: ActivatedRoute
+    private deckService: GenericDeckService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.languageService.getAll().subscribe((x) => {
       this.fields.find(
@@ -147,5 +154,31 @@ export class DeckDetailComponent {
     this.flashcardModal.close('content saved');
   }
 
-  saveDeck() {}
+  saveDeck() {
+    if (this.form.valid) {
+      let response: Observable<IDataResponse<string>>;
+      if (this.deckModel?.deckId) {
+        response = this.deckService.update(
+          this.deckModel.deckId,
+          this.deckModel
+        );
+      } else {
+        response = this.deckService.create(this.deckModel);
+      }
+      response.subscribe(
+        (r) => {
+          if (r.status === '200') {
+            console.log('Deck successfully created.');
+            this.router.navigate(['/deck', r.data]);
+          }
+        },
+        (e) => console.log(e)
+      );
+    } else {
+      console.log(
+        'there is something wrong with the form 🙄',
+        this.form.errors
+      );
+    }
+  }
 }

@@ -68,23 +68,7 @@ export class MockFlashcardService extends GenericFlashcardService {
       status: '200',
       message: 'Dummy Flashcard object retrieved.',
       errors: [],
-      data: {
-        flashcardId: '',
-        deckId: '',
-        level: 0,
-        frontContentLayout: 'SINGLE_BLOCK',
-        backContentLayout: 'SINGLE_BLOCK',
-        content1: '',
-        content2: '',
-        content3: '',
-        content4: '',
-        content5: '',
-        content6: '',
-        creationDate: '',
-        lastUpdated: '',
-        dueDate: '',
-        answer: '',
-      },
+      data: {} as IFlashcard,
     });
   }
 
