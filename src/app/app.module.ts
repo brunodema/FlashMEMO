@@ -34,6 +34,7 @@ import {
 } from './deck/services/deck.service';
 import {
   GenericLanguageService,
+  LanguageService,
   MockLanguageService,
 } from './shared/services/language.service';
 import {

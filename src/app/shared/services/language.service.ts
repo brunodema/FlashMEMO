@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import {
   IServiceSearchParams,
   SortType,
@@ -9,10 +9,11 @@ import { Language } from '../models/shared-models';
 import { GenericRepositoryService } from './general-repository-service';
 import languageJson from 'src/assets/test_assets/Languages.json';
 import { environment } from 'src/environments/environment';
+import { IPaginatedListResponse } from '../models/http/http-response-types';
 
 export class LanguageSearchParams implements IServiceSearchParams {
   name: string;
-  ISOCode: string;
+  languageISOCode: string;
   pageSize: Number;
   pageNumber: Number;
   sortType?: SortType | undefined;
@@ -23,7 +24,7 @@ export abstract class GenericLanguageService extends GenericRepositoryService<La
   constructor(protected httpClient: HttpClient) {
     super(`${environment.backendRootAddress}/api/v1/language`, httpClient);
   }
-  abstract search(searchParams: LanguageSearchParams): Observable<Language[]>;
+  abstract search(params: LanguageSearchParams): Observable<Language[]>;
 }
 
 @Injectable()
@@ -41,4 +42,29 @@ export class MockLanguageService extends GenericLanguageService {
   }
 }
 
-// add real LanguageService here!
+@Injectable()
+export class LanguageService extends GenericLanguageService {
+  constructor(protected httpClient: HttpClient) {
+    super(httpClient);
+  }
+
+  search(params: LanguageSearchParams): Observable<Language[]> {
+    let formattedURL: string = `${this.endpointURL}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
+    if (params.languageISOCode) {
+      formattedURL += `&languageISOCode=${params.languageISOCode}`;
+    }
+    if (params.name) {
+      formattedURL += `&name=${params.name}`;
+    }
+    if (params.sortType) {
+      formattedURL += `&SortType=${params.sortType}`;
+    }
+    if (params.columnToSort) {
+      formattedURL += `&ColumnToSort=${params.columnToSort}`;
+    }
+
+    return this.httpClient
+      .get<IPaginatedListResponse<Language>>(formattedURL)
+      .pipe(map((a) => a.data.results));
+  }
+}
