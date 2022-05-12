@@ -55,11 +55,10 @@ export class DataTableComponent<Type>
 
   ngOnChanges(changes: SimpleChanges): void {
     this.tableDataSource = new MatTableDataSource(this.dataSource);
-  }
-  ngAfterViewInit(): void {
     this.tableDataSource.paginator = this.paginator;
     this.tableDataSource.sort = this.sort;
   }
+  ngAfterViewInit(): void {}
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

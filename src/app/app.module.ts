@@ -29,6 +29,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { NgModule } from '@angular/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import {
+  DeckService,
   GenericDeckService,
   MockDeckService,
 } from './deck/services/deck.service';
@@ -102,7 +103,7 @@ const config: ConfigOption = {
   providers: [
     { provide: IAuthService, useClass: AuthService },
     AuthGuard,
-    { provide: GenericDeckService, useClass: MockDeckService },
+    { provide: GenericDeckService, useClass: DeckService },
     { provide: GenericFlashcardService, useClass: MockFlashcardService },
     { provide: GenericLanguageService, useClass: MockLanguageService },
     {
