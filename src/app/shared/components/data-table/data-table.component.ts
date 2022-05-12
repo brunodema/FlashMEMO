@@ -53,12 +53,16 @@ export class DataTableComponent<Type>
   constructor() {}
   ngOnInit(): void {}
 
+  // so... I have to put the paginator/sort assignment twice here to consider two possible cases: async data loading, which is processed outside the widget (differently from many online examples), and situations where the widget is 'hidden' at first (ex: inside accordion). This ensures that both cases work.
   ngOnChanges(changes: SimpleChanges): void {
     this.tableDataSource = new MatTableDataSource(this.dataSource);
     this.tableDataSource.paginator = this.paginator;
     this.tableDataSource.sort = this.sort;
   }
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    this.tableDataSource.paginator = this.paginator;
+    this.tableDataSource.sort = this.sort;
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
