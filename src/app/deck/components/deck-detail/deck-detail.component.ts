@@ -7,7 +7,7 @@ import {
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import {
   DataTableColumnOptions,
   DataTableComponent,
@@ -62,7 +62,14 @@ export class DeckDetailComponent {
       type: 'select',
       templateOptions: {
         label: 'Language',
-        options: [], // is assigned in constructor
+        options: this.languageService.getAll().pipe(
+          map((x) =>
+            x.map((y) => {
+              console.log(y);
+              return { label: y.name, value: y.isoCode };
+            })
+          )
+        ),
         required: true,
       },
     },
@@ -87,27 +94,13 @@ export class DeckDetailComponent {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.languageService.getAll().subscribe((x) => {
-      this.fields.find(
-        (f) => f.key === 'language' // this 'find' commands gets the corresponding 'field' object
-      )!.templateOptions!.options = [
-        // all these '!' signifies that the coder ensures that 'null' won't re returned for the nullable objects
-        ...x.map((r) => {
-          return {
-            label: r.name,
-            value: r.languageISOCode,
-          };
-        }), // this 'map' operation translates what is coming from the service to the structure used by the 'options' property
-      ];
-    });
-
     this.deckModel = this.route.snapshot.data['deck'];
     if (this.deckModel) {
       // 'detail' mode
       this.flashcardService
         .getAllFlashcardsFromDeck(this.route.snapshot.params['id'])
         .subscribe((x) => (this.flashcardData = x));
-      // sets the default language value according to the one coming from the route (DeckId)
+      // sets the default language value according to the one coming from the route (DeckId),
       this.fields.find((f) => f.key === 'language')!.defaultValue =
         this.deckModel.languageISOCode;
     } else {

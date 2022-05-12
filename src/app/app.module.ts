@@ -105,7 +105,7 @@ const config: ConfigOption = {
     AuthGuard,
     { provide: GenericDeckService, useClass: DeckService },
     { provide: GenericFlashcardService, useClass: MockFlashcardService },
-    { provide: GenericLanguageService, useClass: MockLanguageService },
+    { provide: GenericLanguageService, useClass: LanguageService },
     {
       provide: DeckRepositoryResolverService,
       useClass: DeckRepositoryResolverService,

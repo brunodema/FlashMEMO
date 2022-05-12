@@ -1,46 +1,46 @@
 [
   {
     "name": "N/A",
-    "languageISOCode": ""
+    "isoCode": ""
   },
   {
     "name": "English",
-    "languageISOCode": "en"
+    "isoCode": "en"
   },
   {
     "name": "Portuguese",
-    "languageISOCode": "pt"
+    "isoCode": "pt"
   },
   {
     "name": "Spanish",
-    "languageISOCode": "es"
+    "isoCode": "es"
   },
   {
     "name": "Italian",
-    "languageISOCode": "it"
+    "isoCode": "it"
   },
   {
     "name": "French",
-    "languageISOCode": "fr"
+    "isoCode": "fr"
   },
   {
     "name": "German",
-    "languageISOCode": "de"
+    "isoCode": "de"
   },
   {
     "name": "Dutch",
-    "languageISOCode": "nl"
+    "isoCode": "nl"
   },
   {
     "name": "Russian",
-    "languageISOCode": "ru"
+    "isoCode": "ru"
   },
   {
     "name": "Chinese",
-    "languageISOCode": "ch"
+    "isoCode": "ch"
   },
   {
     "name": "Hindi",
-    "languageISOCode": "hi"
+    "isoCode": "hi"
   }
 ]

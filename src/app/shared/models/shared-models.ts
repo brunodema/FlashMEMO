@@ -1,4 +1,4 @@
 export type Language = {
-  languageISOCode: string;
+  isoCode: string;
   name: string;
 };
