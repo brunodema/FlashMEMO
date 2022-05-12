@@ -39,6 +39,7 @@ import {
   MockLanguageService,
 } from './shared/services/language.service';
 import {
+  FlashcardService,
   GenericFlashcardService,
   MockFlashcardService,
 } from './shared/services/flashcard.service';
@@ -104,7 +105,7 @@ const config: ConfigOption = {
     { provide: IAuthService, useClass: AuthService },
     AuthGuard,
     { provide: GenericDeckService, useClass: DeckService },
-    { provide: GenericFlashcardService, useClass: MockFlashcardService },
+    { provide: GenericFlashcardService, useClass: FlashcardService },
     { provide: GenericLanguageService, useClass: LanguageService },
     {
       provide: DeckRepositoryResolverService,

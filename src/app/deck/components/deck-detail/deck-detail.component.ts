@@ -65,7 +65,6 @@ export class DeckDetailComponent {
         options: this.languageService.getAll().pipe(
           map((x) =>
             x.map((y) => {
-              console.log(y);
               return { label: y.name, value: y.isoCode };
             })
           )
@@ -99,7 +98,9 @@ export class DeckDetailComponent {
       // 'detail' mode
       this.flashcardService
         .getAllFlashcardsFromDeck(this.route.snapshot.params['id'])
-        .subscribe((x) => (this.flashcardData = x));
+        .subscribe((x) => {
+          this.flashcardData = x;
+        });
       // sets the default language value according to the one coming from the route (DeckId),
       this.fields.find((f) => f.key === 'language')!.defaultValue =
         this.deckModel.languageISOCode;
