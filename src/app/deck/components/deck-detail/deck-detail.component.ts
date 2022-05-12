@@ -107,6 +107,9 @@ export class DeckDetailComponent {
       this.flashcardService
         .getAllFlashcardsFromDeck(this.route.snapshot.params['id'])
         .subscribe((x) => (this.flashcardData = x));
+      // sets the default language value according to the one coming from the route (DeckId)
+      this.fields.find((f) => f.key === 'language')!.defaultValue =
+        this.deckModel.languageISOCode;
     } else {
       this.isNewDeck = true;
       // 'create' mode
