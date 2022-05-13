@@ -15,6 +15,19 @@ import imageAPIJson from 'src/assets/test_assets/ImageAPI.json';
 import dictAPIJson from 'src/assets/test_assets/DictAPI.json';
 import AudioAPIJson from 'src/assets/test_assets/AudioAPI.json';
 
+/**
+ *
+ * @param str Shamelessly stolen from: https://stackoverflow.com/questions/20070158/string-format-not-work-in-typescript. Apparently, TS/JS doesn't have native support for a 'String.Format()' function
+ * @param val
+ * @returns
+ */
+export function FormatString(str: string, ...val: string[]) {
+  for (let index = 0; index < val.length; index++) {
+    str = str.replace(`{${index}}`, val[index]);
+  }
+  return str;
+}
+
 /**************************************************************************************/
 /* Image API stuff */
 /**************************************************************************************/
@@ -125,7 +138,7 @@ export class ImageAPIService extends GeneralImageAPIService {
 /**
  * Contains the codes for the supported languages for each existing Dictionary API provider. These codes were taken from the back-end project (17/04/2022), which in turn were taken from the official documentation of the APIs. They might not reflect the most recent array of supported languages, as they are static values in the code files. This will need to either be used as a back-up option, or transitioned towards a full programatic check using HTTP requests.
  */
-const dictAPISupportedLanguages = {
+export const dictAPISupportedLanguages = {
   Lexicala: [
     'af',
     'ar',
@@ -212,7 +225,8 @@ export abstract class GeneralDictionaryAPIService {
 
   abstract searchWord(
     keyword: string,
-    languageCode: string
+    languageCode: string,
+    provider: DictionaryAPIProvider
   ): Observable<IDataResponse<IDictionaryAPIResult>>;
 
   protected checkIfLanguageIsSupported(
@@ -269,7 +283,23 @@ export class MockDictionaryService extends GeneralDictionaryAPIService {
   }
 }
 
-// STILL MISSING THE ACTUAL IMPLEMENTATION OF THE DICTIONARY API. GOT TOO CURIOUS ABOUT AUDIO STUFF :p
+@Injectable()
+export class DictionaryService extends GeneralDictionaryAPIService {
+  constructor(httpClient: HttpClient) {
+    super(httpClient);
+  }
+  private endpoint = `${environment.backendRootAddress}/api/v1/dict/{0}/search?`;
+  searchWord(
+    keyword: string,
+    languageCode: string,
+    provider: DictionaryAPIProvider
+  ): Observable<IDataResponse<IDictionaryAPIResult>> {
+    return this.httpClient.get<IDataResponse<IDictionaryAPIResult>>(
+      FormatString(this.endpoint, provider) +
+        `searchText=${keyword}&languageCode=${languageCode}`
+    );
+  }
+}
 
 /**************************************************************************************/
 /* Dictionary API stuff */

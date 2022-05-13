@@ -14,6 +14,7 @@ import {
 } from 'src/app/shared/models/http/http-response-types';
 import {
   AudioAPIProvider,
+  dictAPISupportedLanguages,
   DictionaryAPIProvider,
   GeneralAudioAPIService,
   GeneralDictionaryAPIService,
@@ -53,6 +54,21 @@ export class FlashcardContentOptionsBlockContentSaveEventArgs {
   styleUrls: ['./flashcard-content-options-block.component.css'],
 })
 export class FlashcardContentOptionsBlockComponent implements OnInit {
+  // getter + setter implementation taken from here: https://stackoverflow.com/questions/36653678/angular2-input-to-a-property-with-get-set
+  private _contentValue: string = '';
+  @Input() set contentValue(value: string) {
+    this.contentType = this.determineContentType(value);
+    this._contentValue = value;
+  }
+  get contentValue(): string {
+    return this._contentValue;
+  }
+  @Input() deckLanguageISOCode: string = '';
+
+  @Output()
+  contentSave: EventEmitter<FlashcardContentOptionsBlockContentSaveEventArgs> =
+    new EventEmitter();
+
   componentHeight: string = '';
 
   closeResult: string = '';
@@ -85,7 +101,9 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
   possibleDictProviders = Object.values(DictionaryAPIProvider).filter(
     (f) => typeof f === 'string'
   );
+  possibleDictLanguages: any = dictAPISupportedLanguages;
   dictProvider: DictionaryAPIProvider = DictionaryAPIProvider.OXFORD;
+  dictLanguage: string = this.deckLanguageISOCode;
   dictAPIData$: Observable<IDataResponse<IDictionaryAPIResult>>;
   dictAPIparsedHMTL: string = '';
 
@@ -117,20 +135,6 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
    * Bonus: in this specific case, using 'ViewChild' to access the element does not work, because after the reference is set on the 'open' call, for some fucking reason, the type of the object becomes 'TemplateRef' instead of the correct 'NgbModalRef'. Using this current approach avoids this.
    */
   contentEditor: NgbModalRef;
-
-  // getter + setter implementation taken from here: https://stackoverflow.com/questions/36653678/angular2-input-to-a-property-with-get-set
-  private _contentValue: string = '';
-  @Input() set contentValue(value: string) {
-    this.contentType = this.determineContentType(value);
-    this._contentValue = value;
-  }
-  get contentValue(): string {
-    return this._contentValue;
-  }
-
-  @Output()
-  contentSave: EventEmitter<FlashcardContentOptionsBlockContentSaveEventArgs> =
-    new EventEmitter();
 
   constructor(
     private modalService: NgbModal,
@@ -234,8 +238,16 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
     return this.contentType !== this.flashcardContentEnumType.NONE;
   }
 
-  searchWord(keyword: string, languageCode: string): void {
-    this.dictAPIData$ = this.dictAPIService.searchWord(keyword, languageCode);
+  searchWord(
+    keyword: string,
+    languageCode: string,
+    provider: DictionaryAPIProvider
+  ): void {
+    this.dictAPIData$ = this.dictAPIService.searchWord(
+      keyword,
+      languageCode,
+      provider
+    );
     this.dictAPIData$.subscribe(
       (r) =>
         (this.dictAPIparsedHMTL = this.dictAPIService.ParseResultsIntoHTML(

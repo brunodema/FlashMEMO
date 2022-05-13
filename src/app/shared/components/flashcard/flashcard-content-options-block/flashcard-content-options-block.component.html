@@ -81,12 +81,25 @@
               </div>
             </div>
             <div class="row mt-2">
+              <div class="input-group">
+                <label for="dictProvider" class="col-form-label col-auto">Choose a reference language:</label>
+                <div class="ms-2 col-auto">
+                  <select class="form-select" [(ngModel)]="dictLanguage">
+                    <option *ngFor="let language of possibleDictLanguages[dictProvider]" [ngValue]="language">{{
+                      language }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-2">
               <div class="col-12">
                 <div class="input-group">
                   <input type="text" class="p-0 form-control"
                     placeholder="Type what you want to search in the dictionary!" [(ngModel)]="currentKeyword" />
                   <span class="input-group-btn ms-2">
-                    <button class="btn btn-primary" type="submit" (click)="searchWord(currentKeyword, 'en-gb')">
+                    <button class="btn btn-primary" type="submit"
+                      (click)="searchWord(currentKeyword, dictLanguage, dictProvider)">
                       Search
                     </button>
                   </span>
