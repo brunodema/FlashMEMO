@@ -8,7 +8,7 @@ import {
 import { Observable, of, map } from 'rxjs';
 import { Deck } from 'src/app/deck/models/deck.model';
 import { GenericDeckService } from 'src/app/deck/services/deck.service';
-import { GenericRepositoryService } from '../services/general-repository-service';
+import { GenericRepositoryService } from '../services/general-repository.service';
 
 @Injectable()
 export class GenericRepositoryResolverService<Type> implements Resolve<Type> {

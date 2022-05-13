@@ -8,7 +8,7 @@ import {
   IServiceSearchParams,
   SortType,
 } from '../models/other/api-query-types';
-import { GenericRepositoryService } from './general-repository-service';
+import { GenericRepositoryService } from './general-repository.service';
 import flashcardJson from 'src/assets/test_assets/Flashcards.json';
 import {
   IBaseAPIResponse,

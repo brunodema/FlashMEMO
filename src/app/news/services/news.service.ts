@@ -12,7 +12,7 @@ import {
   SortType,
 } from 'src/app/shared/models/other/api-query-types';
 import { IPaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
-import { GenericRepositoryService } from 'src/app/shared/services/general-repository-service';
+import { GenericRepositoryService } from 'src/app/shared/services/general-repository.service';
 
 class NewsSearchParams implements IServiceSearchParams {
   pageSize: Number;

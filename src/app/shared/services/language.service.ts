@@ -6,7 +6,7 @@ import {
   SortType,
 } from '../models/other/api-query-types';
 import { Language } from '../models/shared-models';
-import { GenericRepositoryService } from './general-repository-service';
+import { GenericRepositoryService } from './general-repository.service';
 import languageJson from 'src/assets/test_assets/Languages.json';
 import { environment } from 'src/environments/environment';
 import { IPaginatedListResponse } from '../models/http/http-response-types';

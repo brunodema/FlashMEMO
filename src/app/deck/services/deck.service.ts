@@ -12,7 +12,7 @@ import {
   SortColumn,
   SortType,
 } from 'src/app/shared/models/other/api-query-types';
-import { GenericRepositoryService } from 'src/app/shared/services/general-repository-service';
+import { GenericRepositoryService } from 'src/app/shared/services/general-repository.service';
 import { environment } from 'src/environments/environment';
 import { Deck } from '../models/deck.model';
 
