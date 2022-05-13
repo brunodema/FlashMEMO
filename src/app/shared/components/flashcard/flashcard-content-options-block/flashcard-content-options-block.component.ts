@@ -68,7 +68,7 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
   get contentValue(): string {
     return this._contentValue;
   }
-  @Input() deckLanguageISOCode: string = '';
+  @Input() defaultLanguageISOCode: string = '';
 
   @Output()
   contentSave: EventEmitter<FlashcardContentOptionsBlockContentSaveEventArgs> =
@@ -108,7 +108,7 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
   );
   possibleDictLanguages: any = dictAPISupportedLanguages;
   dictProvider: DictionaryAPIProvider = DictionaryAPIProvider.OXFORD;
-  dictLanguage: string = this.deckLanguageISOCode;
+  dictLanguage: string = this.defaultLanguageISOCode;
   dictAPIData$: Observable<IDataResponse<IDictionaryAPIResult>>;
   dictAPIparsedHMTL: string = '';
 
@@ -152,6 +152,7 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
 
   ngOnInit(): void {
     this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+    this.setLanguageDropdownToDefaultValue();
   }
 
   determineContentType(contentValue: string): FlashcardContentType {
@@ -295,5 +296,16 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
 
   clearAudioResults(): void {
     this.audioAPIResults = [];
+  }
+
+  /**
+   * This function is used to avoid having an empty value for the Language dropdown in the Dictionary API editor. It checks to see if the provider has the language used by the Deck, and if so, sets its value to the dropdown. Otherwise, it will set the default value of the provider (first item of the array).
+   */
+  setLanguageDropdownToDefaultValue(): void {
+    this.dictLanguage = this.possibleDictLanguages[this.dictProvider].includes(
+      this.defaultLanguageISOCode
+    )
+      ? this.defaultLanguageISOCode
+      : this.possibleDictLanguages[this.dictProvider][0];
   }
 }

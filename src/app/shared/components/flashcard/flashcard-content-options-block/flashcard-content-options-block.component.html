@@ -75,7 +75,7 @@
               <div class="input-group">
                 <label for="dictProvider" class="col-form-label col-auto">Choose the dictionary provider:</label>
                 <div class="ms-2 col-auto">
-                  <select class="form-select" [(ngModel)]="dictProvider">
+                  <select class="form-select" [(ngModel)]="dictProvider" (change)="setLanguageDropdownToDefaultValue()">
                     <option *ngFor="let layout of possibleDictProviders" [ngValue]="layout">{{ layout }}</option>
                   </select>
                 </div>

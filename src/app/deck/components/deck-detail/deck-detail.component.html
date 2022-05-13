@@ -43,6 +43,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <app-flashcard (save)="handleFlashcardSave()" [flashcard]="activeFlashcard"></app-flashcard>
+    <app-flashcard (save)="handleFlashcardSave()" [flashcard]="activeFlashcard"
+      [defaultLanguageISOCode]="deckModel.languageISOCode"></app-flashcard>
   </div>
 </ng-template>

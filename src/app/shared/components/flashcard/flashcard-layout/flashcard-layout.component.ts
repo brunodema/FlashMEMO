@@ -33,6 +33,7 @@ export class FlashcardLayoutComponent implements OnInit {
 
   @Input() layout: string;
   @Input() contents: string[];
+  @Input() defaultLanguageISOCode: string;
 
   @Output() contentChange: EventEmitter<FlashcardLayoutContentChangeEventArgs> =
     new EventEmitter();

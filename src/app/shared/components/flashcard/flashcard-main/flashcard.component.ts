@@ -29,6 +29,7 @@ export class FlashcardComponent {
   readonly layoutDisplayNames = flashcardLayoutDisplayName;
 
   @Input() flashcard: IFlashcard;
+  @Input() defaultLanguageISOCode: string;
 
   @Output() save: EventEmitter<any> = new EventEmitter();
 

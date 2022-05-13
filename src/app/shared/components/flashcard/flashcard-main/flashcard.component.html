@@ -22,7 +22,7 @@
   <div class="flashcard-container h-100 d-flex flex-column justify-content-evenly">
     <app-flashcard-layout
       [contents]="isFlashcardFront ? [flashcard.content1,flashcard.content2,flashcard.content3] : [flashcard.content4,flashcard.content5,flashcard.content6]"
-      (contentChange)="onContentChange($event)"
+      [defaultLanguageISOCode]="defaultLanguageISOCode" (contentChange)="onContentChange($event)"
       [layout]="isFlashcardFront ? flashcard.frontContentLayout : flashcard.backContentLayout">
     </app-flashcard-layout>
   </div>
