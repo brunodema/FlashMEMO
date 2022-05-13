@@ -12,19 +12,24 @@ import {
   IDataResponse,
   PaginatedListResponse,
 } from 'src/app/shared/models/http/http-response-types';
-import {
-  AudioAPIProvider,
-  dictAPISupportedLanguages,
-  DictionaryAPIProvider,
-  GeneralAudioAPIService,
-  GeneralDictionaryAPIService,
-  GeneralImageAPIService,
-  IAudioAPIResult,
-  IDictionaryAPIResult,
-  IImageAPIResult,
-} from 'src/app/shared/services/api-services';
+
 import { CKEditor4 } from 'ckeditor4-angular';
 import { ClipboardService } from 'ngx-clipboard';
+import {
+  GeneralImageAPIService,
+  IImageAPIResult,
+} from 'src/app/shared/services/APIs/image-api.service';
+import {
+  dictAPISupportedLanguages,
+  DictionaryAPIProvider,
+  GeneralDictionaryAPIService,
+  IDictionaryAPIResult,
+} from 'src/app/shared/services/APIs/dictionary-api.service';
+import {
+  AudioAPIProvider,
+  GeneralAudioAPIService,
+  IAudioAPIResult,
+} from 'src/app/shared/services/APIs/audio-api.service';
 
 export enum FlashcardContentType {
   NONE = 'NONE',

@@ -12,7 +12,6 @@ import { MatInputModule } from '@angular/material/input'; // this one is not men
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { FlashcardContentOptionsBlockComponent } from './components/flashcard/flashcard-content-options-block/flashcard-content-options-block.component';
 import { FlashcardLayoutComponent } from './components/flashcard/flashcard-layout/flashcard-layout.component';
-import { FlashcardContentEditorComponent } from './components/flashcard/flashcard-content-editor/flashcard-content-editor.component';
 import { DataTableComponent } from './components/data-table/data-table.component';
 import { NgxSpinnerModule } from 'ngx-spinner'; // NGX-Spinner
 import { ImageLoaderDirective } from './directives/image-loader.directive';
@@ -34,7 +33,6 @@ import { FlashcardComponent } from './components/flashcard/flashcard-main/flashc
     FlashcardContentOptionsBlockComponent,
     FlashcardLayoutComponent,
     FlashcardLayoutComponent,
-    FlashcardContentEditorComponent,
     ImageLoaderDirective,
     FlashcardComponent,
   ],

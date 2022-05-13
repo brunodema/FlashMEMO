@@ -45,16 +45,17 @@ import {
 } from './shared/services/flashcard.service';
 import { DeckRepositoryResolverService } from './shared/resolvers/generic-repository.resolver';
 import {
-  AudioService,
-  DictionaryService,
-  GeneralAudioAPIService,
-  GeneralDictionaryAPIService,
   GeneralImageAPIService,
   ImageAPIService,
-  MockAudioService,
-  MockDictionaryService,
-  MockImageAPIService,
-} from './shared/services/api-services';
+} from './shared/services/APIs/image-api.service';
+import {
+  DictionaryService,
+  GeneralDictionaryAPIService,
+} from './shared/services/APIs/dictionary-api.service';
+import {
+  AudioService,
+  GeneralAudioAPIService,
+} from './shared/services/APIs/audio-api.service';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
