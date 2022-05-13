@@ -17,7 +17,7 @@ export interface IDataResponse<T> extends IBaseAPIResponse {
 
 export interface IPaginatedList<Type> {
   results: Type[];
-  pageIndex: number;
+  pageNumber: number;
   totalPages: number;
   count: number;
   total: number;
@@ -30,7 +30,7 @@ export interface IPaginatedList<Type> {
  */
 export interface ILargePaginatedList<Type> {
   results: Type[];
-  pageIndex: string;
+  pageNumber: string;
   totalPages: string;
   resultSize: string; // different naming than the other class, VERY DANGEROUS
   totalAmount: string; // different naming than the other class, VERY DANGEROUS

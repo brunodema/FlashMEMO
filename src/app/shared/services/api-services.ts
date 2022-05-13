@@ -66,7 +66,7 @@ export abstract class GeneralImageAPIService {
    */
   abstract searchImage(
     keyword: string,
-    pageIndex: number
+    pageNumber: number
   ): Observable<IPaginatedListResponse<IImageAPIResult>>;
 }
 
@@ -77,16 +77,16 @@ export abstract class GeneralImageAPIService {
 export class MockImageAPIService extends GeneralImageAPIService {
   searchImage(
     keyword: string,
-    pageIndex: number
+    pageNumber: number
   ): Observable<PaginatedListResponse<IImageAPIResult>> {
     return of(
       new PaginatedListResponse<GoogleImageResult>({
         message: 'Success',
         status: '200',
         data: {
-          hasNextPage: pageIndex < 5,
-          hasPreviousPage: pageIndex >= 2,
-          pageIndex: pageIndex.toString(),
+          hasNextPage: pageNumber < 5,
+          hasPreviousPage: pageNumber >= 2,
+          pageNumber: pageNumber.toString(),
           totalAmount: '50',
           resultSize: '10',
           totalPages: '5',
@@ -110,10 +110,10 @@ export class ImageAPIService extends GeneralImageAPIService {
 
   searchImage(
     keyword: string,
-    pageIndex: number
+    pageNumber: number
   ): Observable<IPaginatedListResponse<GoogleImageResult>> {
     return this.httpClient.get<PaginatedListResponse<GoogleImageResult>>(
-      `${this.endpoint}/search?searchText=${keyword}&pageNumber=${pageIndex}`
+      `${this.endpoint}/search?searchText=${keyword}&pageNumber=${pageNumber}`
     );
   }
 }

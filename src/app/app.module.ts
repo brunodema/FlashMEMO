@@ -44,6 +44,15 @@ import {
   MockFlashcardService,
 } from './shared/services/flashcard.service';
 import { DeckRepositoryResolverService } from './shared/resolvers/generic-repository.resolver';
+import {
+  GeneralAudioAPIService,
+  GeneralDictionaryAPIService,
+  GeneralImageAPIService,
+  ImageAPIService,
+  MockAudioService,
+  MockDictionaryService,
+  MockImageAPIService,
+} from './shared/services/api-services';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
@@ -102,6 +111,9 @@ const config: ConfigOption = {
     ClipboardModule,
   ],
   providers: [
+    { provide: GeneralImageAPIService, useClass: ImageAPIService },
+    { provide: GeneralDictionaryAPIService, useClass: MockDictionaryService },
+    { provide: GeneralAudioAPIService, useClass: MockAudioService },
     { provide: IAuthService, useClass: AuthService },
     AuthGuard,
     { provide: GenericDeckService, useClass: DeckService },

@@ -21,10 +21,6 @@ import {
   IAudioAPIResult,
   IDictionaryAPIResult,
   IImageAPIResult,
-  ImageAPIService,
-  MockAudioService,
-  MockDictionaryService,
-  MockImageAPIService,
 } from 'src/app/shared/services/api-services';
 import { CKEditor4 } from 'ckeditor4-angular';
 import { ClipboardService } from 'ngx-clipboard';
@@ -37,7 +33,7 @@ export enum FlashcardContentType {
 }
 
 export class FlashcardContentOptionsBlockContentSaveEventArgs {
-  contentValue: string;
+  contentValue: string = '';
 }
 
 /**
@@ -55,17 +51,12 @@ export class FlashcardContentOptionsBlockContentSaveEventArgs {
   },
   templateUrl: './flashcard-content-options-block.component.html',
   styleUrls: ['./flashcard-content-options-block.component.css'],
-  providers: [
-    { provide: GeneralImageAPIService, useClass: MockImageAPIService },
-    { provide: GeneralDictionaryAPIService, useClass: MockDictionaryService },
-    { provide: GeneralAudioAPIService, useClass: MockAudioService },
-  ],
 })
 export class FlashcardContentOptionsBlockComponent implements OnInit {
-  componentHeight: string;
+  componentHeight: string = '';
 
-  closeResult: string;
-  modalTitle: string;
+  closeResult: string = '';
+  modalTitle: string = '';
   contentType: FlashcardContentType = FlashcardContentType.NONE;
   currentKeyword: string = ''; // shared between search boxes
 
@@ -74,9 +65,9 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
   // Image API section
   imageAPIData$: Observable<PaginatedListResponse<IImageAPIResult>>;
   imageResults: IImageAPIResult[];
-  hasPrevious: boolean;
-  hasNext: boolean;
-  currentPageIndex: number;
+  hasPrevious: boolean = false;
+  hasNext: boolean = false;
+  currentPageNumber: number = 1;
 
   // Audio API section
   audioProviderEnum: typeof AudioAPIProvider = AudioAPIProvider;
@@ -98,7 +89,7 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
   dictAPIData$: Observable<IDataResponse<IDictionaryAPIResult>>;
   dictAPIparsedHMTL: string = '';
 
-  textEditorContent: string;
+  textEditorContent: string = '';
   editorType: CKEditor4.EditorType = CKEditor4.EditorType.CLASSIC;
   editorConfig: CKEditor4.Config = {
     toolbar: [
@@ -183,13 +174,15 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
       this.textEditorContent = this.contentValue;
   }
 
-  searchImage(keyword: string, pageIndex?: number): void {
-    if (pageIndex === undefined) pageIndex = 1;
+  searchImage(keyword: string, pageNumber?: number): void {
+    console.log(keyword, pageNumber);
 
-    this.imageAPIData$ = this.imageAPIService.searchImage(keyword, pageIndex);
+    if (pageNumber === undefined) pageNumber = 1;
+
+    this.imageAPIData$ = this.imageAPIService.searchImage(keyword, pageNumber);
     this.imageAPIData$.subscribe((r) => {
       this.currentKeyword = keyword;
-      this.currentPageIndex = r.data.pageIndex as number;
+      this.currentPageNumber = r.data.pageNumber as number;
       this.imageResults = r.data.results;
       this.hasPrevious = r.data.hasPreviousPage;
       this.hasNext = r.data.hasNextPage;
