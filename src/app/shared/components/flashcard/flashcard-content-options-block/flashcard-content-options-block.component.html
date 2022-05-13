@@ -43,7 +43,8 @@
                   <input type="text" class="p-0 form-control" placeholder="Type what audio you want to search!"
                     [(ngModel)]="currentKeyword" />
                   <span class="input-group-btn ms-2">
-                    <button class="btn btn-primary" type="submit" (click)="searchAudio(currentKeyword, 'en-gb')">
+                    <button class="btn btn-primary" type="submit"
+                      (click)="searchAudio(currentKeyword, dictLanguage, audioProvider)">
                       Search
                     </button>
                   </span>

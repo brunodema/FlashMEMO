@@ -317,8 +317,8 @@ const AudioAPISupportedLanguages = {
  * Enum used to show the provider options to the user ('Select' elements).
  */
 export enum AudioAPIProvider {
+  REDACTED = 'REDACTED',
   OXFORD = 'Oxford',
-  REDACTED = '[REDACTED]',
 }
 
 /**
@@ -328,7 +328,7 @@ export interface IAudioAPIResult {
   searchText: string;
   languageCode: string;
   results: {
-    audioFiles: string[];
+    audioLinks: string[];
   };
 }
 
@@ -341,7 +341,8 @@ export abstract class GeneralAudioAPIService {
 
   abstract searchAudio(
     keyword: string,
-    languageCode: string
+    languageCode: string,
+    provider: AudioAPIProvider
   ): Observable<IDataResponse<IAudioAPIResult>>;
 
   protected checkIfLanguageIsSupported(
@@ -352,19 +353,11 @@ export abstract class GeneralAudioAPIService {
       case AudioAPIProvider.OXFORD:
         return AudioAPISupportedLanguages.Oxford.includes(languageCode);
       case AudioAPIProvider.REDACTED:
-        return AudioAPISupportedLanguages.Redacted.includes(languageCode); // shouldn't do anything for now
+        return true; // shouldn't do anything for now
 
       default:
         throw new Error('The audio API provider selected does not exist.');
     }
-  }
-
-  public ParseResultsIntoHTML(apiResult: IAudioAPIResult): string {
-    let htmlText: string = '';
-
-    // WIP
-
-    return htmlText;
   }
 }
 
@@ -375,7 +368,8 @@ export abstract class GeneralAudioAPIService {
 export class MockAudioService extends GeneralAudioAPIService {
   searchAudio(
     keyword: string,
-    languageCode: string
+    languageCode: string,
+    provider: AudioAPIProvider
   ): Observable<IDataResponse<IAudioAPIResult>> {
     return of({
       message: 'Success',
@@ -383,5 +377,25 @@ export class MockAudioService extends GeneralAudioAPIService {
       errors: [],
       data: AudioAPIJson[Math.floor(Math.random() * AudioAPIJson.length)],
     });
+  }
+}
+
+@Injectable()
+export class AudioService extends GeneralAudioAPIService {
+  private endpoint = `${environment.backendRootAddress}/api/v1/redactedapi/search?`;
+
+  constructor(protected httpClient: HttpClient) {
+    super(httpClient);
+  }
+
+  searchAudio(
+    keyword: string,
+    languageCode: string,
+    provider: AudioAPIProvider
+  ): Observable<IDataResponse<IAudioAPIResult>> {
+    return this.httpClient.get<IDataResponse<IAudioAPIResult>>(
+      this.endpoint +
+        `keyword=${keyword}&languageCode=${languageCode}&provider=${provider}`
+    );
   }
 }

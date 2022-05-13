@@ -91,7 +91,7 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
   possibleAudioProviders = Object.values(AudioAPIProvider).filter(
     (f) => typeof f === 'string'
   );
-  audioProvider: AudioAPIProvider = AudioAPIProvider.OXFORD;
+  audioProvider: AudioAPIProvider = AudioAPIProvider.REDACTED;
   audioAPIData$: Observable<IDataResponse<IAudioAPIResult>>;
   audioAPIResults: string[];
 
@@ -269,13 +269,18 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
     this.textEditorContent += '\n\n' + this.dictAPIparsedHMTL;
   }
 
-  searchAudio(keyword: string, languageCode: string): void {
+  searchAudio(
+    keyword: string,
+    languageCode: string,
+    provider: AudioAPIProvider
+  ): void {
     this.audioAPIData$ = this.audioAPIService.searchAudio(
       keyword,
-      languageCode
+      languageCode,
+      provider
     );
     this.audioAPIData$.subscribe(
-      (r) => (this.audioAPIResults = r.data.results.audioFiles)
+      (r) => (this.audioAPIResults = r.data.results.audioLinks)
     );
   }
 

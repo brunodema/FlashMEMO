@@ -45,6 +45,7 @@ import {
 } from './shared/services/flashcard.service';
 import { DeckRepositoryResolverService } from './shared/resolvers/generic-repository.resolver';
 import {
+  AudioService,
   DictionaryService,
   GeneralAudioAPIService,
   GeneralDictionaryAPIService,
@@ -114,7 +115,7 @@ const config: ConfigOption = {
   providers: [
     { provide: GeneralImageAPIService, useClass: ImageAPIService },
     { provide: GeneralDictionaryAPIService, useClass: DictionaryService },
-    { provide: GeneralAudioAPIService, useClass: MockAudioService },
+    { provide: GeneralAudioAPIService, useClass: AudioService },
     { provide: IAuthService, useClass: AuthService },
     AuthGuard,
     { provide: GenericDeckService, useClass: DeckService },
