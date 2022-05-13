@@ -58,7 +58,7 @@ export class DeckDetailComponent {
       className: 'd-block mb-2',
     },
     {
-      key: 'language',
+      key: 'languageISOCode',
       type: 'select',
       templateOptions: {
         label: 'Language',
@@ -102,7 +102,7 @@ export class DeckDetailComponent {
           this.flashcardData = x;
         });
       // sets the default language value according to the one coming from the route (DeckId),
-      this.fields.find((f) => f.key === 'language')!.defaultValue =
+      this.fields.find((f) => f.key === 'languageISOCode')!.defaultValue =
         this.deckModel.languageISOCode;
     } else {
       this.isNewDeck = true;
