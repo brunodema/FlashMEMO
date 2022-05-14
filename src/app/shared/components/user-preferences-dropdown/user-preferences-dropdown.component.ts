@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
-import { IAuthService } from 'src/app/shared/services/auth.service';
+import { GenericAuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-user-preferences-dropdown',
@@ -10,7 +10,7 @@ import { IAuthService } from 'src/app/shared/services/auth.service';
 })
 export class UserPreferencesDropdownComponent {
   constructor(
-    public authService: IAuthService,
+    public authService: GenericAuthService,
     private router: Router,
     private toastr: ToastrService
   ) {}
