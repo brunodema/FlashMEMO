@@ -5,6 +5,7 @@ import {
   DataTableComponentClickEventArgs,
 } from 'src/app/shared/components/data-table/data-table.component';
 import { RouteMap } from 'src/app/shared/models/routing/route-map';
+import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
 import { Deck } from '../../models/deck.model';
 import { GenericDeckService } from '../../services/deck.service';
 
@@ -28,12 +29,15 @@ export class DeckListComponent {
 
   @ViewChild(DataTableComponent) dataTable: DataTableComponent<Deck>;
 
-  constructor(public service: GenericDeckService) {
+  constructor(
+    public service: GenericDeckService,
+    protected notificationService: GenericNotificationService
+  ) {
     this.service.getAll().subscribe((x) => (this.deckData = x));
   }
 
   handleDeleteDeck(args: DataTableComponentClickEventArgs<Deck>) {
     if (confirm(`Are you sure you want to delete deck '${args.rowData.name}'?`))
-      console.log('deck deleted! (but actually not)');
+      this.notificationService.showSuccess('Deck deleted! (but actually not)');
   }
 }

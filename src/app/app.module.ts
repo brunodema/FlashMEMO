@@ -59,6 +59,10 @@ import {
   GeneralAudioAPIService,
   MockAudioService,
 } from './shared/services/APIs/audio-api.service';
+import {
+  GenericNotificationService,
+  NotificationService,
+} from './shared/services/notification/notification.service';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
@@ -107,6 +111,7 @@ const config: ConfigOption = {
       positionClass: 'toast-top-center',
       countDuplicates: true,
       maxOpened: 3,
+      timeOut: 5000,
     }),
     ReactiveFormsModule,
     FormlyModule.forRoot(config),
@@ -136,6 +141,7 @@ const config: ConfigOption = {
       provide: DeckRepositoryResolverService,
       useClass: DeckRepositoryResolverService,
     },
+    { provide: GenericNotificationService, useClass: NotificationService },
   ],
   bootstrap: [AppComponent],
 })
