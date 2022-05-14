@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { IAuthService } from 'src/app/shared/services/auth.service';
+import { GenericAuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-registration-form',
@@ -77,7 +77,10 @@ export class RegistrationFormComponent implements OnInit {
     },
   ];
 
-  constructor(private authService: IAuthService, private router: Router) {}
+  constructor(
+    private authService: GenericAuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {}
 

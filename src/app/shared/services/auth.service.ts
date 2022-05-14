@@ -14,28 +14,32 @@ import {
   IBaseAPIResponse,
   ILoginResponse,
 } from '../models/http/http-response-types';
+import { GenericNotificationService } from './notification/notification.service';
 
-export abstract class IAuthService {
+export abstract class GenericAuthService {
   protected homeAddress = '/home';
 
   constructor(
     protected jwtHelper: JwtHelperService,
     protected router: Router,
-    protected toastr: ToastrService
+    protected notificationService: GenericNotificationService
   ) {}
 
   // TIL about Subject/BehaviorSubject. "A Subject is like an Observable, but can multicast to many Observers. Subjects are like EventEmitters: they maintain a registry of many listeners" (source: https://rxjs.dev/guide/subject). Implementation taken from here: https://netbasal.com/angular-2-persist-your-login-status-with-behaviorsubject-45da9ec43243
 
   public loggedUsername = new BehaviorSubject<string>(
-    this.getUsernameFromToken() ?? ''
+    this.decodePropertyFromToken('username') ?? ''
+  );
+  public loggedUserId = new BehaviorSubject<string>(
+    this.decodePropertyFromToken('sub') ?? ''
   );
 
   abstract login(requestData: ILoginRequest): Observable<any>;
   abstract register(registerData: IRegisterRequest): Observable<any>;
 
-  public getUsernameFromToken(): string {
+  public decodePropertyFromToken(property: string): string {
     if (this.getJWT() === null) return '';
-    return this.jwtHelper.decodeToken(this.getJWT())['username'];
+    return this.jwtHelper.decodeToken(this.getJWT())[property];
   }
 
   public isAuthenticated(): boolean {
@@ -66,32 +70,24 @@ export abstract class IAuthService {
 
   protected handleSuccessfulLogin(res: ILoginResponse) {
     this.storeJWT(res.jwtToken);
-    this.loggedUsername.next(this.getUsernameFromToken());
-    this.toastr
-      .success('You will soon be redirected.', 'Welcome to FlashMEMO!', {
-        timeOut: 3000,
-      })
+    this.loggedUsername.next(this.decodePropertyFromToken('username'));
+    this.notificationService
+      .showSuccess('You will soon be redirected.', 'Welcome to FlashMEMO!')
       .onHidden.subscribe(() => this.redirectToHome());
   }
 
   protected handleSuccessfulRegistration(res: IBaseAPIResponse) {
-    this.toastr.success(
+    this.notificationService.showSuccess(
       'User created. You will soon be redirected.',
-      'Registration Complete!',
-      {
-        timeOut: 3000,
-      }
+      'Registration Complete'
     );
   }
 
   protected handleFailedLogin(err: HttpErrorResponse) {
     this.clearPreExistingJWT();
-    this.toastr.error(
+    this.notificationService.showError(
       this.processErrorsFromAPI(err.error),
-      'Authentication Failure',
-      {
-        timeOut: 3000,
-      }
+      'Authentication Failure'
     );
     return throwError(err);
   }
@@ -112,13 +108,13 @@ export abstract class IAuthService {
 }
 
 @Injectable()
-export class MockAuthService extends IAuthService {
+export class MockAuthService extends GenericAuthService {
   constructor(
     protected jwtHelper: JwtHelperService,
     protected router: Router,
-    protected toastr: ToastrService
+    protected notificationService: GenericNotificationService
   ) {
-    super(jwtHelper, router, toastr);
+    super(jwtHelper, router, notificationService);
   }
 
   login(requestData: ILoginRequest): Observable<any> {
@@ -152,7 +148,7 @@ export class MockAuthService extends IAuthService {
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService extends IAuthService {
+export class AuthService extends GenericAuthService {
   protected serviceURL: string = `${environment.backendRootAddress}/api/v1/Auth`;
   protected customHeaders = { 'content-type': 'application/json' }; // check the need for it (and start using if necessary)
   protected homeAddress = '/home';
@@ -161,9 +157,9 @@ export class AuthService extends IAuthService {
     protected jwtHelper: JwtHelperService,
     protected http: HttpClient,
     protected router: Router,
-    protected toastr: ToastrService
+    protected notificationService: GenericNotificationService
   ) {
-    super(jwtHelper, router, toastr);
+    super(jwtHelper, router, notificationService);
   }
 
   public login(requestData: ILoginRequest): Observable<any> {
