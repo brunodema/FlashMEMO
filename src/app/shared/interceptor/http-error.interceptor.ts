@@ -25,9 +25,9 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
         if (error.error.errors) {
           this.notificationService.showError(error.error.errors);
         } else {
-          console.error(error);
         }
         return throwError(() => {
+          console.error(error);
           return new Error(error);
         });
       })
