@@ -97,18 +97,7 @@ export class FlashcardComponent {
       );
       return;
     }
-    let response: Observable<IDataResponse<string>>;
-    if (flashcard.flashcardId === '')
-      response = this.flashcardService.create(flashcard);
-    else
-      response = this.flashcardService.update(flashcard.flashcardId, flashcard);
 
-    response.subscribe(
-      (r) => {
-        if (r.status === '200') console.log(r.message);
-        this.save.emit();
-      },
-      (error) => console.log('an error ocurred:' + error)
-    );
+    this.save.emit();
   }
 }
