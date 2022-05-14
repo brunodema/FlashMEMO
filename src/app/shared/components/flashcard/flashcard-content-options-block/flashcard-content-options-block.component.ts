@@ -185,8 +185,6 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
   }
 
   searchImage(keyword: string, pageNumber?: number): void {
-    console.log(keyword, pageNumber);
-
     if (pageNumber === undefined) pageNumber = 1;
 
     this.imageAPIData$ = this.imageAPIService.searchImage(keyword, pageNumber);

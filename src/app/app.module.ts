@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { CollapseModule } from 'ngx-bootstrap/collapse'; // boostrap collapsable
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown'; // boostrap dropbdown
@@ -63,6 +63,7 @@ import {
   GenericNotificationService,
   NotificationService,
 } from './shared/services/notification/notification.service';
+import { GlobalHttpInterceptorService } from './shared/interceptor/http-error.interceptor';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
@@ -142,6 +143,11 @@ const config: ConfigOption = {
       useClass: DeckRepositoryResolverService,
     },
     { provide: GenericNotificationService, useClass: NotificationService },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: GlobalHttpInterceptorService,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })
