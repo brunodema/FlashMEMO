@@ -1,6 +1,6 @@
 // To be honest, I'm not even sure what this does at the moment. I'll leave it here for safety reasons
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -23,7 +23,8 @@ export abstract class GenericRepositoryService<Type> {
   create(object: Type): Observable<IDataResponse<string>> {
     return this.httpClient.post<IDataResponse<string>>(
       `${this.endpointURL}/create`,
-      JSON.stringify(object)
+      JSON.stringify(object),
+      { headers: new HttpHeaders().set('Content-Type', 'application/json') }
     );
   }
 
@@ -36,14 +37,16 @@ export abstract class GenericRepositoryService<Type> {
   update(id: string, object: Type): Observable<IDataResponse<string>> {
     return this.httpClient.put<IDataResponse<string>>(
       `${this.endpointURL}/${id}`,
-      JSON.stringify(object)
+      JSON.stringify(object),
+      { headers: new HttpHeaders().set('Content-Type', 'application/json') }
     );
   }
 
   delete(id: string): Observable<IBaseAPIResponse> {
     return this.httpClient.post<IDataResponse<IBaseAPIResponse>>(
       `${this.endpointURL}/delete`,
-      id
+      JSON.stringify(id),
+      { headers: new HttpHeaders().set('Content-Type', 'application/json') }
     );
   }
 
