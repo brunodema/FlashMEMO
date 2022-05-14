@@ -7,7 +7,7 @@ import {
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, pipe } from 'rxjs';
 import {
   DataTableColumnOptions,
   DataTableComponent,
@@ -15,6 +15,7 @@ import {
 } from 'src/app/shared/components/data-table/data-table.component';
 import { Flashcard, IFlashcard } from 'src/app/shared/models/flashcard-models';
 import { IDataResponse } from 'src/app/shared/models/http/http-response-types';
+import { GenericAuthService } from 'src/app/shared/services/auth.service';
 import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
 import { GenericLanguageService } from 'src/app/shared/services/language.service';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
@@ -94,7 +95,8 @@ export class DeckDetailComponent {
     private deckService: GenericDeckService,
     private route: ActivatedRoute,
     private router: Router,
-    private notificationService: GenericNotificationService
+    private notificationService: GenericNotificationService,
+    private authService: GenericAuthService
   ) {
     this.deckModel = this.route.snapshot.data['deck'];
     if (this.deckModel) {
@@ -109,7 +111,10 @@ export class DeckDetailComponent {
         this.deckModel.languageISOCode;
     } else {
       this.isNewDeck = true;
-      // 'create' mode
+      this.deckModel = new Deck({
+        ownerId: authService.loggedUserId.getValue(),
+      });
+      console.log(this.deckModel.ownerId);
     }
   }
 
@@ -176,30 +181,20 @@ export class DeckDetailComponent {
       if (this.deckModel?.deckId) {
         this.deckService
           .update(this.deckModel.deckId, this.deckModel)
-          .subscribe(
-            (r) => {
-              if (r.status === '200') {
-                console.log('Deck successfully updated.');
-              }
-            },
-            (e) => console.log(e)
-          );
+          .subscribe((x) => {
+            this.notificationService.showSuccess('Deck updated.');
+          });
       } else {
-        this.deckService.create(this.deckModel).subscribe(
-          (r) => {
-            if (r.status === '200') {
-              console.log('Deck successfully created.');
-              this.router.navigate(['/deck', r.data]);
-            }
-          },
-          (e) => console.log(e)
-        );
+        this.deckService.create(this.deckModel).subscribe((x) => {
+          this.notificationService.showSuccess('Deck Created');
+          this.router.navigate(['/deck', x.data]);
+        });
       }
     } else {
-      console.log(
-        'there is something wrong with the form 🙄',
-        this.form.errors
+      this.notificationService.showError(
+        'there is something wrong with the form 🙄'
       );
+      this.notificationService.showError(this.form.errors!.tostring());
     }
   }
 }
