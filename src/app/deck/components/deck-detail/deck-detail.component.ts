@@ -79,7 +79,7 @@ export class DeckDetailComponent {
   flashcardData: IFlashcard[];
   columnOptions: DataTableColumnOptions[] = [
     { name: 'flashcardId' },
-    { name: 'lastUpdated', emitValue: true },
+    { name: 'dueDate' },
   ];
   pageSizeOptions: number[] = [5, 10, 25];
 

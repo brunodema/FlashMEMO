@@ -83,7 +83,7 @@ export class DataTableComponent<Type>
     return [args[0], ...(args.slice(1).map((x) => row[x]) as string[])];
   }
 
-  handle(columnName: string, row: Type) {
+  handleClick(columnName: string, row: Type) {
     this.rowClick.emit({ columnName: columnName, rowData: row });
   }
 
