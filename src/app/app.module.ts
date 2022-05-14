@@ -47,14 +47,17 @@ import { DeckRepositoryResolverService } from './shared/resolvers/generic-reposi
 import {
   GeneralImageAPIService,
   ImageAPIService,
+  MockImageAPIService,
 } from './shared/services/APIs/image-api.service';
 import {
   DictionaryService,
   GeneralDictionaryAPIService,
+  MockDictionaryService,
 } from './shared/services/APIs/dictionary-api.service';
 import {
   AudioService,
   GeneralAudioAPIService,
+  MockAudioService,
 } from './shared/services/APIs/audio-api.service';
 
 export function fieldMatchValidator(control: AbstractControl) {
@@ -114,14 +117,21 @@ const config: ConfigOption = {
     ClipboardModule,
   ],
   providers: [
+    // { provide: GeneralImageAPIService, useClass: MockImageAPIService },
+    // { provide: GeneralDictionaryAPIService, useClass: MockDictionaryService },
+    // { provide: GeneralAudioAPIService, useClass: MockAudioService },
+    // { provide: GenericDeckService, useClass: MockDeckService },
+    // { provide: GenericFlashcardService, useClass: MockFlashcardService },
+    // { provide: GenericLanguageService, useClass: MockLanguageService },
+
     { provide: GeneralImageAPIService, useClass: ImageAPIService },
     { provide: GeneralDictionaryAPIService, useClass: DictionaryService },
     { provide: GeneralAudioAPIService, useClass: AudioService },
-    { provide: IAuthService, useClass: AuthService },
-    AuthGuard,
     { provide: GenericDeckService, useClass: DeckService },
     { provide: GenericFlashcardService, useClass: FlashcardService },
     { provide: GenericLanguageService, useClass: LanguageService },
+    { provide: IAuthService, useClass: AuthService },
+    AuthGuard,
     {
       provide: DeckRepositoryResolverService,
       useClass: DeckRepositoryResolverService,
