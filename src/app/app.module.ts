@@ -12,7 +12,7 @@ import { DeckModule } from './deck/deck.module';
 
 import {
   AuthService,
-  IAuthService,
+  GenericAuthService,
   MockAuthService,
 } from './shared/services/auth.service';
 import { AuthGuard } from './shared/guards/auth.guard';
@@ -136,7 +136,7 @@ const config: ConfigOption = {
     { provide: GenericDeckService, useClass: DeckService },
     { provide: GenericFlashcardService, useClass: FlashcardService },
     { provide: GenericLanguageService, useClass: LanguageService },
-    { provide: IAuthService, useClass: AuthService },
+    { provide: GenericAuthService, useClass: AuthService },
     AuthGuard,
     {
       provide: DeckRepositoryResolverService,
