@@ -4,8 +4,10 @@ export class Deck {
   languageISOCode: string = '';
   name: string = '';
   description: string = '';
-  creationDate: string = Date.now().toString();
-  lastUpdated: string = Date.now().toString();
+  creationDate: string = new Date().toISOString();
+  lastUpdated: string = new Date().toISOString();
 
-  constructor() {}
+  public constructor(init?: Partial<Deck>) {
+    Object.assign(this, init);
+  }
 }
