@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { ILoginRequest } from '../../../shared/models/http/http-request-types';
-import { IAuthService } from '../../../shared/services/auth.service';
+import { GenericAuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -39,7 +39,10 @@ export class LoginComponent implements OnInit {
     },
   ];
 
-  constructor(private authService: IAuthService, private router: Router) {}
+  constructor(
+    private authService: GenericAuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {}
 
