@@ -17,6 +17,7 @@ import { Flashcard, IFlashcard } from 'src/app/shared/models/flashcard-models';
 import { IDataResponse } from 'src/app/shared/models/http/http-response-types';
 import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
 import { GenericLanguageService } from 'src/app/shared/services/language.service';
+import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
 import { theNewFlashcardSeeder } from 'src/assets/test_assets/flashcard-seeder';
 import { Deck } from '../../models/deck.model';
 import { GenericDeckService } from '../../services/deck.service';
@@ -92,7 +93,8 @@ export class DeckDetailComponent {
     private flashcardService: GenericFlashcardService,
     private deckService: GenericDeckService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private notificationService: GenericNotificationService
   ) {
     this.deckModel = this.route.snapshot.data['deck'];
     if (this.deckModel) {
@@ -112,7 +114,8 @@ export class DeckDetailComponent {
   }
 
   openFlashcardModal(content: any, flashcard: IFlashcard | null) {
-    if (flashcard === null) this.activeFlashcard = new Flashcard();
+    if (flashcard === null)
+      this.activeFlashcard = new Flashcard({ deckId: this.deckModel.deckId });
     else this.activeFlashcard = flashcard!;
 
     //console.log(theNewFlashcardSeeder(250));
@@ -142,14 +145,30 @@ export class DeckDetailComponent {
     }
   }
 
-  handleFlashcardEdit(args: DataTableComponentClickEventArgs<IFlashcard>) {}
+  handleFlashcardDelete(args: DataTableComponentClickEventArgs<IFlashcard>) {
+    if (confirm('Are you sure you want to delete this flashcard?')) {
+      this.flashcardService
+        .delete(args.rowData.flashcardId)
+        .subscribe((x) =>
+          this.notificationService.showSuccess('Flashcard deleted.')
+        );
+    }
+  }
 
-  handleFlashcardDelete(args: DataTableComponentClickEventArgs<IFlashcard>) {}
-
-  handleFlashcardClick(args: DataTableComponentClickEventArgs<IFlashcard>) {}
-
-  handleFlashcardSave() {
-    this.flashcardModal.close('content saved');
+  handleFlashcardSave(flashcard: IFlashcard) {
+    if (flashcard.flashcardId) {
+      this.flashcardService
+        .update(flashcard.flashcardId, flashcard)
+        .subscribe((x) =>
+          this.notificationService.showSuccess('Flashcard updated.')
+        );
+    } else {
+      this.flashcardService
+        .create(flashcard)
+        .subscribe((x) =>
+          this.notificationService.showSuccess('Flashcard created.')
+        );
+    }
   }
 
   saveDeck() {
