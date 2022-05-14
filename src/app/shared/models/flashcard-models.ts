@@ -34,6 +34,10 @@ export class Flashcard implements IFlashcard {
   lastUpdated: string = new Date().toISOString();
   dueDate: string = new Date().toISOString();
   answer: string = '';
+
+  public constructor(init?: Partial<IFlashcard>) {
+    Object.assign(this, init);
+  }
 }
 
 export enum FlashcardLayout {
