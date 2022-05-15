@@ -30,14 +30,18 @@ export class DeckListComponent {
   @ViewChild(DataTableComponent) dataTable: DataTableComponent<Deck>;
 
   constructor(
-    public service: GenericDeckService,
+    public deckService: GenericDeckService,
     protected notificationService: GenericNotificationService
   ) {
-    this.service.getAll().subscribe((x) => (this.deckData = x));
+    this.deckService.getAll().subscribe((x) => (this.deckData = x));
   }
 
   handleDeleteDeck(args: DataTableComponentClickEventArgs<Deck>) {
     if (confirm(`Are you sure you want to delete deck '${args.rowData.name}'?`))
-      this.notificationService.showSuccess('Deck deleted! (but actually not)');
+      this.deckService
+        .delete(args.rowData.deckId)
+        .subscribe((x) =>
+          this.notificationService.showSuccess('Deck deleted.')
+        );
   }
 }
