@@ -10,6 +10,28 @@
         </button>
       </div>
     </div>
+    <div class="col-6 text-center">
+      <h4>Deck Stats:</h4>
+      <div class="row">
+        <label>Creation Date</label>
+        <p><b>{{ deckModel.creationDate }}</b></p>
+      </div>
+      <div class="row">
+        <label>Last Updated</label>
+        <p><b>{{ deckModel.lastUpdated }}</b></p>
+
+      </div>
+      <div class="row">
+        <label>Total Flashcards</label>
+        <p><b>{{ flashcardData$.getValue().length}}</b></p>
+
+      </div>
+      <div class="row">
+        <label>Due Flashcards</label>
+        <p><b>{{ getNumberOfDueFlashcards() }}</b></p>
+
+      </div>
+    </div>
   </div>
 
   <div class="row mt-5">

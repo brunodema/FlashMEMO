@@ -83,6 +83,11 @@ export class DeckDetailComponent {
       .getAllFlashcardsFromDeck(this.route.snapshot.params['id'])
       .subscribe((flashcardArray) => this.flashcardData$.next(flashcardArray));
   }
+  getNumberOfDueFlashcards() {
+    return this.flashcardData$
+      .getValue()
+      .filter((flashcard) => new Date(flashcard.dueDate) < new Date()).length;
+  }
 
   activeFlashcard: IFlashcard;
   columnOptions: DataTableColumnOptions[] = [
