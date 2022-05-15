@@ -1,4 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
+import { BehaviorSubject, filter } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import {
   DataTableColumnOptions,
   DataTableComponent,
@@ -14,7 +16,14 @@ import { GenericDeckService } from '../../services/deck.service';
   templateUrl: './deck-list.component.html',
 })
 export class DeckListComponent {
-  deckData: Deck[];
+  deckData$ = new BehaviorSubject<Deck[]>([]);
+
+  refreshDeckDataSource() {
+    this.deckService
+      .getAll()
+      .subscribe((deckArray) => this.deckData$.next(deckArray));
+  }
+
   columnOptions: DataTableColumnOptions[] = [
     { name: 'name', redirectParams: ['/deck/', 'deckId'] },
     { name: 'description' },
@@ -33,15 +42,17 @@ export class DeckListComponent {
     public deckService: GenericDeckService,
     protected notificationService: GenericNotificationService
   ) {
-    this.deckService.getAll().subscribe((x) => (this.deckData = x));
+    this.refreshDeckDataSource();
   }
 
   handleDeleteDeck(args: DataTableComponentClickEventArgs<Deck>) {
-    if (confirm(`Are you sure you want to delete deck '${args.rowData.name}'?`))
-      this.deckService
-        .delete(args.rowData.deckId)
-        .subscribe((x) =>
-          this.notificationService.showSuccess('Deck deleted.')
-        );
+    if (
+      confirm(`Are you sure you want to delete deck '${args.rowData.name}'?`)
+    ) {
+      this.deckService.delete(args.rowData.deckId).subscribe((x) => {
+        this.notificationService.showSuccess('Deck deleted.');
+        this.refreshDeckDataSource();
+      });
+    }
   }
 }
