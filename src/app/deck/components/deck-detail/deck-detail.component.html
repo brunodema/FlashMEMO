@@ -23,7 +23,7 @@
         <ng-template ngbPanelContent>
           <app-data-table [editColumnProperty]="'flashcardId'" [deleteColumnProperty]="'flashcardId'"
             (editClick)="openFlashcardModal(flashcardModal, $event.rowData)"
-            (deleteClick)="handleFlashcardDelete($event)" [dataSource]="this.flashcardData"
+            (deleteClick)="handleFlashcardDelete($event)" [dataSource]="(flashcardData$ | async) || []"
             [columnOptions]='this.columnOptions' [pageSizeOptions]='this.pageSizeOptions'>
           </app-data-table>
         </ng-template>

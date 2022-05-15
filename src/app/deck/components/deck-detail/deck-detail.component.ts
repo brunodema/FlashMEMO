@@ -7,7 +7,7 @@ import {
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { map, Observable, of, pipe } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import {
   DataTableColumnOptions,
   DataTableComponent,
@@ -77,8 +77,14 @@ export class DeckDetailComponent {
   ];
 
   // flashcard info
+  flashcardData$ = new BehaviorSubject<IFlashcard[]>([]);
+  refreshFlashcardDataSource() {
+    this.flashcardService
+      .getAllFlashcardsFromDeck(this.route.snapshot.params['id'])
+      .subscribe((flashcardArray) => this.flashcardData$.next(flashcardArray));
+  }
+
   activeFlashcard: IFlashcard;
-  flashcardData: IFlashcard[];
   columnOptions: DataTableColumnOptions[] = [
     { name: 'flashcardId' },
     { name: 'dueDate' },
@@ -101,11 +107,8 @@ export class DeckDetailComponent {
     this.deckModel = this.route.snapshot.data['deck'];
     if (this.deckModel) {
       // 'detail' mode
-      this.flashcardService
-        .getAllFlashcardsFromDeck(this.route.snapshot.params['id'])
-        .subscribe((x) => {
-          this.flashcardData = x;
-        });
+      this.refreshFlashcardDataSource();
+
       // sets the default language value according to the one coming from the route (DeckId),
       this.fields.find((f) => f.key === 'languageISOCode')!.defaultValue =
         this.deckModel.languageISOCode;
@@ -152,31 +155,29 @@ export class DeckDetailComponent {
 
   handleFlashcardDelete(args: DataTableComponentClickEventArgs<IFlashcard>) {
     if (confirm('Are you sure you want to delete this flashcard?')) {
-      this.flashcardService
-        .delete(args.rowData.flashcardId)
-        .subscribe((x) =>
-          this.notificationService.showSuccess('Flashcard deleted.')
-        );
+      this.flashcardService.delete(args.rowData.flashcardId).subscribe((x) => {
+        this.notificationService.showSuccess('Flashcard deleted.');
+        this.refreshFlashcardDataSource();
+      });
     }
   }
 
   handleFlashcardSave(flashcard: IFlashcard) {
     if (flashcard.flashcardId) {
       flashcard.lastUpdated = new Date().toISOString();
-
       this.flashcardService
         .update(flashcard.flashcardId, flashcard)
-        .subscribe((x) =>
-          this.notificationService.showSuccess('Flashcard updated.')
-        );
+        .subscribe((x) => {
+          this.notificationService.showSuccess('Flashcard updated.');
+          this.refreshFlashcardDataSource();
+          this.flashcardModal.close('flashcard update');
+        });
     } else {
-      this.flashcardService.create(flashcard).subscribe((x) =>
-        this.notificationService
-          .showSuccess('Flashcard created.')
-          .onHidden.subscribe((y) => {
-            this.router.navigate(['/deck', x.data]);
-          })
-      );
+      this.flashcardService.create(flashcard).subscribe((x) => {
+        this.notificationService.showSuccess('Flashcard created.');
+        this.refreshFlashcardDataSource();
+        this.flashcardModal.close('flashcard create');
+      });
     }
   }
 
