@@ -38,7 +38,7 @@ export abstract class GenericAuthService {
   abstract register(registerData: IRegisterRequest): Observable<any>;
 
   public decodePropertyFromToken(property: string): string {
-    if (this.getJWT() === null) return '';
+    if (!this.getJWT()) return '';
     return this.jwtHelper.decodeToken(this.getJWT())[property];
   }
 
@@ -48,8 +48,7 @@ export abstract class GenericAuthService {
   }
 
   public logout() {
-    localStorage.removeItem('token');
-    sessionStorage.removeItem('token');
+    this.clearPreExistingJWT();
     this.loggedUsername.next('?');
     this.redirectToHome();
   }
@@ -60,7 +59,16 @@ export abstract class GenericAuthService {
   }
 
   protected getJWT(): string {
-    return this.jwtHelper.tokenGetter();
+    const token = this.jwtHelper.tokenGetter();
+
+    if (this.jwtHelper.isTokenExpired(token)) {
+      // console.log('token is expired. Clearing it...');
+      this.clearPreExistingJWT();
+      return '';
+    }
+
+    // console.log('Returning valid token...');
+    return token;
   }
 
   protected clearPreExistingJWT() {
@@ -71,6 +79,7 @@ export abstract class GenericAuthService {
   protected handleSuccessfulLogin(res: ILoginResponse) {
     this.storeJWT(res.jwtToken);
     this.loggedUsername.next(this.decodePropertyFromToken('username'));
+    this.loggedUserId.next(this.decodePropertyFromToken('sub'));
     this.notificationService
       .showSuccess('You will soon be redirected.', 'Welcome to FlashMEMO!')
       .onHidden.subscribe(() => this.redirectToHome());

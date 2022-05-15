@@ -7,7 +7,7 @@ import {
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { map, Observable, pipe } from 'rxjs';
+import { map, Observable, of, pipe } from 'rxjs';
 import {
   DataTableColumnOptions,
   DataTableComponent,
@@ -168,11 +168,13 @@ export class DeckDetailComponent {
           this.notificationService.showSuccess('Flashcard updated.')
         );
     } else {
-      this.flashcardService
-        .create(flashcard)
-        .subscribe((x) =>
-          this.notificationService.showSuccess('Flashcard created.')
-        );
+      this.flashcardService.create(flashcard).subscribe((x) =>
+        this.notificationService
+          .showSuccess('Flashcard created.')
+          .onHidden.subscribe((y) => {
+            this.router.navigate(['/deck', x.data]);
+          })
+      );
     }
   }
 
