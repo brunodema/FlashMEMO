@@ -25,12 +25,16 @@ export class DeckListComponent {
   }
 
   columnOptions: DataTableColumnOptions[] = [
-    { name: 'name', redirectParams: ['/deck/', 'deckId'] },
-    { name: 'description' },
-    { name: 'ownerId', emitValue: true },
-    { name: 'languageISOCode' },
-    { name: 'creationDate' },
-    { name: 'lastUpdated' },
+    {
+      columnId: 'name',
+      displayName: 'Name',
+      redirectParams: ['/deck/', 'deckId'],
+    },
+    { columnId: 'description', displayName: 'Description' },
+    { columnId: 'ownerId', displayName: '', emitValue: true },
+    { columnId: 'languageISOCode', displayName: 'Language' },
+    { columnId: 'creationDate', displayName: 'Creation Date' },
+    { columnId: 'lastUpdated', displayName: 'Last Updated' },
   ];
   pageSizeOptions: number[] = [5, 10, 25];
 

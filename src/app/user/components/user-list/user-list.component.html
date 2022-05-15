@@ -1,8 +1,8 @@
 <div class="container my-3">
   <app-admin-actions-toolbar [routes]=routes></app-admin-actions-toolbar>
 
-  <app-data-table [dataSource]="this.deckData" #lol [columnOptions]="[{ name: 'deckId' }]" [pageSizeOptions]='[5]'>
+  <app-data-table [dataSource]="this.deckData" #lol [columnOptions]="[{ columnId: 'deckId' }]" [pageSizeOptions]='[5]'>
   </app-data-table>
-  <app-data-table [dataSource]="this.flashcardData" #lolo [columnOptions]="[{ name: 'flashcardId' },{ name: 'answer' }]"
-    [pageSizeOptions]='[5]'></app-data-table>
+  <app-data-table [dataSource]="this.flashcardData" #lolo
+    [columnOptions]="[{ columnId: 'flashcardId' },{ columnId: 'answer' }]" [pageSizeOptions]='[5]'></app-data-table>
 </div>

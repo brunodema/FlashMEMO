@@ -86,8 +86,8 @@ export class DeckDetailComponent {
 
   activeFlashcard: IFlashcard;
   columnOptions: DataTableColumnOptions[] = [
-    { name: 'flashcardId' },
-    { name: 'dueDate' },
+    { columnId: 'flashcardId' },
+    { columnId: 'dueDate' },
   ];
   pageSizeOptions: number[] = [5, 10, 25];
 
