@@ -162,6 +162,8 @@ export class DeckDetailComponent {
 
   handleFlashcardSave(flashcard: IFlashcard) {
     if (flashcard.flashcardId) {
+      flashcard.lastUpdated = new Date().toISOString();
+
       this.flashcardService
         .update(flashcard.flashcardId, flashcard)
         .subscribe((x) =>
@@ -181,6 +183,7 @@ export class DeckDetailComponent {
   saveDeck() {
     if (this.form.valid) {
       if (this.deckModel?.deckId) {
+        this.deckModel.lastUpdated = new Date().toISOString();
         this.deckService
           .update(this.deckModel.deckId, this.deckModel)
           .subscribe((x) => {
@@ -196,7 +199,7 @@ export class DeckDetailComponent {
       this.notificationService.showError(
         'there is something wrong with the form 🙄'
       );
-      this.notificationService.showError(this.form.errors!.tostring());
+      this.notificationService.showError(this.form.errors!.tostring()); // potenttialy dangerous, might show 'raw' information
     }
   }
 }
