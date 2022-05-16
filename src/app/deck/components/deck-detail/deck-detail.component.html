@@ -10,7 +10,8 @@
         </button>
       </div>
     </div>
-    <div class="col-6 text-center">
+    <!-- Right-side deck info panel (deck stats) -->
+    <div *ngIf="!isNewDeck" class="col-6 text-center">
       <h4>Deck Stats:</h4>
       <div class="row">
         <label>Creation Date</label>
@@ -29,8 +30,10 @@
       <div class="row">
         <label>Due Flashcards</label>
         <p><b>{{ getNumberOfDueFlashcards() }}</b></p>
-
       </div>
+    </div>
+    <div *ngIf="isNewDeck" class="col-6 d-flex align-items-center text-center">
+      <h4>Create your new deck before you can start adding new flashcards to it!</h4>
     </div>
   </div>
 

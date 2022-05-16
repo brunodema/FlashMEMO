@@ -122,7 +122,6 @@ export class DeckDetailComponent {
       this.deckModel = new Deck({
         ownerId: authService.loggedUserId.getValue(),
       });
-      console.log(this.deckModel.ownerId);
     }
   }
 
