@@ -9,7 +9,7 @@ import {
 } from 'src/app/shared/models/other/api-query-types';
 import { GenericRepositoryService } from 'src/app/shared/services/general-repository.service';
 import { environment } from 'src/environments/environment';
-import { User } from '../models/user';
+import { User } from '../models/user.model';
 
 class UserSearchParams implements IServiceSearchParams {
   pageSize: Number;
@@ -26,6 +26,8 @@ export abstract class GenericUserService extends GenericRepositoryService<User> 
   }
   abstract search(searchParams: UserSearchParams): Observable<User[]>;
 }
+
+// no Mock yet??? :'(
 
 @Injectable()
 export class UserService extends GenericRepositoryService<User> {

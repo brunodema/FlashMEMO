@@ -64,6 +64,7 @@ import {
   NotificationService,
 } from './shared/services/notification/notification.service';
 import { GlobalHttpInterceptorService } from './shared/interceptor/http-error.interceptor';
+import { GenericUserService, UserService } from './user/services/user.service';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
@@ -137,6 +138,7 @@ const config: ConfigOption = {
     { provide: GenericFlashcardService, useClass: FlashcardService },
     { provide: GenericLanguageService, useClass: LanguageService },
     { provide: GenericAuthService, useClass: AuthService },
+    { provide: GenericUserService, useClass: UserService },
     AuthGuard,
     {
       provide: DeckRepositoryResolverService,

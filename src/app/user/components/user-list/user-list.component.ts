@@ -1,10 +1,14 @@
-import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { RouteMap } from 'src/app/shared/models/routing/route-map';
-import { DataTableComponent } from 'src/app/shared/components/data-table/data-table.component';
+import {
+  DataTableColumnOptions,
+  DataTableComponent,
+  DataTableComponentClickEventArgs,
+} from 'src/app/shared/components/data-table/data-table.component';
 import { Deck } from 'src/app/deck/models/deck.model';
-import { IFlashcard } from 'src/app/shared/models/flashcard-models';
-import { GenericDeckService } from 'src/app/deck/services/deck.service';
-import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
+import { BehaviorSubject } from 'rxjs';
+import { User } from '../../models/user.model';
+import { GenericUserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-user',
@@ -13,22 +17,36 @@ import { GenericFlashcardService } from 'src/app/shared/services/flashcard.servi
 })
 
 // this component is a complete shitshow at the moment... pretty much a sandbox for weird shit I want to implement
-export class UserListComponent implements AfterViewInit {
+export class UserListComponent {
   routes: RouteMap[] = [{ label: 'Create User', route: 'create' }];
 
-  @ViewChild('lol') dataTable: DataTableComponent<Deck>;
-  @ViewChild('lolo') dataTable2: DataTableComponent<IFlashcard>;
-
-  deckData: Deck[];
-  flashcardData: IFlashcard[];
-
-  constructor(
-    public deckService: GenericDeckService,
-    public flashcardService: GenericFlashcardService
-  ) {
-    this.deckService.getAll().subscribe((r) => (this.deckData = r));
-    this.flashcardService.getAll().subscribe((r) => (this.flashcardData = r));
+  columnOptions: DataTableColumnOptions[] = [
+    {
+      columnId: 'id',
+      displayName: 'Id',
+      // redirectParams: ['/user/', 'id'], ---> once user detail is created...
+    },
+    { columnId: 'userName', displayName: 'Username' },
+    { columnId: 'email', displayName: 'Email' },
+  ];
+  pageSizeOptions: number[] = [5, 10, 25];
+  refreshUserDataSource() {
+    this.userService
+      .getAll()
+      .subscribe((userArray) => this.userData$.next(userArray));
   }
 
-  ngAfterViewInit(): void {}
+  userData$ = new BehaviorSubject<User[]>([]);
+
+  constructor(private userService: GenericUserService) {
+    this.refreshUserDataSource();
+  }
+
+  handleEditUser(args: DataTableComponentClickEventArgs<User>) {
+    console.log(args.columnName, args.rowData);
+  }
+
+  handleDeleteUser(args: DataTableComponentClickEventArgs<User>) {
+    console.log(args.columnName, args.rowData);
+  }
 }
