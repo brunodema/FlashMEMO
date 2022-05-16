@@ -42,14 +42,14 @@
       <button class="btn btn-primary" (click)="openFlashcardModal(flashcardModal, null)">
         Create Flashcard
       </button>
-      <button class="ms-2 btn btn-primary" (click)="null">
+      <button class="ms-2 btn btn-primary" (click)="test()">
         Study!
       </button>
     </div>
     <ngb-accordion class="mt-2" #acc="ngbAccordion" activeIds="ngb-panel-0">
       <ngb-panel title="Flashcards">
         <ng-template ngbPanelContent>
-          <app-data-table [editColumnProperty]="'flashcardId'" [deleteColumnProperty]="'flashcardId'"
+          <app-data-table [hasSelectColumn]="true" [hasEditColumn]="true" [hasDeleteColumn]="true"
             (editClick)="openFlashcardModal(flashcardModal, $event.rowData)"
             (deleteClick)="handleFlashcardDelete($event)" [dataSource]="(flashcardData$ | async) || []"
             [columnOptions]='this.columnOptions' [pageSizeOptions]='this.pageSizeOptions'>

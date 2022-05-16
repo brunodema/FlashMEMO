@@ -4,14 +4,14 @@
   <div class="container">
     <h4>Your Decks</h4>
     <app-data-table (deleteClick)="handleDeleteDeck($event)" [dataSource]="(userDeckData$ | async) || []"
-      [columnOptions]='this.columnOptions' [pageSizeOptions]='this.pageSizeOptions' [deleteColumnProperty]="'deckId'">
+      [columnOptions]='this.columnOptions' [pageSizeOptions]='this.pageSizeOptions' [hasDeleteColumn]="true">
     </app-data-table>
   </div>
 
   <div class="container mt-5">
     <h4>FlashMEMO's Decks</h4>
     <app-data-table (deleteClick)="handleDeleteDeck($event)" [dataSource]="(deckData$ | async) || []"
-      [columnOptions]='this.columnOptions' [pageSizeOptions]='this.pageSizeOptions' [deleteColumnProperty]="'deckId'">
+      [columnOptions]='this.columnOptions' [pageSizeOptions]='this.pageSizeOptions' [hasDeleteColumn]="true">
     </app-data-table>
   </div>
 </div>

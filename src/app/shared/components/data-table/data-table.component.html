@@ -6,6 +6,20 @@
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]='this.tableDataSource' matSort>
 
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+          [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
     <ng-container *ngFor="let item of this.columnOptions" matColumnDef={{item.columnId}}>
       <th mat-header-cell *matHeaderCellDef mat-sort-header> {{item.displayName ?? item.columnId}} </th>
       <td mat-cell *matCellDef="let row">
@@ -15,13 +29,13 @@
         </div>
       </td>
     </ng-container>
-    <ng-container *ngIf="editColumnProperty" matColumnDef="edit">
+    <ng-container *ngIf="hasEditColumn" matColumnDef="edit">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let row" class="text-center">
         <a (click)="raiseEdit(row)" class="fa fa-pen-nib fa-2x text-decoration-none"></a>
       </td>
     </ng-container>
-    <ng-container *ngIf="deleteColumnProperty" matColumnDef="delete">
+    <ng-container *ngIf="hasDeleteColumn" matColumnDef="delete">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let row" class="text-center">
         <a (click)="raiseDelete(row)" class="fa fa-trash fa-2x text-decoration-none"></a>

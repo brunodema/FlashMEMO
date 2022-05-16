@@ -210,4 +210,8 @@ export class DeckDetailComponent {
       this.notificationService.showError(this.form.errors!.tostring()); // potenttialy dangerous, might show 'raw' information
     }
   }
+
+  test() {
+    console.log(this.dataTable.selection);
+  }
 }

@@ -1,3 +1,4 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import {
   AfterViewInit,
   Component,
@@ -38,8 +39,9 @@ export class DataTableComponent<Type>
   @Input() dataSource: Type[];
   @Input() columnOptions: DataTableColumnOptions[];
   @Input() pageSizeOptions: number[];
-  @Input() editColumnProperty: string;
-  @Input() deleteColumnProperty: string;
+  @Input() hasEditColumn: boolean;
+  @Input() hasDeleteColumn: boolean;
+  @Input() hasSelectColumn: boolean;
 
   @Output() rowClick: EventEmitter<DataTableComponentClickEventArgs<Type>> =
     new EventEmitter();
@@ -64,6 +66,37 @@ export class DataTableComponent<Type>
     this.tableDataSource.paginator = this.paginator;
     this.tableDataSource.sort = this.sort;
   }
+
+  // Taken from the official Material Table Checkbox example:
+  // ********************************************************
+  public selection = new SelectionModel<Type>(true, []);
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
+
+    this.selection.select(...this.dataSource);
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: Type): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+      this.columnOptions[1]
+    }`;
+  }
+  // ********************************************************
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -90,22 +123,14 @@ export class DataTableComponent<Type>
 
   raiseEdit(row: Type) {
     this.editClick.emit({
-      columnName: this.editColumnProperty,
-      rowData: row,
-    });
-    console.log({
-      columnName: this.editColumnProperty,
+      columnName: 'edit',
       rowData: row,
     });
   }
 
   raiseDelete(row: Type) {
     this.deleteClick.emit({
-      columnName: this.deleteColumnProperty,
-      rowData: row,
-    });
-    console.log({
-      columnName: this.deleteColumnProperty,
+      columnName: 'delete',
       rowData: row,
     });
   }
@@ -116,8 +141,9 @@ export class DataTableComponent<Type>
    */
   getColumnNames(): string[] {
     let columnNames = this.columnOptions.map((x) => x.columnId);
-    if (this.editColumnProperty) columnNames.push('edit');
-    if (this.deleteColumnProperty) columnNames.push('delete');
+    if (this.hasEditColumn) columnNames.push('edit');
+    if (this.hasDeleteColumn) columnNames.push('delete');
+    if (this.hasSelectColumn) columnNames.unshift('select');
 
     return columnNames;
   }

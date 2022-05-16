@@ -21,6 +21,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { FlashcardComponent } from './components/flashcard/flashcard-main/flashcard.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { FlashcardComponent } from './components/flashcard/flashcard-main/flashc
     CommonModule,
     RouterModule,
     FormsModule,
+    MatCheckboxModule, // Material Table (Checkbox)
     MatFormFieldModule, // Material
     MatPaginatorModule, // Material
     MatTableModule, // Material
