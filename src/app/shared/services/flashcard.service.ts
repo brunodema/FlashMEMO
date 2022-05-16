@@ -39,6 +39,7 @@ export abstract class GenericFlashcardService extends GenericRepositoryService<I
   }
   abstract search(params: FlashcardSearchParams): Observable<IFlashcard[]>;
   abstract getAllFlashcardsFromDeck(deckId: string): Observable<IFlashcard[]>;
+  abstract getNumberOfFlashcardsFromDeck(deckId: string): Observable<number>;
 }
 
 @Injectable()
@@ -48,6 +49,9 @@ export class MockFlashcardService extends GenericFlashcardService {
   }
   getAllFlashcardsFromDeck(deckId: string): Observable<IFlashcard[]> {
     return of(flashcardJson.filter((f) => f.deckId == deckId));
+  }
+  getNumberOfFlashcardsFromDeck(deckId: string): Observable<number> {
+    return of(flashcardJson.filter((f) => f.deckId == deckId).length);
   }
   search(searchParams: FlashcardSearchParams): Observable<IFlashcard[]> {
     throw new Error('Method not implemented.');
@@ -141,6 +145,12 @@ export class FlashcardService extends GenericFlashcardService {
     let formattedURL: string = `${this.endpointURL}/GetAllFlashcardsFromDeck/${deckId}`;
     return this.http
       .get<IDataResponse<IFlashcard[]>>(formattedURL)
+      .pipe(map((a) => a.data));
+  }
+  getNumberOfFlashcardsFromDeck(deckId: string): Observable<number> {
+    let formattedURL: string = `${this.endpointURL}/GetAllFlashcardsFromDeck/${deckId}?countOnly=true`;
+    return this.http
+      .get<IDataResponse<number>>(formattedURL)
       .pipe(map((a) => a.data));
   }
 }

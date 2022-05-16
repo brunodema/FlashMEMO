@@ -9,7 +9,7 @@ import {
 import { RouteMap } from 'src/app/shared/models/routing/route-map';
 import { GenericAuthService } from 'src/app/shared/services/auth.service';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
-import { Deck } from '../../models/deck.model';
+import { Deck, ExtendedDeckInfoDTO } from '../../models/deck.model';
 import { GenericDeckService } from '../../services/deck.service';
 
 @Component({
@@ -17,17 +17,17 @@ import { GenericDeckService } from '../../services/deck.service';
   templateUrl: './deck-list.component.html',
 })
 export class DeckListComponent {
-  userDeckData$ = new BehaviorSubject<Deck[]>([]);
+  userDeckData$ = new BehaviorSubject<ExtendedDeckInfoDTO[]>([]);
   refreshUserDeckDataSource() {
     this.deckService
-      .getAllDecksFromUser(this.authService.loggedUserId.getValue())
+      .getExtendedDeckInfo(this.authService.loggedUserId.getValue())
       .subscribe((deckArray) => this.userDeckData$.next(deckArray));
   }
 
-  deckData$ = new BehaviorSubject<Deck[]>([]);
+  deckData$ = new BehaviorSubject<ExtendedDeckInfoDTO[]>([]);
   refreshDeckDataSource() {
     this.deckService
-      .getAll()
+      .getExtendedDeckInfo()
       .subscribe((deckArray) => this.deckData$.next(deckArray));
   }
 
@@ -38,7 +38,7 @@ export class DeckListComponent {
       redirectParams: ['/deck/', 'deckId'],
     },
     { columnId: 'description', displayName: 'Description' },
-    { columnId: 'ownerId', displayName: '', emitValue: true },
+    { columnId: 'flashcardCount', displayName: 'Flashcards' },
     { columnId: 'languageISOCode', displayName: 'Language' },
     { columnId: 'creationDate', displayName: 'Creation Date' },
     { columnId: 'lastUpdated', displayName: 'Last Updated' },
@@ -47,7 +47,8 @@ export class DeckListComponent {
 
   routes: RouteMap[] = [{ label: 'Create Deck', route: '/deck/create' }];
 
-  @ViewChild(DataTableComponent) dataTable: DataTableComponent<Deck>;
+  @ViewChild(DataTableComponent)
+  dataTable: DataTableComponent<ExtendedDeckInfoDTO>;
 
   constructor(
     public deckService: GenericDeckService,

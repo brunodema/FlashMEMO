@@ -11,3 +11,11 @@ export class Deck {
     Object.assign(this, init);
   }
 }
+
+/**
+ * Model that represents the data shown in the 'list' view, which includes the number of total and due flashcards.
+ */
+export class ExtendedDeckInfoDTO extends Deck {
+  flashcardCount: number;
+  dueFlashcards: number;
+}

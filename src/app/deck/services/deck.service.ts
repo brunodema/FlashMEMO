@@ -14,7 +14,7 @@ import {
 } from 'src/app/shared/models/other/api-query-types';
 import { GenericRepositoryService } from 'src/app/shared/services/general-repository.service';
 import { environment } from 'src/environments/environment';
-import { Deck } from '../models/deck.model';
+import { Deck, ExtendedDeckInfoDTO } from '../models/deck.model';
 
 import DeckJson from 'src/assets/test_assets/Decks.json';
 
@@ -38,7 +38,9 @@ export abstract class GenericDeckService extends GenericRepositoryService<Deck> 
     super(`${environment.backendRootAddress}/api/v1/deck`, httpClient);
   }
   abstract search(searchParams: DeckSearchParams): Observable<Deck[]>;
-  abstract getAllDecksFromUser(ownerId: string): Observable<Deck[]>;
+  abstract getExtendedDeckInfo(
+    ownerId?: string
+  ): Observable<ExtendedDeckInfoDTO[]>;
 }
 
 @Injectable()
@@ -95,8 +97,9 @@ export class MockDeckService extends GenericDeckService {
     });
   }
 
-  getAllDecksFromUser(ownerId: string): Observable<Deck[]> {
-    return of(DeckJson.filter((x) => x.ownerId === ownerId));
+  getExtendedDeckInfo(ownerId?: string): Observable<ExtendedDeckInfoDTO[]> {
+    return of();
+    // return of(DeckJson.filter((x) => x.ownerId === ownerId)).pipe(map(x => ({...x, flashcardCount: 1, dueFlashcards: 1 })));
   }
 }
 
@@ -140,10 +143,13 @@ export class DeckService extends GenericDeckService {
       .pipe(map((a) => a.data.results));
   }
 
-  getAllDecksFromUser(ownerId: string): Observable<Deck[]> {
+  getExtendedDeckInfo(ownerId?: string): Observable<ExtendedDeckInfoDTO[]> {
+    console.log(ownerId);
     return this.http
-      .get<IDataResponse<Deck[]>>(
-        `${this.endpointURL}/getAllDecksFromUser/${ownerId}`
+      .get<IDataResponse<ExtendedDeckInfoDTO[]>>(
+        `${this.endpointURL}/list/extended${
+          ownerId ? '?ownerId=' + ownerId : ''
+        }`
       )
       .pipe(map((y) => y.data));
   }
