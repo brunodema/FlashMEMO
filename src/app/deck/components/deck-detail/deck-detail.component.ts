@@ -183,6 +183,9 @@ export class DeckDetailComponent {
         this.flashcardModal.close('flashcard create');
       });
     }
+
+    this.deckModel.lastUpdated = new Date().toISOString(); // if the Flashcard update succeeds, sets the 'LastUpdated' of the deck to now
+    this.deckService.update(this.deckModel.deckId, this.deckModel).subscribe();
   }
 
   saveDeck() {
