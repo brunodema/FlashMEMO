@@ -38,6 +38,7 @@ export abstract class GenericDeckService extends GenericRepositoryService<Deck> 
     super(`${environment.backendRootAddress}/api/v1/deck`, httpClient);
   }
   abstract search(searchParams: DeckSearchParams): Observable<Deck[]>;
+  abstract getAllDecksFromUser(ownerId: string): Observable<Deck[]>;
 }
 
 @Injectable()
@@ -93,6 +94,10 @@ export class MockDeckService extends GenericDeckService {
       errors: [],
     });
   }
+
+  getAllDecksFromUser(ownerId: string): Observable<Deck[]> {
+    return of(DeckJson.filter((x) => x.ownerId === ownerId));
+  }
 }
 
 @Injectable()
@@ -133,5 +138,13 @@ export class DeckService extends GenericDeckService {
     return this.http
       .get<IPaginatedListResponse<Deck>>(formattedURL)
       .pipe(map((a) => a.data.results));
+  }
+
+  getAllDecksFromUser(ownerId: string): Observable<Deck[]> {
+    return this.http
+      .get<IDataResponse<Deck[]>>(
+        `${this.endpointURL}/getAllDecksFromUser/${ownerId}`
+      )
+      .pipe(map((y) => y.data));
   }
 }

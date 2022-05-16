@@ -7,6 +7,7 @@ import {
   DataTableComponentClickEventArgs,
 } from 'src/app/shared/components/data-table/data-table.component';
 import { RouteMap } from 'src/app/shared/models/routing/route-map';
+import { GenericAuthService } from 'src/app/shared/services/auth.service';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
 import { Deck } from '../../models/deck.model';
 import { GenericDeckService } from '../../services/deck.service';
@@ -16,8 +17,14 @@ import { GenericDeckService } from '../../services/deck.service';
   templateUrl: './deck-list.component.html',
 })
 export class DeckListComponent {
-  deckData$ = new BehaviorSubject<Deck[]>([]);
+  userDeckData$ = new BehaviorSubject<Deck[]>([]);
+  refreshUserDeckDataSource() {
+    this.deckService
+      .getAllDecksFromUser(this.authService.loggedUserId.getValue())
+      .subscribe((deckArray) => this.userDeckData$.next(deckArray));
+  }
 
+  deckData$ = new BehaviorSubject<Deck[]>([]);
   refreshDeckDataSource() {
     this.deckService
       .getAll()
@@ -44,9 +51,11 @@ export class DeckListComponent {
 
   constructor(
     public deckService: GenericDeckService,
-    protected notificationService: GenericNotificationService
+    protected notificationService: GenericNotificationService,
+    protected authService: GenericAuthService
   ) {
     this.refreshDeckDataSource();
+    this.refreshUserDeckDataSource();
   }
 
   handleDeleteDeck(args: DataTableComponentClickEventArgs<Deck>) {
@@ -56,6 +65,7 @@ export class DeckListComponent {
       this.deckService.delete(args.rowData.deckId).subscribe((x) => {
         this.notificationService.showSuccess('Deck deleted.');
         this.refreshDeckDataSource();
+        this.refreshUserDeckDataSource();
       });
     }
   }
