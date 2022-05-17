@@ -52,15 +52,16 @@
               </div>
             </div>
             <div *ngIf="showAudioToolbar()" class="mt-2 d-flex justify-content-end">
-              <i href="#" class="bi bi-x-circle" (click)="clearAudioResults()" style="font-size: 2em;"></i>
+              <i href="#" class="bi bi-x-circle" (click)="clearAudioResults()" style="font-size: 2em;" placement="auto"
+                ngbTooltip="Clear results"></i>
             </div>
             <div class="row mt-2">
               <ng-container *ngFor="let audio of audioAPIResults">
                 <div class="row mb-1">
                   <audio class="col-6" [src]="audio" controls>Oops, your browser is having problems rendering the audio!
                     🤔</audio>
-                  <i href="#" class="col-auto bi bi-check2-square" (click)="saveAudio(audio)"
-                    style="font-size: 2em;"></i>
+                  <i href="#" class="col-auto bi bi-check2-square" (click)="saveAudio(audio)" placement="end"
+                    ngbTooltip="Pick audio" container="body" style="font-size: 2em;"></i>
                 </div>
               </ng-container>
             </div>
@@ -108,8 +109,10 @@
               </div>
             </div>
             <div *ngIf="showDictionaryToolbar()" class="mt-2 d-flex justify-content-end">
-              <i href="#" class="me-2 bi bi-clipboard-check" (click)="copyToRTE()" style="font-size: 2em;"></i>
-              <i href="#" class="bi bi-x-circle" (click)="clearDictionaryResults()" style="font-size: 2em;"></i>
+              <i href="#" class="me-2 bi bi-clipboard-check" (click)="copyToRTE()" style="font-size: 2em;"
+                placement="auto" ngbTooltip="Append definition to text content"></i>
+              <i href="#" class="bi bi-x-circle" (click)="clearDictionaryResults()" style="font-size: 2em;"
+                placement="auto" ngbTooltip="Clear results"></i>
             </div>
             <div class="row mt-2">
               <div [innerHTML]="dictAPIparsedHMTL" class="container"></div>
@@ -185,9 +188,9 @@
   <ng-container *ngSwitchDefault>oops, some error must have occured! D:</ng-container>
 </div>
 <a [hidden]="!showEditButton()" class="image-edit-button fa fa-pen-nib fa-2x" (click)="openXl(contentEditor, 'Text')"
-  aria-hidden="true"></a>
+  placement="auto" ngbTooltip="Edit content" aria-hidden="true"></a>
 <a [hidden]="!showResetButton()" class="image-reset-button fa fa-times-circle fa-2x" (click)="resetContent()"
-  aria-hidden="true"></a>
+  placement="auto" ngbTooltip="Clear content" aria-hidden="true"></a>
 
 <!-- Spinner (unused for now) -->
 <!-- <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-circus" [fullScreen]="false">
