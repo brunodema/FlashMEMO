@@ -2,9 +2,6 @@ import { CommonModule } from '@angular/common';
 import { SafePipe } from './pipes/safe-pipe.pipe';
 import { AdminActionsToolbarComponent } from './components/admin-actions-toolbar/admin-actions-toolbar.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { HeaderComponent } from './components/header/header.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { UserPreferencesDropdownComponent } from './components/user-preferences-dropdown/user-preferences-dropdown.component';
 import { MatTableModule } from '@angular/material/table'; // Material UI stuff for dynamic tables
 import { MatFormFieldModule } from '@angular/material/form-field'; // Material UI stuff for dynamic tables
 import { MatSortModule } from '@angular/material/sort'; // Material UI stuff for dynamic tables
@@ -22,6 +19,9 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { FlashcardComponent } from './components/flashcard/flashcard-main/flashcard.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { HeaderComponent } from './components/common/header/header.component';
+import { FooterComponent } from './components/common/footer/footer.component';
+import { UserPreferencesDropdownComponent } from './components/common/user-preferences-dropdown/user-preferences-dropdown.component';
 
 @NgModule({
   declarations: [
