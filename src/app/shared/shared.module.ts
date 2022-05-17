@@ -22,6 +22,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HeaderComponent } from './components/common/header/header.component';
 import { FooterComponent } from './components/common/footer/footer.component';
 import { UserPreferencesDropdownComponent } from './components/common/user-preferences-dropdown/user-preferences-dropdown.component';
+import { StudySessionComponent } from './components/study-session/study-session/study-session.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { UserPreferencesDropdownComponent } from './components/common/user-prefe
     FlashcardLayoutComponent,
     ImageLoaderDirective,
     FlashcardComponent,
+    StudySessionComponent,
   ],
   imports: [
     CollapseModule,
@@ -62,6 +64,7 @@ import { UserPreferencesDropdownComponent } from './components/common/user-prefe
     FlashcardContentOptionsBlockComponent,
     FlashcardComponent,
     FlashcardLayoutComponent,
+    StudySessionComponent,
     ImageLoaderDirective,
   ],
   providers: [SafePipe],

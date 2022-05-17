@@ -42,7 +42,7 @@
       <button class="btn btn-primary" (click)="openFlashcardModal(flashcardModal, null)">
         Create Flashcard
       </button>
-      <button class="ms-2 btn btn-primary" (click)="test()">
+      <button class="ms-2 btn btn-primary" (click)="openStudySessionModal(studySessionModal)">
         Study!
       </button>
     </div>
@@ -72,5 +72,19 @@
   <div class="modal-body">
     <app-flashcard (save)="handleFlashcardSave(activeFlashcard)" [flashcard]="activeFlashcard"
       [defaultLanguageISOCode]="deckModel.languageISOCode"></app-flashcard>
+  </div>
+</ng-template>
+
+<!-- Study Session section -->
+<ng-template #studySessionModal let-modal class="modal-lg">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Study Session
+    </h4>
+    <button type="button" class="btn btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-study-session></app-study-session>
   </div>
 </ng-template>

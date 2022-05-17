@@ -98,6 +98,7 @@ export class DeckDetailComponent {
 
   @ViewChild(DataTableComponent) dataTable: DataTableComponent<IFlashcard>;
   flashcardModal: NgbModalRef; // this variable is assigned as soon as the modal is opened (return of the 'open' method)
+  studySessionModal: NgbModalRef; // this variable is assigned as soon as the modal is opened (return of the 'open' method)
 
   constructor(
     private modalService: NgbModal,
@@ -211,7 +212,19 @@ export class DeckDetailComponent {
     }
   }
 
-  test() {
-    console.log(this.dataTable.selection);
+  openStudySessionModal(content: any) {
+    this.studySessionModal = this.modalService.open(content, {
+      ariaLabelledBy: 'modal-basic-title',
+      size: 'lg',
+      windowClass: 'flashcard-modal',
+    });
+    this.studySessionModal.result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }
+    );
   }
 }

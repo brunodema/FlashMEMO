@@ -1,0 +1,17 @@
+<ng-container [ngSwitch]="currentStep">
+  <ng-container *ngSwitchCase="StudySessionStepEnum.START">
+    <h1>Ready to start studying?</h1>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="StudySessionStepEnum.STUDY">
+    <p><i>studying noises...</i></p>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="StudySessionStepEnum.END">
+    <h1>We are done for today! Congratulations!</h1>
+  </ng-container>
+
+  <ng-container *ngSwitchDefault>
+    <p>Oops, something went wrong with the Study Session control 🙃</p>
+  </ng-container>
+</ng-container>
