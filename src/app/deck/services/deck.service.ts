@@ -97,9 +97,24 @@ export class MockDeckService extends GenericDeckService {
     });
   }
 
+  /**
+   *
+   * @param ownerId Brief explanation of how this Mock works: (1) if 'ownerId' is specified, it filters for the appropriate value, otherwise gets eveything (reason for 'true' there). Then, it has to map evey single object to the array ('x' is an array of 'User'), so the missing properties are added, and for this, I need to convert 'x' to any first. Dummy value of '1' is returned to not involve any extra services.
+   * @returns What I want :)
+   */
   getExtendedDeckInfo(ownerId?: string): Observable<ExtendedDeckInfoDTO[]> {
-    return of();
-    // return of(DeckJson.filter((x) => x.ownerId === ownerId)).pipe(map(x => ({...x, flashcardCount: 1, dueFlashcards: 1 })));
+    return of(
+      DeckJson.filter((deck) => (ownerId ? deck.ownerId === ownerId : true))
+    ).pipe(
+      map((deckArray) =>
+        deckArray.map((deck) => {
+          let extendedDeckInfo = deck as any;
+          extendedDeckInfo.flashcardCount = 1;
+          extendedDeckInfo.dueFlashcards = 1;
+          return extendedDeckInfo;
+        })
+      )
+    );
   }
 }
 
