@@ -24,6 +24,6 @@
   </ng-container>
 </ng-container>
 <div class="d-flex mt-auto justify-content-between">
-  <a class="col-2 btn btn-outline-primary" role="button">Cancel</a>
-  <a class="col-2 btn btn-primary" role="button">Start</a>
+  <a class="col-2 btn btn-outline-primary" role="button" (click)="this.stopSession.emit()">Cancel</a>
+  <a class="col-2 btn btn-primary" role="button" (click)="startSession()">Start</a>
 </div>
