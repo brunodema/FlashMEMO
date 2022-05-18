@@ -23,6 +23,7 @@ import { HeaderComponent } from './components/common/header/header.component';
 import { FooterComponent } from './components/common/footer/footer.component';
 import { UserPreferencesDropdownComponent } from './components/common/user-preferences-dropdown/user-preferences-dropdown.component';
 import { StudySessionComponent } from './components/study-session/study-session/study-session.component';
+import { FlashcardAnswerButtonsComponent } from './components/flashcard/flashcard-answer-buttons/flashcard-answer-buttons.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { StudySessionComponent } from './components/study-session/study-session/
     ImageLoaderDirective,
     FlashcardComponent,
     StudySessionComponent,
+    FlashcardAnswerButtonsComponent,
   ],
   imports: [
     CollapseModule,
@@ -65,6 +67,7 @@ import { StudySessionComponent } from './components/study-session/study-session/
     FlashcardComponent,
     FlashcardLayoutComponent,
     StudySessionComponent,
+    FlashcardAnswerButtonsComponent,
     ImageLoaderDirective,
   ],
   providers: [SafePipe],
