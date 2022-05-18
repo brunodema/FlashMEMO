@@ -1,4 +1,5 @@
-<div class="row mb-2 text-right">
+<!-- Flashcard 'Edit Mode' Header -->
+<div class="row mb-2 text-right" *ngIf="!isStudySession">
   <span>Now editing: {{ isFlashcardFront ? 'Front' : 'Back' }}</span>
   <label for="flashcardLayout" class="col-form-label col-9">Choose your layout:</label>
   <div class="col-3">
@@ -25,7 +26,8 @@
     [layout]="isFlashcardFront ? flashcard.frontContentLayout : flashcard.backContentLayout">
   </app-flashcard-layout>
 </div>
-<div class="d-flex justify-content-between p-0 mt-3">
+<!-- Footer buttons for 'Edit Mode' -->
+<div *ngIf="isStudySession" class="d-flex justify-content-between p-0 mt-3">
   <!-- OK, the visbility settings here are pretty janky to read... if I set something with the angular 'hidden' attribute, it doesn't render, therefore it impacts on the column representation (things get misaligned). I only want to show the 'Previous' button in the back, and the 'Next' one in the front. I have to share the space between the 'Next' and 'Save' buttons, that's why I set one of the to 'hidden', so it doesn't impact the row layout. REFACTOR THIS IN THE FUTURE -->
   <button [style.visibility]="!isFlashcardFront ? 'visible' : 'hidden'" type="button" class="btn btn-outline-dark col-2"
     (click)="isFlashcardFront = true">Previous</button>
@@ -34,4 +36,13 @@
     class="btn btn-outline-dark col-2" (click)="showFlashcardBack()">Next</button>
   <button [hidden]="isFlashcardFront" [style.visibility]="isFlashcardFront ? 'hidden' : 'visible'" type="button"
     class="btn btn-primary col-2" (click)="saveFlashcard(flashcard)">Save</button>
+</div>
+<!-- Footer buttons for 'Study Mode' -->
+<div *ngIf="!isStudySession" class="d-flex justify-content-between p-0 mt-3">
+  <input *ngIf="flashcard.answer" class="form-control mx-3 text-center" value="" type="text" placeholder="Answer">
+  <button [hidden]="!isFlashcardFront" [style.visibility]="isFlashcardFront ? 'visible' : 'hidden'" type="button"
+    class="btn btn-outline-dark col-2" (click)="showFlashcardBack()">Next</button>
+  <button [hidden]="isFlashcardFront" [style.visibility]="isFlashcardFront ? 'hidden' : 'visible'" type="button"
+    class="btn btn-primary col-2" (click)="proceedToNextFlashcard(flashcardReviewStatusEnum.CORRECT)">Proceed</button>
+  <!-- WIP -->>
 </div>

@@ -13,6 +13,17 @@ import {
   FlashcardLayoutSection,
 } from '../flashcard-layout/flashcard-layout.component';
 
+export enum FlashcardReviewStatus {
+  CORRECT,
+  AGAIN,
+  WRONG,
+}
+
+export type ProceedStudySessionEventArgs = {
+  flashcard: IFlashcard;
+  status: FlashcardReviewStatus;
+};
+
 @Component({
   selector: 'app-flashcard',
   templateUrl: './flashcard.component.html',
@@ -22,7 +33,8 @@ import {
 export class FlashcardComponent {
   // auxiliary variables for Flashcard handling
   isFlashcardFront: boolean = true;
-  layoutEnum: typeof FlashcardLayout = FlashcardLayout;
+  layoutEnum = FlashcardLayout;
+  flashcardReviewStatusEnum = FlashcardReviewStatus;
   // implementation stolen from: https://stackoverflow.com/questions/56036446/typescript-enum-values-as-array
   possibleLayouts = Object.values(FlashcardLayout).filter(
     (f) => typeof f === 'string'
@@ -31,8 +43,17 @@ export class FlashcardComponent {
 
   @Input() flashcard: IFlashcard;
   @Input() defaultLanguageISOCode: string;
+  /**
+   * Determines if all editing tools should be rendered (edit mode) or if the content should be locked for study mode.
+   */
+  @Input() isStudySession: boolean = false;
 
   @Output() save: EventEmitter<any> = new EventEmitter();
+  /**
+   * Informs parent that the current flashcard has finished being reviewed.
+   */
+  @Output() proceedStudySession: EventEmitter<ProceedStudySessionEventArgs> =
+    new EventEmitter();
 
   constructor(private flashcardService: GenericFlashcardService) {}
 
@@ -100,5 +121,9 @@ export class FlashcardComponent {
     }
 
     this.save.emit();
+  }
+
+  proceedToNextFlashcard(status: FlashcardReviewStatus) {
+    this.proceedStudySession.emit({ flashcard: this.flashcard, status }); // WIP
   }
 }

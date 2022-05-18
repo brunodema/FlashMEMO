@@ -16,7 +16,7 @@
   </ng-container>
 
   <ng-container *ngSwitchCase="StudySessionStepEnum.STUDY">
-    <app-flashcard [flashcard]="activeFlashcard"></app-flashcard>
+    <app-flashcard [isStudySession]="true" [flashcard]="activeFlashcard"></app-flashcard>
   </ng-container>
 
   <ng-container *ngSwitchCase="StudySessionStepEnum.END">
