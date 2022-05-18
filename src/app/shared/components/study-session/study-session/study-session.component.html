@@ -1,6 +1,13 @@
 <ng-container [ngSwitch]="currentStep">
   <ng-container *ngSwitchCase="StudySessionStepEnum.START">
-    <h1>Ready to start studying?</h1>
+    <div class="card">
+      <img [src]="startImg" class="card-img-top" alt="Study session picture" [style.maxHeight]="'500px'">
+      <div class="card-body">
+        <h5 class="card-title">Ready to study?</h5>
+        <p class="card-text">Click on 'Start' to begin you study session!</p>
+        <p class="card-text"><small class="text-muted">Let me se... you have 15 flashcards to be reviewed 💭</small></p>
+      </div>
+    </div>
   </ng-container>
 
   <ng-container *ngSwitchCase="StudySessionStepEnum.STUDY">
@@ -9,9 +16,14 @@
 
   <ng-container *ngSwitchCase="StudySessionStepEnum.END">
     <h1>We are done for today! Congratulations!</h1>
+    <img [src]="endImg">
   </ng-container>
 
   <ng-container *ngSwitchDefault>
     <p>Oops, something went wrong with the Study Session control 🙃</p>
   </ng-container>
 </ng-container>
+<div class="d-flex mt-auto justify-content-between">
+  <a class="col-2 btn btn-outline-primary" role="button">Cancel</a>
+  <a class="col-2 btn btn-primary" role="button">Start</a>
+</div>
