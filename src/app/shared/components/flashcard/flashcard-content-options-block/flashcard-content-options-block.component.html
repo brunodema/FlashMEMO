@@ -187,6 +187,7 @@
   </div>
   <ng-container *ngSwitchDefault>oops, some error must have occured! D:</ng-container>
 </div>
+<!-- Floating icons that allow editing/clearing contents  -->
 <a [hidden]="!showEditButton()" class="image-edit-button fa fa-pen-nib fa-2x" (click)="openXl(contentEditor, 'Text')"
   placement="auto" ngbTooltip="Edit content" aria-hidden="true"></a>
 <a [hidden]="!showResetButton()" class="image-reset-button fa fa-times-circle fa-2x" (click)="resetContent()"

@@ -34,6 +34,10 @@ export class FlashcardLayoutComponent implements OnInit {
   @Input() layout: string;
   @Input() contents: string[];
   @Input() defaultLanguageISOCode: string;
+  /**
+   * Passes value to internal components to alter content rendering if a study session is taking place.
+   */
+  @Input() isStudySession: boolean = false;
 
   @Output() contentChange: EventEmitter<FlashcardLayoutContentChangeEventArgs> =
     new EventEmitter();
