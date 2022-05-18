@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { IFlashcard } from 'src/app/shared/models/flashcard-models';
 
 export enum StudySessionStep {
@@ -25,7 +32,7 @@ export class StudySessionImageTools {
   selector: 'app-study-session',
   templateUrl: './study-session.component.html',
   styleUrls: ['./study-session.component.css'],
-  host: { class: 'd-flex flex-column h-100' },
+  host: { class: 'container d-flex flex-column h-100' },
 })
 export class StudySessionComponent {
   /**
@@ -63,12 +70,15 @@ export class StudySessionComponent {
   @Input()
   flashcardList: Array<IFlashcard>;
   /**
-   * Flashcard being currently reviewed
+   * Flashcard being currently reviewed.
    */
   activeFlashcard: IFlashcard;
+  /**
+   * Index of active flashcard, so I can control the flow of reviewed flashcards.
+   */
   activeFlashcardIndex: number = 0;
 
-  constructor() {
+  constructor(private hostElement: ElementRef) {
     this.startImg = new StudySessionImageTools().pickRandomImage();
     this.endImg = new StudySessionImageTools().pickRandomImage();
   }
@@ -76,6 +86,7 @@ export class StudySessionComponent {
   startSession() {
     this.currentStep = StudySessionStep.STUDY;
     this.activeFlashcard = this.flashcardList[this.activeFlashcardIndex];
+    this.hostElement.nativeElement.classList.remove('flex-column'); // Hell yeah, another fuckin' random line that does magic... if I leave the 'flex-column' directive from the host element of this component (this is declared above), the calculation for the heights of the individual content blocks gets fucked (ex: returns things such as '2px' or '4px'). B U T, if I remove this directive first, it works like usual. FML 🤪
   }
 
   goToNextFlashcard() {
