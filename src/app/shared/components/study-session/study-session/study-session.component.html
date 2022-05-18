@@ -5,13 +5,18 @@
       <div class="card-body">
         <h5 class="card-title">Ready to study?</h5>
         <p class="card-text">Click on 'Start' to begin you study session!</p>
-        <p class="card-text"><small class="text-muted">Let me se... you have 15 flashcards to be reviewed 💭</small></p>
+        <p class="card-text"><small class="text-muted">Let me se... you have <b>{{ flashcardList.length }}</b>
+            flashcards to be reviewed 💭</small></p>
       </div>
+    </div>
+    <div class="d-flex mt-auto justify-content-between">
+      <a class="col-2 btn btn-outline-primary" role="button" (click)="this.stopSession.emit()">Cancel</a>
+      <a class="col-2 btn btn-primary" role="button" (click)="startSession()">Start</a>
     </div>
   </ng-container>
 
   <ng-container *ngSwitchCase="StudySessionStepEnum.STUDY">
-    <p><i>studying noises...</i></p>
+    <app-flashcard class="h-100" [flashcard]="activeFlashcard"></app-flashcard>
   </ng-container>
 
   <ng-container *ngSwitchCase="StudySessionStepEnum.END">
@@ -23,7 +28,3 @@
     <p>Oops, something went wrong with the Study Session control 🙃</p>
   </ng-container>
 </ng-container>
-<div class="d-flex mt-auto justify-content-between">
-  <a class="col-2 btn btn-outline-primary" role="button" (click)="this.stopSession.emit()">Cancel</a>
-  <a class="col-2 btn btn-primary" role="button" (click)="startSession()">Start</a>
-</div>

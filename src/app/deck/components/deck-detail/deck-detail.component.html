@@ -85,6 +85,6 @@
     </button>
   </div>
   <div class="modal-body">
-    <app-study-session></app-study-session>
+    <app-study-session [flashcardList]="this.flashcardData$.getValue()"></app-study-session>
   </div>
 </ng-template>

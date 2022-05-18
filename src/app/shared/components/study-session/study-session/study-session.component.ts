@@ -66,6 +66,7 @@ export class StudySessionComponent {
    * Flashcard being currently reviewed
    */
   activeFlashcard: IFlashcard;
+  activeFlashcardIndex: number = 0;
 
   constructor() {
     this.startImg = new StudySessionImageTools().pickRandomImage();
@@ -74,5 +75,10 @@ export class StudySessionComponent {
 
   startSession() {
     this.currentStep = StudySessionStep.STUDY;
+    this.activeFlashcard = this.flashcardList[this.activeFlashcardIndex];
+  }
+
+  goToNextFlashcard() {
+    this.activeFlashcard = this.flashcardList[this.activeFlashcardIndex + 1];
   }
 }
