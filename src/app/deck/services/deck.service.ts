@@ -16,7 +16,8 @@ import { GenericRepositoryService } from 'src/app/shared/services/general-reposi
 import { environment } from 'src/environments/environment';
 import { Deck, ExtendedDeckInfoDTO } from '../models/deck.model';
 
-import DeckJson from 'src/assets/test_assets/Decks.json';
+import deckJson from 'src/assets/test_assets/Decks.json';
+import flashcardJson from 'src/assets/test_assets/Flashcards.json';
 
 class DeckSearchParams implements IServiceSearchParams {
   pageSize: Number;
@@ -51,15 +52,15 @@ export class MockDeckService extends GenericDeckService {
   search(
     params: DeckSearchParams = { pageSize: 10, pageNumber: 1 }
   ): Observable<Deck[]> {
-    return of(DeckJson);
+    return of(deckJson);
   }
 
   getAll(): Observable<Deck[]> {
-    return of(DeckJson);
+    return of(deckJson);
   }
 
   getById(id: string): Observable<Deck> {
-    return of(DeckJson.filter((x) => x.deckId == id)[0]);
+    return of(deckJson.filter((x) => x.deckId == id)[0]);
   }
 
   create(object: Deck): Observable<IDataResponse<string>> {
@@ -99,18 +100,26 @@ export class MockDeckService extends GenericDeckService {
 
   /**
    *
-   * @param ownerId Brief explanation of how this Mock works: (1) if 'ownerId' is specified, it filters for the appropriate value, otherwise gets eveything (reason for 'true' there). Then, it has to map evey single object to the array ('x' is an array of 'User'), so the missing properties are added, and for this, I need to convert 'x' to any first. Dummy value of '1' is returned to not involve any extra services.
+   * @param ownerId Brief explanation of how this Mock works: (1) if 'ownerId' is specified, it filters for the appropriate value, otherwise gets eveything (reason for 'true' there). Then, it has to map evey single object to the array ('x' is an array of 'User'), so the missing properties are added, and for this, I need to convert 'x' to any first. Then, it checks 'flashcardJson' to data that matches the filters.
    * @returns What I want :)
    */
   getExtendedDeckInfo(ownerId?: string): Observable<ExtendedDeckInfoDTO[]> {
     return of(
-      DeckJson.filter((deck) => (ownerId ? deck.ownerId === ownerId : true))
+      deckJson.filter((deck) => (ownerId ? deck.ownerId === ownerId : true))
     ).pipe(
       map((deckArray) =>
         deckArray.map((deck) => {
           let extendedDeckInfo = deck as any;
-          extendedDeckInfo.flashcardCount = 1;
-          extendedDeckInfo.dueFlashcards = 1;
+          let count = flashcardJson.filter(
+            (flashcard) => flashcard.deckId == deck.deckId
+          ).length;
+          let dueCount = flashcardJson.filter(
+            (flashcard) =>
+              flashcard.deckId == deck.deckId &&
+              new Date(flashcard.dueDate) <= new Date()
+          ).length;
+          extendedDeckInfo.flashcardCount = count;
+          extendedDeckInfo.dueFlashcards = dueCount;
           return extendedDeckInfo;
         })
       )
