@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { DeckService } from 'src/app/deck/services/deck.service';
 import {
@@ -8,16 +15,11 @@ import {
 import { flashcardLayoutDisplayName } from 'src/app/shared/models/flashcard-models';
 import { IDataResponse } from 'src/app/shared/models/http/http-response-types';
 import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
+import { FlashcardReviewStatus } from '../flashcard-answer-buttons/flashcard-answer-buttons.component';
 import {
   FlashcardLayoutContentChangeEventArgs,
   FlashcardLayoutSection,
 } from '../flashcard-layout/flashcard-layout.component';
-
-export enum FlashcardReviewStatus {
-  CORRECT,
-  AGAIN,
-  WRONG,
-}
 
 export type ProceedStudySessionEventArgs = {
   flashcard: IFlashcard;
@@ -30,7 +32,7 @@ export type ProceedStudySessionEventArgs = {
   styleUrls: ['./flashcard.component.css'],
   host: { class: 'container h-100 d-flex flex-column' },
 })
-export class FlashcardComponent {
+export class FlashcardComponent implements OnChanges {
   // auxiliary variables for Flashcard handling
   isFlashcardFront: boolean = true;
   layoutEnum = FlashcardLayout;
@@ -54,8 +56,23 @@ export class FlashcardComponent {
    */
   @Output() proceedStudySession: EventEmitter<ProceedStudySessionEventArgs> =
     new EventEmitter();
+  /**
+   * Relays the study session answer event to the parent component.
+   */
+  @Output() relayStudySessionAnswer: EventEmitter<FlashcardReviewStatus> =
+    new EventEmitter();
+
+  /**
+   * Variable used during a study session, to track the answer given by the user.
+   */
+  userAnswer: string = '';
 
   constructor(private flashcardService: GenericFlashcardService) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('something changed!');
+    this.isFlashcardFront = true;
+  }
 
   private updateFlashcardContent(
     isFlashcardFront: boolean,
@@ -125,5 +142,12 @@ export class FlashcardComponent {
 
   proceedToNextFlashcard(status: FlashcardReviewStatus) {
     this.proceedStudySession.emit({ flashcard: this.flashcard, status }); // WIP
+  }
+
+  relayStudySessionAnswerDependingOnUserInput() {
+    if (this.userAnswer === this.flashcard.answer) {
+      this.relayStudySessionAnswer.emit(FlashcardReviewStatus.CORRECT);
+    }
+    this.relayStudySessionAnswer.emit(FlashcardReviewStatus.WRONG);
   }
 }

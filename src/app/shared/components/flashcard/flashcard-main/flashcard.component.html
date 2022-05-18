@@ -40,12 +40,17 @@
 <!-- Footer buttons for 'Study Mode' -->
 <div *ngIf="isStudySession" class="d-flex justify-content-between p-0 mt-3">
   <!-- This button is only here to keep the layout in place (yeah, this is pretty jank) -->
-  <button type="button" class="btn btn-outline-dark col-2" [style.visibility]="'hidden'">Previous</button>
-  <input *ngIf="flashcard.answer !== ''" class="form-control mx-3 text-center" value="" type="text"
-    placeholder="Answer">
-  <button [hidden]="!isFlashcardFront" [style.visibility]="isFlashcardFront ? 'visible' : 'hidden'" type="button"
-    class="btn btn-outline-dark col-2" (click)="showFlashcardBack()">Next</button>
-  <button [hidden]="isFlashcardFront" [style.visibility]="isFlashcardFront ? 'hidden' : 'visible'" type="button"
-    class="btn btn-primary col-2" (click)="proceedToNextFlashcard(flashcardReviewStatusEnum.CORRECT)">Proceed</button>
+  <button [hidden]="flashcard.answer === ''" type="button" [style.visibility]="'hidden'"
+    class="btn btn-outline-dark col-2">Previous</button>
+  <input *ngIf="flashcard.answer !== ''" class="form-control mx-3 text-center"
+    [value]="isFlashcardFront ? userAnswer : flashcard.answer" [disabled]="!isFlashcardFront && flashcard.answer !== ''"
+    type="text" placeholder="Answer">
+  <button [hidden]="flashcard.answer === '' && !isFlashcardFront" type="button" class="btn btn-outline-dark col-2"
+    (click)="isFlashcardFront ? showFlashcardBack() : relayStudySessionAnswerDependingOnUserInput()">{{ isFlashcardFront
+    ? 'Next' :
+    'Proceed' }}</button>
+  <app-flashcard-answer-buttons (answerClick)="this.relayStudySessionAnswer.emit($event)"
+    *ngIf="!isFlashcardFront && flashcard.answer === ''" [hidden]="isFlashcardFront">
+  </app-flashcard-answer-buttons>
   <!-- WIP -->
 </div>

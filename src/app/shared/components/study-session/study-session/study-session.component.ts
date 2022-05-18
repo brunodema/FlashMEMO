@@ -3,10 +3,10 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnInit,
   Output,
 } from '@angular/core';
 import { IFlashcard } from 'src/app/shared/models/flashcard-models';
+import { FlashcardReviewStatus } from '../../flashcard/flashcard-answer-buttons/flashcard-answer-buttons.component';
 
 export enum StudySessionStep {
   START,
@@ -90,6 +90,13 @@ export class StudySessionComponent {
   }
 
   goToNextFlashcard() {
-    this.activeFlashcard = this.flashcardList[this.activeFlashcardIndex + 1];
+    console.log('going to next flashcard!');
+    ++this.activeFlashcardIndex;
+    this.activeFlashcard = this.flashcardList[this.activeFlashcardIndex];
+  }
+
+  processFlashcardAnswer(args: FlashcardReviewStatus) {
+    console.log('processing flashcard answer...');
+    this.goToNextFlashcard();
   }
 }
