@@ -17,6 +17,7 @@ import {
   selector: 'app-flashcard',
   templateUrl: './flashcard.component.html',
   styleUrls: ['./flashcard.component.css'],
+  host: { class: 'container h-100 d-flex flex-column' },
 })
 export class FlashcardComponent {
   // auxiliary variables for Flashcard handling
