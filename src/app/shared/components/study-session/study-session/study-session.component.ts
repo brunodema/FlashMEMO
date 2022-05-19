@@ -6,6 +6,7 @@ import {
   Output,
 } from '@angular/core';
 import { IFlashcard } from 'src/app/shared/models/flashcard-models';
+import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
 import { FlashcardReviewStatus } from '../../flashcard/flashcard-answer-buttons/flashcard-answer-buttons.component';
 
 export enum StudySessionStep {
@@ -78,7 +79,10 @@ export class StudySessionComponent {
    */
   activeFlashcardIndex: number = 0;
 
-  constructor(private hostElement: ElementRef) {
+  constructor(
+    private hostElement: ElementRef,
+    private flashcardService: GenericFlashcardService
+  ) {
     this.startImg = new StudySessionImageTools().pickRandomImage();
     this.endImg = new StudySessionImageTools().pickRandomImage();
   }
@@ -92,15 +96,45 @@ export class StudySessionComponent {
   goToNextFlashcard() {
     ++this.activeFlashcardIndex;
     if (this.activeFlashcardIndex >= this.flashcardList.length) {
-      this.currentStep = StudySessionStep.END;
-      this.hostElement.nativeElement.classList.add('flex-column'); // gotta add the magical class back :)
-      return;
+      return this.triggerEndScreen();
     }
     this.activeFlashcard = this.flashcardList[this.activeFlashcardIndex];
   }
 
+  triggerEndScreen() {
+    this.currentStep = StudySessionStep.END;
+    this.hostElement.nativeElement.classList.add('flex-column'); // gotta add the magical class back :)
+  }
+
   processFlashcardAnswer(args: FlashcardReviewStatus) {
-    console.log('processing flashcard answer...');
-    this.goToNextFlashcard();
+    switch (args) {
+      case FlashcardReviewStatus.CORRECT:
+        let newLevel = ++this.activeFlashcard.level;
+        this.flashcardService.advanceToNextLevel(
+          this.activeFlashcard,
+          newLevel
+        );
+        break;
+
+      case FlashcardReviewStatus.AGAIN:
+        this.flashcardService.advanceToNextLevel(
+          this.activeFlashcard,
+          this.activeFlashcard.level
+        );
+        break;
+
+      case FlashcardReviewStatus.WRONG:
+        this.flashcardService.advanceToNextLevel(this.activeFlashcard, 0);
+        break;
+
+      default:
+        throw Error('Invalid FlashcardReviewStatus specified.');
+    }
+
+    this.flashcardService
+      .update(this.activeFlashcard.flashcardId, this.activeFlashcard)
+      .subscribe(() => {
+        this.goToNextFlashcard();
+      });
   }
 }
