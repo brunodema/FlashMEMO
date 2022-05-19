@@ -49,7 +49,7 @@ export abstract class GenericFlashcardService extends GenericRepositoryService<I
   advanceToNextLevel(flashcard: IFlashcard, newLevel: number): void {
     flashcard.level = newLevel;
     flashcard.dueDate = new Date(
-      new Date().setDate(new Date().getDate() + flashcard.level ** 2)
+      new Date().setDate(new Date().getDate() + (flashcard.level + 1) ** 2)
     ).toISOString();
     console.log(
       'today is ' + new Date().toISOString(),
