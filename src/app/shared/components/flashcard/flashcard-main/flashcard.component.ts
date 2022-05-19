@@ -8,7 +8,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { Observable } from 'rxjs';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { DeckService } from 'src/app/deck/services/deck.service';
 import {
   IFlashcard,
@@ -49,6 +49,11 @@ export class FlashcardComponent implements OnChanges {
    */
   @ViewChild('answerInput', { static: false })
   answerInput: ElementRef<HTMLInputElement>;
+  /**
+   * Same reference as the one for the HTMLInputElement, but this one is used to manually control the tooltip associated with the component.
+   */
+  @ViewChild('answerInput', { static: false, read: NgbTooltip })
+  answerInputTooltip: NgbTooltip;
 
   @Input() flashcard: IFlashcard;
   @Input() defaultLanguageISOCode: string;
@@ -127,9 +132,7 @@ export class FlashcardComponent implements OnChanges {
     // check first for empty answer, if applicable
     if (this.isStudySession && this.flashcard.answer.length > 0) {
       if (this.userAnswer.length === 0) {
-        this.notificationService.showWarning(
-          "You didn't type an answer! Come on, at least give it a shot 🤔"
-        );
+        this.answerInputTooltip.open(); // shows tooltip saying that input is empty
         return;
       }
 

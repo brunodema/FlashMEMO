@@ -42,7 +42,9 @@
   <!-- This button is only here to keep the layout in place (yeah, this is pretty jank) -->
   <button [hidden]="flashcard.answer === ''" type="button" [style.visibility]="'hidden'"
     class="btn btn-outline-dark col-2">Previous</button>
-  <input #answerInput *ngIf="flashcard.answer !== ''" class="form-control mx-3 text-center"
+  <!-- Documentation for custom tooltip trigger taken from here: https://getbootstrap.com/docs/5.0/components/tooltips/ -->
+  <input #answerInput *ngIf="flashcard.answer !== ''" class="form-control mx-3 text-center" triggers="manual"
+    placement="auto" ngbTooltip="You didn't type an answer! Come on, at least give it a shot 🤔"
     [ngModel]="isFlashcardFront ? userAnswer : flashcard.answer"
     (ngModelChange)="isFlashcardFront ? userAnswer=$event : null"
     [disabled]="!isFlashcardFront && flashcard.answer !== ''" type="text" placeholder="Answer">
