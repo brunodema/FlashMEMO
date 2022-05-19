@@ -33,7 +33,6 @@ export class StudySessionImageTools {
   selector: 'app-study-session',
   templateUrl: './study-session.component.html',
   styleUrls: ['./study-session.component.css'],
-  host: { class: 'container d-flex flex-column h-100' },
 })
 export class StudySessionComponent {
   /**
@@ -78,6 +77,18 @@ export class StudySessionComponent {
    * Index of active flashcard, so I can control the flow of reviewed flashcards.
    */
   activeFlashcardIndex: number = 0;
+  /**
+   * Number of correctly guessed flashcards.
+   */
+  correctCount: number;
+  /**
+   * Number of flashcards set to remain at the current level.
+   */
+  againCount: number;
+  /**
+   * Number of incorrectly guessed flashcards.
+   */
+  wrongCount: number;
 
   constructor(
     private hostElement: ElementRef,
@@ -90,7 +101,6 @@ export class StudySessionComponent {
   startSession() {
     this.currentStep = StudySessionStep.STUDY;
     this.activeFlashcard = this.flashcardList[this.activeFlashcardIndex];
-    this.hostElement.nativeElement.classList.remove('flex-column'); // Hell yeah, another fuckin' random line that does magic... if I leave the 'flex-column' directive from the host element of this component (this is declared above), the calculation for the heights of the individual content blocks gets fucked (ex: returns things such as '2px' or '4px'). B U T, if I remove this directive first, it works like usual. FML 🤪
   }
 
   goToNextFlashcard() {
@@ -101,9 +111,11 @@ export class StudySessionComponent {
     this.activeFlashcard = this.flashcardList[this.activeFlashcardIndex];
   }
 
+  /**
+   * Individual function just in case I need to add some more complex logic to this step in the future.
+   */
   triggerEndScreen() {
     this.currentStep = StudySessionStep.END;
-    this.hostElement.nativeElement.classList.add('flex-column'); // gotta add the magical class back :)
   }
 
   processFlashcardAnswer(args: FlashcardReviewStatus) {
