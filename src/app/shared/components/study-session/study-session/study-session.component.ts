@@ -80,15 +80,15 @@ export class StudySessionComponent {
   /**
    * Number of correctly guessed flashcards.
    */
-  correctCount: number;
+  correctCount: number = 0;
   /**
    * Number of flashcards set to remain at the current level.
    */
-  againCount: number;
+  againCount: number = 0;
   /**
    * Number of incorrectly guessed flashcards.
    */
-  wrongCount: number;
+  wrongCount: number = 0;
 
   constructor(
     private hostElement: ElementRef,
@@ -126,6 +126,7 @@ export class StudySessionComponent {
           this.activeFlashcard,
           newLevel
         );
+        ++this.correctCount;
         break;
 
       case FlashcardReviewStatus.AGAIN:
@@ -133,10 +134,12 @@ export class StudySessionComponent {
           this.activeFlashcard,
           this.activeFlashcard.level
         );
+        ++this.againCount;
         break;
 
       case FlashcardReviewStatus.WRONG:
         this.flashcardService.advanceToNextLevel(this.activeFlashcard, 0);
+        ++this.wrongCount;
         break;
 
       default:
