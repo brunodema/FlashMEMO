@@ -21,8 +21,18 @@
   </ng-container>
 
   <ng-container *ngSwitchCase="StudySessionStepEnum.END">
-    <h1>We are done for today! Congratulations!</h1>
-    <img [src]="endImg">
+    <div class="card">
+      <img [src]="endImg" class="card-img-top" alt="Study session picture" [style.maxHeight]="'500px'">
+      <div class="card-body">
+        <h5 class="card-title">Finished!</h5>
+        <p class="card-text">We are done for the day. Here are your stats:</p>
+        <p class="card-text"><small class="text-muted">You reviewed a total of 15 flashcards. You answered correctly 4
+            time(s), and answered incorrectly 10 time(s). You set 1 flashcard(s) to try again.</small></p>
+      </div>
+    </div>
+    <div class="d-flex mt-auto justify-content-end">
+      <a class="col-2 btn btn-primary" role="button" (click)="this.stopSession.emit()">Close</a>
+    </div>
   </ng-container>
 
   <ng-container *ngSwitchDefault>

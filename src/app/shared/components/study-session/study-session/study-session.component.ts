@@ -90,8 +90,12 @@ export class StudySessionComponent {
   }
 
   goToNextFlashcard() {
-    console.log('going to next flashcard!');
     ++this.activeFlashcardIndex;
+    if (this.activeFlashcardIndex >= this.flashcardList.length) {
+      this.currentStep = StudySessionStep.END;
+      this.hostElement.nativeElement.classList.add('flex-column'); // gotta add the magical class back :)
+      return;
+    }
     this.activeFlashcard = this.flashcardList[this.activeFlashcardIndex];
   }
 
