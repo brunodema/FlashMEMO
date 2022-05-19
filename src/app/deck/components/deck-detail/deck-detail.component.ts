@@ -83,10 +83,13 @@ export class DeckDetailComponent {
       .getAllFlashcardsFromDeck(this.route.snapshot.params['id'])
       .subscribe((flashcardArray) => this.flashcardData$.next(flashcardArray));
   }
-  getNumberOfDueFlashcards() {
+  getDueFlashcards() {
     return this.flashcardData$
       .getValue()
-      .filter((flashcard) => new Date(flashcard.dueDate) < new Date()).length;
+      .filter((flashcard) => new Date(flashcard.dueDate) < new Date());
+  }
+  canStartStudySession(): boolean {
+    return this.getDueFlashcards().length > 0;
   }
 
   activeFlashcard: IFlashcard;

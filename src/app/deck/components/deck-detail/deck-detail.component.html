@@ -29,7 +29,7 @@
       </div>
       <div class="row">
         <label>Due Flashcards</label>
-        <p><b>{{ getNumberOfDueFlashcards() }}</b></p>
+        <p><b>{{ getDueFlashcards().length }}</b></p>
       </div>
     </div>
     <div *ngIf="isNewDeck" class="col-6 d-flex align-items-center text-center">
@@ -42,9 +42,13 @@
       <button class="btn btn-primary" (click)="openFlashcardModal(flashcardModal, null)">
         Create Flashcard
       </button>
-      <button class="ms-2 btn btn-primary" (click)="openStudySessionModal(studySessionModal)">
-        Study!
-      </button>
+      <!-- I added this div around the button so the tooltip is rendered even with the disabled button -->
+      <div placement="auto" [ngbTooltip]="canStartStudySession() ? '' : 'You don\'t have any flashcards to review!'">
+        <button class="ms-2 btn btn-primary" [disabled]="!canStartStudySession()"
+          (click)="openStudySessionModal(studySessionModal)">
+          Study!
+        </button>
+      </div>
     </div>
     <ngb-accordion class="mt-2" #acc="ngbAccordion" activeIds="ngb-panel-0">
       <ngb-panel title="Flashcards">
@@ -85,7 +89,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <app-study-session [flashcardList]="this.flashcardData$.getValue()" (abortSession)="modal.close('Session aborted')"
+    <app-study-session [flashcardList]="this.getDueFlashcards()" (abortSession)="modal.close('Session aborted')"
       (stopSession)="modal.close('Session stopped')"></app-study-session>
   </div>
 </ng-template>

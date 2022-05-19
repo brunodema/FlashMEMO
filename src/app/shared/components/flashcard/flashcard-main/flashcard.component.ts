@@ -174,10 +174,9 @@ export class FlashcardComponent implements OnChanges {
   }
 
   relayStudySessionAnswerDependingOnUserInput() {
-    if (this.userAnswer === this.flashcard.answer) {
+    if (this.userAnswer === this.flashcard.answer)
       this.relayStudySessionAnswer.emit(FlashcardReviewStatus.CORRECT);
-    }
-    this.relayStudySessionAnswer.emit(FlashcardReviewStatus.WRONG);
+    else this.relayStudySessionAnswer.emit(FlashcardReviewStatus.WRONG);
   }
 }
 function checkForEmptyContent() {

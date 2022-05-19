@@ -121,7 +121,7 @@ export class StudySessionComponent {
   processFlashcardAnswer(args: FlashcardReviewStatus) {
     switch (args) {
       case FlashcardReviewStatus.CORRECT:
-        let newLevel = ++this.activeFlashcard.level;
+        let newLevel = this.activeFlashcard.level + 1;
         this.flashcardService.advanceToNextLevel(
           this.activeFlashcard,
           newLevel
