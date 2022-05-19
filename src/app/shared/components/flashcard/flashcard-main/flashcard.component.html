@@ -42,9 +42,10 @@
   <!-- This button is only here to keep the layout in place (yeah, this is pretty jank) -->
   <button [hidden]="flashcard.answer === ''" type="button" [style.visibility]="'hidden'"
     class="btn btn-outline-dark col-2">Previous</button>
-  <input *ngIf="flashcard.answer !== ''" class="form-control mx-3 text-center"
-    [value]="isFlashcardFront ? userAnswer : flashcard.answer" [disabled]="!isFlashcardFront && flashcard.answer !== ''"
-    type="text" placeholder="Answer">
+  <input #answerInput *ngIf="flashcard.answer !== ''" class="form-control mx-3 text-center"
+    [ngModel]="isFlashcardFront ? userAnswer : flashcard.answer"
+    (ngModelChange)="isFlashcardFront ? userAnswer=$event : null"
+    [disabled]="!isFlashcardFront && flashcard.answer !== ''" type="text" placeholder="Answer">
   <button [hidden]="flashcard.answer === '' && !isFlashcardFront" type="button"
     class="btn btn-outline-dark col-2 ms-auto"
     (click)="isFlashcardFront ? showFlashcardBack() : relayStudySessionAnswerDependingOnUserInput()">{{ isFlashcardFront

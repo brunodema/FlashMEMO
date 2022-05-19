@@ -1,10 +1,12 @@
 import {
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   Output,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DeckService } from 'src/app/deck/services/deck.service';
@@ -13,8 +15,7 @@ import {
   FlashcardLayout,
 } from 'src/app/shared/models/flashcard-models';
 import { flashcardLayoutDisplayName } from 'src/app/shared/models/flashcard-models';
-import { IDataResponse } from 'src/app/shared/models/http/http-response-types';
-import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
+import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
 import { FlashcardReviewStatus } from '../flashcard-answer-buttons/flashcard-answer-buttons.component';
 import {
   FlashcardLayoutContentChangeEventArgs,
@@ -43,6 +44,12 @@ export class FlashcardComponent implements OnChanges {
   );
   readonly layoutDisplayNames = flashcardLayoutDisplayName;
 
+  /**
+   * Reference to input element where the user can input an answer to the flashcard. Can be accessed to alter its visuals for correct/wrong answer.
+   */
+  @ViewChild('answerInput', { static: false })
+  answerInput: ElementRef<HTMLInputElement>;
+
   @Input() flashcard: IFlashcard;
   @Input() defaultLanguageISOCode: string;
   /**
@@ -67,11 +74,11 @@ export class FlashcardComponent implements OnChanges {
    */
   userAnswer: string = '';
 
-  constructor(private flashcardService: GenericFlashcardService) {}
+  constructor(private notificationService: GenericNotificationService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('something changed!');
     this.isFlashcardFront = true;
+    this.userAnswer = '';
   }
 
   private updateFlashcardContent(
@@ -99,13 +106,10 @@ export class FlashcardComponent implements OnChanges {
   onContentChange(args: FlashcardLayoutContentChangeEventArgs) {
     this.updateFlashcardContent(this.isFlashcardFront, args);
     this.flashcard.lastUpdated = new Date().toISOString();
-    console.log(
-      'the flashcard was changed from the inside! wow: ',
-      this.flashcard
-    );
   }
 
   flashcardHasAnyContentOn(frontSide: boolean): boolean {
+    // this is not checking content appropriatelly... FIX THIS
     if (frontSide)
       return (
         this.flashcard.content1.trim().length > 0 ||
@@ -120,24 +124,46 @@ export class FlashcardComponent implements OnChanges {
   }
 
   showFlashcardBack() {
-    if (!this.flashcardHasAnyContentOn(this.isFlashcardFront)) {
-      console.log(
-        'Your Flashcard has no content on this side! Please fill it with something 😢'
-      );
-      return;
+    // check first for empty answer, if applicable
+    if (this.isStudySession && this.flashcard.answer.length > 0) {
+      if (this.userAnswer.length === 0) {
+        this.notificationService.showWarning(
+          "You didn't type an answer! Come on, at least give it a shot 🤔"
+        );
+        return;
+      }
+
+      // check if answer is correct
+      if (this.IsAnswerCorrect())
+        this.answerInput.nativeElement.classList.add('fw-bold', 'text-success');
+      else
+        this.answerInput.nativeElement.classList.add('fw-bold', 'text-danger');
+    } else {
+      if (this.checkForEmptyContent()) return;
     }
+
     this.isFlashcardFront = false;
   }
 
-  saveFlashcard(flashcard: IFlashcard) {
-    if (!this.flashcardHasAnyContentOn(this.isFlashcardFront)) {
-      console.log(
-        'Your Flashcard has no content on this side! Please fill it with something 😢'
-      );
-      return;
-    }
+  IsAnswerCorrect(): boolean {
+    return (
+      this.flashcard.answer.toLowerCase() === this.userAnswer.toLowerCase()
+    );
+  }
 
+  saveFlashcard(flashcard: IFlashcard) {
+    if (this.checkForEmptyContent()) return;
     this.save.emit();
+  }
+
+  checkForEmptyContent(): boolean {
+    if (!this.flashcardHasAnyContentOn(this.isFlashcardFront)) {
+      this.notificationService.showWarning(
+        'Your Flashcard still has empty content on this side! Please fill it with something 😢'
+      );
+      return true;
+    }
+    return false;
   }
 
   proceedToNextFlashcard(status: FlashcardReviewStatus) {
@@ -150,4 +176,7 @@ export class FlashcardComponent implements OnChanges {
     }
     this.relayStudySessionAnswer.emit(FlashcardReviewStatus.WRONG);
   }
+}
+function checkForEmptyContent() {
+  throw new Error('Function not implemented.');
 }
