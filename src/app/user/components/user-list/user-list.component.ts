@@ -28,17 +28,17 @@ export class UserListComponent {
       displayName: 'Id',
       // redirectParams: ['/user/', 'id'], ---> once user detail is created...
     },
-    { columnId: 'userName', displayName: 'Username' },
+    { columnId: 'username', displayName: 'Username' },
     { columnId: 'email', displayName: 'Email' },
   ];
   pageSizeOptions: number[] = [5, 10, 25];
+
+  userData$ = new BehaviorSubject<User[]>([]);
   refreshUserDataSource() {
     this.userService
       .getAll()
       .subscribe((userArray) => this.userData$.next(userArray));
   }
-
-  userData$ = new BehaviorSubject<User[]>([]);
 
   constructor(
     private userService: GenericUserService,

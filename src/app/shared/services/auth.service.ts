@@ -27,8 +27,8 @@ export abstract class GenericAuthService {
 
   // TIL about Subject/BehaviorSubject. "A Subject is like an Observable, but can multicast to many Observers. Subjects are like EventEmitters: they maintain a registry of many listeners" (source: https://rxjs.dev/guide/subject). Implementation taken from here: https://netbasal.com/angular-2-persist-your-login-status-with-behaviorsubject-45da9ec43243
 
-  public loggedUsername = new BehaviorSubject<string>(
-    this.decodePropertyFromToken('username') ?? ''
+  public loggedName = new BehaviorSubject<string>(
+    this.decodePropertyFromToken('unique_name') ?? 'Fellow User'
   );
   public loggedUserId = new BehaviorSubject<string>(
     this.decodePropertyFromToken('sub') ?? ''
@@ -49,7 +49,7 @@ export abstract class GenericAuthService {
 
   public logout() {
     this.clearPreExistingJWT();
-    this.loggedUsername.next('?');
+    this.loggedName.next('?');
     this.redirectToHome();
   }
 
@@ -78,7 +78,7 @@ export abstract class GenericAuthService {
 
   protected handleSuccessfulLogin(res: ILoginResponse) {
     this.storeJWT(res.jwtToken);
-    this.loggedUsername.next(this.decodePropertyFromToken('username'));
+    this.loggedName.next(this.decodePropertyFromToken('name'));
     this.loggedUserId.next(this.decodePropertyFromToken('sub'));
     this.notificationService
       .showSuccess('You will soon be redirected.', 'Welcome to FlashMEMO!')
@@ -147,7 +147,7 @@ export class MockAuthService extends GenericAuthService {
           status: '200',
         }),
       this.login({
-        email: registerData.email,
+        username: registerData.username,
         password: registerData.password,
       })
     );
@@ -158,7 +158,8 @@ export class MockAuthService extends GenericAuthService {
   providedIn: 'root',
 })
 export class AuthService extends GenericAuthService {
-  protected serviceURL: string = `${environment.backendRootAddress}/api/v1/Auth`;
+  protected authServiceURL: string = `${environment.backendRootAddress}/api/v1/Auth`;
+  protected userServiceURL: string = `${environment.backendRootAddress}/api/v1/User`;
   protected customHeaders = { 'content-type': 'application/json' }; // check the need for it (and start using if necessary)
   protected homeAddress = '/home';
 
@@ -173,7 +174,7 @@ export class AuthService extends GenericAuthService {
 
   public login(requestData: ILoginRequest): Observable<any> {
     return this.http
-      .post<ILoginResponse>(`${this.serviceURL}/login`, requestData)
+      .post<ILoginResponse>(`${this.authServiceURL}/login`, requestData)
       .pipe(
         map((res) => this.handleSuccessfulLogin(res)),
         catchError((err: HttpErrorResponse) => this.handleFailedLogin(err))
@@ -182,12 +183,12 @@ export class AuthService extends GenericAuthService {
 
   public register(registerData: IRegisterRequest): Observable<any> {
     return this.http
-      .post<IBaseAPIResponse>(`${this.serviceURL}/register`, registerData)
+      .post<IBaseAPIResponse>(`${this.userServiceURL}/create`, registerData)
       .pipe(
         map((res) => {
           this.handleSuccessfulRegistration(res);
           this.login({
-            email: registerData.email,
+            username: registerData.username,
             password: registerData.password,
           }).subscribe();
         }),

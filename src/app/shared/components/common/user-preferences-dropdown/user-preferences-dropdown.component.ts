@@ -15,7 +15,7 @@ export class UserPreferencesDropdownComponent {
     private toastr: ToastrService
   ) {}
 
-  @Input() username$: Observable<string> = this.authService.loggedUsername;
+  @Input() username$: Observable<string> = this.authService.loggedName;
 
   logout() {
     this.authService.logout();

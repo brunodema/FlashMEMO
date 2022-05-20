@@ -35,6 +35,16 @@ export class UserModelFormComponent implements OnInit {
       className: 'd-block mb-2',
     },
     {
+      key: 'username',
+      type: 'input',
+      templateOptions: {
+        label: 'Username',
+        placeholder: 'Enter a unique username',
+        required: true,
+      },
+      className: 'd-block mb-2',
+    },
+    {
       key: 'email',
       type: 'input',
       templateOptions: {

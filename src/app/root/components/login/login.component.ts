@@ -15,13 +15,13 @@ export class LoginComponent implements OnInit {
   model = {}; // apparently has to be of 'any' type
   fields: FormlyFieldConfig[] = [
     {
-      key: 'email',
+      key: 'username',
       type: 'input',
       templateOptions: {
         attributes: { autocomplete: 'username' }, // this might be getting placed in the wrong spot (label instead?)
-        type: 'email',
-        label: 'Email',
-        placeholder: 'Enter your email',
+        type: 'text',
+        label: 'Username',
+        placeholder: 'Enter your username',
         required: true,
       },
       className: 'd-block mb-2',
@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     if (this.form.valid) {
       let loginRequestData: ILoginRequest = {
-        email: this.form.value.email,
+        username: this.form.value.username,
         password: this.form.value.password,
       };
       this.authService.login(loginRequestData).subscribe();
