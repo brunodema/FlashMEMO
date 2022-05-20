@@ -9,6 +9,7 @@ import { Deck } from 'src/app/deck/models/deck.model';
 import { BehaviorSubject } from 'rxjs';
 import { User } from '../../models/user.model';
 import { GenericUserService } from '../../services/user.service';
+import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
 
 @Component({
   selector: 'app-user',
@@ -38,7 +39,10 @@ export class UserListComponent {
 
   userData$ = new BehaviorSubject<User[]>([]);
 
-  constructor(private userService: GenericUserService) {
+  constructor(
+    private userService: GenericUserService,
+    private notificationService: GenericNotificationService
+  ) {
     this.refreshUserDataSource();
   }
 
@@ -47,6 +51,13 @@ export class UserListComponent {
   }
 
   handleDeleteUser(args: DataTableComponentClickEventArgs<User>) {
-    console.log(args.columnName, args.rowData);
+    if (
+      confirm(`Are you sure you want to delete user '${args.rowData.email}'?`)
+    ) {
+      this.userService.delete(args.rowData.id).subscribe((user) => {
+        this.notificationService.showSuccess('User deleted.');
+        this.refreshUserDataSource();
+      });
+    }
   }
 }
