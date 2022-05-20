@@ -101,7 +101,7 @@ export class StudySessionComponent {
   startSession() {
     this.currentStep = StudySessionStep.STUDY;
     this.activeFlashcard = this.flashcardList[this.activeFlashcardIndex];
-    this.hostElement.nativeElement.classList.remove('flex-column'); // Hell yeah, another fuckin' random line that does magic... if I leave the 'flex-column' directive from the host element of this component (this is declared above), the calculation for the heights of the individual content blocks gets fucked (ex: returns things such as '2px' or '4px'). B U T, if I remove this directive first, it works like usual. FML 🤪
+    // this.hostElement.nativeElement.classList.remove('flex-column'); // Hell yeah, another fuckin' random line that does magic... if I leave the 'flex-column' directive from the host element of this component (this is declared above), the calculation for the heights of the individual content blocks gets fucked (ex: returns things such as '2px' or '4px'). B U T, if I remove this directive first, it works like usual. FML 🤪
   }
 
   goToNextFlashcard() {
@@ -117,7 +117,7 @@ export class StudySessionComponent {
    */
   triggerEndScreen() {
     this.currentStep = StudySessionStep.END;
-    this.hostElement.nativeElement.classList.add('flex-column'); // gotta add the magical class back :)
+    // this.hostElement.nativeElement.classList.add('flex-column'); // gotta add the magical class back :)
   }
 
   processFlashcardAnswer(args: FlashcardReviewStatus) {

@@ -18,9 +18,9 @@
   </ng-container>
 
   <ng-container *ngSwitchCase="StudySessionStepEnum.STUDY">
-    <div class="container d-flex h-100">
+    <div class="container d-flex flex-column h-100">
       <small class="text-muted text-center">{{ activeFlashcardIndex }}/{{ flashcardList.length }}</small>
-      <app-flashcard [isStudySession]="true" [flashcard]="activeFlashcard"
+      <app-flashcard class="flex-grow-1" [isStudySession]="true" [flashcard]="activeFlashcard"
         (relayStudySessionAnswer)="processFlashcardAnswer($event)"></app-flashcard>
     </div>
   </ng-container>
