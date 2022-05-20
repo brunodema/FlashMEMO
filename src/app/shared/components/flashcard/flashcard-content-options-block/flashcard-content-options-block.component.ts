@@ -159,15 +159,24 @@ export class FlashcardContentOptionsBlockComponent
     private clipboardService: ClipboardService
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
-    //this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+    // console.log(
+    //   'changes: ' + this.hostElement.nativeElement.offsetHeight + 'px'
+    // );
   }
   ngAfterViewInit(): void {
-    //this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+    // console.log(
+    //   'afterv: ' + this.hostElement.nativeElement.offsetHeight + 'px'
+    // );
   }
 
   ngOnInit(): void {
     this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
     this.setLanguageDropdownToDefaultValue();
+  }
+
+  test() {
+    this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+    console.log('loda');
   }
 
   determineContentType(contentValue: string): FlashcardContentType {
