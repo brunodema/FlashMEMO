@@ -53,6 +53,13 @@ export class UserListComponent {
   }
 
   handleDeleteUser(args: DataTableComponentClickEventArgs<User>) {
-    console.log(args.columnName, args.rowData);
+    if (
+      confirm(`Are you sure you want to delete user '${args.rowData.email}'?`)
+    ) {
+      this.userService.delete(args.rowData.id).subscribe((user) => {
+        this.notificationService.showSuccess('User deleted.');
+        this.refreshUserDataSource();
+      });
+    }
   }
 }

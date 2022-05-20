@@ -1,27 +1,49 @@
 <ng-container [ngSwitch]="currentStep">
   <ng-container *ngSwitchCase="StudySessionStepEnum.START">
-    <div class="card">
-      <img [src]="startImg" class="card-img-top" alt="Study session picture" [style.maxHeight]="'500px'">
-      <div class="card-body">
-        <h5 class="card-title">Ready to study?</h5>
-        <p class="card-text">Click on 'Start' to begin you study session!</p>
-        <p class="card-text"><small class="text-muted">Let me se... you have <b>{{ flashcardList.length }}</b>
-            flashcards to be reviewed 💭</small></p>
+    <div class="d-flex flex-column h-100">
+      <div class="card">
+        <img [src]="startImg" class="card-img-top" alt="Study session picture" [style.maxHeight]="'500px'">
+        <div class="card-body">
+          <h5 class="card-title">Ready to study?</h5>
+          <p class="card-text">Click on 'Start' to begin you study session!</p>
+          <p class="card-text"><small class="text-muted">Let me se... you have <b>{{ flashcardList.length }}</b>
+              flashcards to be reviewed 💭.</small></p>
+        </div>
       </div>
-    </div>
-    <div class="d-flex mt-auto justify-content-between">
-      <a class="col-2 btn btn-outline-primary" role="button" (click)="this.stopSession.emit()">Cancel</a>
-      <a class="col-2 btn btn-primary" role="button" (click)="startSession()">Start</a>
+      <div class="d-flex mt-auto justify-content-between">
+        <a class="col-2 btn btn-outline-primary" role="button" (click)="this.stopSession.emit()">Cancel</a>
+        <a class="col-2 btn btn-primary" role="button" (click)="startSession()">Start</a>
+      </div>
     </div>
   </ng-container>
 
   <ng-container *ngSwitchCase="StudySessionStepEnum.STUDY">
-    <app-flashcard class="h-100" [flashcard]="activeFlashcard"></app-flashcard>
+    <div class="d-flex flex-column h-100">
+      <small class="text-muted text-center">{{ activeFlashcardIndex }}/{{ flashcardList.length }}</small>
+      <app-flashcard [isStudySession]="true" [flashcard]="activeFlashcard"
+        (relayStudySessionAnswer)="processFlashcardAnswer($event)"></app-flashcard>
+    </div>
   </ng-container>
 
   <ng-container *ngSwitchCase="StudySessionStepEnum.END">
-    <h1>We are done for today! Congratulations!</h1>
-    <img [src]="endImg">
+    <div class="d-flex flex-column h-100">
+      <div class="card">
+        <img [src]="endImg" class="card-img-top" alt="Study session picture" [style.maxHeight]="'500px'">
+        <div class="card-body">
+          <h5 class="card-title">Finished!</h5>
+          <p class="card-text">We are done for the day. Here are your stats:</p>
+          <p class="card-text"><small class="text-muted">You reviewed a total of <b>{{ this.flashcardList.length }}</b>
+              flashcards 🗃. You answered correctly <b>{{ correctCount }}</b>
+              time(s) ✅, and answered incorrectly <b>{{ wrongCount }}</b> time(s) ❌. You set <b>{{ againCount }}</b>
+              flashcard(s) to
+              try
+              again ⏲.</small></p>
+        </div>
+      </div>
+      <div class="d-flex mt-auto justify-content-end">
+        <a class="col-2 btn btn-primary" role="button" (click)="this.stopSession.emit()">Close</a>
+      </div>
+    </div>
   </ng-container>
 
   <ng-container *ngSwitchDefault>
