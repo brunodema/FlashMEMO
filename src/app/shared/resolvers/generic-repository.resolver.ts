@@ -8,6 +8,8 @@ import {
 import { Observable, of, map } from 'rxjs';
 import { Deck } from 'src/app/deck/models/deck.model';
 import { GenericDeckService } from 'src/app/deck/services/deck.service';
+import { User } from 'src/app/user/models/user.model';
+import { GenericUserService } from 'src/app/user/services/user.service';
 import { GenericRepositoryService } from '../services/general-repository.service';
 
 @Injectable()
@@ -44,6 +46,13 @@ export class GenericRepositoryResolverService<Type> implements Resolve<Type> {
 @Injectable()
 export class DeckRepositoryResolverService extends GenericRepositoryResolverService<Deck> {
   constructor(service: GenericDeckService, router: Router) {
+    super(service, router);
+  }
+}
+
+@Injectable()
+export class UserRepositoryResolverService extends GenericRepositoryResolverService<User> {
+  constructor(service: GenericUserService, router: Router) {
     super(service, router);
   }
 }

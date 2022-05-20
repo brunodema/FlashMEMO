@@ -4,7 +4,6 @@ import {
   DeckRepositoryResolverService,
   GenericRepositoryResolverService,
 } from 'src/app/shared/resolvers/generic-repository.resolver';
-import { DeckCreateComponent } from '../components/deck-create/deck-create.component';
 import { DeckDetailComponent } from '../components/deck-detail/deck-detail.component';
 import { DeckListComponent } from '../components/deck-list/deck-list.component';
 

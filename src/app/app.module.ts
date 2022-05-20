@@ -43,7 +43,10 @@ import {
   GenericFlashcardService,
   MockFlashcardService,
 } from './shared/services/flashcard.service';
-import { DeckRepositoryResolverService } from './shared/resolvers/generic-repository.resolver';
+import {
+  DeckRepositoryResolverService,
+  UserRepositoryResolverService,
+} from './shared/resolvers/generic-repository.resolver';
 import {
   GeneralImageAPIService,
   ImageAPIService,
@@ -145,11 +148,10 @@ const config: ConfigOption = {
     // { provide: GenericLanguageService, useClass: LanguageService },
     // { provide: GenericAuthService, useClass: AuthService },
     { provide: GenericUserService, useClass: UserService },
+
     AuthGuard,
-    {
-      provide: DeckRepositoryResolverService,
-      useClass: DeckRepositoryResolverService,
-    },
+    { provide: DeckRepositoryResolverService },
+    { provide: UserRepositoryResolverService },
     { provide: GenericNotificationService, useClass: NotificationService },
     {
       provide: HTTP_INTERCEPTORS,

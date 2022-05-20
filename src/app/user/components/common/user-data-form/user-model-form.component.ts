@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { GenericAuthService } from 'src/app/shared/services/auth.service';
+import { User } from 'src/app/user/models/user.model';
 
 @Component({
-  selector: 'app-registration-form',
-  templateUrl: './registration-form.component.html',
-  styleUrls: ['./registration-form.component.css'],
+  selector: 'app-user-model-form',
+  templateUrl: './user-model-form.component.html',
+  styleUrls: ['./user-model-form.component.css'],
 })
-export class RegistrationFormComponent implements OnInit {
+export class UserModelFormComponent implements OnInit {
   form = new FormGroup({});
-  model = {}; // apparently has to be of 'any' type
   fields: FormlyFieldConfig[] = [
     {
       // id is not necessary
@@ -77,10 +77,15 @@ export class RegistrationFormComponent implements OnInit {
     },
   ];
 
+  @Input()
+  userModel: User = {} as User; // apparently has to be of 'any' type
+
   constructor(
     private authService: GenericAuthService,
-    private router: Router
-  ) {}
+    private route: ActivatedRoute
+  ) {
+    this.userModel = this.route.snapshot.data['user'];
+  }
 
   ngOnInit(): void {}
 

@@ -9,6 +9,8 @@ import { Deck } from 'src/app/deck/models/deck.model';
 import { BehaviorSubject } from 'rxjs';
 import { User } from '../../models/user.model';
 import { GenericUserService } from '../../services/user.service';
+import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -38,12 +40,16 @@ export class UserListComponent {
 
   userData$ = new BehaviorSubject<User[]>([]);
 
-  constructor(private userService: GenericUserService) {
+  constructor(
+    private userService: GenericUserService,
+    private notificationService: GenericNotificationService,
+    private router: Router
+  ) {
     this.refreshUserDataSource();
   }
 
   handleEditUser(args: DataTableComponentClickEventArgs<User>) {
-    console.log(args.columnName, args.rowData);
+    this.router.navigate(['/user', args.rowData.id]);
   }
 
   handleDeleteUser(args: DataTableComponentClickEventArgs<User>) {
