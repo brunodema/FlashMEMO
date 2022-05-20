@@ -69,6 +69,7 @@ import {
   MockUserService,
   UserService,
 } from './user/services/user.service';
+import { DatePipe } from '@angular/common';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
@@ -156,6 +157,7 @@ const config: ConfigOption = {
       useClass: GlobalHttpInterceptorService,
       multi: true,
     },
+    { provide: DatePipe },
   ],
   bootstrap: [AppComponent],
 })
