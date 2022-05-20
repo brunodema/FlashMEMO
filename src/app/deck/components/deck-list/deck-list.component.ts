@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { BehaviorSubject, filter } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
@@ -21,14 +22,33 @@ export class DeckListComponent {
   refreshUserDeckDataSource() {
     this.deckService
       .getExtendedDeckInfo(this.authService.loggedUserId.getValue())
-      .subscribe((deckArray) => this.userDeckData$.next(deckArray));
+      .subscribe((deckArray) => {
+        this.pipeDeckDatesToLocaleShortFormat(deckArray);
+        this.userDeckData$.next(deckArray);
+      });
   }
 
   deckData$ = new BehaviorSubject<ExtendedDeckInfoDTO[]>([]);
   refreshDeckDataSource() {
-    this.deckService
-      .getExtendedDeckInfo()
-      .subscribe((deckArray) => this.deckData$.next(deckArray));
+    this.deckService.getExtendedDeckInfo().subscribe((deckArray) => {
+      this.pipeDeckDatesToLocaleShortFormat(deckArray);
+      this.deckData$.next(deckArray);
+    });
+  }
+
+  /**
+   * Function that converts the UTC DateTimes from the DB to a more readable format. The new dates can be seen on the DataTable components.
+   * @param deckArray
+   */
+  pipeDeckDatesToLocaleShortFormat(deckArray: Deck[]) {
+    deckArray.map((deck) => {
+      deck.lastUpdated = this.datePipe
+        .transform(deck.lastUpdated, 'short')!
+        .toString();
+      deck.creationDate = this.datePipe
+        .transform(deck.creationDate, 'short')!
+        .toString();
+    });
   }
 
   columnOptions: DataTableColumnOptions[] = [
@@ -53,7 +73,8 @@ export class DeckListComponent {
   constructor(
     public deckService: GenericDeckService,
     protected notificationService: GenericNotificationService,
-    protected authService: GenericAuthService
+    protected authService: GenericAuthService,
+    private datePipe: DatePipe
   ) {
     this.refreshDeckDataSource();
     this.refreshUserDeckDataSource();

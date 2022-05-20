@@ -69,6 +69,10 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
     return this._contentValue;
   }
   @Input() defaultLanguageISOCode: string = '';
+  /**
+   * Alters rendering of components if a study session is taking place.
+   */
+  @Input() isStudySession: boolean = false;
 
   @Output()
   contentSave: EventEmitter<FlashcardContentOptionsBlockContentSaveEventArgs> =
@@ -236,10 +240,16 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
   }
 
   showEditButton(): boolean {
-    return this.contentType === this.flashcardContentEnumType.TEXT;
+    return (
+      this.contentType === this.flashcardContentEnumType.TEXT &&
+      !this.isStudySession
+    );
   }
   showResetButton(): boolean {
-    return this.contentType !== this.flashcardContentEnumType.NONE;
+    return (
+      this.contentType !== this.flashcardContentEnumType.NONE &&
+      !this.isStudySession
+    );
   }
 
   searchWord(

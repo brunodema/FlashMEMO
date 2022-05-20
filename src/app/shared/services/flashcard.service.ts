@@ -40,6 +40,22 @@ export abstract class GenericFlashcardService extends GenericRepositoryService<I
   abstract search(params: FlashcardSearchParams): Observable<IFlashcard[]>;
   abstract getAllFlashcardsFromDeck(deckId: string): Observable<IFlashcard[]>;
   abstract getNumberOfFlashcardsFromDeck(deckId: string): Observable<number>;
+
+  /**
+   * Yes, this function is declared here since I can't declare it on the IFlashcard classes, because TS is fucking stupid and tries to (de)serialize the function when working with JSONs (breaks the model seeder)
+   * @param flashcard
+   * @param newLevel
+   */
+  advanceToNextLevel(flashcard: IFlashcard, newLevel: number): void {
+    flashcard.level = newLevel;
+    flashcard.dueDate = new Date(
+      new Date().setDate(new Date().getDate() + newLevel ** 2)
+    ).toISOString();
+    console.log(
+      'today is ' + new Date().toISOString(),
+      'due date is now ' + flashcard.dueDate
+    );
+  }
 }
 
 @Injectable()
