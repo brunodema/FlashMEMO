@@ -19,3 +19,8 @@ th {
 .mat-column-delete {
   width: 5em;
 }
+
+/* copying styling from the columns above */
+.mat-column-select {
+  width: 5em;
+}
