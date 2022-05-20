@@ -1,6 +1,6 @@
 <ng-container [ngSwitch]="currentStep">
   <ng-container *ngSwitchCase="StudySessionStepEnum.START">
-    <div class="d-flex flex-column h-100">
+    <div class="container d-flex flex-column h-100">
       <div class="card">
         <img [src]="startImg" class="card-img-top" alt="Study session picture" [style.maxHeight]="'500px'">
         <div class="card-body">
@@ -18,7 +18,7 @@
   </ng-container>
 
   <ng-container *ngSwitchCase="StudySessionStepEnum.STUDY">
-    <div class="d-flex flex-column h-100">
+    <div class="container d-flex h-100">
       <small class="text-muted text-center">{{ activeFlashcardIndex }}/{{ flashcardList.length }}</small>
       <app-flashcard [isStudySession]="true" [flashcard]="activeFlashcard"
         (relayStudySessionAnswer)="processFlashcardAnswer($event)"></app-flashcard>
@@ -26,7 +26,7 @@
   </ng-container>
 
   <ng-container *ngSwitchCase="StudySessionStepEnum.END">
-    <div class="d-flex flex-column h-100">
+    <div class="container d-flex flex-column h-100">
       <div class="card">
         <img [src]="endImg" class="card-img-top" alt="Study session picture" [style.maxHeight]="'500px'">
         <div class="card-body">

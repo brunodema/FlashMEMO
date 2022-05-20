@@ -1,10 +1,13 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
@@ -58,7 +61,9 @@ export class FlashcardContentOptionsBlockContentSaveEventArgs {
   templateUrl: './flashcard-content-options-block.component.html',
   styleUrls: ['./flashcard-content-options-block.component.css'],
 })
-export class FlashcardContentOptionsBlockComponent implements OnInit {
+export class FlashcardContentOptionsBlockComponent
+  implements OnInit, AfterViewInit, OnChanges
+{
   // getter + setter implementation taken from here: https://stackoverflow.com/questions/36653678/angular2-input-to-a-property-with-get-set
   private _contentValue: string = '';
   @Input() set contentValue(value: string) {
@@ -153,6 +158,12 @@ export class FlashcardContentOptionsBlockComponent implements OnInit {
     private hostElement: ElementRef, // A way to check the parent's height, and use it after an image is selected by the user
     private clipboardService: ClipboardService
   ) {}
+  ngOnChanges(changes: SimpleChanges): void {
+    //this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+  }
+  ngAfterViewInit(): void {
+    //this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+  }
 
   ngOnInit(): void {
     this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
