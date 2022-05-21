@@ -1,5 +1,7 @@
 import {
+  AfterViewChecked,
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -62,7 +64,7 @@ export class FlashcardContentOptionsBlockContentSaveEventArgs {
   styleUrls: ['./flashcard-content-options-block.component.css'],
 })
 export class FlashcardContentOptionsBlockComponent
-  implements OnInit, AfterViewInit, OnChanges
+  implements OnInit, AfterViewChecked
 {
   // getter + setter implementation taken from here: https://stackoverflow.com/questions/36653678/angular2-input-to-a-property-with-get-set
   private _contentValue: string = '';
@@ -156,17 +158,15 @@ export class FlashcardContentOptionsBlockComponent
     private dictAPIService: GeneralDictionaryAPIService,
     private audioAPIService: GeneralAudioAPIService,
     private hostElement: ElementRef, // A way to check the parent's height, and use it after an image is selected by the user
-    private clipboardService: ClipboardService
+    private clipboardService: ClipboardService,
+    private cdr: ChangeDetectorRef
   ) {}
-  ngOnChanges(changes: SimpleChanges): void {
-    //this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
-  }
-  ngAfterViewInit(): void {
-    //this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+  ngAfterViewChecked(): void {
+    this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+    this.cdr.detectChanges();
   }
 
   ngOnInit(): void {
-    this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
     this.setLanguageDropdownToDefaultValue();
   }
 
