@@ -2,7 +2,7 @@
   <ng-container *ngSwitchCase="StudySessionStepEnum.START">
     <div class="container d-flex flex-column h-100">
       <div class="card">
-        <img [src]="startImg" class="card-img-top" alt="Study session picture" [style.maxHeight]="'500px'">
+        <img [src]="startImg" class="card-img-top" alt="Study session picture" [style.maxHeight]="'50vh'">
         <div class="card-body">
           <h5 class="card-title">Ready to study?</h5>
           <p class="card-text">Click on 'Start' to begin you study session!</p>
@@ -28,7 +28,7 @@
   <ng-container *ngSwitchCase="StudySessionStepEnum.END">
     <div class="container d-flex flex-column h-100">
       <div class="card">
-        <img [src]="endImg" class="card-img-top" alt="Study session picture" [style.maxHeight]="'500px'">
+        <img [src]="endImg" class="card-img-top" alt="Study session picture" [style.maxHeight]="'50vh'">
         <div class="card-body">
           <h5 class="card-title">Finished!</h5>
           <p class="card-text">We are done for the day. Here are your stats:</p>
