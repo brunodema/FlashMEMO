@@ -85,7 +85,8 @@ export class FlashcardContentOptionsBlockComponent
   contentSave: EventEmitter<FlashcardContentOptionsBlockContentSaveEventArgs> =
     new EventEmitter();
 
-  componentHeight: string = '';
+  contentMaxHeight: string = '';
+  imageMaxHeight: string = '';
 
   closeResult: string = '';
   modalTitle: string = '';
@@ -162,12 +163,18 @@ export class FlashcardContentOptionsBlockComponent
     private cdr: ChangeDetectorRef
   ) {}
   ngAfterViewChecked(): void {
-    this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+    this.imageMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
     this.cdr.detectChanges();
   }
 
   ngOnInit(): void {
+    this.contentMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
     this.setLanguageDropdownToDefaultValue();
+  }
+
+  fixHeightOnLoad() {
+    this.imageMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+    this.cdr.detectChanges();
   }
 
   determineContentType(contentValue: string): FlashcardContentType {

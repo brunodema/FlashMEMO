@@ -175,9 +175,9 @@
     </div>
   </ng-template>
   <div *ngSwitchCase="flashcardContentEnumType.IMAGE" class="container text-center image-reset-button-parent">
-    <img [src]="contentValue" [style.maxHeight]="componentHeight" class="img-fluid" />
+    <img [src]="contentValue" (load)="fixHeightOnLoad()" [style.maxHeight]="imageMaxHeight" class="img-fluid" />
   </div>
-  <div *ngSwitchCase="flashcardContentEnumType.TEXT" [style.maxHeight]="componentHeight" class="container"
+  <div *ngSwitchCase="flashcardContentEnumType.TEXT" [style.maxHeight]="contentMaxHeight" class="container"
     style="overflow-y: auto; word-break: break-word;">
     <div [innerHTML]="contentValue | safeBypass: 'html'"></div>
   </div>
