@@ -75,6 +75,7 @@
           "defaultConfiguration": "development",
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
+            "disableHostCheck": true,
             "browserTarget": "FlashMEMO:build",
             "host": "flashmemo.edu"
           },
