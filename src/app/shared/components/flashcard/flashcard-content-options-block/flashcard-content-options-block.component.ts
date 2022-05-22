@@ -163,6 +163,7 @@ export class FlashcardContentOptionsBlockComponent
     private cdr: ChangeDetectorRef
   ) {}
   ngAfterViewChecked(): void {
+    // this must stay commented to prevent those 'image keeps getting larger' issue
     // console.log('ngAfterViewChecked: ' + this.hostElement.nativeElement.offsetHeight + 'px')
     // this.imageMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
     // this.cdr.detectChanges();
@@ -176,7 +177,9 @@ export class FlashcardContentOptionsBlockComponent
   }
 
   fixHeightOnLoad() {
-    console.log('fixHeightOnLoad: ' + this.hostElement.nativeElement.offsetHeight + 'px')
+    console.log(
+      'fixHeightOnLoad: ' + this.hostElement.nativeElement.offsetHeight + 'px'
+    );
     this.imageMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
     this.cdr.detectChanges();
   }
