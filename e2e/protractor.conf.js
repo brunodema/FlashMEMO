@@ -13,11 +13,14 @@ exports.config = {
     './src/**/*.e2e-spec.ts'
   ],
   capabilities: {
-    browserName: 'chrome'
+    browserName: 'chrome',
+    chromeOptions: {
+   args: [ "--headless" ]
+    }
   },
   directConnect: true,
   SELENIUM_PROMISE_MANAGER: false,
-  baseUrl: 'http://localhost:4200/',
+  baseUrl: 'http://flashmemo.edu:4200/',
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
