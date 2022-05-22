@@ -23,11 +23,13 @@ export class GenericRepositoryResolverService<Type> implements Resolve<Type> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Type | Observable<Type> | Promise<Type> {
+    // console.log('id is: ' + route.paramMap.get('id'));
     let id = route.paramMap.get('id');
     if (id) {
       return this.service.getById(id).pipe(
         map((r) => {
           if (r) {
+            // console.log('result from service is: ', r);
             return r;
           } else {
             this.router.navigate(['']);

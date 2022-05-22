@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -10,7 +10,7 @@ import { User } from 'src/app/user/models/user.model';
   templateUrl: './user-model-form.component.html',
   styleUrls: ['./user-model-form.component.css'],
 })
-export class UserModelFormComponent implements OnInit {
+export class UserModelFormComponent implements AfterViewInit {
   form = new FormGroup({});
   fields: FormlyFieldConfig[] = [
     {
@@ -92,12 +92,17 @@ export class UserModelFormComponent implements OnInit {
 
   constructor(
     private authService: GenericAuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cdr : ChangeDetectorRef
   ) {
     this.userModel = this.route.snapshot.data['user'];
   }
-
-  ngOnInit(): void {}
+  ngAfterViewInit(): void {
+    if (this.userModel) {
+      this.form.controls['password'].setValue('')
+      this.cdr.detectChanges()
+    }
+  }
 
   onSubmit() {
     if (this.form.valid) {
