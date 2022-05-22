@@ -58,7 +58,7 @@ export class FlashcardContentOptionsBlockContentSaveEventArgs {
   host: {
     class:
       'd-flex flex-fill align-items-center justify-content-center image-reset-button-parent', // having this 'handler' class here forced me to pass all associated CSS to the main styles sheet :/
-    style: 'border: 1px solid black', // optional, just to debug section sizes
+    // style: 'border: 1px solid black', // optional, just to debug section sizes
   },
   templateUrl: './flashcard-content-options-block.component.html',
   styleUrls: ['./flashcard-content-options-block.component.css'],
