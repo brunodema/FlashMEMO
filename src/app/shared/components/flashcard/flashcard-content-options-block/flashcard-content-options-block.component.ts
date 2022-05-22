@@ -163,16 +163,20 @@ export class FlashcardContentOptionsBlockComponent
     private cdr: ChangeDetectorRef
   ) {}
   ngAfterViewChecked(): void {
-    this.imageMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
-    this.cdr.detectChanges();
+    // console.log('ngAfterViewChecked: ' + this.hostElement.nativeElement.offsetHeight + 'px')
+    // this.imageMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+    // this.cdr.detectChanges();
   }
 
   ngOnInit(): void {
+    // console.log('ngOnInit: ' + this.hostElement.nativeElement.offsetHeight + 'px')
     this.contentMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+    this.imageMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
     this.setLanguageDropdownToDefaultValue();
   }
 
   fixHeightOnLoad() {
+    console.log('fixHeightOnLoad: ' + this.hostElement.nativeElement.offsetHeight + 'px')
     this.imageMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
     this.cdr.detectChanges();
   }
