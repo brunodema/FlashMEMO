@@ -9,7 +9,12 @@ import {
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
-import { NgbAccordionModule, NgbModalModule, NgbTooltip, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbAccordionModule,
+  NgbModalModule,
+  NgbTooltip,
+  NgbTooltipModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { FormlyModule } from '@ngx-formly/core';
 import { Observable, of } from 'rxjs';
 import { DeckRepositoryResolverService } from 'src/app/shared/resolvers/generic-repository.resolver';
@@ -32,7 +37,7 @@ import {
   MockDeckService,
 } from '../../services/deck.service';
 import { DeckDetailComponent } from './deck-detail.component';
-import { formlyConfig } from 'src/app/app.module'
+import { formlyConfig } from 'src/app/app.module';
 import { FormsModule } from '@angular/forms';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -75,25 +80,18 @@ describe('DeckDetailComponent', () => {
 
   let fixture: ComponentFixture<DeckDetailComponent>;
   let component: DeckDetailComponent;
-  let route : ActivatedRoute
+  let route: ActivatedRoute;
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DeckDetailComponent);
+    route = TestBed.inject(ActivatedRoute);
     component = fixture.debugElement.componentInstance;
-    route = TestBed.inject(ActivatedRoute)
-    route.params = of({ id: 'E5B4BB88-F528-7535-F9BE-D9F11BE3DB54'});
-    fixture.detectChanges()
   });
 
   it('should create the app', () => {
-    fixture = TestBed.createComponent(DeckDetailComponent);
-    component = fixture.debugElement.componentInstance;
     expect(component).toBeTruthy();
-
-    console.log(component.deckModel)
+    console.log(component.deckModel);
   });
 
-  it('should work :p', () => {
-  });
+  it('should work :p', () => {});
 });
-
