@@ -41,6 +41,7 @@ import { formlyConfig } from 'src/app/app.module';
 import { FormsModule } from '@angular/forms';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Deck } from '../../models/deck.model';
 
 // main template taken from here: https://www.testim.io/blog/angular-component-testing-detailed-guide/
 // had to manually import the testing module from here: https://angular.io/api/router/testing/RouterTestingModule
@@ -74,6 +75,16 @@ describe('DeckDetailComponent', () => {
         { provide: GenericDeckService, useClass: MockDeckService },
         { provide: GenericAuthService, useClass: MockAuthService },
         GenericNotificationService,
+        DeckRepositoryResolverService,
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              params: of([{ id: 1 }]),
+              data: { deck: new Deck({deckId: 'dsddsdfdf'}) }
+            },
+          }
+        },
       ],
     }).compileComponents();
   }));
