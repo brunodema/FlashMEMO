@@ -6,7 +6,7 @@ import {
   ComponentFixture,
   inject,
 } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import {
@@ -42,6 +42,8 @@ import { FormsModule } from '@angular/forms';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Deck } from '../../models/deck.model';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 // main template taken from here: https://www.testim.io/blog/angular-component-testing-detailed-guide/
 // had to manually import the testing module from here: https://angular.io/api/router/testing/RouterTestingModule
@@ -51,7 +53,9 @@ describe('DeckDetailComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [DeckDetailComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
+        SharedModule,
         FormlyModule.forRoot(formlyConfig),
         FormlyMaterialModule,
         BrowserAnimationsModule,
@@ -59,7 +63,13 @@ describe('DeckDetailComponent', () => {
         FormsModule,
         NgbAccordionModule,
         NgbModalModule,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([
+          {
+            path: ':id',
+            component: DeckDetailComponent,
+            resolve: { deck: DeckRepositoryResolverService },
+          },
+        ]),
         HttpClientModule,
         JwtModule.forRoot({
           config: {
@@ -80,10 +90,12 @@ describe('DeckDetailComponent', () => {
           provide: ActivatedRoute,
           useValue: {
             snapshot: {
-              params: of([{ id: 1 }]),
-              data: { deck: new Deck({deckId: 'dsddsdfdf'}) }
+              paramMap: convertToParamMap({
+                id: 'E5B4BB88-F528-7535-F9BE-D9F11BE3DB54',
+              }),
+              data: {}
             },
-          }
+          },
         },
       ],
     }).compileComponents();
@@ -92,17 +104,16 @@ describe('DeckDetailComponent', () => {
   let fixture: ComponentFixture<DeckDetailComponent>;
   let component: DeckDetailComponent;
   let route: ActivatedRoute;
+  let resolver : Resolve<Deck>
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DeckDetailComponent);
     route = TestBed.inject(ActivatedRoute);
+    fixture = TestBed.createComponent(DeckDetailComponent);
     component = fixture.debugElement.componentInstance;
   });
 
   it('should create the app', () => {
     expect(component).toBeTruthy();
-    console.log(component.deckModel);
+    console.log(JSON.stringify(route));
   });
-
-  it('should work :p', () => {});
 });
