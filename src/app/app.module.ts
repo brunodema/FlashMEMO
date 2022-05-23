@@ -89,7 +89,7 @@ export function fieldMatchValidator(control: AbstractControl) {
   return { fieldMatch: { message: 'Password Not Matching' } };
 }
 
-const config: ConfigOption = {
+export const formlyConfig: ConfigOption = {
   validationMessages: [
     { name: 'required', message: 'This field is required' },
     { name: 'emailIsValid', message: 'This is not a valid email' },
@@ -124,7 +124,7 @@ const config: ConfigOption = {
       timeOut: 5000,
     }),
     ReactiveFormsModule,
-    FormlyModule.forRoot(config),
+    FormlyModule.forRoot(formlyConfig),
     FormlyMaterialModule,
     NgxSpinnerModule, // NGX-Spinner
     CKEditorModule,
