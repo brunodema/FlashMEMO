@@ -60,7 +60,10 @@ export class MockDeckService extends GenericDeckService {
   }
 
   getById(id: string): Observable<Deck> {
-    return of(deckJson.filter((x) => x.deckId == id)[0]);
+    console.log(`GenericDeckService: getting by id '${id}'`)
+    let obj = deckJson.filter((x) => x.deckId == id)[0]
+    console.log('GenericDeckService: returning object ', obj)
+    return of(obj);
   }
 
   create(object: Deck): Observable<IDataResponse<string>> {

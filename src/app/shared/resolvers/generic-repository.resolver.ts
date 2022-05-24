@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
-import { Observable, of, map } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
+import { map } from 'rxjs/operators';
 import { Deck } from 'src/app/deck/models/deck.model';
 import { GenericDeckService } from 'src/app/deck/services/deck.service';
 import { User } from 'src/app/user/models/user.model';
@@ -18,11 +19,13 @@ export class GenericRepositoryResolverService<Type> implements Resolve<Type> {
     route: ActivatedRouteSnapshot
   ): Type | Observable<Type> | Promise<Type> {
     // console.log('id is: ' + route.paramMap.get('id'));
-    let id = route.paramMap.get('id');
+    let id = route.params['id'];
     console.log('resolver: id is ' + id);
     if (id) {
+      console.log('resolver: id is not empty, underlying service is:', this.service)
       return this.service.getById(id).pipe(
         map((r) => {
+          console.log('resolver: mapping result', r)
           if (r) {
             console.log('resolver: result from service is: ', r);
             return r;
