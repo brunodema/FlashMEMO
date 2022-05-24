@@ -1,22 +1,20 @@
 import { HttpClientModule } from '@angular/common/http';
+import { TestBed, waitForAsync, ComponentFixture } from '@angular/core/testing';
 import {
-  TestBed,
-  async,
-  waitForAsync,
-  ComponentFixture,
-  inject,
-} from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap, Resolve, Router, RouterStateSnapshot } from '@angular/router';
+  ActivatedRoute,
+  convertToParamMap,
+  Resolve,
+  Router,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+import { JwtModule } from '@auth0/angular-jwt';
 import {
   NgbAccordionModule,
   NgbModalModule,
-  NgbTooltip,
   NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyModule } from '@ngx-formly/core';
-import { Observable, of } from 'rxjs';
 import { DeckRepositoryResolverService } from 'src/app/shared/resolvers/generic-repository.resolver';
 import {
   GenericAuthService,
@@ -32,7 +30,6 @@ import {
 } from 'src/app/shared/services/language.service';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
 import {
-  DeckService,
   GenericDeckService,
   MockDeckService,
 } from '../../services/deck.service';
@@ -44,6 +41,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Deck } from '../../models/deck.model';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
 // main template taken from here: https://www.testim.io/blog/angular-component-testing-detailed-guide/
 // had to manually import the testing module from here: https://angular.io/api/router/testing/RouterTestingModule
@@ -93,7 +91,7 @@ describe('DeckDetailComponent', () => {
               paramMap: convertToParamMap({
                 id: 'E5B4BB88-F528-7535-F9BE-D9F11BE3DB54',
               }),
-              data: {}
+              data: {},
             },
           },
         },
@@ -104,16 +102,30 @@ describe('DeckDetailComponent', () => {
   let fixture: ComponentFixture<DeckDetailComponent>;
   let component: DeckDetailComponent;
   let route: ActivatedRoute;
-  let resolver : Resolve<Deck>
+  let router: Router;
+  let resolver: Resolve<Deck>;
 
   beforeEach(() => {
     route = TestBed.inject(ActivatedRoute);
+    router = TestBed.inject(Router);
+    resolver = TestBed.inject(DeckRepositoryResolverService);
     fixture = TestBed.createComponent(DeckDetailComponent);
     component = fixture.debugElement.componentInstance;
+
+    route.snapshot.data = resolver.resolve(
+      route.snapshot,
+      router.routerState.snapshot
+    );
+    fixture.detectChanges();
   });
 
-  it('should create the app', () => {
+  it('should create the app', async () => {
     expect(component).toBeTruthy();
     console.log(JSON.stringify(route));
+
+    fixture.whenStable().then(() => {
+      console.log('fixture is now stable.');
+      console.log(fixture.debugElement.query(By.css('ms-2')));
+    });
   });
 });
