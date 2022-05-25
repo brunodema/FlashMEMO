@@ -15,16 +15,21 @@ class DeckDetailPageObject {
     this.getFlashcardAccordion();
   }
 
-  getSaveDeckButton() {
-    cy.get('[data-testid="save-deck-btn"]');
+  getSaveDeckButton(): Cypress.Chainable<JQuery<Element>> {
+    return cy.get('[data-testid="save-deck-btn"]');
   }
 
-  getStudySessionButton() {
-    cy.get('[data-testid="study-session-btn"]');
+  getStudySessionButton(): Cypress.Chainable<JQuery<Element>> {
+    return cy.get('[data-testid="study-session-btn"]');
   }
 
-  getFlashcardAccordion() {
-    cy.get('[data-testid="flashcard-accordion"]');
+  getFlashcardAccordion(): Cypress.Chainable<JQuery<Element>> {
+    return cy.get('[data-testid="flashcard-accordion"]');
+  }
+
+  ensureAccordionIsExpanded(): Cypress.Chainable<JQuery<Element>> {
+    return this.getFlashcardAccordion().find('button[aria-expanded="true"]');
+    // return cy.get('button[aria-expanded="true"]');
   }
 
   logCurrentURL() {
@@ -35,21 +40,32 @@ class DeckDetailPageObject {
 describe('Access deck-detail and find stuff', () => {
   let page: DeckDetailPageObject = new DeckDetailPageObject();
 
-  it('Goes to the fucking page (via "create")', () => {
+  it('Should go to the fucking page (via "create")', () => {
     page.visitDeckDetail();
-    page.getEverythingToGuaranteeImOnThePage()
+    page.getEverythingToGuaranteeImOnThePage();
   });
 
-  it('Goes to the fucking page (via "deckId")', () => {
+  it('Should go to the fucking page (via "deckId")', () => {
     page.visitDeckDetail(deckJson[0].deckId);
-    page.getEverythingToGuaranteeImOnThePage()
+    page.getEverythingToGuaranteeImOnThePage();
   });
 
-  it('Goes to the fucking page (with wrong id?)', () => {
+  it('Should go to the fucking page (with wrong id?)', () => {
     page.visitDeckDetail('shenanigans');
     cy.url().should('contain', 'home');
     cy.url().should('not.contain', 'deck');
+  });
 
-    page.logCurrentURL();
+  it('Should test flashcard editor for content overflows (beta)', () => {
+    // go to the page
+    page.visitDeckDetail(deckJson[0].deckId);
+    // ensure eveything is there
+    page.getEverythingToGuaranteeImOnThePage();
+    // find flashcard accordion
+    page.ensureAccordionIsExpanded();
+    // find data-table inside it
+    // change visualization to show 25 flashcards per page
+    // select first flashcard from data-table
+    // click to open flashcard editor
   });
 });
