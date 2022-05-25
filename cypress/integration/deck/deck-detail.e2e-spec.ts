@@ -9,12 +9,22 @@ class DeckDetailPageObject {
     else cy.visit('deck/create');
   }
 
+  getEverythingToGuaranteeImOnThePage() {
+    this.getSaveDeckButton();
+    this.getStudySessionButton();
+    this.getFlashcardAccordion();
+  }
+
   getSaveDeckButton() {
-    cy.get('data-testid="save-deck-btn"');
+    cy.get('[data-testid="save-deck-btn"]');
   }
 
   getStudySessionButton() {
-    cy.get('data-testid="study-session-btn"');
+    cy.get('[data-testid="study-session-btn"]');
+  }
+
+  getFlashcardAccordion() {
+    cy.get('[data-testid="flashcard-accordion"]');
   }
 
   logCurrentURL() {
@@ -27,10 +37,12 @@ describe('Access deck-detail and find stuff', () => {
 
   it('Goes to the fucking page (via "create")', () => {
     page.visitDeckDetail();
+    page.getEverythingToGuaranteeImOnThePage()
   });
 
   it('Goes to the fucking page (via "deckId")', () => {
     page.visitDeckDetail(deckJson[0].deckId);
+    page.getEverythingToGuaranteeImOnThePage()
   });
 
   it('Goes to the fucking page (with wrong id?)', () => {
@@ -38,6 +50,6 @@ describe('Access deck-detail and find stuff', () => {
     cy.url().should('contain', 'home');
     cy.url().should('not.contain', 'deck');
 
-    page.logCurrentURL()
+    page.logCurrentURL();
   });
 });
