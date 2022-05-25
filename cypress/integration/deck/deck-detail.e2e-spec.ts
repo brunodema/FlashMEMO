@@ -1,5 +1,8 @@
 // used this to setup tests: https://testing-angular.com/introduction/#introduction
 // shout-outs to protractor, that got deprecated by Angular itself, and cost 1-2 days of my life
+// official docs: https://docs.cypress.io/
+// info on 'each': https://www.webtips.dev/webtips/cypress/how-to-get-multiple-elements-in-cypress
+// 'lte' and 'gte': https://stackoverflow.com/questions/62072822/cypress-assertion-equal-and-greater-than
 
 import deckJson from 'src/assets/test_assets/Decks.json';
 
@@ -45,6 +48,10 @@ class DeckDetailPageObject {
       .click();
   }
 
+  getAllEditbuttonsFromDataTable(): Cypress.Chainable<JQuery<Element>> {
+    return this.getFlashcardDataTable().find('[data-testid="row-edit-btn"]');
+  }
+
   logCurrentURL() {
     cy.url().then((url) => cy.task('log', url));
   }
@@ -81,6 +88,13 @@ describe('Access deck-detail and find stuff', () => {
     // change visualization to show 25 flashcards per page
     page.selectMaxPageSizeFromFlashcardDataTable();
     // select first flashcard from data-table
+    page.getAllEditbuttonsFromDataTable().each((item, index, list) => {
+      item.parent().click()
+
+      let layoutEl = cy.get('app-flashcard-layout');
+      let contentEl = cy.get('app-flashcard-content-options-block');
+      contentEl.its('height').should('be.lte', layoutEl.its('height'));
+    });
     // click to open flashcard editor
   });
 });
