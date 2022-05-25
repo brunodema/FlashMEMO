@@ -136,7 +136,7 @@
           "options": {
             "devServerTarget": "FlashMEMO:serve",
             "watch": true,
-            "headless": false
+            "headless": true
           },
           "configurations": {
             "production": {
