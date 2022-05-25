@@ -4,7 +4,7 @@
     <div class="col-6">
       <formly-form [form]="form" [fields]="fields" [model]="deckModel"></formly-form>
       <div class="d-flex justify-content-end">
-        <button [disabled]="!this.form.valid || (this.form.valid && !this.form.dirty)" class="btn btn-primary"
+        <button [disabled]="!this.form.valid || (this.form.valid && !this.form.dirty)" class="btn btn-primary" data-testid="save-deck-btn"
           (click)="saveDeck()">
           Save Deck
         </button>
