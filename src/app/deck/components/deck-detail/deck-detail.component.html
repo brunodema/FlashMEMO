@@ -44,7 +44,7 @@
       </button>
       <!-- I added this div around the button so the tooltip is rendered even with the disabled button -->
       <div placement="auto" [ngbTooltip]="canStartStudySession() ? '' : 'You don\'t have any flashcards to review!'">
-        <button class="ms-2 btn btn-primary" [disabled]="!canStartStudySession()"
+        <button class="ms-2 btn btn-primary" [disabled]="!canStartStudySession()" data-testid="study-session-btn"
           (click)="openStudySessionModal(studySessionModal)">
           Study!
         </button>
