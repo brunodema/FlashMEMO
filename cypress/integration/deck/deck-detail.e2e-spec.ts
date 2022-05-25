@@ -32,6 +32,19 @@ class DeckDetailPageObject {
     // return cy.get('button[aria-expanded="true"]');
   }
 
+  getFlashcardDataTable(): Cypress.Chainable<JQuery<Element>> {
+    return cy.get('app-data-table');
+  }
+
+  selectMaxPageSizeFromFlashcardDataTable() {
+    this.getFlashcardDataTable()
+      .find('mat-select')
+      .click()
+      .get('mat-option')
+      .contains('25')
+      .click();
+  }
+
   logCurrentURL() {
     cy.url().then((url) => cy.task('log', url));
   }
@@ -64,7 +77,9 @@ describe('Access deck-detail and find stuff', () => {
     // find flashcard accordion
     page.ensureAccordionIsExpanded();
     // find data-table inside it
+    page.getFlashcardDataTable();
     // change visualization to show 25 flashcards per page
+    page.selectMaxPageSizeFromFlashcardDataTable();
     // select first flashcard from data-table
     // click to open flashcard editor
   });
