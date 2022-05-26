@@ -90,7 +90,8 @@ describe('Access deck-detail and find stuff', () => {
     // select first flashcard from data-table
     page.getAllEditbuttonsFromDataTable().each((item, index, list) => {
       cy.wrap(item).trigger('click');
-      cy.pause();
+
+      // do the height check
       cy.get('app-flashcard-layout').then((layoutEl) => {
         const layoutHeight = layoutEl.height();
         cy.get('app-flashcard-content-options-block').then((contentEl) => {
@@ -98,6 +99,19 @@ describe('Access deck-detail and find stuff', () => {
           expect(contentHeight).to.be.lte(layoutHeight!);
         });
       });
+
+      cy.get('button').contains('Next').trigger('click');
+
+      // do the height check
+      cy.get('app-flashcard-layout').then((layoutEl) => {
+        const layoutHeight = layoutEl.height();
+        cy.get('app-flashcard-content-options-block').then((contentEl) => {
+          const contentHeight = contentEl.height();
+          expect(contentHeight).to.be.lte(layoutHeight!);
+        });
+      });
+
+      cy.get('button[aria-label="Close"]').trigger('click');
     });
 
     // click to open flashcard editor
