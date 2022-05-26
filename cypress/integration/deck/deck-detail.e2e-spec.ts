@@ -52,6 +52,40 @@ class DeckDetailPageObject {
     return this.getFlashcardDataTable().find('[data-testid="row-edit-btn"]');
   }
 
+  checkContentHeightsOnView() {
+    // do the height check
+    cy.get('app-flashcard-content-options-block').each((parentEl) => {
+      // not sure why, but I'm having to call 'cy.wrap()' directly, instead of naming an aux variable to hold the value. Otherwise, it says that the 'find()' method below requires a DOM object (???)
+      let parentHeight: number;
+      cy.wrap(parentEl)
+        .invoke('height')
+        .then((val) => {
+          parentHeight = val!;
+        });
+
+      cy.wrap(parentEl)
+        .find('[data-testid="flashcard-block-actual-content"]')
+        .then((contentEl) => {
+          let content = cy.wrap(contentEl);
+
+          let contentHeight: number;
+          content
+            .should('be.visible')
+            .invoke('height')
+            .then((val) => {
+              contentHeight = val!;
+
+              if (contentHeight === 0)
+                throw new Error("This shouldn't happen! :/");
+
+              expect(Math.ceil(contentHeight)).to.be.lte(
+                Math.ceil(parentHeight)!
+              );
+            });
+        });
+    });
+  }
+
   logCurrentURL() {
     cy.url().then((url) => cy.task('log', url));
   }
@@ -87,75 +121,14 @@ describe('Access deck-detail and find stuff', () => {
     page.getFlashcardDataTable();
     // change visualization to show 25 flashcards per page
     page.selectMaxPageSizeFromFlashcardDataTable();
-    // select first flashcard from data-table
-    page.getAllEditbuttonsFromDataTable().each((item, index, list) => {
-      cy.wrap(item).trigger('click');
-
-      // do the height check
-      cy.get('app-flashcard-content-options-block').each((parentEl) => {
-        // not sure why, but I'm having to call 'cy.wrap()' directly, instead of naming an aux variable to hold the value. Otherwise, it says that the 'find()' method below requires a DOM object (???)
-        let parentHeight: number;
-        cy.wrap(parentEl)
-          .invoke('height')
-          .then((val) => {
-            parentHeight = val!;
-          });
-
-        cy.wrap(parentEl)
-          .find('[data-testid="flashcard-block-actual-content"]')
-          .then((contentEl) => {
-            let content = cy.wrap(contentEl);
-
-            let contentHeight: number;
-            content
-              .should('be.visible')
-              .invoke('height')
-              .then((val) => {
-                contentHeight = val!;
-
-                if (contentHeight === 0) cy.pause();
-
-                expect(Math.ceil(contentHeight)).to.be.lte(
-                  Math.ceil(parentHeight)!
-                );
-              });
-          });
-      });
-
+    // check heights for all flashcards on DataTable
+    page.getAllEditbuttonsFromDataTable().each((item) => {
+      cy.wrap(item).trigger('click'); // opens modal
+      page.checkContentHeightsOnView(); // checks front
       cy.get('button').contains('Next').trigger('click');
-
-      // do the height check
-      cy.get('app-flashcard-content-options-block').each((parentEl) => {
-        // not sure why, but I'm having to call 'cy.wrap()' directly, instead of naming an aux variable to hold the value. Otherwise, it says that the 'find()' method below requires a DOM object (???)
-        let parentHeight: number;
-        cy.wrap(parentEl)
-          .invoke('height')
-          .then((val) => {
-            parentHeight = val!;
-          });
-
-        cy.wrap(parentEl)
-          .find('[data-testid="flashcard-block-actual-content"]')
-          .then((contentEl) => {
-            let content = cy.wrap(contentEl);
-
-            let contentHeight: number;
-            content
-              .should('be.visible')
-              .invoke('height')
-              .then((val) => {
-                contentHeight = val!;
-
-                if (contentHeight === 0) cy.pause();
-
-                expect(Math.ceil(contentHeight)).to.be.lte(
-                  Math.ceil(parentHeight)!
-                );
-              });
-          });
-      });
-
-      cy.get('button[aria-label="Close"]').trigger('click');
+      page.checkContentHeightsOnView(); // checks back
+      cy.get('button[aria-label="Close"]').trigger('click'); // closes modal
     });
+    // check heights for StudySession
   });
 });
