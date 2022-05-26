@@ -89,12 +89,17 @@ describe('Access deck-detail and find stuff', () => {
     page.selectMaxPageSizeFromFlashcardDataTable();
     // select first flashcard from data-table
     page.getAllEditbuttonsFromDataTable().each((item, index, list) => {
-      item.parent().click()
-
-      let layoutEl = cy.get('app-flashcard-layout');
-      let contentEl = cy.get('app-flashcard-content-options-block');
-      contentEl.its('height').should('be.lte', layoutEl.its('height'));
+      cy.wrap(item).trigger('click');
+      cy.pause();
+      cy.get('app-flashcard-layout').then((layoutEl) => {
+        const layoutHeight = layoutEl.height();
+        cy.get('app-flashcard-content-options-block').then((contentEl) => {
+          const contentHeight = contentEl.height();
+          expect(contentHeight).to.be.lte(layoutHeight!);
+        });
+      });
     });
+
     // click to open flashcard editor
   });
 });
