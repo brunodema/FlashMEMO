@@ -175,13 +175,15 @@
     </div>
   </ng-template>
   <div *ngSwitchCase="flashcardContentEnumType.IMAGE" class="container text-center image-reset-button-parent">
-    <img [src]="contentValue" (load)="fixHeightOnLoad()" [style.maxHeight]="imageMaxHeight" class="img-fluid" />
+    <img [src]="contentValue" (load)="fixHeightOnLoad()" [style.maxHeight]="imageMaxHeight" class="img-fluid"
+      data-testid="flashcard-block-actual-content" />
   </div>
   <div *ngSwitchCase="flashcardContentEnumType.TEXT" [style.maxHeight]="contentMaxHeight" class="container"
-    style="overflow-y: auto; word-break: break-word;">
+    style="overflow-y: auto; word-break: break-word;" data-testid="flashcard-block-actual-content">
     <div [innerHTML]="contentValue | safeBypass: 'html'"></div>
   </div>
-  <div *ngSwitchCase="flashcardContentEnumType.AUDIO" class="container text-center image-reset-button-parent">
+  <div *ngSwitchCase="flashcardContentEnumType.AUDIO" class="container text-center image-reset-button-parent"
+    data-testid="flashcard-block-actual-content">
     <audio [src]="contentValue" controls>Oops, your browser is having problems rendering the audio!
       🤔</audio>
   </div>
