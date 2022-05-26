@@ -5,6 +5,7 @@
 // 'lte' and 'gte': https://stackoverflow.com/questions/62072822/cypress-assertion-equal-and-greater-than
 
 import deckJson from 'src/assets/test_assets/Decks.json';
+import flashcardJson from 'src/assets/test_assets/Flashcards.json';
 
 class DeckDetailPageObject {
   visitDeckDetail(id?: string) {
@@ -122,13 +123,50 @@ describe('Access deck-detail and find stuff', () => {
     // change visualization to show 25 flashcards per page
     page.selectMaxPageSizeFromFlashcardDataTable();
     // check heights for all flashcards on DataTable
-    page.getAllEditbuttonsFromDataTable().each((item) => {
-      cy.wrap(item).trigger('click'); // opens modal
-      page.checkContentHeightsOnView(); // checks front
-      cy.get('button').contains('Next').trigger('click');
-      page.checkContentHeightsOnView(); // checks back
-      cy.get('button[aria-label="Close"]').trigger('click'); // closes modal
+
+    // page.getAllEditbuttonsFromDataTable().each((item) => {
+    //   cy.wrap(item).trigger('click'); // opens modal
+    //   page.checkContentHeightsOnView(); // checks front
+    //   cy.get('button').contains('Next').trigger('click');
+    //   page.checkContentHeightsOnView(); // checks back
+    //   cy.get('button[aria-label="Close"]').trigger('click'); // closes modal
+    // });
+
+    // check heights for study session
+    page.getStudySessionButton().trigger('click');
+    // start study session
+    cy.get('a').contains('Start').should('be.visible').trigger('click');
+
+    // proceed depending on visibility of a 'Next' button
+    var genArr = Array.from({
+      length: flashcardJson.filter((f) => f.deckId == deckJson[0].deckId)
+        .length,
     });
-    // check heights for StudySession
+    cy.wrap(genArr).each((el, index, list) => {
+      cy.get('.modal-body').then((modal) => {
+        if (
+          modal.find('input[data-testid="flashcard-study-session-input"]')
+            .length > 0
+        ) {
+          page.checkContentHeightsOnView(); // checks front
+          cy.get('input[data-testid="flashcard-study-session-input"]').type(
+            'a'
+          );
+          cy.get('button').contains('Next').trigger('click');
+          page.checkContentHeightsOnView(); // checks back
+          cy.get('button').contains('Proceed').trigger('click');
+        } else if (
+          modal.find('a[data-testid="study-session-close-btn"]').length > 0
+        ) {
+          cy.get('a[data-testid="study-session-close-btn"]').trigger('click');
+          return false;
+        } else {
+          page.checkContentHeightsOnView(); // checks front
+          cy.get('button').contains('Next').trigger('click');
+          page.checkContentHeightsOnView(); // checks back
+          cy.get('button').contains('Correct').trigger('click');
+        }
+      });
+    });
   });
 });

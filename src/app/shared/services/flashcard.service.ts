@@ -64,10 +64,10 @@ export class MockFlashcardService extends GenericFlashcardService {
     super(httpClient);
   }
   getAllFlashcardsFromDeck(deckId: string): Observable<IFlashcard[]> {
-    return of(flashcardJson.filter((f) => f.deckId == deckId));
+    return of(flashcardJson.filter((f) => f.deckId === deckId));
   }
   getNumberOfFlashcardsFromDeck(deckId: string): Observable<number> {
-    return of(flashcardJson.filter((f) => f.deckId == deckId).length);
+    return of(flashcardJson.filter((f) => f.deckId === deckId).length);
   }
   search(searchParams: FlashcardSearchParams): Observable<IFlashcard[]> {
     throw new Error('Method not implemented.');

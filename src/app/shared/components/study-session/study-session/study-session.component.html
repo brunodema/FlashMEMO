@@ -41,7 +41,8 @@
         </div>
       </div>
       <div class="d-flex mt-auto justify-content-end">
-        <a class="col-2 btn btn-primary" role="button" (click)="this.stopSession.emit()">Close</a>
+        <a class="col-2 btn btn-primary" role="button" (click)="this.stopSession.emit()"
+          data-testid="study-session-close-btn">Close</a>
       </div>
     </div>
   </ng-container>
