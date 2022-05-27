@@ -139,10 +139,11 @@ describe('Access deck-detail and find stuff', () => {
 
     // proceed depending on visibility of a 'Next' button
     var genArr = Array.from({
-      length: flashcardJson.filter((f) => f.deckId == deckJson[0].deckId)
-        .length,
+      length:
+        flashcardJson.filter((f) => f.deckId == deckJson[0].deckId).length - 2,
     });
     cy.wrap(genArr).each((el, index, list) => {
+      console.log(index, list.length);
       cy.get('.modal-body').then((modal) => {
         if (
           modal.find('input[data-testid="flashcard-study-session-input"]')
@@ -155,6 +156,7 @@ describe('Access deck-detail and find stuff', () => {
           cy.get('button').contains('Next').trigger('click');
           page.checkContentHeightsOnView(); // checks back
           cy.get('button').contains('Proceed').trigger('click');
+          return false;
         } else if (
           modal.find('a[data-testid="study-session-close-btn"]').length > 0
         ) {
@@ -165,6 +167,7 @@ describe('Access deck-detail and find stuff', () => {
           cy.get('button').contains('Next').trigger('click');
           page.checkContentHeightsOnView(); // checks back
           cy.get('button').contains('Correct').trigger('click');
+          return false;
         }
       });
     });
