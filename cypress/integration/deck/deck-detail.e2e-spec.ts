@@ -79,8 +79,11 @@ class DeckDetailPageObject {
               if (contentHeight === 0)
                 throw new Error("This shouldn't happen! :/");
 
-              expect(Math.ceil(contentHeight)).to.be.lte(
-                Math.ceil(parentHeight)!
+              // the goal in this weird calculation is to avoid failed assertions such as '175.0000001 is bigger than 175'. In this case, there's a 1px margin of error.
+              let value = contentHeight - parentHeight;
+              expect(value).to.be.lte(
+                1,
+                `contentHeight is ${contentHeight} and parentHeight is ${parentHeight}`
               );
             });
         });
