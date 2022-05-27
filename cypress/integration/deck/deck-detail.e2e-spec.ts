@@ -111,7 +111,7 @@ describe('Access deck-detail and find stuff', () => {
     cy.url().should('not.contain', 'deck');
   });
 
-  it('Should test flashcard editor for content overflows (beta)', () => {
+  it('Should test flashcard editor for content overflows', () => {
     // go to the page
     page.visitDeckDetail(deckJson[0].deckId);
     // ensure eveything is there
@@ -123,28 +123,33 @@ describe('Access deck-detail and find stuff', () => {
     // change visualization to show 25 flashcards per page
     page.selectMaxPageSizeFromFlashcardDataTable();
     // check heights for all flashcards on DataTable
+    page.getAllEditbuttonsFromDataTable().each((item) => {
+      cy.wrap(item).trigger('click'); // opens modal
+      page.checkContentHeightsOnView(); // checks front
+      cy.get('button').contains('Next').trigger('click'); // goes to back
+      page.checkContentHeightsOnView(); // checks back
+      cy.get('button[aria-label="Close"]').trigger('click'); // closes modal
+    });
+  });
 
-    // page.getAllEditbuttonsFromDataTable().each((item) => {
-    //   cy.wrap(item).trigger('click'); // opens modal
-    //   page.checkContentHeightsOnView(); // checks front
-    //   cy.get('button').contains('Next').trigger('click');
-    //   page.checkContentHeightsOnView(); // checks back
-    //   cy.get('button[aria-label="Close"]').trigger('click'); // closes modal
-    // });
-
-    // check heights for study session
+  it('Should test study session wizard for content overflows', () => {
+    // go to the page
+    page.visitDeckDetail(deckJson[0].deckId);
+    // ensure eveything is there
+    page.getEverythingToGuaranteeImOnThePage();
+    // open study session modal
     page.getStudySessionButton().trigger('click');
     // start study session
     cy.get('a').contains('Start').should('be.visible').trigger('click');
-
-    // proceed depending on visibility of a 'Next' button
+    // create 'Cypress Array' for future use¹
     var genArr = Array.from({
       length:
         flashcardJson.filter((f) => f.deckId == deckJson[0].deckId).length - 2,
-    });
+    }); // 'lenght' minus 2 is the magical number here
     cy.wrap(genArr).each((el, index, list) => {
-      console.log(index, list.length);
+      // get modal so we can look for elements within it
       cy.get('.modal-body').then((modal) => {
+        // check if there is the answer input element
         if (
           modal.find('input[data-testid="flashcard-study-session-input"]')
             .length > 0
@@ -158,11 +163,13 @@ describe('Access deck-detail and find stuff', () => {
           cy.get('button').contains('Proceed').trigger('click');
           return false;
         } else if (
+          // checks if the close button is on the screen (means that the session is finished)
           modal.find('a[data-testid="study-session-close-btn"]').length > 0
         ) {
           cy.get('a[data-testid="study-session-close-btn"]').trigger('click');
           return false;
         } else {
+          // proceeds assuming that there is no answer for the flashcard (wrong/again/correct)
           page.checkContentHeightsOnView(); // checks front
           cy.get('button').contains('Next').trigger('click');
           page.checkContentHeightsOnView(); // checks back
@@ -173,3 +180,5 @@ describe('Access deck-detail and find stuff', () => {
     });
   });
 });
+
+// ¹This is super weird, but apparently since everything is async within Cypress, using normal 'while' will not work at all here. According to some link I found, using tools inside Cypress seem to do the trick, even though it looks scuffed.
