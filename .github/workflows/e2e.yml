@@ -5,6 +5,8 @@ name: Angular Scheduled E2E CI
 on:
   schedule:
   - cron: "0 0 * * *"
+  push:
+    branches: master
 
 jobs:
   ci:
