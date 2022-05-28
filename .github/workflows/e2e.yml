@@ -43,7 +43,7 @@ jobs:
           npm ci
       - name: Serve
         run: |
-          ng s --configuration production
+          setup.sh && npm start -- --configuration production
       - name: Test E2E
         run: |
           npx cypress run --port 4201
