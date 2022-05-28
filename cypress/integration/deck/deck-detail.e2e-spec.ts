@@ -162,28 +162,28 @@ describe('Access deck-detail and find stuff', () => {
   });
 
   deckJson.forEach((deck, index, list) => {
-    // it(`Should test flashcard editor for content overflows ('${
-    //   deck.name
-    // }' ---> ${index + 1} of ${list.length})`, () => {
-    //   // go to the page
-    //   page.visitDeckDetail(deck.deckId);
-    //   // ensure eveything is there
-    //   page.getEverythingToGuaranteeImOnThePage();
-    //   // find flashcard accordion
-    //   page.ensureAccordionIsExpanded();
-    //   // find data-table inside it
-    //   page.getFlashcardDataTable();
-    //   // change visualization to show 25 flashcards per page
-    //   page.selectMaxPageSizeFromFlashcardDataTable();
-    //   // check heights for all flashcards on DataTable
-    //   page.getAllEditbuttonsFromDataTable().each((item) => {
-    //     cy.wrap(item).trigger('click'); // opens modal
-    //     page.checkContentHeightsOnView(); // checks front
-    //     cy.get('button').contains('Next').trigger('click'); // goes to back
-    //     page.checkContentHeightsOnView(); // checks back
-    //     cy.get('button[aria-label="Close"]').trigger('click'); // closes modal
-    //   });
-    // });
+    it(`Should test flashcard editor for content overflows ('${
+      deck.name
+    }' ---> ${index + 1} of ${list.length})`, () => {
+      // go to the page
+      page.visitDeckDetail(deck.deckId);
+      // ensure eveything is there
+      page.getEverythingToGuaranteeImOnThePage();
+      // find flashcard accordion
+      page.ensureAccordionIsExpanded();
+      // find data-table inside it
+      page.getFlashcardDataTable();
+      // change visualization to show 25 flashcards per page
+      page.selectMaxPageSizeFromFlashcardDataTable();
+      // check heights for all flashcards on DataTable
+      page.getAllEditbuttonsFromDataTable().each((item) => {
+        cy.wrap(item).trigger('click'); // opens modal
+        page.checkContentHeightsOnView(); // checks front
+        cy.get('button').contains('Next').trigger('click'); // goes to back
+        page.checkContentHeightsOnView(); // checks back
+        cy.get('button[aria-label="Close"]').trigger('click'); // closes modal
+      });
+    });
 
     it(`Should test study session wizard for content overflows ('${
       deck.name
