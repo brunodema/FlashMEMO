@@ -41,9 +41,9 @@ jobs:
         if: steps.cache-nodemodules.outputs.cache-hit != 'true'
         run: |
           npm ci
-      - name: Serve
+      - name: Setup
         run: |
-          ./setup.sh && npm start -- --configuration production
+          ./setup.sh
       - name: Test E2E
         run: |
-          npx cypress run --port 4201
+          ng e2e
