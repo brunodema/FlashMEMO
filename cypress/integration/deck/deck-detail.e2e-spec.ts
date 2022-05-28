@@ -79,15 +79,55 @@ class DeckDetailPageObject {
               if (contentHeight === 0)
                 throw new Error("This shouldn't happen! :/");
 
-              // the goal in this weird calculation is to avoid failed assertions such as '175.0000001 is bigger than 175'. In this case, there's a 1px margin of error.
-              let value = contentHeight - parentHeight;
-              expect(value).to.be.lte(
-                1,
-                `contentHeight is ${contentHeight} and parentHeight is ${parentHeight}`
-              );
+              this.alertHeightProblem(contentHeight, parentHeight);
             });
         });
     });
+  }
+
+  advanceStudySession() {
+    // get modal so we can look for elements within it
+    cy.get('.modal-body').then((modal) => {
+      // check if there is the answer input element
+      if (
+        modal.find('input[data-testid="flashcard-study-session-input"]')
+          .length > 0
+      ) {
+        this.checkContentHeightsOnView(); // checks front
+        cy.get('input[data-testid="flashcard-study-session-input"]').type('a');
+        cy.get('button').contains('Next').trigger('click');
+        this.checkContentHeightsOnView(); // checks back
+        cy.get('button').contains('Proceed').trigger('click');
+        this.advanceStudySession();
+      } else if (
+        // checks if the close button is on the screen (means that the session is finished)
+        modal.find('a[data-testid="study-session-close-btn"]').length > 0
+      ) {
+        cy.get('a[data-testid="study-session-close-btn"]').trigger('click');
+        return;
+      } else {
+        // proceeds assuming that there is no answer for the flashcard (wrong/again/correct)
+        this.checkContentHeightsOnView(); // checks front
+        cy.get('button').contains('Next').trigger('click');
+        this.checkContentHeightsOnView(); // checks back
+        cy.get('button').contains('Correct').trigger('click');
+        this.advanceStudySession();
+      }
+    });
+  }
+
+  // the goal in this weird calculation is to avoid failed assertions such as '175.0000001 is bigger than 175'. In this case, there's a 1px margin of error.
+  alertHeightProblem(contentHeight: number, parentHeight: number) {
+    let value = contentHeight - parentHeight;
+
+    // if (value > 1)
+    //   cy.log(
+    //     `contentHeight is ${contentHeight} and parentHeight is ${parentHeight}. Mismatch of '${value}'.`
+    //   );
+    expect(value).to.be.lte(
+      1,
+      `contentHeight is ${contentHeight} and parentHeight is ${parentHeight}`
+    );
   }
 
   logCurrentURL() {
@@ -97,6 +137,13 @@ class DeckDetailPageObject {
 
 describe('Access deck-detail and find stuff', () => {
   let page: DeckDetailPageObject = new DeckDetailPageObject();
+
+  beforeEach(() => {
+    // run these tests as if in a desktop
+    // browser with a 720p monitor
+    cy.viewport(1280, 720);
+    cy.task('log', 'setting viewport to 720p...');
+  });
 
   it('Should go to the fucking page (via "create")', () => {
     page.visitDeckDetail();
@@ -114,72 +161,43 @@ describe('Access deck-detail and find stuff', () => {
     cy.url().should('not.contain', 'deck');
   });
 
-  it('Should test flashcard editor for content overflows', () => {
-    // go to the page
-    page.visitDeckDetail(deckJson[0].deckId);
-    // ensure eveything is there
-    page.getEverythingToGuaranteeImOnThePage();
-    // find flashcard accordion
-    page.ensureAccordionIsExpanded();
-    // find data-table inside it
-    page.getFlashcardDataTable();
-    // change visualization to show 25 flashcards per page
-    page.selectMaxPageSizeFromFlashcardDataTable();
-    // check heights for all flashcards on DataTable
-    page.getAllEditbuttonsFromDataTable().each((item) => {
-      cy.wrap(item).trigger('click'); // opens modal
-      page.checkContentHeightsOnView(); // checks front
-      cy.get('button').contains('Next').trigger('click'); // goes to back
-      page.checkContentHeightsOnView(); // checks back
-      cy.get('button[aria-label="Close"]').trigger('click'); // closes modal
-    });
-  });
+  deckJson.forEach((deck, index, list) => {
+    // it(`Should test flashcard editor for content overflows ('${
+    //   deck.name
+    // }' ---> ${index + 1} of ${list.length})`, () => {
+    //   // go to the page
+    //   page.visitDeckDetail(deck.deckId);
+    //   // ensure eveything is there
+    //   page.getEverythingToGuaranteeImOnThePage();
+    //   // find flashcard accordion
+    //   page.ensureAccordionIsExpanded();
+    //   // find data-table inside it
+    //   page.getFlashcardDataTable();
+    //   // change visualization to show 25 flashcards per page
+    //   page.selectMaxPageSizeFromFlashcardDataTable();
+    //   // check heights for all flashcards on DataTable
+    //   page.getAllEditbuttonsFromDataTable().each((item) => {
+    //     cy.wrap(item).trigger('click'); // opens modal
+    //     page.checkContentHeightsOnView(); // checks front
+    //     cy.get('button').contains('Next').trigger('click'); // goes to back
+    //     page.checkContentHeightsOnView(); // checks back
+    //     cy.get('button[aria-label="Close"]').trigger('click'); // closes modal
+    //   });
+    // });
 
-  it('Should test study session wizard for content overflows', () => {
-    // go to the page
-    page.visitDeckDetail(deckJson[0].deckId);
-    // ensure eveything is there
-    page.getEverythingToGuaranteeImOnThePage();
-    // open study session modal
-    page.getStudySessionButton().trigger('click');
-    // start study session
-    cy.get('a').contains('Start').should('be.visible').trigger('click');
-    // create 'Cypress Array' for future use¹
-    var genArr = Array.from({
-      length:
-        flashcardJson.filter((f) => f.deckId == deckJson[0].deckId).length - 2,
-    }); // 'lenght' minus 2 is the magical number here
-    cy.wrap(genArr).each((el, index, list) => {
-      // get modal so we can look for elements within it
-      cy.get('.modal-body').then((modal) => {
-        // check if there is the answer input element
-        if (
-          modal.find('input[data-testid="flashcard-study-session-input"]')
-            .length > 0
-        ) {
-          page.checkContentHeightsOnView(); // checks front
-          cy.get('input[data-testid="flashcard-study-session-input"]').type(
-            'a'
-          );
-          cy.get('button').contains('Next').trigger('click');
-          page.checkContentHeightsOnView(); // checks back
-          cy.get('button').contains('Proceed').trigger('click');
-          return false;
-        } else if (
-          // checks if the close button is on the screen (means that the session is finished)
-          modal.find('a[data-testid="study-session-close-btn"]').length > 0
-        ) {
-          cy.get('a[data-testid="study-session-close-btn"]').trigger('click');
-          return false;
-        } else {
-          // proceeds assuming that there is no answer for the flashcard (wrong/again/correct)
-          page.checkContentHeightsOnView(); // checks front
-          cy.get('button').contains('Next').trigger('click');
-          page.checkContentHeightsOnView(); // checks back
-          cy.get('button').contains('Correct').trigger('click');
-          return false;
-        }
-      });
+    it(`Should test study session wizard for content overflows ('${
+      deck.name
+    }' ---> ${index + 1} of ${list.length})`, () => {
+      // go to the page
+      page.visitDeckDetail(deck.deckId);
+      // ensure eveything is there
+      page.getEverythingToGuaranteeImOnThePage();
+      // open study session modal
+      page.getStudySessionButton().trigger('click');
+      // start study session
+      cy.get('a').contains('Start').should('be.visible').trigger('click');
+      // go through the study session until it ends (runs out of flashcards) ---> PS: this function uses recursion, WHICH IS A FUCKING HORNET'S NEST. However, this seems to the accepted approach to deal with Cypress' async nature. I tried using an approach with a dummy array + 'each()', but that didn't work, as the code was having trouble reaching the final page + clicking the 'Close' button.
+      page.advanceStudySession();
     });
   });
 });
