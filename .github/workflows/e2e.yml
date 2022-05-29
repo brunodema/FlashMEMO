@@ -50,7 +50,7 @@ jobs:
       - name: Upload Screenshots
         run: |
       - name: Upload screenshots
-        uses: actions/upload-artifact@3
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
             name: cypress-snapshots
