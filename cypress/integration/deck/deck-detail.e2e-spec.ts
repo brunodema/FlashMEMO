@@ -162,7 +162,7 @@ describe('Access deck-detail and find stuff', () => {
   });
 
   deckJson.forEach((deck, index, list) => {
-    it(`Should test flashcard editor for content overflows ('${
+    it.skip(`Should test flashcard editor for content overflows ('${
       deck.name
     }' ---> ${index + 1} of ${list.length})`, () => {
       // go to the page
