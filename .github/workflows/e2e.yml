@@ -47,8 +47,6 @@ jobs:
       - name: Test E2E
         run: |
           ng e2e
-      - name: Upload Screenshots
-        run: |
       - name: Upload screenshots
         uses: actions/upload-artifact@v3
         if: failure()
