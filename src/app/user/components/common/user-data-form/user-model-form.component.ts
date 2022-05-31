@@ -13,16 +13,23 @@ import { GenericNotificationService } from 'src/app/shared/services/notification
 import { User } from 'src/app/user/models/user.model';
 import { GenericUserService } from 'src/app/user/services/user.service';
 
+/**
+ * This is used to differentiate between the following possibilities: (a) sysadmin is creating a new user from scratch, (b) sysadmin/user is editting its profile, and (c) a visitor is registering his/hers account on the website.
+ */
+export enum UserFormMode {
+  CREATE = 'CREATE',
+  EDIT = 'EDIT',
+  REGISTER = 'REGISTER',
+}
+
 @Component({
   selector: 'app-user-model-form',
   templateUrl: './user-model-form.component.html',
   styleUrls: ['./user-model-form.component.css'],
 })
 export class UserModelFormComponent implements AfterViewInit {
-  /**
-   * Will be true if a user is provided in the declaration of the component, meaning that an existing user is being shown by the component.
-   */
-  isEditMode: boolean = false;
+  @Input()
+  formMode: UserFormMode = UserFormMode.REGISTER;
 
   form = new FormGroup({});
   fields: FormlyFieldConfig[] = [
@@ -107,13 +114,10 @@ export class UserModelFormComponent implements AfterViewInit {
     private authService: GenericAuthService,
     private userService: GenericUserService,
     private notificationService: GenericNotificationService,
-    private route: ActivatedRoute,
     private cdr: ChangeDetectorRef
-  ) {
-    this.userModel = this.route.snapshot.data['user'];
-    if (this.userModel) this.isEditMode = true;
-  }
+  ) {}
   ngAfterViewInit(): void {
+    console.log('current mode is: ' + this.formMode);
     if (this.userModel) {
       this.form.controls['password'].setValue('');
       this.cdr.detectChanges();
@@ -122,7 +126,7 @@ export class UserModelFormComponent implements AfterViewInit {
 
   onSubmit() {
     if (this.form.valid) {
-      if (this.isEditMode) {
+      if (this.formMode === UserFormMode.EDIT) {
         this.userService.update(this.userModel.id, this.userModel).subscribe(
           (result) => {
             this.notificationService.showSuccess('User successfully updated!');
@@ -132,16 +136,29 @@ export class UserModelFormComponent implements AfterViewInit {
           }
         );
       } else {
-        this.authService.register(this.form.value).subscribe(
-          (result) => {
-            this.notificationService.showSuccess(
-              'User successfully registered!'
-            );
-          },
-          (error) => {
-            this.notificationService.showError(error);
-          }
-        );
+        if (this.formMode === UserFormMode.REGISTER) {
+          this.authService.register(this.form.value).subscribe(
+            (result) => {
+              this.notificationService.showSuccess(
+                'User successfully registered!'
+              );
+            },
+            (error) => {
+              this.notificationService.showError(error);
+            }
+          );
+        } else {
+          this.userService.create(this.form.value).subscribe(
+            (result) => {
+              this.notificationService.showSuccess(
+                'User successfully created!'
+              );
+            },
+            (error) => {
+              this.notificationService.showError(error);
+            }
+          );
+        }
       }
 
       return;
