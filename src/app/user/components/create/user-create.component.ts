@@ -12,7 +12,6 @@ export class UserCreateComponent implements OnInit {
 
   constructor(private route: ActivatedRoute) {
     this.route.queryParams.subscribe((params) => {
-      console.log(params); // { order: "popular" }
       if (params.mode === 'register') this.formMode = UserFormMode.REGISTER;
     });
   }
