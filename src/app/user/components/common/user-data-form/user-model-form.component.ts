@@ -1,9 +1,17 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { GenericAuthService } from 'src/app/shared/services/auth.service';
+import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
 import { User } from 'src/app/user/models/user.model';
+import { GenericUserService } from 'src/app/user/services/user.service';
 
 @Component({
   selector: 'app-user-model-form',
@@ -11,6 +19,11 @@ import { User } from 'src/app/user/models/user.model';
   styleUrls: ['./user-model-form.component.css'],
 })
 export class UserModelFormComponent implements AfterViewInit {
+  /**
+   * Will be true if a user is provided in the declaration of the component, meaning that an existing user is being shown by the component.
+   */
+  isEditMode: boolean = false;
+
   form = new FormGroup({});
   fields: FormlyFieldConfig[] = [
     {
@@ -92,28 +105,44 @@ export class UserModelFormComponent implements AfterViewInit {
 
   constructor(
     private authService: GenericAuthService,
+    private userService: GenericUserService,
+    private notificationService: GenericNotificationService,
     private route: ActivatedRoute,
-    private cdr : ChangeDetectorRef
+    private cdr: ChangeDetectorRef
   ) {
     this.userModel = this.route.snapshot.data['user'];
+    if (this.userModel) this.isEditMode = true;
   }
   ngAfterViewInit(): void {
     if (this.userModel) {
-      this.form.controls['password'].setValue('')
-      this.cdr.detectChanges()
+      this.form.controls['password'].setValue('');
+      this.cdr.detectChanges();
     }
   }
 
   onSubmit() {
     if (this.form.valid) {
-      this.authService.register(this.form.value).subscribe(
-        (result) => {
-          console.log('user successfully registered!');
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+      if (this.isEditMode) {
+        this.userService.update(this.userModel.id, this.userModel).subscribe(
+          (result) => {
+            this.notificationService.showSuccess('User successfully updated!');
+          },
+          (error) => {
+            this.notificationService.showError(error);
+          }
+        );
+      } else {
+        this.authService.register(this.form.value).subscribe(
+          (result) => {
+            this.notificationService.showSuccess(
+              'User successfully registered!'
+            );
+          },
+          (error) => {
+            this.notificationService.showError(error);
+          }
+        );
+      }
 
       return;
     }
