@@ -110,18 +110,32 @@ export class UserModelFormComponent implements AfterViewInit {
   @Input()
   userModel: User = {} as User; // apparently has to be of 'any' type
 
+  /**
+   * To avoid any risks of exposing confidential information (even if masked), this function is called to clear both password fields of the form.
+   */
+  private clearPasswordFields() {
+    // this.form.controls['password'].setValue('', {
+    //   emitEvent: false,
+    //   onlySelf: true,
+    // });
+    // this.form.controls['confirmPassword'].setValue('', {
+    //   emitEvent: false,
+    //   onlySelf: true,
+    // });
+    this.form.patchValue({ password: '', confirmPassword: '' });
+  }
+
   constructor(
     private authService: GenericAuthService,
     private userService: GenericUserService,
     private notificationService: GenericNotificationService,
+    private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
   ngAfterViewInit(): void {
     console.log('current mode is: ' + this.formMode);
-    if (this.userModel) {
-      this.form.controls['password'].setValue('');
-      this.cdr.detectChanges();
-    }
+    this.clearPasswordFields();
+    this.cdr.detectChanges();
   }
 
   onSubmit() {
@@ -130,6 +144,7 @@ export class UserModelFormComponent implements AfterViewInit {
         this.userService.update(this.userModel.id, this.userModel).subscribe(
           (result) => {
             this.notificationService.showSuccess('User successfully updated!');
+            this.router.navigate(['user', result.data]);
           },
           (error) => {
             this.notificationService.showError(error);
@@ -153,6 +168,7 @@ export class UserModelFormComponent implements AfterViewInit {
               this.notificationService.showSuccess(
                 'User successfully created!'
               );
+              this.router.navigate(['user', result.data]);
             },
             (error) => {
               this.notificationService.showError(error);
@@ -163,6 +179,6 @@ export class UserModelFormComponent implements AfterViewInit {
 
       return;
     }
-    console.log('form is not valid!');
+    this.notificationService.showWarning('The form has problems.');
   }
 }
