@@ -89,9 +89,13 @@ export class UserModelFormComponent implements AfterViewInit {
             type: 'password',
             label: 'Password',
             placeholder: 'Enter your password',
-            required: true,
           },
           className: 'd-block mb-2',
+          expressionProperties: {
+            'templateOptions.required': (model: User, formState: any) => {
+              return this.formMode === UserFormMode.EDIT ? false : true;
+            },
+          },
         },
         {
           key: 'confirmPassword',
@@ -100,7 +104,14 @@ export class UserModelFormComponent implements AfterViewInit {
             type: 'password',
             label: 'Confirm password',
             placeholder: 'Repeat your password',
-            required: true,
+          },
+          expressionProperties: {
+            'templateOptions.required': (model: any, formState: any) => {
+              return model.password?.length > 0;
+            },
+            'templateOptions.disabled': (model: any, formState: any) => {
+              return model.password?.length === 0;
+            },
           },
         },
       ],
@@ -123,6 +134,7 @@ export class UserModelFormComponent implements AfterViewInit {
     //   onlySelf: true,
     // });
     this.form.patchValue({ password: '', confirmPassword: '' });
+    this.cdr.detectChanges();
   }
 
   constructor(
@@ -135,7 +147,6 @@ export class UserModelFormComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     console.log('current mode is: ' + this.formMode);
     this.clearPasswordFields();
-    this.cdr.detectChanges();
   }
 
   onSubmit() {
@@ -144,7 +155,6 @@ export class UserModelFormComponent implements AfterViewInit {
         this.userService.update(this.userModel.id, this.userModel).subscribe(
           (result) => {
             this.notificationService.showSuccess('User successfully updated!');
-            this.router.navigate(['user', result.data]);
           },
           (error) => {
             this.notificationService.showError(error);
