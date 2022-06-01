@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouteMap } from 'src/app/shared/models/routing/route-map';
 import { News } from '../../models/news.model';
-import { NewsService } from '../../services/news.service';
+import { GenericNewsService, NewsService } from '../../services/news.service';
 @Component({
   selector: 'app-news',
   templateUrl: './news-list.component.html',
@@ -13,7 +13,7 @@ export class NewsComponent implements OnInit {
 
   routes: RouteMap[] = [{ label: 'Create News', route: 'create' }];
 
-  constructor(private newsService: NewsService) {}
+  constructor(private newsService: GenericNewsService) {}
 
   ngOnInit() {
     this.newsService.getAll().subscribe((news) => {

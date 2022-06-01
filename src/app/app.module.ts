@@ -73,6 +73,7 @@ import {
   UserService,
 } from './user/services/user.service';
 import { DatePipe } from '@angular/common';
+import { GenericNewsService, MockNewsService, NewsService } from './news/services/news.service';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
@@ -140,6 +141,7 @@ export const formlyConfig: ConfigOption = {
     { provide: GenericLanguageService, useClass: MockLanguageService },
     { provide: GenericAuthService, useClass: MockAuthService },
     { provide: GenericUserService, useClass: MockUserService },
+    { provide: GenericNewsService, useClass: MockNewsService },
 
     // { provide: GeneralImageAPIService, useClass: ImageAPIService },
     // { provide: GeneralDictionaryAPIService, useClass: DictionaryService },
@@ -149,6 +151,7 @@ export const formlyConfig: ConfigOption = {
     // { provide: GenericLanguageService, useClass: LanguageService },
     // { provide: GenericAuthService, useClass: AuthService },
     // { provide: GenericUserService, useClass: UserService },
+    // { provide: GenericNewsService, useClass: NewsService },
 
     AuthGuard,
     { provide: DeckRepositoryResolverService },
