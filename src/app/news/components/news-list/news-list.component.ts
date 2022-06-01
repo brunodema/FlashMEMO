@@ -7,18 +7,14 @@ import { GenericNewsService, NewsService } from '../../services/news.service';
   templateUrl: './news-list.component.html',
   styleUrls: ['./news-list.component.css'],
 })
-export class NewsComponent implements OnInit {
+export class NewsComponent {
   public newsList: News[];
-  public error?: Error;
 
-  routes: RouteMap[] = [{ label: 'Create News', route: 'create' }];
+  public routes: RouteMap[] = [{ label: 'Create News', route: 'create' }];
 
-  constructor(private newsService: GenericNewsService) {}
-
-  ngOnInit() {
+  constructor(private newsService: GenericNewsService) {
     this.newsService.getAll().subscribe((news) => {
       this.newsList = news;
-      console.log(news);
     });
   }
 }

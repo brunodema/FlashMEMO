@@ -8,10 +8,10 @@ import { NewsComponent } from '../components/news-list/news-list.component';
 const routes: Routes = [
   { path: 'list', component: NewsComponent },
   { path: 'create', component: NewsCreateComponent },
-    {
+  {
     path: ':id',
     component: NewsDetailComponent,
-    resolve: { deck: NewsRepositoryResolverService },
+    resolve: { news: NewsRepositoryResolverService },
   },
   { path: '', redirectTo: 'list', pathMatch: 'full' },
 ];
