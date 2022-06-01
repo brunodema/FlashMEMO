@@ -42,6 +42,10 @@ export abstract class GenericDeckService extends GenericRepositoryService<Deck> 
   abstract getExtendedDeckInfo(
     ownerId?: string
   ): Observable<ExtendedDeckInfoDTO[]>;
+
+  getTypename(): string {
+    return 'deck';
+  }
 }
 
 @Injectable()
@@ -49,9 +53,7 @@ export class MockDeckService extends GenericDeckService {
   constructor(private http: HttpClient) {
     super(http);
   }
-  getTypename(): string {
-    return 'deck';
-  }
+
   search(
     params: DeckSearchParams = { pageSize: 10, pageNumber: 1 }
   ): Observable<Deck[]> {
@@ -137,10 +139,6 @@ export class MockDeckService extends GenericDeckService {
 export class DeckService extends GenericDeckService {
   constructor(private http: HttpClient) {
     super(http);
-  }
-
-  getTypename(): string {
-    return 'deck';
   }
 
   search(

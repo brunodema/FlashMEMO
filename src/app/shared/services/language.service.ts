@@ -25,16 +25,16 @@ export abstract class GenericLanguageService extends GenericRepositoryService<La
     super(`${environment.backendRootAddress}/api/v1/language`, httpClient);
   }
   abstract search(params: LanguageSearchParams): Observable<Language[]>;
+
+  getTypename(): string {
+    return 'language';
+  }
 }
 
 @Injectable()
 export class MockLanguageService extends GenericLanguageService {
   constructor(protected httpClient: HttpClient) {
     super(httpClient);
-  }
-
-  getTypename(): string {
-    return 'language';
   }
 
   search(searchParams: LanguageSearchParams): Observable<Language[]> {
@@ -50,10 +50,6 @@ export class MockLanguageService extends GenericLanguageService {
 export class LanguageService extends GenericLanguageService {
   constructor(protected httpClient: HttpClient) {
     super(httpClient);
-  }
-
-  getTypename(): string {
-    return 'language';
   }
 
   search(params: LanguageSearchParams): Observable<Language[]> {

@@ -33,6 +33,10 @@ export abstract class GenericNewsService extends GenericRepositoryService<News> 
     super(`${environment.backendRootAddress}/api/v1/news`, httpClient);
   }
   abstract search(searchParams: NewsSearchParams): Observable<News[]>;
+
+  getTypename(): string {
+    return 'news';
+  }
 }
 
 @Injectable()
@@ -40,9 +44,7 @@ export class MockNewsService extends GenericNewsService {
   constructor(private http: HttpClient) {
     super(http);
   }
-  getTypename(): string {
-    return 'news';
-  }
+
   search(
     params: NewsSearchParams = { pageSize: 10, pageNumber: 1 }
   ): Observable<News[]> {
@@ -100,10 +102,6 @@ export class MockNewsService extends GenericNewsService {
 export class NewsService extends GenericNewsService {
   constructor(private http: HttpClient) {
     super(http);
-  }
-
-  getTypename(): string {
-    return 'news'
   }
 
   search(

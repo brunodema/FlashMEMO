@@ -41,6 +41,10 @@ export abstract class GenericFlashcardService extends GenericRepositoryService<I
   abstract getAllFlashcardsFromDeck(deckId: string): Observable<IFlashcard[]>;
   abstract getNumberOfFlashcardsFromDeck(deckId: string): Observable<number>;
 
+  getTypename(): string {
+    return 'flashcard';
+  }
+
   /**
    * Yes, this function is declared here since I can't declare it on the IFlashcard classes, because TS is fucking stupid and tries to (de)serialize the function when working with JSONs (breaks the model seeder)
    * @param flashcard
@@ -62,9 +66,6 @@ export abstract class GenericFlashcardService extends GenericRepositoryService<I
 export class MockFlashcardService extends GenericFlashcardService {
   constructor(protected httpClient: HttpClient) {
     super(httpClient);
-  }
-  getTypename(): string {
-    return 'flashcard';
   }
   getAllFlashcardsFromDeck(deckId: string): Observable<IFlashcard[]> {
     return of(flashcardJson.filter((f) => f.deckId === deckId));
@@ -119,9 +120,6 @@ export class MockFlashcardService extends GenericFlashcardService {
 export class FlashcardService extends GenericFlashcardService {
   constructor(protected httpClient: HttpClient) {
     super(httpClient);
-  }
-  getTypename(): string {
-    return 'flashcard';
   }
   search(params: FlashcardSearchParams): Observable<IFlashcard[]> {
     {
