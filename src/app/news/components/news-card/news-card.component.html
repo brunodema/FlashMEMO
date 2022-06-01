@@ -15,7 +15,7 @@
     <p class="card-text mb-auto line-clamp-3">
       {{ news.subtitle }}
     </p>
-    <a class="btn btn-outline-primary my-2" role="button" href="#"
+    <a class="btn btn-outline-primary my-2" role="button" [routerLink]="['/news', news.newsId]"
       >Continue reading</a
     >
   </div>

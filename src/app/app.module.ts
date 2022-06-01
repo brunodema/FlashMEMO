@@ -45,6 +45,7 @@ import {
 } from './shared/services/flashcard.service';
 import {
   DeckRepositoryResolverService,
+  NewsRepositoryResolverService,
   UserRepositoryResolverService,
 } from './shared/resolvers/generic-repository.resolver';
 import {
@@ -156,6 +157,7 @@ export const formlyConfig: ConfigOption = {
     AuthGuard,
     { provide: DeckRepositoryResolverService },
     { provide: UserRepositoryResolverService },
+    { provide: NewsRepositoryResolverService },
     { provide: GenericNotificationService, useClass: NotificationService },
     {
       provide: HTTP_INTERCEPTORS,

@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/operators';
 import { Deck } from 'src/app/deck/models/deck.model';
 import { GenericDeckService } from 'src/app/deck/services/deck.service';
+import { News } from 'src/app/news/models/news.model';
+import { GenericNewsService } from 'src/app/news/services/news.service';
 import { User } from 'src/app/user/models/user.model';
 import { GenericUserService } from 'src/app/user/services/user.service';
 import { GenericRepositoryService } from '../services/general-repository.service';
@@ -22,10 +24,13 @@ export class GenericRepositoryResolverService<Type> implements Resolve<Type> {
     let id = route.params['id'];
     console.log('resolver: id is ' + id);
     if (id) {
-      console.log('resolver: id is not empty, underlying service is:', this.service)
+      console.log(
+        'resolver: id is not empty, underlying service is:',
+        this.service
+      );
       return this.service.getById(id).pipe(
         map((r) => {
-          console.log('resolver: mapping result', r)
+          console.log('resolver: mapping result', r);
           if (r) {
             console.log('resolver: result from service is: ', r);
             return r;
@@ -55,6 +60,13 @@ export class DeckRepositoryResolverService extends GenericRepositoryResolverServ
 @Injectable()
 export class UserRepositoryResolverService extends GenericRepositoryResolverService<User> {
   constructor(service: GenericUserService, router: Router) {
+    super(service, router);
+  }
+}
+
+@Injectable()
+export class NewsRepositoryResolverService extends GenericRepositoryResolverService<News> {
+  constructor(service: GenericNewsService, router: Router) {
     super(service, router);
   }
 }
