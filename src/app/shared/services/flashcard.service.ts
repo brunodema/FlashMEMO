@@ -63,6 +63,9 @@ export class MockFlashcardService extends GenericFlashcardService {
   constructor(protected httpClient: HttpClient) {
     super(httpClient);
   }
+  getTypename(): string {
+    return 'flashcard';
+  }
   getAllFlashcardsFromDeck(deckId: string): Observable<IFlashcard[]> {
     return of(flashcardJson.filter((f) => f.deckId === deckId));
   }
@@ -116,6 +119,9 @@ export class MockFlashcardService extends GenericFlashcardService {
 export class FlashcardService extends GenericFlashcardService {
   constructor(protected httpClient: HttpClient) {
     super(httpClient);
+  }
+  getTypename(): string {
+    return 'flashcard';
   }
   search(params: FlashcardSearchParams): Observable<IFlashcard[]> {
     {

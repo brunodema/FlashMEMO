@@ -1,11 +1,13 @@
 export class News {
-  newsID: string = '';
+  newsId: string = '';
   title: string = '';
   subtitle: string = '';
   thumbnailPath: string = '';
   content: string = '';
-  creationDate: number = Date.now();
-  lastUpdated: number = Date.now();
+  creationDate: string = new Date().toISOString();
+  lastUpdated: string = new Date().toISOString();
 
-  constructor() {}
+  public constructor(init?: Partial<News>) {
+    Object.assign(this, init);
+  }
 }

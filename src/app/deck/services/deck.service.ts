@@ -49,6 +49,9 @@ export class MockDeckService extends GenericDeckService {
   constructor(private http: HttpClient) {
     super(http);
   }
+  getTypename(): string {
+    return 'deck';
+  }
   search(
     params: DeckSearchParams = { pageSize: 10, pageNumber: 1 }
   ): Observable<Deck[]> {
@@ -60,9 +63,9 @@ export class MockDeckService extends GenericDeckService {
   }
 
   getById(id: string): Observable<Deck> {
-    console.log(`GenericDeckService: getting by id '${id}'`)
-    let obj = deckJson.filter((x) => x.deckId == id)[0]
-    console.log('GenericDeckService: returning object ', obj)
+    console.log(`GenericDeckService: getting by id '${id}'`);
+    let obj = deckJson.filter((x) => x.deckId == id)[0];
+    console.log('GenericDeckService: returning object ', obj);
     return of(obj);
   }
 
@@ -134,6 +137,10 @@ export class MockDeckService extends GenericDeckService {
 export class DeckService extends GenericDeckService {
   constructor(private http: HttpClient) {
     super(http);
+  }
+
+  getTypename(): string {
+    return 'deck';
   }
 
   search(

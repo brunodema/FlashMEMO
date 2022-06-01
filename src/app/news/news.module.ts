@@ -6,6 +6,7 @@ import { NewsCreateComponent } from './components/create/news-create.component';
 import { NewsCardComponent } from './components/news-card/news-card.component';
 import { SharedModule } from '../shared/shared.module';
 import { NewsComponent } from './components/news-list/news-list.component';
+import { NewsDetailComponent } from './components/news-detail/news-detail.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { NewsComponent } from './components/news-list/news-list.component';
     NewsComponent,
     NewsCreateComponent,
     NewsCardComponent,
+    NewsDetailComponent,
   ],
   imports: [CommonModule, NewsRoutingModule, SharedModule],
   exports: [NewsSummaryComponent],

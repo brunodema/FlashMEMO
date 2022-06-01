@@ -24,6 +24,7 @@ import { FooterComponent } from './components/common/footer/footer.component';
 import { UserPreferencesDropdownComponent } from './components/common/user-preferences-dropdown/user-preferences-dropdown.component';
 import { StudySessionComponent } from './components/study-session/study-session/study-session.component';
 import { FlashcardAnswerButtonsComponent } from './components/flashcard/flashcard-answer-buttons/flashcard-answer-buttons.component';
+import { DetailViewComponent } from './components/common/detail-view/detail-view.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { FlashcardAnswerButtonsComponent } from './components/flashcard/flashcar
     FlashcardComponent,
     StudySessionComponent,
     FlashcardAnswerButtonsComponent,
+    DetailViewComponent,
   ],
   imports: [
     CollapseModule,

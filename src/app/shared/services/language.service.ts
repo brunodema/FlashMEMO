@@ -33,6 +33,10 @@ export class MockLanguageService extends GenericLanguageService {
     super(httpClient);
   }
 
+  getTypename(): string {
+    return 'language';
+  }
+
   search(searchParams: LanguageSearchParams): Observable<Language[]> {
     return of(languageJson);
   }
@@ -46,6 +50,10 @@ export class MockLanguageService extends GenericLanguageService {
 export class LanguageService extends GenericLanguageService {
   constructor(protected httpClient: HttpClient) {
     super(httpClient);
+  }
+
+  getTypename(): string {
+    return 'language';
   }
 
   search(params: LanguageSearchParams): Observable<Language[]> {

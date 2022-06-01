@@ -2,6 +2,7 @@
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -17,8 +18,10 @@ import {
 export abstract class GenericRepositoryService<Type> {
   constructor(
     protected endpointURL: String,
-    protected httpClient: HttpClient
+    protected httpClient: HttpClient,
   ) {}
+
+  abstract getTypename(): string;
 
   create(object: Type): Observable<IDataResponse<string>> {
     return this.httpClient.post<IDataResponse<string>>(

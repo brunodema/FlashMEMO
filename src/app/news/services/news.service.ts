@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { News } from '../models/news.model';
 import { environment } from 'src/environments/environment';
 
@@ -11,8 +11,10 @@ import {
   SortColumn,
   SortType,
 } from 'src/app/shared/models/other/api-query-types';
-import { IPaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
+import { IBaseAPIResponse, IDataResponse, IPaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
 import { GenericRepositoryService } from 'src/app/shared/services/general-repository.service';
+
+import newsJson from 'src/assets/test_assets/News.json';
 
 class NewsSearchParams implements IServiceSearchParams {
   pageSize: Number;
@@ -26,12 +28,82 @@ class NewsSearchParams implements IServiceSearchParams {
   columnToSort?: SortColumn;
 }
 
+export abstract class GenericNewsService extends GenericRepositoryService<News> {
+  constructor(protected httpClient: HttpClient) {
+    super(`${environment.backendRootAddress}/api/v1/news`, httpClient);
+  }
+  abstract search(searchParams: NewsSearchParams): Observable<News[]>;
+}
+
+@Injectable()
+export class MockNewsService extends GenericNewsService {
+  constructor(private http: HttpClient) {
+    super(http);
+  }
+  getTypename(): string {
+    return 'news';
+  }
+  search(
+    params: NewsSearchParams = { pageSize: 10, pageNumber: 1 }
+  ): Observable<News[]> {
+    return of(newsJson);
+  }
+
+  getAll(): Observable<News[]> {
+    return of(newsJson);
+  }
+
+  getById(id: string): Observable<News> {
+    let obj = newsJson.filter((x) => x.newsId == id)[0];
+    return of(obj);
+  }
+
+  create(object: News): Observable<IDataResponse<string>> {
+    return of({
+      status: '200',
+      message: 'Dummy News has been created.',
+      errors: [],
+      data: '',
+    });
+  }
+
+  get(id: string): Observable<IDataResponse<News>> {
+    return of({
+      status: '200',
+      message: 'Dummy News object retrieved.',
+      errors: [],
+      data: {} as News,
+    });
+  }
+
+  update(id: string, object: News): Observable<IDataResponse<string>> {
+    return of({
+      status: '200',
+      message: 'Dummy News has been updated.',
+      errors: [],
+      data: '',
+    });
+  }
+
+  delete(id: string): Observable<IBaseAPIResponse> {
+    return of({
+      status: '200',
+      message: 'Dummy News has been deleted.',
+      errors: [],
+    });
+  }
+}
+
 @Injectable({
   providedIn: 'root',
 })
-export class NewsService extends GenericRepositoryService<News> {
+export class NewsService extends GenericNewsService {
   constructor(private http: HttpClient) {
-    super(`${environment.backendRootAddress}/api/v1/News`, http);
+    super(http);
+  }
+
+  getTypename(): string {
+    return 'news'
   }
 
   search(
