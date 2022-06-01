@@ -10,7 +10,7 @@ import { GenericNewsService, NewsService } from '../../services/news.service';
 export class NewsComponent {
   public newsList: News[];
 
-  public routes: RouteMap[] = [{ label: 'Create News', route: 'create' }];
+  public routes: RouteMap[] = [{ label: 'Create News', route: '/news/create' }];
 
   constructor(private newsService: GenericNewsService) {
     this.newsService.getAll().subscribe((news) => {
