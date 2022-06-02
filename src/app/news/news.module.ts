@@ -7,6 +7,8 @@ import { NewsCardComponent } from './components/news-card/news-card.component';
 import { SharedModule } from '../shared/shared.module';
 import { NewsComponent } from './components/news-list/news-list.component';
 import { NewsDetailComponent } from './components/news-detail/news-detail.component';
+import { CKEditorModule } from 'ckeditor4-angular';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,7 @@ import { NewsDetailComponent } from './components/news-detail/news-detail.compon
     NewsCardComponent,
     NewsDetailComponent,
   ],
-  imports: [CommonModule, NewsRoutingModule, SharedModule],
+  imports: [CommonModule, NewsRoutingModule, SharedModule, CKEditorModule, FormsModule],
   exports: [NewsSummaryComponent],
 })
 export class NewsModule {}
