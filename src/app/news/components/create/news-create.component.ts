@@ -23,14 +23,14 @@ export class NewsCreateComponent {
   ) {}
 
   onSubmit(args: News) {
-    if (args.newsId) {
+    if (args.newsId.trim().length > 0) {
       this.service.update(args.newsId, args).subscribe((response) => {
         this.notificationService.showSuccess('News successfully updated.');
       });
     } else {
-      this.service.update(args.newsId, args).subscribe((response) => {
+      this.service.create(args).subscribe((response) => {
         this.notificationService.showSuccess('News successfully created.');
-        this.router.navigate(['/news', args.newsId]);
+        this.router.navigate(['/news', response.data]);
       });
     }
   }

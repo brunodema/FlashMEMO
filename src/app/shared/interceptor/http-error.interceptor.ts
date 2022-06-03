@@ -22,7 +22,7 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error) => {
-        if (error.error.errors) {
+        if (error.error?.errors) {
           this.notificationService.showError(error.error.errors);
         } else {
           this.notificationService.showError(

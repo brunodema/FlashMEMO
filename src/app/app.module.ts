@@ -74,7 +74,11 @@ import {
   UserService,
 } from './user/services/user.service';
 import { DatePipe } from '@angular/common';
-import { GenericNewsService, MockNewsService, NewsService } from './news/services/news.service';
+import {
+  GenericNewsService,
+  MockNewsService,
+  NewsService,
+} from './news/services/news.service';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
@@ -134,25 +138,25 @@ export const formlyConfig: ConfigOption = {
     ClipboardModule,
   ],
   providers: [
-    { provide: GeneralImageAPIService, useClass: MockImageAPIService },
-    { provide: GeneralDictionaryAPIService, useClass: MockDictionaryService },
-    { provide: GeneralAudioAPIService, useClass: MockAudioService },
-    { provide: GenericDeckService, useClass: MockDeckService },
-    { provide: GenericFlashcardService, useClass: MockFlashcardService },
-    { provide: GenericLanguageService, useClass: MockLanguageService },
-    { provide: GenericAuthService, useClass: MockAuthService },
-    { provide: GenericUserService, useClass: MockUserService },
-    { provide: GenericNewsService, useClass: MockNewsService },
+    // { provide: GeneralImageAPIService, useClass: MockImageAPIService },
+    // { provide: GeneralDictionaryAPIService, useClass: MockDictionaryService },
+    // { provide: GeneralAudioAPIService, useClass: MockAudioService },
+    // { provide: GenericDeckService, useClass: MockDeckService },
+    // { provide: GenericFlashcardService, useClass: MockFlashcardService },
+    // { provide: GenericLanguageService, useClass: MockLanguageService },
+    // { provide: GenericAuthService, useClass: MockAuthService },
+    // { provide: GenericUserService, useClass: MockUserService },
+    // { provide: GenericNewsService, useClass: MockNewsService },
 
-    // { provide: GeneralImageAPIService, useClass: ImageAPIService },
-    // { provide: GeneralDictionaryAPIService, useClass: DictionaryService },
-    // { provide: GeneralAudioAPIService, useClass: AudioService },
-    // { provide: GenericDeckService, useClass: DeckService },
-    // { provide: GenericFlashcardService, useClass: FlashcardService },
-    // { provide: GenericLanguageService, useClass: LanguageService },
-    // { provide: GenericAuthService, useClass: AuthService },
-    // { provide: GenericUserService, useClass: UserService },
-    // { provide: GenericNewsService, useClass: NewsService },
+    { provide: GeneralImageAPIService, useClass: ImageAPIService },
+    { provide: GeneralDictionaryAPIService, useClass: DictionaryService },
+    { provide: GeneralAudioAPIService, useClass: AudioService },
+    { provide: GenericDeckService, useClass: DeckService },
+    { provide: GenericFlashcardService, useClass: FlashcardService },
+    { provide: GenericLanguageService, useClass: LanguageService },
+    { provide: GenericAuthService, useClass: AuthService },
+    { provide: GenericUserService, useClass: UserService },
+    { provide: GenericNewsService, useClass: NewsService },
 
     AuthGuard,
     { provide: DeckRepositoryResolverService },
