@@ -13,31 +13,5 @@ export class NewsCreateComponent {
    */
   model: News = new News();
 
-  editorType: CKEditor4.EditorType = CKEditor4.EditorType.CLASSIC;
-  editorConfig: CKEditor4.Config = {
-    toolbar: [
-      { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike'] },
-      {
-        name: 'paragraph',
-        items: [
-          'NumberedList',
-          'BulletedList',
-          'Blockquote',
-          'JustifyLeft',
-          'JustifyCenter',
-          'JustifyRight',
-          'JustifyBlock',
-          'Language',
-        ],
-      },
-      { name: 'colors', items: ['TextColor', 'BGColor'] },
-      { name: 'about', items: ['About'] },
-    ],
-  };
-
   constructor() {}
-
-  onSubmit() {
-    console.log(this.model);
-  }
 }
