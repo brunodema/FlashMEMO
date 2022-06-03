@@ -145,45 +145,30 @@ export class UserModelFormComponent implements AfterViewInit {
     private cdr: ChangeDetectorRef
   ) {}
   ngAfterViewInit(): void {
-    console.log('current mode is: ' + this.formMode);
+    // console.log('current mode is: ' + this.formMode);
     this.clearPasswordFields();
   }
 
   onSubmit() {
     if (this.form.valid) {
       if (this.formMode === UserFormMode.EDIT) {
-        this.userService.update(this.userModel.id, this.userModel).subscribe(
-          (result) => {
+        this.userService
+          .update(this.userModel.id, this.userModel)
+          .subscribe((result) => {
             this.notificationService.showSuccess('User successfully updated!');
-          },
-          (error) => {
-            this.notificationService.showError(error);
-          }
-        );
+          });
       } else {
         if (this.formMode === UserFormMode.REGISTER) {
-          this.authService.register(this.form.value).subscribe(
-            (result) => {
-              this.notificationService.showSuccess(
-                'User successfully registered!'
-              );
-            },
-            (error) => {
-              this.notificationService.showError(error);
-            }
-          );
+          this.authService.register(this.form.value).subscribe((result) => {
+            this.notificationService.showSuccess(
+              'User successfully registered!'
+            );
+          });
         } else {
-          this.userService.create(this.form.value).subscribe(
-            (result) => {
-              this.notificationService.showSuccess(
-                'User successfully created!'
-              );
-              this.router.navigate(['user', result.data]);
-            },
-            (error) => {
-              this.notificationService.showError(error);
-            }
-          );
+          this.userService.create(this.form.value).subscribe((result) => {
+            this.notificationService.showSuccess('User successfully created!');
+            this.router.navigate(['user', result.data]);
+          });
         }
       }
 

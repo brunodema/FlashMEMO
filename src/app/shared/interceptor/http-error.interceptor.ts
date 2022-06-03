@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import {
+  HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
+  HttpStatusCode,
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { GenericNotificationService } from '../services/notification/notification.service';
 
@@ -21,17 +23,17 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
-      catchError((error) => {
-        if (error.error?.errors) {
-          this.notificationService.showError(error.error.errors);
-        } else {
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === HttpStatusCode.InternalServerError) {
           this.notificationService.showError(
             'An error occured with your request.'
           );
+          console.log(error);
         }
-        return throwError(() => {
-          return new Error(error);
-        });
+        if (error.error?.errors) {
+          this.notificationService.showError(error.error.errors);
+        }
+        return of();
       })
     );
   }
