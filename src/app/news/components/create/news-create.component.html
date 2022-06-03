@@ -1,7 +1,7 @@
 <div class="container my-3">
   <mat-tab-group dynamicHeight animationDuration="0ms">
     <mat-tab label="Create">
-      <app-news-form [model]="model"></app-news-form>
+      <app-news-form [model]="model" (submit)="onSubmit($event)"></app-news-form>
     </mat-tab>
     <mat-tab label="Preview">
       <app-news-preview [model]="model"></app-news-preview>

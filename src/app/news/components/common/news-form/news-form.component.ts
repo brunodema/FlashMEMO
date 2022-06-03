@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CKEditor4 } from 'ckeditor4-angular';
 import { News } from 'src/app/news/models/news.model';
 
@@ -14,6 +14,9 @@ export class NewsFormComponent {
    */
   @Input()
   model: News = new News();
+
+  @Output()
+  submit : EventEmitter<News> = new EventEmitter()
 
   editorType: CKEditor4.EditorType = CKEditor4.EditorType.CLASSIC;
   editorConfig: CKEditor4.Config = {
@@ -41,5 +44,6 @@ export class NewsFormComponent {
 
   onSubmit() {
     console.log(this.model);
+    this.submit.emit(this.model)
   }
 }
