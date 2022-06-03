@@ -78,7 +78,7 @@ export class UserModelFormComponent implements AfterViewInit {
     {
       validators: {
         validation: [
-          { name: 'fieldMatch', options: { errorPath: 'confirmPassword' } },
+          { name: 'fieldMatch', options: { errorPath: 'passwordConfirm' } },
         ],
       },
       fieldGroup: [
@@ -98,7 +98,7 @@ export class UserModelFormComponent implements AfterViewInit {
           },
         },
         {
-          key: 'confirmPassword',
+          key: 'passwordConfirm',
           type: 'input',
           templateOptions: {
             type: 'password',

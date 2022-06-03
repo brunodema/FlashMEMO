@@ -81,7 +81,8 @@ import {
 } from './news/services/news.service';
 
 export function fieldMatchValidator(control: AbstractControl) {
-  const { password, passwordConfirm } = control.value;
+  const password = control.value['password'];
+  const passwordConfirm = control.value['passwordConfirm'];
 
   // avoid displaying the message error when values are empty
   if (!passwordConfirm || !password) {
