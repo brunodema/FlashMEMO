@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CKEditor4 } from 'ckeditor4-angular';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
@@ -17,6 +17,7 @@ export class NewsCreateComponent {
   model: News = new News();
 
   constructor(
+    @Inject('GenericNewsService')
     private service: GenericNewsService,
     private notificationService: GenericNotificationService,
     private router: Router

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { GenericAuthService } from '../services/auth.service';
 
@@ -6,7 +6,10 @@ import { GenericAuthService } from '../services/auth.service';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(public auth: GenericAuthService, public router: Router) {}
+  constructor(
+    @Inject('GenericAuthService') private auth: GenericAuthService,
+    public router: Router
+  ) {}
 
   canActivate(): boolean {
     if (!this.auth.isAuthenticated()) {

@@ -1,11 +1,11 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { RepositoryServiceConfig } from 'src/app/app.module';
 import {
   ILoginRequest,
   IRegisterRequest,
@@ -154,12 +154,14 @@ export class MockAuthService extends GenericAuthService {
   providedIn: 'root',
 })
 export class AuthService extends GenericAuthService {
-  protected authServiceURL: string = `${environment.backendRootAddress}/api/v1/Auth`;
-  protected userServiceURL: string = `${environment.backendRootAddress}/api/v1/User`;
+  protected authServiceURL: string = `${this.config.backendAddress}/api/v1/Auth`;
+  protected userServiceURL: string = `${this.config.backendAddress}/api/v1/User`;
   protected customHeaders = { 'content-type': 'application/json' }; // check the need for it (and start using if necessary)
   protected homeAddress = '/home';
 
   constructor(
+    @Inject('REPOSITORY_SERVICE_CONFIG')
+    protected config: RepositoryServiceConfig,
     protected jwtHelper: JwtHelperService,
     protected http: HttpClient,
     protected router: Router,

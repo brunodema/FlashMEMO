@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/operators';
@@ -52,21 +52,30 @@ export class GenericRepositoryResolverService<Type> implements Resolve<Type> {
 
 @Injectable()
 export class DeckRepositoryResolverService extends GenericRepositoryResolverService<Deck> {
-  constructor(service: GenericDeckService, router: Router) {
+  constructor(
+    @Inject('GenericDeckService') service: GenericDeckService,
+    router: Router
+  ) {
     super(service, router);
   }
 }
 
 @Injectable()
 export class UserRepositoryResolverService extends GenericRepositoryResolverService<User> {
-  constructor(service: GenericUserService, router: Router) {
+  constructor(
+    @Inject('GenericUserService') service: GenericUserService,
+    router: Router
+  ) {
     super(service, router);
   }
 }
 
 @Injectable()
 export class NewsRepositoryResolverService extends GenericRepositoryResolverService<News> {
-  constructor(service: GenericNewsService, router: Router) {
+  constructor(
+    @Inject('GenericNewsService') service: GenericNewsService,
+    router: Router
+  ) {
     super(service, router);
   }
 }

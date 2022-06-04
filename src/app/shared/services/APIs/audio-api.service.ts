@@ -2,11 +2,11 @@
  * Simply amazing feature taken from here: https://stackoverflow.com/questions/49996456/importing-json-file-in-typescript. Allows json files to be directly imported as type-safe objects. Requires some changes to the tsconfig.json file.
  */
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
+import { RepositoryServiceConfig } from 'src/app/app.module';
 import AudioAPIJson from 'src/assets/test_assets/AudioAPI.json';
-import { environment } from 'src/environments/environment';
 import { IDataResponse } from '../../models/http/http-response-types';
 
 /**************************************************************************************/
@@ -90,9 +90,13 @@ export class MockAudioService extends GeneralAudioAPIService {
 
 @Injectable()
 export class AudioService extends GeneralAudioAPIService {
-  private endpoint = `${environment.backendRootAddress}/api/v1/redactedapi/search?`;
+  private endpoint = `${this.config.backendAddress}/api/v1/redactedapi/search?`;
 
-  constructor(protected httpClient: HttpClient) {
+  constructor(
+    @Inject('REPOSITORY_SERVICE_CONFIG')
+    protected config: RepositoryServiceConfig,
+    protected httpClient: HttpClient
+  ) {
     super(httpClient);
   }
 

@@ -5,6 +5,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
   OnInit,
@@ -155,8 +156,11 @@ export class FlashcardContentOptionsBlockComponent
 
   constructor(
     private modalService: NgbModal,
+    @Inject('GeneralImageAPIService')
     private imageAPIService: GeneralImageAPIService,
+    @Inject('GeneralDictionaryAPIService')
     private dictAPIService: GeneralDictionaryAPIService,
+    @Inject('GeneralAudioAPIService')
     private audioAPIService: GeneralAudioAPIService,
     private hostElement: ElementRef, // A way to check the parent's height, and use it after an image is selected by the user
     private clipboardService: ClipboardService,

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { RouteMap } from 'src/app/shared/models/routing/route-map';
 import {
   DataTableColumnOptions,
@@ -41,7 +41,7 @@ export class UserListComponent {
   }
 
   constructor(
-    private userService: GenericUserService,
+    @Inject('GenericUserService') private userService: GenericUserService,
     private notificationService: GenericNotificationService,
     private router: Router
   ) {
