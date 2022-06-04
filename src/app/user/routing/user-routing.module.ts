@@ -11,7 +11,7 @@ const routes: Routes = [
   {
     path: ':id',
     component: UserDetailComponent,
-    resolve: { deck: UserRepositoryResolverService },
+    resolve: { user: UserRepositoryResolverService },
   },
   { path: '', redirectTo: 'list', pathMatch: 'full' },
 ];

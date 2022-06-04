@@ -24,6 +24,31 @@ ngb-modal-window.flashcard-modal div.modal-dialog div.modal-content {
   height: calc(100vh - 100px);
 }
 
+/******************************************************************************/
+/* CSS for Input widgets without bottom-border */
+/******************************************************************************/
+
+/* Attempt to create input following bootstrap visuals but with only bottom border stolen from here: https://stackoverflow.com/questions/37465458/input-text-field-with-only-bottom-border */
+/* Removed border-radius otherwise it looks weird */
+
+.borderles-input {
+  outline: 0;
+  border-width: 0 0 1px;
+  border-color: black;
+  border-radius: 0px;
+}
+
+/******************************************************************************/
+/* CSS associated with News objects */
+/******************************************************************************/
+
+/* Attempt to create input following bootstrap visuals but with only bottom border stolen from here: https://stackoverflow.com/questions/37465458/input-text-field-with-only-bottom-border */
+/* Removed border-radius otherwise it looks weird */
+
+.subtitle-text {
+  color: green
+}
+
 
 /******************************************************************************/
 /* CSS associated with my magical solution for hover icons */

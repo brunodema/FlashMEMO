@@ -47,3 +47,7 @@ Thumbs.db
 
 # It seems that I should ignore this as well
 .angular
+
+# Ignore Cypress crap
+cypress/videos
+cypress/screenshots

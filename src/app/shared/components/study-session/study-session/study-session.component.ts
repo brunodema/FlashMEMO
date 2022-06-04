@@ -33,6 +33,7 @@ export class StudySessionImageTools {
   selector: 'app-study-session',
   templateUrl: './study-session.component.html',
   styleUrls: ['./study-session.component.css'],
+  host: { class: 'container h-100 d-flex'}
 })
 export class StudySessionComponent {
   /**

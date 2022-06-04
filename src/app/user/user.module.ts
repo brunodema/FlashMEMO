@@ -9,6 +9,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
+import { formlyConfig } from '../app.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import { UserDetailComponent } from './components/user-detail/user-detail.compon
     CommonModule,
     UserRoutingModule,
     ReactiveFormsModule,
-    FormlyModule.forChild(),
+    FormlyModule.forChild(formlyConfig),
     FormlyMaterialModule,
     SharedModule,
     FormsModule,

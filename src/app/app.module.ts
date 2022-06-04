@@ -45,6 +45,7 @@ import {
 } from './shared/services/flashcard.service';
 import {
   DeckRepositoryResolverService,
+  NewsRepositoryResolverService,
   UserRepositoryResolverService,
 } from './shared/resolvers/generic-repository.resolver';
 import {
@@ -73,9 +74,15 @@ import {
   UserService,
 } from './user/services/user.service';
 import { DatePipe } from '@angular/common';
+import {
+  GenericNewsService,
+  MockNewsService,
+  NewsService,
+} from './news/services/news.service';
 
 export function fieldMatchValidator(control: AbstractControl) {
-  const { password, passwordConfirm } = control.value;
+  const password = control.value['password'];
+  const passwordConfirm = control.value['passwordConfirm'];
 
   // avoid displaying the message error when values are empty
   if (!passwordConfirm || !password) {
@@ -89,7 +96,7 @@ export function fieldMatchValidator(control: AbstractControl) {
   return { fieldMatch: { message: 'Password Not Matching' } };
 }
 
-const config: ConfigOption = {
+export const formlyConfig: ConfigOption = {
   validationMessages: [
     { name: 'required', message: 'This field is required' },
     { name: 'emailIsValid', message: 'This is not a valid email' },
@@ -124,7 +131,7 @@ const config: ConfigOption = {
       timeOut: 5000,
     }),
     ReactiveFormsModule,
-    FormlyModule.forRoot(config),
+    FormlyModule.forRoot(formlyConfig),
     FormlyMaterialModule,
     NgxSpinnerModule, // NGX-Spinner
     CKEditorModule,
@@ -132,27 +139,30 @@ const config: ConfigOption = {
     ClipboardModule,
   ],
   providers: [
-    { provide: GeneralImageAPIService, useClass: MockImageAPIService },
-    { provide: GeneralDictionaryAPIService, useClass: MockDictionaryService },
-    { provide: GeneralAudioAPIService, useClass: MockAudioService },
-    { provide: GenericDeckService, useClass: MockDeckService },
-    { provide: GenericFlashcardService, useClass: MockFlashcardService },
-    { provide: GenericLanguageService, useClass: MockLanguageService },
-    { provide: GenericAuthService, useClass: MockAuthService },
-    { provide: GenericUserService, useClass: MockUserService },
+    // { provide: GeneralImageAPIService, useClass: MockImageAPIService },
+    // { provide: GeneralDictionaryAPIService, useClass: MockDictionaryService },
+    // { provide: GeneralAudioAPIService, useClass: MockAudioService },
+    // { provide: GenericDeckService, useClass: MockDeckService },
+    // { provide: GenericFlashcardService, useClass: MockFlashcardService },
+    // { provide: GenericLanguageService, useClass: MockLanguageService },
+    // { provide: GenericAuthService, useClass: MockAuthService },
+    // { provide: GenericUserService, useClass: MockUserService },
+    // { provide: GenericNewsService, useClass: MockNewsService },
 
-    // { provide: GeneralImageAPIService, useClass: ImageAPIService },
-    // { provide: GeneralDictionaryAPIService, useClass: DictionaryService },
-    // { provide: GeneralAudioAPIService, useClass: AudioService },
-    // { provide: GenericDeckService, useClass: DeckService },
-    // { provide: GenericFlashcardService, useClass: FlashcardService },
-    // { provide: GenericLanguageService, useClass: LanguageService },
-    // { provide: GenericAuthService, useClass: AuthService },
-    // { provide: GenericUserService, useClass: UserService },
+    { provide: GeneralImageAPIService, useClass: ImageAPIService },
+    { provide: GeneralDictionaryAPIService, useClass: DictionaryService },
+    { provide: GeneralAudioAPIService, useClass: AudioService },
+    { provide: GenericDeckService, useClass: DeckService },
+    { provide: GenericFlashcardService, useClass: FlashcardService },
+    { provide: GenericLanguageService, useClass: LanguageService },
+    { provide: GenericAuthService, useClass: AuthService },
+    { provide: GenericUserService, useClass: UserService },
+    { provide: GenericNewsService, useClass: NewsService },
 
     AuthGuard,
     { provide: DeckRepositoryResolverService },
     { provide: UserRepositoryResolverService },
+    { provide: NewsRepositoryResolverService },
     { provide: GenericNotificationService, useClass: NotificationService },
     {
       provide: HTTP_INTERCEPTORS,

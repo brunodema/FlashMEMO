@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  Resolve,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
-import { Observable, of, map } from 'rxjs';
+import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { Observable } from 'rxjs/internal/Observable';
+import { map } from 'rxjs/operators';
 import { Deck } from 'src/app/deck/models/deck.model';
 import { GenericDeckService } from 'src/app/deck/services/deck.service';
+import { News } from 'src/app/news/models/news.model';
+import { GenericNewsService } from 'src/app/news/services/news.service';
 import { User } from 'src/app/user/models/user.model';
 import { GenericUserService } from 'src/app/user/services/user.service';
 import { GenericRepositoryService } from '../services/general-repository.service';
@@ -20,25 +18,34 @@ export class GenericRepositoryResolverService<Type> implements Resolve<Type> {
   ) {}
 
   resolve(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    route: ActivatedRouteSnapshot
   ): Type | Observable<Type> | Promise<Type> {
-    let id = route.paramMap.get('id');
+    // console.log('id is: ' + route.paramMap.get('id'));
+    let id = route.params['id'];
+    console.log('resolver: id is ' + id);
     if (id) {
+      console.log(
+        'resolver: id is not empty, underlying service is:',
+        this.service
+      );
       return this.service.getById(id).pipe(
         map((r) => {
+          console.log('resolver: mapping result', r);
           if (r) {
+            console.log('resolver: result from service is: ', r);
             return r;
           } else {
+            console.log(
+              'resolver: provided id does not provide a valid object.'
+            );
             this.router.navigate(['']);
-            console.log('Provided id does not provide a valid object.');
             throw new Error('Provided id does not provide a valid object.');
           }
         })
       );
     }
     this.router.navigate(['']);
-    console.log('Provided id does not provide a valid object.');
+    console.log("resolver: provided id is likely 'null' or 'undefined'.");
     throw new Error('Provided id does not provide a valid object.');
   }
 }
@@ -53,6 +60,13 @@ export class DeckRepositoryResolverService extends GenericRepositoryResolverServ
 @Injectable()
 export class UserRepositoryResolverService extends GenericRepositoryResolverService<User> {
   constructor(service: GenericUserService, router: Router) {
+    super(service, router);
+  }
+}
+
+@Injectable()
+export class NewsRepositoryResolverService extends GenericRepositoryResolverService<News> {
+  constructor(service: GenericNewsService, router: Router) {
     super(service, router);
   }
 }

@@ -1,16 +1,36 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { GenericAuthService } from 'src/app/shared/services/auth.service';
+import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
 import { User } from 'src/app/user/models/user.model';
+import { GenericUserService } from 'src/app/user/services/user.service';
+
+/**
+ * This is used to differentiate between the following possibilities: (a) sysadmin is creating a new user from scratch, (b) sysadmin/user is editting its profile, and (c) a visitor is registering his/hers account on the website.
+ */
+export enum UserFormMode {
+  CREATE = 'CREATE',
+  EDIT = 'EDIT',
+  REGISTER = 'REGISTER',
+}
 
 @Component({
   selector: 'app-user-model-form',
   templateUrl: './user-model-form.component.html',
   styleUrls: ['./user-model-form.component.css'],
 })
-export class UserModelFormComponent implements OnInit {
+export class UserModelFormComponent implements AfterViewInit {
+  @Input()
+  formMode: UserFormMode = UserFormMode.REGISTER;
+
   form = new FormGroup({});
   fields: FormlyFieldConfig[] = [
     {
@@ -58,7 +78,7 @@ export class UserModelFormComponent implements OnInit {
     {
       validators: {
         validation: [
-          { name: 'fieldMatch', options: { errorPath: 'confirmPassword' } },
+          { name: 'fieldMatch', options: { errorPath: 'passwordConfirm' } },
         ],
       },
       fieldGroup: [
@@ -69,18 +89,29 @@ export class UserModelFormComponent implements OnInit {
             type: 'password',
             label: 'Password',
             placeholder: 'Enter your password',
-            required: true,
           },
           className: 'd-block mb-2',
+          expressionProperties: {
+            'templateOptions.required': (model: User, formState: any) => {
+              return this.formMode === UserFormMode.EDIT ? false : true;
+            },
+          },
         },
         {
-          key: 'confirmPassword',
+          key: 'passwordConfirm',
           type: 'input',
           templateOptions: {
             type: 'password',
             label: 'Confirm password',
             placeholder: 'Repeat your password',
-            required: true,
+          },
+          expressionProperties: {
+            'templateOptions.required': (model: any, formState: any) => {
+              return model.password?.length > 0;
+            },
+            'templateOptions.disabled': (model: any, formState: any) => {
+              return model.password?.length === 0;
+            },
           },
         },
       ],
@@ -90,28 +121,59 @@ export class UserModelFormComponent implements OnInit {
   @Input()
   userModel: User = {} as User; // apparently has to be of 'any' type
 
-  constructor(
-    private authService: GenericAuthService,
-    private route: ActivatedRoute
-  ) {
-    this.userModel = this.route.snapshot.data['user'];
+  /**
+   * To avoid any risks of exposing confidential information (even if masked), this function is called to clear both password fields of the form.
+   */
+  private clearPasswordFields() {
+    // this.form.controls['password'].setValue('', {
+    //   emitEvent: false,
+    //   onlySelf: true,
+    // });
+    // this.form.controls['confirmPassword'].setValue('', {
+    //   emitEvent: false,
+    //   onlySelf: true,
+    // });
+    this.form.patchValue({ password: '', confirmPassword: '' });
+    this.cdr.detectChanges();
   }
 
-  ngOnInit(): void {}
+  constructor(
+    private authService: GenericAuthService,
+    private userService: GenericUserService,
+    private notificationService: GenericNotificationService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
+  ngAfterViewInit(): void {
+    // console.log('current mode is: ' + this.formMode);
+    this.clearPasswordFields();
+  }
 
   onSubmit() {
     if (this.form.valid) {
-      this.authService.register(this.form.value).subscribe(
-        (result) => {
-          console.log('user successfully registered!');
-        },
-        (error) => {
-          console.log(error);
+      if (this.formMode === UserFormMode.EDIT) {
+        this.userService
+          .update(this.userModel.id, this.userModel)
+          .subscribe((result) => {
+            this.notificationService.showSuccess('User successfully updated!');
+          });
+      } else {
+        if (this.formMode === UserFormMode.REGISTER) {
+          this.authService.register(this.form.value).subscribe((result) => {
+            this.notificationService.showSuccess(
+              'User successfully registered!'
+            );
+          });
+        } else {
+          this.userService.create(this.form.value).subscribe((result) => {
+            this.notificationService.showSuccess('User successfully created!');
+            this.router.navigate(['user', result.data]);
+          });
         }
-      );
+      }
 
       return;
     }
-    console.log('form is not valid!');
+    this.notificationService.showWarning('The form has problems.');
   }
 }

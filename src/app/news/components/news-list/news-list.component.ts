@@ -1,24 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { RouteMap } from 'src/app/shared/models/routing/route-map';
 import { News } from '../../models/news.model';
-import { NewsService } from '../../services/news.service';
+import { GenericNewsService, NewsService } from '../../services/news.service';
 @Component({
   selector: 'app-news',
   templateUrl: './news-list.component.html',
   styleUrls: ['./news-list.component.css'],
 })
-export class NewsComponent implements OnInit {
+export class NewsComponent {
   public newsList: News[];
-  public error?: Error;
 
-  routes: RouteMap[] = [{ label: 'Create News', route: 'create' }];
+  public routes: RouteMap[] = [{ label: 'Create News', route: '/news/create' }];
 
-  constructor(private newsService: NewsService) {}
-
-  ngOnInit() {
+  constructor(private newsService: GenericNewsService) {
     this.newsService.getAll().subscribe((news) => {
       this.newsList = news;
-      console.log(news);
     });
   }
 }

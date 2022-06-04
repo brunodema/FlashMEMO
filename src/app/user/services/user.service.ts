@@ -38,6 +38,9 @@ export class MockUserService extends GenericUserService {
   constructor(private http: HttpClient) {
     super(http);
   }
+  getTypename(): string {
+    return 'user'
+  }
   search(
     params: UserSearchParams = { pageSize: 10, pageNumber: 1 }
   ): Observable<User[]> {
@@ -92,6 +95,10 @@ export class MockUserService extends GenericUserService {
 export class UserService extends GenericRepositoryService<User> {
   constructor(private http: HttpClient) {
     super(`${environment.backendRootAddress}/api/v1/User`, http);
+  }
+
+  getTypename(): string {
+    return 'user';
   }
 
   search(params: UserSearchParams): Observable<User[]> {

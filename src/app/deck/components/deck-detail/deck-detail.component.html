@@ -4,7 +4,7 @@
     <div class="col-6">
       <formly-form [form]="form" [fields]="fields" [model]="deckModel"></formly-form>
       <div class="d-flex justify-content-end">
-        <button [disabled]="!this.form.valid || (this.form.valid && !this.form.dirty)" class="btn btn-primary"
+        <button [disabled]="!this.form.valid || (this.form.valid && !this.form.dirty)" class="btn btn-primary" data-testid="save-deck-btn"
           (click)="saveDeck()">
           Save Deck
         </button>
@@ -44,13 +44,13 @@
       </button>
       <!-- I added this div around the button so the tooltip is rendered even with the disabled button -->
       <div placement="auto" [ngbTooltip]="canStartStudySession() ? '' : 'You don\'t have any flashcards to review!'">
-        <button class="ms-2 btn btn-primary" [disabled]="!canStartStudySession()"
+        <button class="ms-2 btn btn-primary" [disabled]="!canStartStudySession()" data-testid="study-session-btn"
           (click)="openStudySessionModal(studySessionModal)">
           Study!
         </button>
       </div>
     </div>
-    <ngb-accordion class="mt-2" #acc="ngbAccordion" activeIds="ngb-panel-0">
+    <ngb-accordion class="mt-2" #acc="ngbAccordion" activeIds="ngb-panel-0" data-testid="flashcard-accordion">
       <ngb-panel title="Flashcards">
         <ng-template ngbPanelContent>
           <app-data-table [hasSelectColumn]="true" [hasEditColumn]="true" [hasDeleteColumn]="true"

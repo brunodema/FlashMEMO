@@ -1,5 +1,7 @@
 import {
+  AfterViewChecked,
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -56,13 +58,13 @@ export class FlashcardContentOptionsBlockContentSaveEventArgs {
   host: {
     class:
       'd-flex flex-fill align-items-center justify-content-center image-reset-button-parent', // having this 'handler' class here forced me to pass all associated CSS to the main styles sheet :/
-    style: 'border: 1px solid black', // optional, just to debug section sizes
+    // style: 'border: 1px solid black', // optional, just to debug section sizes
   },
   templateUrl: './flashcard-content-options-block.component.html',
   styleUrls: ['./flashcard-content-options-block.component.css'],
 })
 export class FlashcardContentOptionsBlockComponent
-  implements OnInit, AfterViewInit, OnChanges
+  implements OnInit, AfterViewChecked
 {
   // getter + setter implementation taken from here: https://stackoverflow.com/questions/36653678/angular2-input-to-a-property-with-get-set
   private _contentValue: string = '';
@@ -83,7 +85,8 @@ export class FlashcardContentOptionsBlockComponent
   contentSave: EventEmitter<FlashcardContentOptionsBlockContentSaveEventArgs> =
     new EventEmitter();
 
-  componentHeight: string = '';
+  contentMaxHeight: string = '';
+  imageMaxHeight: string = '';
 
   closeResult: string = '';
   modalTitle: string = '';
@@ -156,27 +159,29 @@ export class FlashcardContentOptionsBlockComponent
     private dictAPIService: GeneralDictionaryAPIService,
     private audioAPIService: GeneralAudioAPIService,
     private hostElement: ElementRef, // A way to check the parent's height, and use it after an image is selected by the user
-    private clipboardService: ClipboardService
+    private clipboardService: ClipboardService,
+    private cdr: ChangeDetectorRef
   ) {}
-  ngOnChanges(changes: SimpleChanges): void {
-    // console.log(
-    //   'changes: ' + this.hostElement.nativeElement.offsetHeight + 'px'
-    // );
-  }
-  ngAfterViewInit(): void {
-    // console.log(
-    //   'afterv: ' + this.hostElement.nativeElement.offsetHeight + 'px'
-    // );
+  ngAfterViewChecked(): void {
+    // this must stay commented to prevent those 'image keeps getting larger' issue
+    // console.log('ngAfterViewChecked: ' + this.hostElement.nativeElement.offsetHeight + 'px')
+    // this.imageMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+    // this.cdr.detectChanges();
   }
 
   ngOnInit(): void {
-    this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+    // console.log('ngOnInit: ' + this.hostElement.nativeElement.offsetHeight + 'px')
+    this.contentMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+    this.imageMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
     this.setLanguageDropdownToDefaultValue();
   }
 
-  test() {
-    this.componentHeight = this.hostElement.nativeElement.offsetHeight + 'px';
-    console.log('loda');
+  fixHeightOnLoad() {
+    console.log(
+      'fixHeightOnLoad: ' + this.hostElement.nativeElement.offsetHeight + 'px'
+    );
+    this.imageMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+    this.cdr.detectChanges();
   }
 
   determineContentType(contentValue: string): FlashcardContentType {

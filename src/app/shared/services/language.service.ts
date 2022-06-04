@@ -25,6 +25,10 @@ export abstract class GenericLanguageService extends GenericRepositoryService<La
     super(`${environment.backendRootAddress}/api/v1/language`, httpClient);
   }
   abstract search(params: LanguageSearchParams): Observable<Language[]>;
+
+  getTypename(): string {
+    return 'language';
+  }
 }
 
 @Injectable()
