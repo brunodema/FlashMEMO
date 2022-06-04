@@ -38,10 +38,8 @@ export abstract class GenericNewsService extends GenericRepositoryService<News> 
     protected httpClient: HttpClient
   ) {
     super(
-      {
-        backendAddress: `${config.backendAddress}/api/v1/News`,
-        maxPageSize: config.maxPageSize,
-      },
+      `${config.backendAddress}/api/v1/News`,
+      config.maxPageSize,
       httpClient
     );
   }
@@ -138,7 +136,7 @@ export class NewsService extends GenericNewsService {
   search(
     params: NewsSearchParams = { pageSize: 10, pageNumber: 1 }
   ): Observable<News[]> {
-    let formattedURL: string = `${this.config.backendAddress}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
+    let formattedURL: string = `${this.repositoryServiceEndpoint}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
     if (params.fromDate) {
       formattedURL += `&FromDate=${params.fromDate}`;
     }

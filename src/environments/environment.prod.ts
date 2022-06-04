@@ -10,7 +10,8 @@ import { UserService } from 'src/app/user/services/user.service';
 
 export const environment = {
   production: true,
-  backendRootAddress: 'https://backend-svc.default:443',
+  // backendRootAddress: 'https://backend-svc.default:443',
+  backendRootAddress: 'http://api.flashmemo.edu:5000',
   maxPageSize: 10000,
   defaultLanguageISOCode: 'en-gb',
   // services
@@ -24,6 +25,3 @@ export const environment = {
   audioAPIService: AudioService,
   dictionaryAPIService: DictionaryService,
 };
-
-
-test endpoint here... there is some confusion with thte spsefici endoints like api/v1/user

@@ -13,11 +13,10 @@ import {
   IPaginatedListResponse,
 } from '../models/http/http-response-types';
 
-// Declaring this as an abstract class per recomendation of other Angular users, since interfaces can't be used for 'providers: [{ provide: NonInterfaceClass, useClass: ActualImplementationClass }]' declarations
-
 export abstract class GenericRepositoryService<Type> {
   constructor(
-    protected config: RepositoryServiceConfig,
+    protected repositoryServiceEndpoint: string,
+    protected maxPageSize: number,
     protected httpClient: HttpClient
   ) {}
 
@@ -25,7 +24,7 @@ export abstract class GenericRepositoryService<Type> {
 
   create(object: Type): Observable<IDataResponse<string>> {
     return this.httpClient.post<IDataResponse<string>>(
-      `${this.config.backendAddress}/create`,
+      `${this.repositoryServiceEndpoint}/create`,
       JSON.stringify(object),
       { headers: new HttpHeaders().set('Content-Type', 'application/json') }
     );
@@ -33,13 +32,13 @@ export abstract class GenericRepositoryService<Type> {
 
   get(id: string): Observable<IDataResponse<Type>> {
     return this.httpClient.get<IDataResponse<Type>>(
-      `${this.config.backendAddress}/${id}`
+      `${this.repositoryServiceEndpoint}/${id}`
     );
   }
 
   update(id: string, object: Type): Observable<IDataResponse<string>> {
     return this.httpClient.put<IDataResponse<string>>(
-      `${this.config.backendAddress}/${id}`,
+      `${this.repositoryServiceEndpoint}/${id}`,
       JSON.stringify(object),
       { headers: new HttpHeaders().set('Content-Type', 'application/json') }
     );
@@ -47,7 +46,7 @@ export abstract class GenericRepositoryService<Type> {
 
   delete(id: string): Observable<IBaseAPIResponse> {
     return this.httpClient.post<IDataResponse<IBaseAPIResponse>>(
-      `${this.config.backendAddress}/delete`,
+      `${this.repositoryServiceEndpoint}/delete`,
       JSON.stringify(id),
       { headers: new HttpHeaders().set('Content-Type', 'application/json') }
     );
@@ -56,14 +55,14 @@ export abstract class GenericRepositoryService<Type> {
   getAll(): Observable<Type[]> {
     return this.httpClient
       .get<IPaginatedListResponse<Type>>(
-        `${this.config.backendAddress}/list?pageSize=${this.config.maxPageSize}`
+        `${this.repositoryServiceEndpoint}/list?pageSize=${this.maxPageSize}`
       )
       .pipe(map((a) => a.data.results));
   }
 
   getById(id: string): Observable<Type> {
     return this.httpClient
-      .get<IDataResponse<Type>>(`${this.config.backendAddress}/${id}`)
+      .get<IDataResponse<Type>>(`${this.repositoryServiceEndpoint}/${id}`)
       .pipe(map((a) => a.data));
   }
 }

@@ -40,10 +40,8 @@ export abstract class GenericDeckService extends GenericRepositoryService<Deck> 
     protected httpClient: HttpClient
   ) {
     super(
-      {
-        backendAddress: `${config.backendAddress}/api/v1/Deck`,
-        maxPageSize: config.maxPageSize,
-      },
+      `${config.backendAddress}/api/v1/Deck`,
+      config.maxPageSize,
       httpClient
     );
   }
@@ -156,7 +154,8 @@ export class MockDeckService extends GenericDeckService {
 @Injectable()
 export class DeckService extends GenericDeckService {
   constructor(
-    @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
+    @Inject('REPOSITORY_SERVICE_CONFIG')
+    protected config: RepositoryServiceConfig,
     protected httpClient: HttpClient
   ) {
     super(
@@ -171,7 +170,7 @@ export class DeckService extends GenericDeckService {
   search(
     params: DeckSearchParams = { pageSize: 10, pageNumber: 1 }
   ): Observable<Deck[]> {
-    let formattedURL: string = `${this.config.backendAddress}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
+    let formattedURL: string = `${this.repositoryServiceEndpoint}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
     if (params.fromCreationDate) {
       formattedURL += `&FromCreationDate=${params.fromCreationDate}`;
     }
@@ -206,7 +205,7 @@ export class DeckService extends GenericDeckService {
     console.log(ownerId);
     return this.httpClient
       .get<IDataResponse<ExtendedDeckInfoDTO[]>>(
-        `${this.config.backendAddress}/list/extended${
+        `${this.repositoryServiceEndpoint}/list/extended${
           ownerId ? '?ownerId=' + ownerId : ''
         }`
       )

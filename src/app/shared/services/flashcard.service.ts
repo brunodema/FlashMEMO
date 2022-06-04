@@ -40,10 +40,8 @@ export abstract class GenericFlashcardService extends GenericRepositoryService<I
     protected httpClient: HttpClient
   ) {
     super(
-      {
-        backendAddress: `${config.backendAddress}/api/v1/Flashcard`,
-        maxPageSize: config.maxPageSize,
-      },
+      `${config.backendAddress}/api/v1/Flashcard`,
+      config.maxPageSize,
       httpClient
     );
   }
@@ -151,7 +149,7 @@ export class FlashcardService extends GenericFlashcardService {
   }
   search(params: FlashcardSearchParams): Observable<IFlashcard[]> {
     {
-      let formattedURL: string = `${this.config.backendAddress}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
+      let formattedURL: string = `${this.repositoryServiceEndpoint}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
       if (params.sortType) {
         formattedURL += `&SortType=${params.sortType}`;
       }
@@ -190,13 +188,13 @@ export class FlashcardService extends GenericFlashcardService {
   }
 
   getAllFlashcardsFromDeck(deckId: string): Observable<IFlashcard[]> {
-    let formattedURL: string = `${this.config.backendAddress}/GetAllFlashcardsFromDeck/${deckId}`;
+    let formattedURL: string = `${this.repositoryServiceEndpoint}/GetAllFlashcardsFromDeck/${deckId}`;
     return this.httpClient
       .get<IDataResponse<IFlashcard[]>>(formattedURL)
       .pipe(map((a) => a.data));
   }
   getNumberOfFlashcardsFromDeck(deckId: string): Observable<number> {
-    let formattedURL: string = `${this.config.backendAddress}/GetAllFlashcardsFromDeck/${deckId}?countOnly=true`;
+    let formattedURL: string = `${this.repositoryServiceEndpoint}/GetAllFlashcardsFromDeck/${deckId}?countOnly=true`;
     return this.httpClient
       .get<IDataResponse<number>>(formattedURL)
       .pipe(map((a) => a.data));

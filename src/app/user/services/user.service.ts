@@ -32,10 +32,8 @@ export abstract class GenericUserService extends GenericRepositoryService<User> 
     protected httpClient: HttpClient
   ) {
     super(
-      {
-        backendAddress: `${config.backendAddress}/api/v1/User`,
-        maxPageSize: config.maxPageSize,
-      },
+      `${config.backendAddress}/api/v1/User`,
+      config.maxPageSize,
       httpClient
     );
   }
@@ -116,10 +114,8 @@ export class UserService extends GenericRepositoryService<User> {
     protected httpClient: HttpClient
   ) {
     super(
-      {
-        backendAddress: config.backendAddress,
-        maxPageSize: config.maxPageSize,
-      },
+      `${config.backendAddress}/api/v1/User`,
+      config.maxPageSize,
       httpClient
     );
   }
@@ -129,7 +125,7 @@ export class UserService extends GenericRepositoryService<User> {
   }
 
   search(params: UserSearchParams): Observable<User[]> {
-    let formattedURL: string = `${this.config.backendAddress}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
+    let formattedURL: string = `${this.repositoryServiceEndpoint}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
     if (params.email) {
       formattedURL += `&Email=${params.email}`;
     }

@@ -27,10 +27,8 @@ export abstract class GenericLanguageService extends GenericRepositoryService<La
     protected httpClient: HttpClient
   ) {
     super(
-      {
-        backendAddress: `${config.backendAddress}/api/v1/Language`,
-        maxPageSize: config.maxPageSize,
-      },
+      `${config.backendAddress}/api/v1/Language`,
+      config.maxPageSize,
       httpClient
     );
   }
@@ -81,7 +79,7 @@ export class LanguageService extends GenericLanguageService {
   }
 
   search(params: LanguageSearchParams): Observable<Language[]> {
-    let formattedURL: string = `${this.config.backendAddress}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
+    let formattedURL: string = `${this.repositoryServiceEndpoint}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
     if (params.languageISOCode) {
       formattedURL += `&languageISOCode=${params.languageISOCode}`;
     }
