@@ -45,7 +45,7 @@ jobs:
           ./setup.sh
       - name: Test E2E
         run: |
-          ng e2e
+          ng e2e --configuration=mock
       - name: Upload screenshots
         uses: actions/upload-artifact@v3
         if: failure()
