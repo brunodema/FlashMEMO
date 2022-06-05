@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
+import { RepositoryServiceConfig } from 'src/app/app.module';
 import {
   IBaseAPIResponse,
   IDataResponse,
@@ -12,7 +13,6 @@ import {
   SortType,
 } from 'src/app/shared/models/other/api-query-types';
 import { GenericRepositoryService } from 'src/app/shared/services/general-repository.service';
-import { environment } from 'src/environments/environment';
 
 import userJson from 'src/assets/test_assets/User.json';
 import { User } from '../models/user.model';
@@ -27,19 +27,35 @@ class UserSearchParams implements IServiceSearchParams {
 }
 
 export abstract class GenericUserService extends GenericRepositoryService<User> {
-  constructor(protected httpClient: HttpClient) {
-    super(`${environment.backendRootAddress}/api/v1/user`, httpClient);
+  constructor(
+    protected config: RepositoryServiceConfig,
+    protected httpClient: HttpClient
+  ) {
+    super(
+      `${config.backendAddress}/api/v1/User`,
+      config.maxPageSize,
+      httpClient
+    );
   }
   abstract search(searchParams: UserSearchParams): Observable<User[]>;
 }
 
 @Injectable()
 export class MockUserService extends GenericUserService {
-  constructor(private http: HttpClient) {
-    super(http);
+  constructor(
+    @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
+    protected httpClient: HttpClient
+  ) {
+    super(
+      {
+        backendAddress: config.backendAddress,
+        maxPageSize: config.maxPageSize,
+      },
+      httpClient
+    );
   }
   getTypename(): string {
-    return 'user'
+    return 'user';
   }
   search(
     params: UserSearchParams = { pageSize: 10, pageNumber: 1 }
@@ -93,8 +109,15 @@ export class MockUserService extends GenericUserService {
 
 @Injectable()
 export class UserService extends GenericRepositoryService<User> {
-  constructor(private http: HttpClient) {
-    super(`${environment.backendRootAddress}/api/v1/User`, http);
+  constructor(
+    @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
+    protected httpClient: HttpClient
+  ) {
+    super(
+      `${config.backendAddress}/api/v1/User`,
+      config.maxPageSize,
+      httpClient
+    );
   }
 
   getTypename(): string {
@@ -102,7 +125,7 @@ export class UserService extends GenericRepositoryService<User> {
   }
 
   search(params: UserSearchParams): Observable<User[]> {
-    let formattedURL: string = `${this.endpointURL}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
+    let formattedURL: string = `${this.repositoryServiceEndpoint}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
     if (params.email) {
       formattedURL += `&Email=${params.email}`;
     }
@@ -110,7 +133,7 @@ export class UserService extends GenericRepositoryService<User> {
       formattedURL += `&Username=${params.username}`;
     }
 
-    return this.http
+    return this.httpClient
       .get<IPaginatedListResponse<User>>(formattedURL)
       .pipe(map((a) => a.data.results));
   }

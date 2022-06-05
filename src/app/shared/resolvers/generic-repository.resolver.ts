@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/operators';
@@ -10,7 +10,6 @@ import { User } from 'src/app/user/models/user.model';
 import { GenericUserService } from 'src/app/user/services/user.service';
 import { GenericRepositoryService } from '../services/general-repository.service';
 
-@Injectable()
 export class GenericRepositoryResolverService<Type> implements Resolve<Type> {
   constructor(
     private service: GenericRepositoryService<Type>,
@@ -52,21 +51,30 @@ export class GenericRepositoryResolverService<Type> implements Resolve<Type> {
 
 @Injectable()
 export class DeckRepositoryResolverService extends GenericRepositoryResolverService<Deck> {
-  constructor(service: GenericDeckService, router: Router) {
+  constructor(
+    @Inject('GenericDeckService') service: GenericDeckService,
+    router: Router
+  ) {
     super(service, router);
   }
 }
 
 @Injectable()
 export class UserRepositoryResolverService extends GenericRepositoryResolverService<User> {
-  constructor(service: GenericUserService, router: Router) {
+  constructor(
+    @Inject('GenericUserService') service: GenericUserService,
+    router: Router
+  ) {
     super(service, router);
   }
 }
 
 @Injectable()
 export class NewsRepositoryResolverService extends GenericRepositoryResolverService<News> {
-  constructor(service: GenericNewsService, router: Router) {
+  constructor(
+    @Inject('GenericNewsService') service: GenericNewsService,
+    router: Router
+  ) {
     super(service, router);
   }
 }

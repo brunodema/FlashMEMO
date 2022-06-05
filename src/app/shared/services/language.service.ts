@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
 import {
   IServiceSearchParams,
@@ -10,6 +10,7 @@ import { GenericRepositoryService } from './general-repository.service';
 import languageJson from 'src/assets/test_assets/Languages.json';
 import { environment } from 'src/environments/environment';
 import { IPaginatedListResponse } from '../models/http/http-response-types';
+import { RepositoryServiceConfig } from 'src/app/app.module';
 
 export class LanguageSearchParams implements IServiceSearchParams {
   name: string;
@@ -21,8 +22,15 @@ export class LanguageSearchParams implements IServiceSearchParams {
 }
 
 export abstract class GenericLanguageService extends GenericRepositoryService<Language> {
-  constructor(protected httpClient: HttpClient) {
-    super(`${environment.backendRootAddress}/api/v1/language`, httpClient);
+  constructor(
+    protected config: RepositoryServiceConfig,
+    protected httpClient: HttpClient
+  ) {
+    super(
+      `${config.backendAddress}/api/v1/Language`,
+      config.maxPageSize,
+      httpClient
+    );
   }
   abstract search(params: LanguageSearchParams): Observable<Language[]>;
 
@@ -33,8 +41,17 @@ export abstract class GenericLanguageService extends GenericRepositoryService<La
 
 @Injectable()
 export class MockLanguageService extends GenericLanguageService {
-  constructor(protected httpClient: HttpClient) {
-    super(httpClient);
+  constructor(
+    @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
+    protected httpClient: HttpClient
+  ) {
+    super(
+      {
+        backendAddress: config.backendAddress,
+        maxPageSize: config.maxPageSize,
+      },
+      httpClient
+    );
   }
 
   search(searchParams: LanguageSearchParams): Observable<Language[]> {
@@ -48,12 +65,21 @@ export class MockLanguageService extends GenericLanguageService {
 
 @Injectable()
 export class LanguageService extends GenericLanguageService {
-  constructor(protected httpClient: HttpClient) {
-    super(httpClient);
+  constructor(
+    @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
+    protected httpClient: HttpClient
+  ) {
+    super(
+      {
+        backendAddress: config.backendAddress,
+        maxPageSize: config.maxPageSize,
+      },
+      httpClient
+    );
   }
 
   search(params: LanguageSearchParams): Observable<Language[]> {
-    let formattedURL: string = `${this.endpointURL}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
+    let formattedURL: string = `${this.repositoryServiceEndpoint}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
     if (params.languageISOCode) {
       formattedURL += `&languageISOCode=${params.languageISOCode}`;
     }

@@ -2,10 +2,10 @@
  * Simply amazing feature taken from here: https://stackoverflow.com/questions/49996456/importing-json-file-in-typescript. Allows json files to be directly imported as type-safe objects. Requires some changes to the tsconfig.json file.
  */
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { RepositoryServiceConfig } from 'src/app/app.module';
 import imageAPIJson from 'src/assets/test_assets/ImageAPI.json';
-import { environment } from 'src/environments/environment';
 import {
   IPaginatedListResponse,
   PaginatedListResponse,
@@ -98,9 +98,13 @@ export class MockImageAPIService extends GeneralImageAPIService {
 
 @Injectable()
 export class ImageAPIService extends GeneralImageAPIService {
-  private endpoint = `${environment.backendRootAddress}/api/v1/imageapi`;
+  private endpoint = `${this.config.backendAddress}/api/v1/imageapi`;
 
-  constructor(httpClient: HttpClient) {
+  constructor(
+    @Inject('REPOSITORY_SERVICE_CONFIG')
+    protected config: RepositoryServiceConfig,
+    httpClient: HttpClient
+  ) {
     super(httpClient);
   }
 

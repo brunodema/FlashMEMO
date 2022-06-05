@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
+  Inject,
   Input,
   OnInit,
 } from '@angular/core';
@@ -138,8 +139,9 @@ export class UserModelFormComponent implements AfterViewInit {
   }
 
   constructor(
+    @Inject('GenericAuthService')
     private authService: GenericAuthService,
-    private userService: GenericUserService,
+    @Inject('GenericUserService') private userService: GenericUserService,
     private notificationService: GenericNotificationService,
     private router: Router,
     private cdr: ChangeDetectorRef

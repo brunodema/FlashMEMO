@@ -79,6 +79,7 @@ import {
   MockNewsService,
   NewsService,
 } from './news/services/news.service';
+import { environment } from 'src/environments/environment';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const password = control.value['password'];
@@ -103,6 +104,11 @@ export const formlyConfig: ConfigOption = {
     { name: 'passwordMatch', message: 'The password must match' },
   ],
   validators: [{ name: 'fieldMatch', validation: fieldMatchValidator }],
+};
+
+export type RepositoryServiceConfig = {
+  backendAddress: string;
+  maxPageSize: number;
 };
 
 @NgModule({
@@ -148,16 +154,37 @@ export const formlyConfig: ConfigOption = {
     // { provide: GenericAuthService, useClass: MockAuthService },
     // { provide: GenericUserService, useClass: MockUserService },
     // { provide: GenericNewsService, useClass: MockNewsService },
-
-    { provide: GeneralImageAPIService, useClass: ImageAPIService },
-    { provide: GeneralDictionaryAPIService, useClass: DictionaryService },
-    { provide: GeneralAudioAPIService, useClass: AudioService },
-    { provide: GenericDeckService, useClass: DeckService },
-    { provide: GenericFlashcardService, useClass: FlashcardService },
-    { provide: GenericLanguageService, useClass: LanguageService },
-    { provide: GenericAuthService, useClass: AuthService },
-    { provide: GenericUserService, useClass: UserService },
-    { provide: GenericNewsService, useClass: NewsService },
+    {
+      provide: 'REPOSITORY_SERVICE_CONFIG',
+      useValue: {
+        backendAddress: environment.backendRootAddress,
+        maxPageSize: environment.maxPageSize,
+      },
+    },
+    {
+      provide: 'GeneralImageAPIService',
+      useClass: environment.imageAPIService,
+    },
+    {
+      provide: 'GeneralDictionaryAPIService',
+      useClass: environment.dictionaryAPIService,
+    },
+    {
+      provide: 'GeneralAudioAPIService',
+      useClass: environment.audioAPIService,
+    },
+    { provide: 'GenericDeckService', useClass: environment.deckService },
+    {
+      provide: 'GenericFlashcardService',
+      useClass: environment.flashcardService,
+    },
+    {
+      provide: 'GenericLanguageService',
+      useClass: environment.languageService,
+    },
+    { provide: 'GenericAuthService', useClass: environment.authService },
+    { provide: 'GenericUserService', useClass: environment.userService },
+    { provide: 'GenericNewsService', useClass: environment.newsService },
 
     AuthGuard,
     { provide: DeckRepositoryResolverService },

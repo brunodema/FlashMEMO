@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { map, of } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
@@ -15,6 +15,7 @@ import {
   IDataResponse,
   IPaginatedListResponse,
 } from '../models/http/http-response-types';
+import { RepositoryServiceConfig } from 'src/app/app.module';
 
 export class FlashcardSearchParams implements IServiceSearchParams {
   pageSize: Number;
@@ -34,8 +35,15 @@ export class FlashcardSearchParams implements IServiceSearchParams {
 }
 
 export abstract class GenericFlashcardService extends GenericRepositoryService<IFlashcard> {
-  constructor(protected http: HttpClient) {
-    super(`${environment.backendRootAddress}/api/v1/flashcard`, http);
+  constructor(
+    protected config: RepositoryServiceConfig,
+    protected httpClient: HttpClient
+  ) {
+    super(
+      `${config.backendAddress}/api/v1/Flashcard`,
+      config.maxPageSize,
+      httpClient
+    );
   }
   abstract search(params: FlashcardSearchParams): Observable<IFlashcard[]>;
   abstract getAllFlashcardsFromDeck(deckId: string): Observable<IFlashcard[]>;
@@ -64,8 +72,17 @@ export abstract class GenericFlashcardService extends GenericRepositoryService<I
 
 @Injectable()
 export class MockFlashcardService extends GenericFlashcardService {
-  constructor(protected httpClient: HttpClient) {
-    super(httpClient);
+  constructor(
+    @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
+    protected httpClient: HttpClient
+  ) {
+    super(
+      {
+        backendAddress: config.backendAddress,
+        maxPageSize: config.maxPageSize,
+      },
+      httpClient
+    );
   }
   getAllFlashcardsFromDeck(deckId: string): Observable<IFlashcard[]> {
     return of(flashcardJson.filter((f) => f.deckId === deckId));
@@ -118,12 +135,21 @@ export class MockFlashcardService extends GenericFlashcardService {
 
 @Injectable()
 export class FlashcardService extends GenericFlashcardService {
-  constructor(protected httpClient: HttpClient) {
-    super(httpClient);
+  constructor(
+    @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
+    protected httpClient: HttpClient
+  ) {
+    super(
+      {
+        backendAddress: config.backendAddress,
+        maxPageSize: config.maxPageSize,
+      },
+      httpClient
+    );
   }
   search(params: FlashcardSearchParams): Observable<IFlashcard[]> {
     {
-      let formattedURL: string = `${this.endpointURL}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
+      let formattedURL: string = `${this.repositoryServiceEndpoint}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
       if (params.sortType) {
         formattedURL += `&SortType=${params.sortType}`;
       }
@@ -155,21 +181,21 @@ export class FlashcardService extends GenericFlashcardService {
         formattedURL += `&level=${params.level}`;
       }
 
-      return this.http
+      return this.httpClient
         .get<IPaginatedListResponse<IFlashcard>>(formattedURL)
         .pipe(map((a) => a.data.results));
     }
   }
 
   getAllFlashcardsFromDeck(deckId: string): Observable<IFlashcard[]> {
-    let formattedURL: string = `${this.endpointURL}/GetAllFlashcardsFromDeck/${deckId}`;
-    return this.http
+    let formattedURL: string = `${this.repositoryServiceEndpoint}/GetAllFlashcardsFromDeck/${deckId}`;
+    return this.httpClient
       .get<IDataResponse<IFlashcard[]>>(formattedURL)
       .pipe(map((a) => a.data));
   }
   getNumberOfFlashcardsFromDeck(deckId: string): Observable<number> {
-    let formattedURL: string = `${this.endpointURL}/GetAllFlashcardsFromDeck/${deckId}?countOnly=true`;
-    return this.http
+    let formattedURL: string = `${this.repositoryServiceEndpoint}/GetAllFlashcardsFromDeck/${deckId}?countOnly=true`;
+    return this.httpClient
       .get<IDataResponse<number>>(formattedURL)
       .pipe(map((a) => a.data));
   }

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { BehaviorSubject, filter } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import {
@@ -71,9 +71,9 @@ export class DeckListComponent {
   dataTable: DataTableComponent<ExtendedDeckInfoDTO>;
 
   constructor(
-    public deckService: GenericDeckService,
+    @Inject('GenericDeckService') public deckService: GenericDeckService,
     protected notificationService: GenericNotificationService,
-    protected authService: GenericAuthService,
+    @Inject('GenericAuthService') protected authService: GenericAuthService,
     private datePipe: DatePipe
   ) {
     this.refreshDeckDataSource();

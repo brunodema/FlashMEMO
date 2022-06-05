@@ -1,3 +1,5 @@
+// this 'mock' environment should be used for e2e tests. It pretty much represents the production configurations, but using Mock services instead.
+
 import { MockDeckService } from 'src/app/deck/services/deck.service';
 import { MockNewsService } from 'src/app/news/services/news.service';
 import { MockAudioService } from 'src/app/shared/services/APIs/audio-api.service';
@@ -9,7 +11,7 @@ import { MockLanguageService } from 'src/app/shared/services/language.service';
 import { MockUserService } from 'src/app/user/services/user.service';
 
 export const environment = {
-  production: false,
+  production: true,
   backendRootAddress: 'http://api.flashmemo.edu:5000',
   maxPageSize: 10000,
   defaultLanguageISOCode: 'en-gb',

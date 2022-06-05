@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
   ];
 
   constructor(
-    private authService: GenericAuthService,
+    @Inject('GenericAuthService') private authService: GenericAuthService,
     private router: Router
   ) {}
 

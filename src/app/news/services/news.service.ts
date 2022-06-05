@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { News } from '../models/news.model';
-import { environment } from 'src/environments/environment';
 
 import { map } from 'rxjs/operators';
 
@@ -11,10 +10,15 @@ import {
   SortColumn,
   SortType,
 } from 'src/app/shared/models/other/api-query-types';
-import { IBaseAPIResponse, IDataResponse, IPaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
+import {
+  IBaseAPIResponse,
+  IDataResponse,
+  IPaginatedListResponse,
+} from 'src/app/shared/models/http/http-response-types';
 import { GenericRepositoryService } from 'src/app/shared/services/general-repository.service';
 
 import newsJson from 'src/assets/test_assets/News.json';
+import { RepositoryServiceConfig } from 'src/app/app.module';
 
 class NewsSearchParams implements IServiceSearchParams {
   pageSize: Number;
@@ -29,8 +33,15 @@ class NewsSearchParams implements IServiceSearchParams {
 }
 
 export abstract class GenericNewsService extends GenericRepositoryService<News> {
-  constructor(protected httpClient: HttpClient) {
-    super(`${environment.backendRootAddress}/api/v1/news`, httpClient);
+  constructor(
+    protected config: RepositoryServiceConfig,
+    protected httpClient: HttpClient
+  ) {
+    super(
+      `${config.backendAddress}/api/v1/News`,
+      config.maxPageSize,
+      httpClient
+    );
   }
   abstract search(searchParams: NewsSearchParams): Observable<News[]>;
 
@@ -41,8 +52,17 @@ export abstract class GenericNewsService extends GenericRepositoryService<News> 
 
 @Injectable()
 export class MockNewsService extends GenericNewsService {
-  constructor(private http: HttpClient) {
-    super(http);
+  constructor(
+    @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
+    protected httpClient: HttpClient
+  ) {
+    super(
+      {
+        backendAddress: config.backendAddress,
+        maxPageSize: config.maxPageSize,
+      },
+      httpClient
+    );
   }
 
   search(
@@ -100,14 +120,23 @@ export class MockNewsService extends GenericNewsService {
   providedIn: 'root',
 })
 export class NewsService extends GenericNewsService {
-  constructor(private http: HttpClient) {
-    super(http);
+  constructor(
+    @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
+    protected httpClient: HttpClient
+  ) {
+    super(
+      {
+        backendAddress: config.backendAddress,
+        maxPageSize: config.maxPageSize,
+      },
+      httpClient
+    );
   }
 
   search(
     params: NewsSearchParams = { pageSize: 10, pageNumber: 1 }
   ): Observable<News[]> {
-    let formattedURL: string = `${this.endpointURL}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
+    let formattedURL: string = `${this.repositoryServiceEndpoint}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
     if (params.fromDate) {
       formattedURL += `&FromDate=${params.fromDate}`;
     }
@@ -130,7 +159,7 @@ export class NewsService extends GenericNewsService {
       formattedURL += `&ColumnToSort=${params.columnToSort}`;
     }
 
-    return this.http
+    return this.httpClient
       .get<IPaginatedListResponse<News>>(formattedURL)
       .pipe(map((a) => a.data.results));
   }

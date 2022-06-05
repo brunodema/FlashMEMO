@@ -2,11 +2,12 @@
  * Simply amazing feature taken from here: https://stackoverflow.com/questions/49996456/importing-json-file-in-typescript. Allows json files to be directly imported as type-safe objects. Requires some changes to the tsconfig.json file.
  */
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
+import { RepositoryServiceConfig } from 'src/app/app.module';
 import dictAPIJson from 'src/assets/test_assets/DictAPI.json';
-import { environment } from 'src/environments/environment';
+
 import { IDataResponse } from '../../models/http/http-response-types';
 import { FormatString } from '../../tools/tools';
 
@@ -164,10 +165,14 @@ export class MockDictionaryService extends GeneralDictionaryAPIService {
 
 @Injectable()
 export class DictionaryService extends GeneralDictionaryAPIService {
-  constructor(httpClient: HttpClient) {
+  private endpoint = `${this.config.backendAddress}/api/v1/dict/{0}/search?`;
+
+  constructor(
+    @Inject('REPOSITORY_SERVICE_CONFIG') protected config: RepositoryServiceConfig,
+    protected httpClient: HttpClient
+  ) {
     super(httpClient);
   }
-  private endpoint = `${environment.backendRootAddress}/api/v1/dict/{0}/search?`;
   searchWord(
     keyword: string,
     languageCode: string,

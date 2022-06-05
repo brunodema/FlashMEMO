@@ -1,4 +1,4 @@
-import { Component, OnInit, Pipe } from '@angular/core';
+import { Component, Inject, OnInit, Pipe } from '@angular/core';
 import { News } from '../../models/news.model';
 import { GenericNewsService, NewsService } from '../../services/news.service';
 
@@ -11,7 +11,7 @@ export class NewsSummaryComponent implements OnInit {
   public newsList: News[];
   public error?: Error;
 
-  constructor(private newsService: GenericNewsService) {}
+  constructor(    @Inject('GenericNewsService')private newsService: GenericNewsService) {}
 
   ngOnInit() {
     this.newsService

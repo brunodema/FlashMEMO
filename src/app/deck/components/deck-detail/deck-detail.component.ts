@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -105,12 +105,15 @@ export class DeckDetailComponent {
 
   constructor(
     private modalService: NgbModal,
+    @Inject('GenericLanguageService')
     private languageService: GenericLanguageService,
+    @Inject('GenericFlashcardService')
     private flashcardService: GenericFlashcardService,
-    private deckService: GenericDeckService,
+    @Inject('GenericDeckService') private deckService: GenericDeckService,
     private route: ActivatedRoute,
     private router: Router,
     private notificationService: GenericNotificationService,
+    @Inject('GenericAuthService')
     private authService: GenericAuthService
   ) {
     this.deckModel = this.route.snapshot.data['deck'];

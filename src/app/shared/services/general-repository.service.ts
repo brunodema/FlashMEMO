@@ -1,10 +1,11 @@
 // To be honest, I'm not even sure what this does at the moment. I'll leave it here for safety reasons
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { RepositoryServiceConfig } from 'src/app/app.module';
 import { environment } from 'src/environments/environment';
 import {
   IBaseAPIResponse,
@@ -12,20 +13,18 @@ import {
   IPaginatedListResponse,
 } from '../models/http/http-response-types';
 
-// Declaring this as an abstract class per recomendation of other Angular users, since interfaces can't be used for 'providers: [{ provide: NonInterfaceClass, useClass: ActualImplementationClass }]' declarations
-
-@Injectable()
 export abstract class GenericRepositoryService<Type> {
   constructor(
-    protected endpointURL: String,
-    protected httpClient: HttpClient,
+    protected repositoryServiceEndpoint: string,
+    protected maxPageSize: number,
+    protected httpClient: HttpClient
   ) {}
 
   abstract getTypename(): string;
 
   create(object: Type): Observable<IDataResponse<string>> {
     return this.httpClient.post<IDataResponse<string>>(
-      `${this.endpointURL}/create`,
+      `${this.repositoryServiceEndpoint}/create`,
       JSON.stringify(object),
       { headers: new HttpHeaders().set('Content-Type', 'application/json') }
     );
@@ -33,13 +32,13 @@ export abstract class GenericRepositoryService<Type> {
 
   get(id: string): Observable<IDataResponse<Type>> {
     return this.httpClient.get<IDataResponse<Type>>(
-      `${this.endpointURL}/${id}`
+      `${this.repositoryServiceEndpoint}/${id}`
     );
   }
 
   update(id: string, object: Type): Observable<IDataResponse<string>> {
     return this.httpClient.put<IDataResponse<string>>(
-      `${this.endpointURL}/${id}`,
+      `${this.repositoryServiceEndpoint}/${id}`,
       JSON.stringify(object),
       { headers: new HttpHeaders().set('Content-Type', 'application/json') }
     );
@@ -47,7 +46,7 @@ export abstract class GenericRepositoryService<Type> {
 
   delete(id: string): Observable<IBaseAPIResponse> {
     return this.httpClient.post<IDataResponse<IBaseAPIResponse>>(
-      `${this.endpointURL}/delete`,
+      `${this.repositoryServiceEndpoint}/delete`,
       JSON.stringify(id),
       { headers: new HttpHeaders().set('Content-Type', 'application/json') }
     );
@@ -56,14 +55,14 @@ export abstract class GenericRepositoryService<Type> {
   getAll(): Observable<Type[]> {
     return this.httpClient
       .get<IPaginatedListResponse<Type>>(
-        `${this.endpointURL}/list?pageSize=${environment.maxPageSize}`
+        `${this.repositoryServiceEndpoint}/list?pageSize=${this.maxPageSize}`
       )
       .pipe(map((a) => a.data.results));
   }
 
   getById(id: string): Observable<Type> {
     return this.httpClient
-      .get<IDataResponse<Type>>(`${this.endpointURL}/${id}`)
+      .get<IDataResponse<Type>>(`${this.repositoryServiceEndpoint}/${id}`)
       .pipe(map((a) => a.data));
   }
 }
