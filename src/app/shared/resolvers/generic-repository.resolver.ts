@@ -10,7 +10,6 @@ import { User } from 'src/app/user/models/user.model';
 import { GenericUserService } from 'src/app/user/services/user.service';
 import { GenericRepositoryService } from '../services/general-repository.service';
 
-@Injectable()
 export class GenericRepositoryResolverService<Type> implements Resolve<Type> {
   constructor(
     private service: GenericRepositoryService<Type>,
