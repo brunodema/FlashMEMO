@@ -5,9 +5,9 @@
   <input type="text" class="borderles-input w-100" [(ngModel)]="model.subtitle" placeholder="Enter the news subtitle">
 </div>
 <div class="input-group mt-2">
-  <input type="text" class="form-control" [(ngModel)]="model.thumbnailPath" placeholder="Thumbnail URL">
+  <input type="text" class="form-control" [(ngModel)]="model.thumbnailPath" placeholder="Enter the thumbnail URL">
   <div class="input-group-append">
-    <button class="btn btn-outline-secondary" type="button" (click)="processThumbnailURL()">Confim</button>
+    <button class="btn btn-outline-primary" type="button" (click)="processThumbnailURL()">Confim</button>
     <button class="btn btn-outline-secondary" type="button" (click)="clearImagePreview()">Clear</button>
   </div>
 </div>
@@ -23,5 +23,6 @@
   </ckeditor>
 </div>
 <div class="mt-2 d-flex justify-content-end">
-  <button (click)="onSubmit()" class="btn btn-primary">Submit</button>
+  <button [disabled]="!model.title || !model.subtitle || !model.content" (click)="onSubmit()"
+    class="btn btn-primary">Submit</button>
 </div>

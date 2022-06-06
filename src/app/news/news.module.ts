@@ -9,10 +9,10 @@ import { NewsComponent } from './components/news-list/news-list.component';
 import { NewsDetailComponent } from './components/news-detail/news-detail.component';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { FormsModule } from '@angular/forms';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { NewsPreviewComponent } from './components/common/news-preview/news-preview.component';
 import { NewsFormComponent } from './components/common/news-form/news-form.component';
-
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,15 @@ import { NewsFormComponent } from './components/common/news-form/news-form.compo
     NewsFormComponent,
     NewsPreviewComponent,
   ],
-  imports: [CommonModule, NewsRoutingModule, SharedModule, CKEditorModule, FormsModule, MatTabsModule],
+  imports: [
+    CommonModule,
+    NewsRoutingModule,
+    SharedModule,
+    CKEditorModule,
+    FormsModule,
+    MatTabsModule,
+    NgbTooltipModule,
+  ],
   exports: [NewsSummaryComponent],
 })
 export class NewsModule {}

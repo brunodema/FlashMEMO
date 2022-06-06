@@ -35,4 +35,8 @@ export class NewsCreateComponent {
       });
     }
   }
+
+  isNewsValid() {
+    return this.model.title && this.model.subtitle && this.model.content;
+  }
 }
