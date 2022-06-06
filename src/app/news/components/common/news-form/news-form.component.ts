@@ -32,6 +32,7 @@ export class NewsFormComponent {
 
   editorType: CKEditor4.EditorType = CKEditor4.EditorType.CLASSIC;
   editorConfig: CKEditor4.Config = {
+    delayIfDetached: true,
     toolbar: [
       { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike'] },
       {
