@@ -1,15 +1,27 @@
-     <div class="form-group">
-        <input type="text" class="borderles-input w-100" [(ngModel)]="model.title" placeholder="Enter the news title">
-      </div>
-      <div class="form-group mt-2">
-        <input type="text" class="borderles-input w-100" [(ngModel)]="model.subtitle"
-          placeholder="Enter the news subtitle">
-      </div>
-      <div class="form-group mt-2">
-        <ckeditor #editorComponent [(ngModel)]="model.content"
-          editorUrl="https://cdn.ckeditor.com/4.18.0/full-all/ckeditor.js" [config]="editorConfig" [type]="editorType">
-        </ckeditor>
-      </div>
-      <div class="mt-2 d-flex justify-content-end">
-        <button (click)="onSubmit()" class="btn btn-primary">Submit</button>
-      </div>
+<div class="form-group">
+  <input type="text" class="borderles-input w-100" [(ngModel)]="model.title" placeholder="Enter the news title">
+</div>
+<div class="form-group mt-2">
+  <input type="text" class="borderles-input w-100" [(ngModel)]="model.subtitle" placeholder="Enter the news subtitle">
+</div>
+<div class="input-group mt-2">
+  <input type="text" class="form-control" [(ngModel)]="model.thumbnailPath" placeholder="Thumbnail URL">
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" type="button" (click)="processThumbnailURL()">Confim</button>
+    <button class="btn btn-outline-secondary" type="button" (click)="clearImagePreview()">Clear</button>
+  </div>
+</div>
+<div>
+  <div *ngIf="this.showImagePreview" class="form-group mt-2">
+    <label class="w-100">Image preview:</label>
+    <img #imagePreview class="img-fluid" (error)="brokenImage()" [style.maxHeight]="'500px'" />
+  </div>
+</div>
+<div class="form-group mt-2">
+  <ckeditor #editorComponent [(ngModel)]="model.content"
+    editorUrl="https://cdn.ckeditor.com/4.18.0/full-all/ckeditor.js" [config]="editorConfig" [type]="editorType">
+  </ckeditor>
+</div>
+<div class="mt-2 d-flex justify-content-end">
+  <button (click)="onSubmit()" class="btn btn-primary">Submit</button>
+</div>
