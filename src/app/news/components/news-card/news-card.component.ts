@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { News } from '../../models/news.model';
 
 @Component({
@@ -6,13 +6,14 @@ import { News } from '../../models/news.model';
   templateUrl: './news-card.component.html',
   styleUrls: ['./news-card.component.css'],
 })
-export class NewsCardComponent implements OnInit {
+export class NewsCardComponent {
   @Input() news: News;
 
-  constructor() {
+  @Output() delete: EventEmitter<any> = new EventEmitter();
 
-  }
+  constructor() {}
 
-  ngOnInit(): void {
+  deleteClick() {
+    this.delete.emit(this.news.newsId);
   }
 }

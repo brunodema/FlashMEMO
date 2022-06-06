@@ -1,5 +1,18 @@
-<div class="container">
-  <div class="mt-5">
-    <app-news-preview [model]="model"></app-news-preview>
-  </div>
+<div class="container my-3">
+  <mat-tab-group #tabGroup dynamicHeight animationDuration="0ms">
+    <mat-tab label="Create">
+      <div class="mt-5">
+        <app-news-form [model]="model" (submit)="onSubmit($event)"></app-news-form>
+      </div>
+    </mat-tab>
+    <mat-tab [disabled]="!isNewsValid()" label="Preview">
+      <ng-template mat-tab-label>
+        <label [ngbTooltip]="!isNewsValid() ? 'Your News is not valid yet 😟' : ''" placement="bottom"
+          container="body">Preview</label>
+      </ng-template>
+      <div class="mt-5">
+        <app-news-preview [model]="model"></app-news-preview>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
 </div>
