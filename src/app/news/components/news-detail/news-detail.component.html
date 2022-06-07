@@ -2,7 +2,9 @@
   <mat-tab-group #tabGroup dynamicHeight animationDuration="0ms">
     <mat-tab label="Create">
       <div class="mt-5">
-        <app-news-form [model]="model" (submit)="onSubmit($event)"></app-news-form>
+        <ng-template matTabContent>
+          <app-news-form [model]="model" (submit)="onSubmit($event)"></app-news-form>
+        </ng-template>
       </div>
     </mat-tab>
     <mat-tab [disabled]="!isNewsValid()" label="Preview">
