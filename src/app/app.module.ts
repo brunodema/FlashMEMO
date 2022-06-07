@@ -80,6 +80,7 @@ import {
   NewsService,
 } from './news/services/news.service';
 import { environment } from 'src/environments/environment';
+import { TestModule } from './test/test.module';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const password = control.value['password'];
@@ -120,6 +121,7 @@ export type RepositoryServiceConfig = {
     AppRoutingModule,
     NewsModule,
     DeckModule,
+    TestModule,
     BrowserAnimationsModule,
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),

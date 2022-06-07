@@ -24,6 +24,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('../../deck/deck.module').then((m) => m.DeckModule),
   },
+  {
+    path: 'test',
+    loadChildren: () =>
+      import('../../test/test.module').then((m) => m.TestModule),
+  },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
 
