@@ -46,7 +46,7 @@ export class NewsCardListComponent implements OnInit {
         pageNumber: 1,
         pageSize: this.pageSizeOptions[0],
         columnToSort: 'creationDate',
-        sortType: 'desc',
+        sortType: 'descending',
       })
       .subscribe((response) => {
         this.newsData = response.data.results;
