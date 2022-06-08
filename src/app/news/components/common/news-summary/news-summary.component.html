@@ -1,23 +1,25 @@
-<div class="container my-5">
-  <div class="row">
-    <div class="col-md-6" *ngFor="let item of newsList">
-      <div class="container d-flex justify-content-center align-items-center">
-        <div class="card">
-          <div class="ratio ratio-4x3">
-            <img class="img-fluid" [src]="item.thumbnailPath | safeBypass: 'url'" allowfullscreen>
-          </div>
+<div class="row">
+  <div class="col-md-6" *ngFor="let item of newsList">
+    <div class="container d-flex justify-content-center align-items-center">
+      <div class="card">
+        <div class="ratio ratio-4x3">
+          <img class="img-fluid" [src]="item.thumbnailPath | safeBypass: 'url'" allowfullscreen>
+        </div>
 
-          <div class="p-3 content">
-            <span class="line-clamp-3">{{ item.title }}</span>
-            <h4 class="line-clamp-3">{{ item.subtitle }}</h4>
-            <p class="line-clamp-3">
-              {{ item.content }}
-            </p>
-          </div>
-          <div class="p-3 d-flex justify-content-between align-items-center">
-            <div class="about">
+        <div class="p-3 content">
+          <span class="line-clamp-3">{{ item.title }}</span>
+          <h4 class="line-clamp-3">{{ item.subtitle }}</h4>
+          <p class="line-clamp-3">
+            {{ item.content }}
+          </p>
+        </div>
+        <div class="px-3 d-flex justify-content-between align-items-center mb-3">
+          <div class="about">
+            <div class="row">
               <span><i class="fa fa-heart"></i>
                 <small> {{ item.creationDate }} </small></span>
+            </div>
+            <div class="row">
               <span class="ml-2"><i class="fa fa-envelope"></i>
                 <small> {{ item.lastUpdated }} </small></span>
             </div>
@@ -26,4 +28,7 @@
       </div>
     </div>
   </div>
+</div>
+<div class="container d-flex justify-content-end">
+  <a class="link-primary" routerLink="/news">Check more FlashMEMO content here!</a>
 </div>
