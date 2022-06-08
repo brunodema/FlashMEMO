@@ -1,0 +1,6 @@
+<app-news-card *ngFor="let item of newsData" [news]="item" (delete)="relayDelete($event)"></app-news-card>
+
+<!-- AMAZING tutorial on how to actually use this thing without a mat-table: https://stackoverflow.com/questions/45318164/how-to-use-paginator-from-material-angular -->
+<mat-paginator #paginator [length]="totalAmount" [pageIndex]="pageNumber" [pageSize]="resultSize"
+  [pageSizeOptions]="[defaultPageSize, 10, 25, 100]" (page)="pageEvent = getServerData($event)">
+</mat-paginator>

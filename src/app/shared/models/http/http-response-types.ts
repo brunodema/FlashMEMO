@@ -19,8 +19,8 @@ export interface IPaginatedList<Type> {
   results: Type[];
   pageNumber: number;
   totalPages: number;
-  count: number;
-  total: number;
+  resultSize: number;
+  totalAmount: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
 }

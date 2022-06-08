@@ -21,8 +21,8 @@ import newsJson from 'src/assets/test_assets/News.json';
 import { RepositoryServiceConfig } from 'src/app/app.module';
 
 class NewsSearchParams implements IServiceSearchParams {
-  pageSize: Number;
-  pageNumber: Number;
+  pageSize: number;
+  pageNumber: number;
   fromDate?: string;
   toDate?: string;
   title?: string;
@@ -43,7 +43,9 @@ export abstract class GenericNewsService extends GenericRepositoryService<News> 
       httpClient
     );
   }
-  abstract search(searchParams: NewsSearchParams): Observable<News[]>;
+  abstract search(
+    searchParams: NewsSearchParams
+  ): Observable<IPaginatedListResponse<News>>;
 
   getTypename(): string {
     return 'news';
@@ -67,8 +69,27 @@ export class MockNewsService extends GenericNewsService {
 
   search(
     params: NewsSearchParams = { pageSize: 10, pageNumber: 1 }
-  ): Observable<News[]> {
-    return of(newsJson);
+  ): Observable<IPaginatedListResponse<News>> {
+    let results = newsJson.slice(
+      (params.pageNumber - 1) * params.pageSize,
+      (params.pageNumber - 1) * params.pageSize + params.pageSize
+    );
+    let resultLenght = results.length;
+
+    return of({
+      status: '200',
+      message: 'News successfully retrieved.',
+      errors: [],
+      data: {
+        results: results,
+        pageNumber: params.pageNumber,
+        totalPages: Math.ceil(newsJson.length / params.pageSize),
+        resultSize: resultLenght,
+        totalAmount: newsJson.length,
+        hasPreviousPage: false,
+        hasNextPage: false,
+      },
+    });
   }
 
   getAll(): Observable<News[]> {
@@ -135,7 +156,7 @@ export class NewsService extends GenericNewsService {
 
   search(
     params: NewsSearchParams = { pageSize: 10, pageNumber: 1 }
-  ): Observable<News[]> {
+  ): Observable<IPaginatedListResponse<News>> {
     let formattedURL: string = `${this.repositoryServiceEndpoint}/search?pageSize=${params.pageSize}&pageNumber=${params.pageNumber}`;
     if (params.fromDate) {
       formattedURL += `&FromDate=${params.fromDate}`;
@@ -159,8 +180,6 @@ export class NewsService extends GenericNewsService {
       formattedURL += `&ColumnToSort=${params.columnToSort}`;
     }
 
-    return this.httpClient
-      .get<IPaginatedListResponse<News>>(formattedURL)
-      .pipe(map((a) => a.data.results));
+    return this.httpClient.get<IPaginatedListResponse<News>>(formattedURL);
   }
 }

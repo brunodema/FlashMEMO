@@ -12,6 +12,8 @@ import { NewsPreviewComponent } from './components/common/news-preview/news-prev
 import { NewsFormComponent } from './components/common/news-form/news-form.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NewsDetailComponent } from './components/news-detail/news-detail.component';
+import { NewsCardListComponent } from './components/common/news-card-list/news-card-list.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,7 @@ import { NewsDetailComponent } from './components/news-detail/news-detail.compon
     NewsDetailComponent,
     NewsFormComponent,
     NewsPreviewComponent,
+    NewsCardListComponent,
   ],
   imports: [
     CommonModule,
@@ -30,7 +33,8 @@ import { NewsDetailComponent } from './components/news-detail/news-detail.compon
     FormsModule,
     MatTabsModule,
     NgbTooltipModule,
+    MatPaginatorModule,
   ],
-  exports: [NewsSummaryComponent],
+  exports: [NewsSummaryComponent, NewsCardListComponent],
 })
 export class NewsModule {}
