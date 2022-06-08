@@ -9,6 +9,7 @@ import {
 import { PageEvent } from '@angular/material/paginator';
 import { News } from 'src/app/news/models/news.model';
 import { GenericNewsService } from 'src/app/news/services/news.service';
+import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
 
 @Component({
   selector: 'app-news-card-list',
@@ -30,13 +31,12 @@ export class NewsCardListComponent implements OnInit {
   // properties to be used by the paginator
   pageEvent: PageEvent;
   pageNumber: number; // the paginator widget uses '0' as the initial position (instead of '1')
-  resultSize: number;
+  pageSize: number; //
   totalAmount: number;
 
-  @Output() deleteNews: EventEmitter<string> = new EventEmitter<string>();
-
   constructor(
-    @Inject('GenericNewsService') protected newsService: GenericNewsService
+    @Inject('GenericNewsService') protected newsService: GenericNewsService,
+    protected notificationService: GenericNotificationService
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +51,7 @@ export class NewsCardListComponent implements OnInit {
       .subscribe((response) => {
         this.newsData = response.data.results;
         this.pageNumber = Number(response.data.pageNumber) - 1;
-        this.resultSize = Number(response.data.resultSize);
+        this.pageSize = this.pageSizeOptions[0];
         this.totalAmount = Number(response.data.totalAmount);
       });
   }
@@ -63,17 +63,36 @@ export class NewsCardListComponent implements OnInit {
       .search({
         pageNumber: event?.pageIndex ?? 1,
         pageSize: event?.pageSize ?? this.pageSizeOptions[0],
+        columnToSort: 'creationDate',
+        sortType: 'descending',
       })
       .subscribe((response) => {
         this.newsData = response.data.results;
         this.pageNumber = Number(response.data.pageNumber) - 1;
-        this.resultSize = Number(response.data.resultSize);
+        this.pageSize = event?.pageSize ?? this.pageSizeOptions[0];
         this.totalAmount = Number(response.data.totalAmount);
       });
     return event;
   }
 
-  relayDelete(id: string) {
-    this.deleteNews.emit(id);
+  deleteNews(id: string) {
+    if (confirm('Are you sure you want to delete this News?')) {
+      this.newsService.delete(id).subscribe((response) => {
+        this.notificationService.showSuccess('News successfully deleted.');
+        this.newsService
+          .search({
+            pageNumber: 1,
+            pageSize: this.pageSize,
+            columnToSort: 'creationDate',
+            sortType: 'descending',
+          })
+          .subscribe((response) => {
+            this.newsData = response.data.results;
+            this.pageNumber = Number(response.data.pageNumber) - 1;
+            this.pageSize = this.pageSize;
+            this.totalAmount = Number(response.data.totalAmount);
+          });
+      });
+    }
   }
 }

@@ -16,12 +16,4 @@ export class NewsComponent {
     @Inject('GenericNewsService') protected newsService: GenericNewsService,
     protected notificationService: GenericNotificationService
   ) {}
-
-  deleteNews(event: string) {
-    if (confirm('Are you sure you want to delete this News?')) {
-      this.newsService.delete(event).subscribe((response) => {
-        this.notificationService.showSuccess('News successfully deleted.');
-      });
-    }
-  }
 }
