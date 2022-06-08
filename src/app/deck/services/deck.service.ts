@@ -9,7 +9,6 @@ import {
 } from 'src/app/shared/models/http/http-response-types';
 import {
   IServiceSearchParams,
-  SortColumn,
   SortType,
 } from 'src/app/shared/models/other/api-query-types';
 import { GenericRepositoryService } from 'src/app/shared/services/general-repository.service';
@@ -31,7 +30,7 @@ class DeckSearchParams implements IServiceSearchParams {
   fromLastUpdated?: string;
   toLastUpdated?: string;
   sortType?: SortType;
-  columnToSort?: SortColumn;
+  columnToSort?: string;
 }
 
 export abstract class GenericDeckService extends GenericRepositoryService<Deck> {

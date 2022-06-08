@@ -7,7 +7,6 @@ import { map } from 'rxjs/operators';
 
 import {
   IServiceSearchParams,
-  SortColumn,
   SortType,
 } from 'src/app/shared/models/other/api-query-types';
 import {
@@ -29,7 +28,7 @@ class NewsSearchParams implements IServiceSearchParams {
   subtitle?: string;
   content?: string;
   sortType?: SortType;
-  columnToSort?: SortColumn;
+  columnToSort?: string;
 }
 
 export abstract class GenericNewsService extends GenericRepositoryService<News> {

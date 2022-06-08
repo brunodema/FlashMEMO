@@ -2,9 +2,9 @@
   <img class="card-img-right flex-auto d-none d-md-block" style="width: 200px; height: 200px"
     [src]="news.thumbnailPath" />
   <div class="card-body d-flex flex-column align-items-start">
-    <strong class="d-inline-block mb-2 text-primary">News</strong>
+    <strong class="d-inline-block mb-2 text-primary">(show who posted it, or whatever other useful info)</strong>
     <h6 class="mb-0">
-      <a class="text-dark" [routerLink]="['/news', news.newsId]">{{ news.title }}</a>
+      <a class="h4 text-dark" [routerLink]="['/news', news.newsId]">{{ news.title }}</a>
     </h6>
     <div class="mb-1 text-muted small">
       {{ news.creationDate }}

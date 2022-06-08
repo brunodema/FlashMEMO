@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { News } from 'src/app/news/models/news.model';
 import { GenericNewsService } from 'src/app/news/services/news.service';
@@ -8,7 +15,13 @@ import { GenericNewsService } from 'src/app/news/services/news.service';
   templateUrl: './news-card-list.component.html',
   styleUrls: ['./news-card-list.component.css'],
 })
-export class NewsCardListComponent {
+export class NewsCardListComponent implements OnInit {
+  /**
+   * Parameter used by the paginator to setup the page size options.
+   */
+  @Input()
+  pageSizeOptions: Array<number> = [];
+
   /**
    * News data associated with the component.
    */
@@ -16,18 +29,25 @@ export class NewsCardListComponent {
 
   // properties to be used by the paginator
   pageEvent: PageEvent;
-  defaultPageSize: number = 5;
   pageNumber: number; // the paginator widget uses '0' as the initial position (instead of '1')
   resultSize: number;
   totalAmount: number;
 
-  @Output() deleteNews: EventEmitter<string> = new EventEmitter();
+  @Output() deleteNews: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(
     @Inject('GenericNewsService') protected newsService: GenericNewsService
-  ) {
+  ) {}
+
+  ngOnInit(): void {
+    // wow, 'OnInit' is actually useful! :O
     this.newsService
-      .search({ pageNumber: 1, pageSize: this.defaultPageSize })
+      .search({
+        pageNumber: 1,
+        pageSize: this.pageSizeOptions[0],
+        columnToSort: 'creationDate',
+        sortType: 'desc',
+      })
       .subscribe((response) => {
         this.newsData = response.data.results;
         this.pageNumber = Number(response.data.pageNumber) - 1;
@@ -42,7 +62,7 @@ export class NewsCardListComponent {
     this.newsService
       .search({
         pageNumber: event?.pageIndex ?? 1,
-        pageSize: event?.pageSize ?? this.defaultPageSize,
+        pageSize: event?.pageSize ?? this.pageSizeOptions[0],
       })
       .subscribe((response) => {
         this.newsData = response.data.results;
