@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, pipe, throwError } from 'rxjs';
 import { News } from '../models/news.model';
 
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import {
   IServiceSearchParams,
@@ -31,6 +31,9 @@ class NewsSearchParams implements IServiceSearchParams {
   columnToSort?: string;
 }
 
+const newsSortCreationDateDesc = (a: News, b: News) =>
+  new Date(a.creationDate) > new Date(b.creationDate) ? -1 : 1;
+
 export abstract class GenericNewsService extends GenericRepositoryService<News> {
   constructor(
     protected config: RepositoryServiceConfig,
@@ -49,6 +52,8 @@ export abstract class GenericNewsService extends GenericRepositoryService<News> 
   getTypename(): string {
     return 'news';
   }
+
+  abstract getLatestNews(quantity: number): Observable<News[]>;
 }
 
 @Injectable()
@@ -63,6 +68,12 @@ export class MockNewsService extends GenericNewsService {
         maxPageSize: config.maxPageSize,
       },
       httpClient
+    );
+  }
+
+  getLatestNews(quantity: number): Observable<News[]> {
+    return of(
+      newsJson.sort((a, b) => newsSortCreationDateDesc(a, b)).slice(0, quantity)
     );
   }
 
@@ -150,6 +161,16 @@ export class NewsService extends GenericNewsService {
         maxPageSize: config.maxPageSize,
       },
       httpClient
+    );
+  }
+
+  getLatestNews(quantity: number): Observable<News[]> {
+    return this.getAll().pipe(
+      map((newsArray) =>
+        newsArray
+          .sort((a, b) => newsSortCreationDateDesc(a, b))
+          .slice(0, quantity)
+      )
     );
   }
 
