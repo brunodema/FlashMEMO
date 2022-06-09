@@ -1,4 +1,5 @@
-<app-news-card *ngFor="let item of newsData" [news]="item" (delete)="deleteNews($event)"></app-news-card>
+<app-news-card *ngFor="let item of newsData; let i = index " [ownerInfo]="ownerData[i]" [news]="item"
+  (delete)="deleteNews($event)"></app-news-card>
 
 <!-- AMAZING tutorial on how to actually use this thing without a mat-table: https://stackoverflow.com/questions/45318164/how-to-use-paginator-from-material-angular -->
 <mat-paginator [length]="totalAmount" [pageIndex]="pageNumber" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"

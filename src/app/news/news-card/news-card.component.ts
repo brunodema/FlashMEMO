@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { User } from 'src/app/user/models/user.model';
 import { News } from '../models/news.model';
 
 @Component({
@@ -7,7 +8,8 @@ import { News } from '../models/news.model';
   styleUrls: ['./news-card.component.css'],
 })
 export class NewsCardComponent {
-  @Input() news: News;
+  @Input() news: News = new News();
+  @Input() ownerInfo: User = new User();
 
   @Output() delete: EventEmitter<any> = new EventEmitter();
 
