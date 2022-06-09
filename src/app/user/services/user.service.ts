@@ -84,7 +84,7 @@ export class MockUserService extends GenericUserService {
       status: '200',
       message: 'Dummy User object retrieved.',
       errors: [],
-      data: {} as User,
+      data: userJson.filter((user) => user.id === id)[0] as User,
     });
   }
 
