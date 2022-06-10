@@ -5,9 +5,16 @@
 // 'lte' and 'gte': https://stackoverflow.com/questions/62072822/cypress-assertion-equal-and-greater-than
 
 import deckJson from 'src/assets/test_assets/Decks.json';
-import flashcardJson from 'src/assets/test_assets/Flashcards.json';
 
 class DeckDetailPageObject {
+  login() {
+    cy.visit('login');
+    cy.get('[id="username-input"]').type('username');
+    cy.get('[id="password-input"]').type('password');
+    cy.get('[data-testid="login-submit-btn"]').click();
+    cy.task('log', 'logging into FlashMEMO using MockAuthService...');
+  }
+
   visitDeckDetail(id?: string) {
     if (id) cy.visit(`deck/${id}`);
     else cy.visit('deck/create');
@@ -143,6 +150,7 @@ describe('Access deck-detail and find stuff', () => {
     // browser with a 720p monitor
     cy.viewport(1280, 720);
     cy.task('log', 'setting viewport to 720p...');
+    page.login();
   });
 
   it('Should go to the fucking page (via "create")', () => {
@@ -201,5 +209,3 @@ describe('Access deck-detail and find stuff', () => {
     });
   });
 });
-
-// ¹This is super weird, but apparently since everything is async within Cypress, using normal 'while' will not work at all here. According to some link I found, using tools inside Cypress seem to do the trick, even though it looks scuffed.
