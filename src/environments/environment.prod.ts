@@ -10,8 +10,7 @@ import { UserService } from 'src/app/user/services/user.service';
 
 export const environment = {
   production: true,
-  // backendRootAddress: 'https://backend-svc.default:443',
-  backendRootAddress: 'http://api.flashmemo.edu:5000',
+  backendRootAddress: 'https://api.flashmemo.edu',
   maxPageSize: 10000,
   defaultLanguageISOCode: 'en-gb',
   // services
