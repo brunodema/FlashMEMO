@@ -15,7 +15,7 @@ import {
   GenericAuthService,
   MockAuthService,
 } from './shared/services/auth.service';
-import { AuthGuard } from './shared/guards/auth.guard';
+import { FlashMEMOAuthGuard } from './shared/guards/auth.guard';
 
 import { LoginComponent } from './root/components/login/login.component';
 import { HomeComponent } from './root/components/home/home.component';
@@ -188,7 +188,7 @@ export type RepositoryServiceConfig = {
     { provide: 'GenericUserService', useClass: environment.userService },
     { provide: 'GenericNewsService', useClass: environment.newsService },
 
-    AuthGuard,
+    FlashMEMOAuthGuard,
     { provide: DeckRepositoryResolverService },
     { provide: UserRepositoryResolverService },
     { provide: NewsRepositoryResolverService },
