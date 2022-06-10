@@ -9,7 +9,6 @@ import {
 } from 'src/app/shared/models/http/http-response-types';
 import {
   IServiceSearchParams,
-  SortColumn,
   SortType,
 } from 'src/app/shared/models/other/api-query-types';
 import { GenericRepositoryService } from 'src/app/shared/services/general-repository.service';
@@ -21,7 +20,7 @@ class UserSearchParams implements IServiceSearchParams {
   pageSize: Number;
   pageNumber: Number;
   sortType?: SortType;
-  columnToSort?: SortColumn;
+  columnToSort?: string;
   email?: string;
   username?: string;
 }
@@ -85,7 +84,7 @@ export class MockUserService extends GenericUserService {
       status: '200',
       message: 'Dummy User object retrieved.',
       errors: [],
-      data: {} as User,
+      data: userJson.filter((user) => user.id === id)[0] as User,
     });
   }
 

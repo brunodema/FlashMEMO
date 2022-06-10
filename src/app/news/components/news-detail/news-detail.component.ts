@@ -1,14 +1,6 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Inject,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
 import { MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CKEditor4 } from 'ckeditor4-angular';
 import { DetailViewComponent } from 'src/app/shared/components/common/detail-view/detail-view.component';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
 import { News } from '../../models/news.model';
@@ -30,12 +22,12 @@ export class NewsDetailComponent
 
   constructor(
     @Inject('GenericNewsService')
-    protected service: GenericNewsService,
+    protected newsService: GenericNewsService,
     protected notificationService: GenericNotificationService,
     protected router: Router,
     protected route: ActivatedRoute
   ) {
-    super(route, service);
+    super(route, newsService);
 
     if (!this.model) {
       this.model = new News();

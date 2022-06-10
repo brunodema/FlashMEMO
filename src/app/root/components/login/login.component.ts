@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
     {
       key: 'username',
       type: 'input',
+      id: 'username-input',
       templateOptions: {
         attributes: { autocomplete: 'username' }, // this might be getting placed in the wrong spot (label instead?)
         type: 'text',
@@ -29,6 +30,7 @@ export class LoginComponent implements OnInit {
     {
       key: 'password',
       type: 'input',
+      id: 'password-input',
       templateOptions: {
         attributes: { autocomplete: 'current-password' }, // this might be getting placed in the wrong spot (label instead?)
         type: 'password',

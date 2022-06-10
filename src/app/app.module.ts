@@ -15,7 +15,7 @@ import {
   GenericAuthService,
   MockAuthService,
 } from './shared/services/auth.service';
-import { AuthGuard } from './shared/guards/auth.guard';
+import { FlashMEMOAuthGuard } from './shared/guards/auth.guard';
 
 import { LoginComponent } from './root/components/login/login.component';
 import { HomeComponent } from './root/components/home/home.component';
@@ -80,6 +80,7 @@ import {
   NewsService,
 } from './news/services/news.service';
 import { environment } from 'src/environments/environment';
+import { TestModule } from './test/test.module';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const password = control.value['password'];
@@ -120,6 +121,7 @@ export type RepositoryServiceConfig = {
     AppRoutingModule,
     NewsModule,
     DeckModule,
+    TestModule,
     BrowserAnimationsModule,
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
@@ -186,7 +188,7 @@ export type RepositoryServiceConfig = {
     { provide: 'GenericUserService', useClass: environment.userService },
     { provide: 'GenericNewsService', useClass: environment.newsService },
 
-    AuthGuard,
+    FlashMEMOAuthGuard,
     { provide: DeckRepositoryResolverService },
     { provide: UserRepositoryResolverService },
     { provide: NewsRepositoryResolverService },

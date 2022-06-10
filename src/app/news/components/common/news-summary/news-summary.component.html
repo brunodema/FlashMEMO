@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-md-6" *ngFor="let item of newsList; let i = index">
+    <div class="container d-flex justify-content-center align-items-center">
+      <div class="card">
+        <div class="ratio ratio-4x3">
+          <img class="img-fluid" [src]="item.thumbnailPath | safeBypass: 'url'" allowfullscreen>
+        </div>
+
+        <div class="p-3 content">
+          <span class="line-clamp-3">{{ item.subtitle }}</span>
+          <a class="h4 line-clamp-3 link-dark" [routerLink]="['/news', item.newsId ]">{{ item.title }}</a>
+          <p class="line-clamp-3">
+            {{ item.content }}
+          </p>
+        </div>
+        <div class="px-3 d-flex justify-content-between align-items-center mb-3">
+          <div class="about">
+            <div class="row">
+              <span><i class="fa fa-at"></i>
+                <small> {{ ownerInfo[i].username }} </small></span>
+            </div>
+            <div class="row ml-2">
+              <span><i class="fa fa-heart"></i>
+                <small> {{ item.creationDate }} </small></span>
+            </div>
+            <div class="row">
+              <span class="ml-2"><i class="fa fa-envelope"></i>
+                <small> {{ item.lastUpdated }} </small></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container d-flex justify-content-end">
+  <a class="link-primary" routerLink="/news">Check more FlashMEMO content here!</a>
+</div>

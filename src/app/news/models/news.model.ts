@@ -1,5 +1,6 @@
 export class News {
   newsId: string = '';
+  ownerId: string = '';
   title: string = '';
   subtitle: string = '';
   thumbnailPath: string = '';
