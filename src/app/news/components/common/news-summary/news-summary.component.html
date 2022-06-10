@@ -7,8 +7,8 @@
         </div>
 
         <div class="p-3 content">
-          <span class="line-clamp-3">{{ item.title }}</span>
-          <h4 class="line-clamp-3">{{ item.subtitle }}</h4>
+          <span class="line-clamp-3">{{ item.subtitle }}</span>
+          <a class="h4 line-clamp-3 link-dark" [routerLink]="['/news', item.newsId ]">{{ item.title }}</a>
           <p class="line-clamp-3">
             {{ item.content }}
           </p>
