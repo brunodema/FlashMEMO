@@ -1,11 +1,8 @@
-import { Component, Inject, OnInit, Pipe } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { User } from 'src/app/user/models/user.model';
 import { GenericUserService } from 'src/app/user/services/user.service';
-import { News } from '../../../models/news.model';
-import {
-  GenericNewsService,
-  NewsService,
-} from '../../../services/news.service';
+import { ExtendedNews, News } from '../../../models/news.model';
+import { GenericNewsService } from '../../../services/news.service';
 
 @Component({
   selector: 'app-news-summary',
@@ -13,8 +10,7 @@ import {
   styleUrls: ['./news-summary.component.css'],
 })
 export class NewsSummaryComponent implements OnInit {
-  public newsList: News[] = [];
-  public ownerInfo: User[] = [];
+  public newsList: ExtendedNews[] = [];
 
   constructor(
     @Inject('GenericNewsService') private newsService: GenericNewsService,
@@ -22,13 +18,8 @@ export class NewsSummaryComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.newsService.getLatestNews(4).subscribe((latestNews) => {
-      latestNews.forEach((news) => {
-        this.userService.get(news.ownerId).subscribe((getResponse) => {
-          this.ownerInfo.push(getResponse.data); // no need to reset array here because it is not updated automatically like in other components
-        });
-      });
-      this.newsList = latestNews;
+    this.newsService.getExtendedLatestNews(4, 1).subscribe((latestNews) => {
+      this.newsList = latestNews.data.results;
     });
   }
 }

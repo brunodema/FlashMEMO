@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, pipe, throwError } from 'rxjs';
-import { News } from '../models/news.model';
+import { ExtendedNews, News } from '../models/news.model';
 
 import { map, tap } from 'rxjs/operators';
 
@@ -17,7 +17,9 @@ import {
 import { GenericRepositoryService } from 'src/app/shared/services/general-repository.service';
 
 import newsJson from 'src/assets/test_assets/News.json';
+import userJson from 'src/assets/test_assets/User.json';
 import { RepositoryServiceConfig } from 'src/app/app.module';
+import { User } from 'src/app/user/models/user.model';
 
 class NewsSearchParams implements IServiceSearchParams {
   pageSize: number;
@@ -53,7 +55,10 @@ export abstract class GenericNewsService extends GenericRepositoryService<News> 
     return 'news';
   }
 
-  abstract getLatestNews(quantity: number): Observable<News[]>;
+  abstract getExtendedLatestNews(
+    pageSize: number,
+    pageNumber: number
+  ): Observable<IPaginatedListResponse<ExtendedNews>>;
 }
 
 @Injectable()
@@ -71,10 +76,35 @@ export class MockNewsService extends GenericNewsService {
     );
   }
 
-  getLatestNews(quantity: number): Observable<News[]> {
-    return of(
-      newsJson.sort((a, b) => newsSortCreationDateDesc(a, b)).slice(0, quantity)
-    );
+  getExtendedLatestNews(
+    pageSize: number,
+    pageNumber: number
+  ): Observable<IPaginatedListResponse<ExtendedNews>> {
+    let results = newsJson
+      .sort((a, b) => newsSortCreationDateDesc(a, b))
+      .slice(
+        pageSize * (pageNumber - 1),
+        pageSize * (pageNumber - 1) + pageSize
+      )
+      .map((news) => ({
+        ...news,
+        ownerInfo: userJson.filter((user) => user.id === news.ownerId)[0],
+      }));
+
+    return of({
+      status: '200',
+      message: 'Extended News information successfully retrieved.',
+      errors: [],
+      data: {
+        results: results,
+        pageNumber: pageNumber,
+        totalPages: Math.ceil(newsJson.length / pageSize),
+        resultSize: results.length,
+        totalAmount: newsJson.length,
+        hasPreviousPage: false,
+        hasNextPage: false,
+      },
+    });
   }
 
   search(
@@ -164,13 +194,14 @@ export class NewsService extends GenericNewsService {
     );
   }
 
-  getLatestNews(quantity: number): Observable<News[]> {
-    return this.getAll().pipe(
-      map((newsArray) =>
-        newsArray
-          .sort((a, b) => newsSortCreationDateDesc(a, b))
-          .slice(0, quantity)
-      )
+  getExtendedLatestNews(
+    pageSize: number,
+    pageNumber: number
+  ): Observable<IPaginatedListResponse<ExtendedNews>> {
+    let formattedURL: string = `${this.repositoryServiceEndpoint}/search/extended?pageSize=${pageSize}&pageNumber=${pageNumber}&ColumnToSort=creationdate&SortType=Descending`;
+
+    return this.httpClient.get<IPaginatedListResponse<ExtendedNews>>(
+      formattedURL
     );
   }
 
