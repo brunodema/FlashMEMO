@@ -2,10 +2,12 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Guid } from 'guid-ts';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { RepositoryServiceConfig } from 'src/app/app.module';
+import { User } from 'src/app/user/models/user.model';
 import {
   ILoginRequest,
   IRegisterRequest,
@@ -25,14 +27,18 @@ export abstract class GenericAuthService {
     protected notificationService: GenericNotificationService
   ) {}
 
-  // TIL about Subject/BehaviorSubject. "A Subject is like an Observable, but can multicast to many Observers. Subjects are like EventEmitters: they maintain a registry of many listeners" (source: https://rxjs.dev/guide/subject). Implementation taken from here: https://netbasal.com/angular-2-persist-your-login-status-with-behaviorsubject-45da9ec43243
+  private decodeUserFromToken(jwtToken: string): User {
+    return new User({
+      id: this.decodePropertyFromToken('sub') ?? Guid.newGuid(),
+      email: this.decodePropertyFromToken('email') ?? 'johndoe@flashmemo.edu',
+      name: this.decodePropertyFromToken('name') ?? 'John',
+      surname: this.decodePropertyFromToken('surname') ?? 'Doe',
+      username: this.decodePropertyFromToken('username') ?? 'johndoe',
+    });
+  }
 
-  public loggedName = new BehaviorSubject<string>(
-    this.decodePropertyFromToken('unique_name') ?? 'Fellow User'
-  );
-  public loggedUserId = new BehaviorSubject<string>(
-    this.decodePropertyFromToken('sub') ?? ''
-  );
+  // TIL about Subject/BehaviorSubject. "A Subject is like an Observable, but can multicast to many Observers. Subjects are like EventEmitters: they maintain a registry of many listeners" (source: https://rxjs.dev/guide/subject). Implementation taken from here: https://netbasal.com/angular-2-persist-your-login-status-with-behaviorsubject-45da9ec43243
+  public loggedUser = new BehaviorSubject<User>(this.decodeUserFromToken(''));
 
   abstract login(requestData: ILoginRequest): Observable<any>;
   abstract register(registerData: IRegisterRequest): Observable<any>;
@@ -49,7 +55,7 @@ export abstract class GenericAuthService {
 
   public logout() {
     this.clearPreExistingJWT();
-    this.loggedName.next('?');
+    this.loggedUser.next(new User());
     this.redirectToHome();
   }
 
@@ -78,8 +84,7 @@ export abstract class GenericAuthService {
 
   protected handleSuccessfulLogin(res: ILoginResponse) {
     this.storeJWT(res.jwtToken);
-    this.loggedName.next(this.decodePropertyFromToken('unique_name'));
-    this.loggedUserId.next(this.decodePropertyFromToken('sub'));
+    this.loggedUser.next(this.decodeUserFromToken(res.jwtToken));
     this.notificationService
       .showSuccess('You will soon be redirected.', 'Welcome to FlashMEMO!')
       .onHidden.subscribe(() => this.redirectToHome());

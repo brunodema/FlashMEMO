@@ -21,7 +21,7 @@ export class DeckListComponent {
   userDeckData$ = new BehaviorSubject<ExtendedDeckInfoDTO[]>([]);
   refreshUserDeckDataSource() {
     this.deckService
-      .getExtendedDeckInfo(this.authService.loggedUserId.getValue())
+      .getExtendedDeckInfo(this.authService.loggedUser.getValue().id)
       .subscribe((deckArray) => {
         this.pipeDeckDatesToLocaleShortFormat(deckArray);
         this.userDeckData$.next(deckArray);
