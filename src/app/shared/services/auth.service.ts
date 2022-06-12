@@ -28,7 +28,7 @@ export abstract class GenericAuthService {
   // TIL about Subject/BehaviorSubject. "A Subject is like an Observable, but can multicast to many Observers. Subjects are like EventEmitters: they maintain a registry of many listeners" (source: https://rxjs.dev/guide/subject). Implementation taken from here: https://netbasal.com/angular-2-persist-your-login-status-with-behaviorsubject-45da9ec43243
 
   public loggedName = new BehaviorSubject<string>(
-    this.decodePropertyFromToken('username') ?? 'Fellow User'
+    this.decodePropertyFromToken('unique_name') ?? 'Fellow User'
   );
   public loggedUserId = new BehaviorSubject<string>(
     this.decodePropertyFromToken('sub') ?? ''
@@ -78,7 +78,7 @@ export abstract class GenericAuthService {
 
   protected handleSuccessfulLogin(res: ILoginResponse) {
     this.storeJWT(res.jwtToken);
-    this.loggedName.next(this.decodePropertyFromToken('username'));
+    this.loggedName.next(this.decodePropertyFromToken('unique_name'));
     this.loggedUserId.next(this.decodePropertyFromToken('sub'));
     this.notificationService
       .showSuccess('You will soon be redirected.', 'Welcome to FlashMEMO!')
@@ -127,7 +127,7 @@ export class MockAuthService extends GenericAuthService {
     return of(
       this.handleSuccessfulLogin({
         jwtToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJKb2huIERvZSIsImlhdCI6MTUxNjIzOTAyMn0.p5Csu2THYW5zJys2CWdbGM8GaWjpY6lOQpdLoP4D7V4',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJqb2huZG9lQGZsYXNobWVtby5lZHUiLCJzdWIiOiIxMjM0NTY3ODkwIiwidW5pcXVlX25hbWUiOiJKb2huIERvZSIsIm5hbWUiOiJKb2huIiwiaWF0IjoxNTE2MjM5MDIyLCJpc3MiOiJodHRwOi8vYXBpLmZsYXNobWVtby5lZHU6NjE5NTUiLCJhdWQiOiJodHRwOi8vZmxhc2htZW1vLmVkdTo0MjAwIn0.vtxHFaW8u9P0WQdAywRWBo-MfHd08uFIP9kMAapWWXc',
         status: '200',
         errors: [],
         message: 'success',
