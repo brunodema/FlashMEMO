@@ -77,7 +77,7 @@
                 <label for="dictProvider" class="col-form-label col-auto">Choose the dictionary provider:</label>
                 <div class="ms-2 col-auto">
                   <select class="form-select" [(ngModel)]="dictProvider" (change)="setLanguageDropdownToDefaultValue()">
-                    <option *ngFor="let layout of possibleDictProviders" [ngValue]="layout">{{ layout }}</option>
+                    <option *ngFor="let provider of possibleDictProviders" [ngValue]="provider">{{ provider }}</option>
                   </select>
                 </div>
               </div>
@@ -87,8 +87,8 @@
                 <label for="dictProvider" class="col-form-label col-auto">Choose a reference language:</label>
                 <div class="ms-2 col-auto">
                   <select class="form-select" [(ngModel)]="dictLanguage">
-                    <option *ngFor="let language of possibleDictLanguages[dictProvider]" [ngValue]="language">{{
-                      language }}
+                    <option *ngFor="let language of possibleDictLanguages" [ngValue]="language.isoCode">{{
+                      language.name }}
                     </option>
                   </select>
                 </div>

@@ -3,12 +3,13 @@
  */
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { map, of } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { RepositoryServiceConfig } from 'src/app/app.module';
 import dictAPIJson from 'src/assets/test_assets/DictAPI.json';
 
 import { IDataResponse } from '../../models/http/http-response-types';
+import { Language } from '../../models/shared-models';
 import { FormatString } from '../../tools/tools';
 
 /**************************************************************************************/
@@ -16,62 +17,20 @@ import { FormatString } from '../../tools/tools';
 /**************************************************************************************/
 
 /**
- * Contains the codes for the supported languages for each existing Dictionary API provider. These codes were taken from the back-end project (17/04/2022), which in turn were taken from the official documentation of the APIs. They might not reflect the most recent array of supported languages, as they are static values in the code files. This will need to either be used as a back-up option, or transitioned towards a full programatic check using HTTP requests.
+ * As of now (13/06), these values are used for testing only - some of them aren't even valid anymore.
  */
+
 export const dictAPISupportedLanguages = {
   Lexicala: [
-    'af',
-    'ar',
-    'az',
-    'bg',
-    'br',
-    'ca',
-    'cs',
-    'da',
-    'de',
-    'dk',
-    'el',
-    'en',
-    'es',
-    'et',
-    'fa',
-    'fi',
-    'fr',
-    'fy',
-    'he',
-    'hi',
-    'hr',
-    'hu',
-    'id',
-    'is',
-    'it',
-    'ja',
-    'ko',
-    'la',
-    'lt',
-    'lv',
-    'ml',
-    'nl',
-    'no',
-    'pl',
-    'prs',
-    'ps',
-    'pt',
-    'ro',
-    'ru',
-    'sk',
-    'sl',
-    'sr',
-    'sv',
-    'th',
-    'tr',
-    'tw',
-    'uk',
-    'ur',
-    'vi',
-    'zh',
+    { isoCode: 'ar', name: 'Arabic' },
+    { isoCode: 'br', name: 'Portuguese (BR)' },
+    { isoCode: 'cs', name: 'Czech' },
   ],
-  Oxford: ['en-gb', 'en-us', 'fr', 'gu', 'hi', 'lv', 'ro', 'es', 'sw', 'ta'],
+  Oxford: [
+    { isoCode: 'en-gb', name: 'English (UK)' },
+    { isoCode: 'en-us', name: 'English (US)' },
+    { isoCode: 'fr', name: 'French' },
+  ],
 };
 
 /**
@@ -109,20 +68,9 @@ export abstract class GeneralDictionaryAPIService {
     provider: DictionaryAPIProvider
   ): Observable<IDataResponse<IDictionaryAPIResult>>;
 
-  protected checkIfLanguageIsSupported(
-    provider: DictionaryAPIProvider,
-    languageCode: string
-  ): boolean {
-    switch (provider) {
-      case DictionaryAPIProvider.LEXICALA:
-        return dictAPISupportedLanguages.Lexicala.includes(languageCode);
-      case DictionaryAPIProvider.OXFORD:
-        return dictAPISupportedLanguages.Oxford.includes(languageCode);
-
-      default:
-        throw new Error('The dictionary API provider selected does not exist.');
-    }
-  }
+  abstract getAvailableLanguages(
+    provider: DictionaryAPIProvider
+  ): Observable<Language[]>;
 
   public ParseResultsIntoHTML(apiResult: IDictionaryAPIResult): string {
     let htmlText: string = '';
@@ -161,14 +109,29 @@ export class MockDictionaryService extends GeneralDictionaryAPIService {
       data: dictAPIJson[Math.floor(Math.random() * dictAPIJson.length)],
     });
   }
+
+  getAvailableLanguages(
+    provider: DictionaryAPIProvider
+  ): Observable<Language[]> {
+    switch (provider) {
+      case DictionaryAPIProvider.LEXICALA:
+        return of(dictAPISupportedLanguages.Lexicala);
+      case DictionaryAPIProvider.OXFORD:
+        return of(dictAPISupportedLanguages.Oxford);
+
+      default:
+        throw new Error('The dictionary API provider selected does not exist.');
+    }
+  }
 }
 
 @Injectable()
 export class DictionaryService extends GeneralDictionaryAPIService {
-  private endpoint = `${this.config.backendAddress}/api/v1/dict/{0}/search?`;
+  private endpoint = `${this.config.backendAddress}/api/v1/dict`;
 
   constructor(
-    @Inject('REPOSITORY_SERVICE_CONFIG') protected config: RepositoryServiceConfig,
+    @Inject('REPOSITORY_SERVICE_CONFIG')
+    protected config: RepositoryServiceConfig,
     protected httpClient: HttpClient
   ) {
     super(httpClient);
@@ -179,8 +142,18 @@ export class DictionaryService extends GeneralDictionaryAPIService {
     provider: DictionaryAPIProvider
   ): Observable<IDataResponse<IDictionaryAPIResult>> {
     return this.httpClient.get<IDataResponse<IDictionaryAPIResult>>(
-      FormatString(this.endpoint, provider) +
+      FormatString(`${this.endpoint}/{0}/search?`, provider) +
         `searchText=${keyword}&languageCode=${languageCode}`
     );
+  }
+
+  getAvailableLanguages(
+    provider: DictionaryAPIProvider
+  ): Observable<Language[]> {
+    return this.httpClient
+      .get<IDataResponse<Language[]>>(
+        FormatString(`${this.endpoint}/{0}/languages`, provider)
+      )
+      .pipe(map((response) => response.data));
   }
 }

@@ -36,6 +36,7 @@ import {
   GeneralAudioAPIService,
   IAudioAPIResult,
 } from 'src/app/shared/services/APIs/audio-api.service';
+import { Language } from 'src/app/shared/models/shared-models';
 
 export enum FlashcardContentType {
   NONE = 'NONE',
@@ -119,7 +120,7 @@ export class FlashcardContentOptionsBlockComponent
   possibleDictProviders = Object.values(DictionaryAPIProvider).filter(
     (f) => typeof f === 'string'
   );
-  possibleDictLanguages: any = dictAPISupportedLanguages;
+  possibleDictLanguages: Language[] = [];
   dictProvider: DictionaryAPIProvider = DictionaryAPIProvider.OXFORD;
   dictLanguage: string = this.defaultLanguageISOCode;
   dictAPIData$: Observable<IDataResponse<IDictionaryAPIResult>>;
@@ -174,9 +175,10 @@ export class FlashcardContentOptionsBlockComponent
   }
 
   ngOnInit(): void {
-    // console.log('ngOnInit: ' + this.hostElement.nativeElement.offsetHeight + 'px')
+    // calculations to avoid content overflow in Flashcard sections
     this.contentMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
     this.imageMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+
     this.setLanguageDropdownToDefaultValue();
   }
 
@@ -339,10 +341,16 @@ export class FlashcardContentOptionsBlockComponent
    * This function is used to avoid having an empty value for the Language dropdown in the Dictionary API editor. It checks to see if the provider has the language used by the Deck, and if so, sets its value to the dropdown. Otherwise, it will set the default value of the provider (first item of the array).
    */
   setLanguageDropdownToDefaultValue(): void {
-    this.dictLanguage = this.possibleDictLanguages[this.dictProvider].includes(
-      this.defaultLanguageISOCode
-    )
-      ? this.defaultLanguageISOCode
-      : this.possibleDictLanguages[this.dictProvider][0];
+    this.dictAPIService
+      .getAvailableLanguages(this.dictProvider)
+      .subscribe((languages) => {
+        this.possibleDictLanguages = languages;
+        this.dictLanguage =
+          this.possibleDictLanguages.filter(
+            (language) => language.isoCode === this.defaultLanguageISOCode
+          ).length === 0
+            ? this.possibleDictLanguages[0].isoCode
+            : this.defaultLanguageISOCode;
+      });
   }
 }
