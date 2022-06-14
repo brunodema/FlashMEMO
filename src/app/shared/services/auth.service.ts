@@ -40,8 +40,29 @@ export abstract class GenericAuthService {
   // TIL about Subject/BehaviorSubject. "A Subject is like an Observable, but can multicast to many Observers. Subjects are like EventEmitters: they maintain a registry of many listeners" (source: https://rxjs.dev/guide/subject). Implementation taken from here: https://netbasal.com/angular-2-persist-your-login-status-with-behaviorsubject-45da9ec43243
   public loggedUser = new BehaviorSubject<User>(this.decodeUserFromToken(''));
 
+  /**
+   * Checks if the JWT contains the Microsfot schema entry for role, and if so, checks if the value matches for an admin.
+   */
+  private _isLoggedUserAdmin: boolean = false;
+  get isLoggedUserAdmin(): boolean {
+    console.log('checking if user is admin...');
+    return this.checkIfAdmin();
+  }
+
   abstract login(requestData: ILoginRequest): Observable<any>;
   abstract register(registerData: IRegisterRequest): Observable<any>;
+
+  /**
+   * Checks if the logged user (verifies stored JWT) has an admin claim in his/hers credentials.
+   * @returns
+   */
+  public checkIfAdmin(): boolean {
+    return (
+      this.decodePropertyFromToken(
+        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+      ) === 'admin'
+    );
+  }
 
   public decodePropertyFromToken(property: string): string {
     if (!this.getJWT()) return '';
@@ -132,7 +153,7 @@ export class MockAuthService extends GenericAuthService {
     return of(
       this.handleSuccessfulLogin({
         jwtToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJqb2huZG9lQGZsYXNobWVtby5lZHUiLCJzdWIiOiIxMjM0NTY3ODkwIiwidW5pcXVlX25hbWUiOiJKb2huIERvZSIsIm5hbWUiOiJKb2huIiwiaWF0IjoxNTE2MjM5MDIyLCJpc3MiOiJodHRwOi8vYXBpLmZsYXNobWVtby5lZHU6NjE5NTUiLCJhdWQiOiJodHRwOi8vZmxhc2htZW1vLmVkdTo0MjAwIn0.vtxHFaW8u9P0WQdAywRWBo-MfHd08uFIP9kMAapWWXc',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZmxhc2htZW1vLmVkdSIsImp0aSI6ImRjYWZiMTEzLTc3OTQtNDlkYi04Y2RlLTQyYjdmMTg3NWZkMyIsInN1YiI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6IkpvaG4gRG9lIiwibmFtZSI6IkpvaG4iLCJzdXJuYW1lIjoiRG9lIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW4iLCJleHAiOjk5OTk5OTk5OTl9.RjQl-_1AMm1qekxdItV8pBndguQtHiPXs8DXNgy-XZc',
         errors: [],
         message: 'success',
       })
