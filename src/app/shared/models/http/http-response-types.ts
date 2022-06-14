@@ -1,5 +1,4 @@
 export interface IBaseAPIResponse {
-  status: string;
   message: string;
   errors: any[];
 }
@@ -55,5 +54,4 @@ export class PaginatedListResponse<Type>
   errors: string[];
   message: string;
   data: IPaginatedList<Type> | ILargePaginatedList<Type>;
-  status: string;
 }

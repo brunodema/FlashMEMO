@@ -78,7 +78,6 @@ export class MockImageAPIService extends GeneralImageAPIService {
     return of(
       new PaginatedListResponse<GoogleImageResult>({
         message: 'Success',
-        status: '200',
         data: {
           hasNextPage: pageNumber < 5,
           hasPreviousPage: pageNumber >= 2,

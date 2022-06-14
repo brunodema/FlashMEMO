@@ -133,7 +133,6 @@ export class MockAuthService extends GenericAuthService {
       this.handleSuccessfulLogin({
         jwtToken:
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJqb2huZG9lQGZsYXNobWVtby5lZHUiLCJzdWIiOiIxMjM0NTY3ODkwIiwidW5pcXVlX25hbWUiOiJKb2huIERvZSIsIm5hbWUiOiJKb2huIiwiaWF0IjoxNTE2MjM5MDIyLCJpc3MiOiJodHRwOi8vYXBpLmZsYXNobWVtby5lZHU6NjE5NTUiLCJhdWQiOiJodHRwOi8vZmxhc2htZW1vLmVkdTo0MjAwIn0.vtxHFaW8u9P0WQdAywRWBo-MfHd08uFIP9kMAapWWXc',
-        status: '200',
         errors: [],
         message: 'success',
       })
