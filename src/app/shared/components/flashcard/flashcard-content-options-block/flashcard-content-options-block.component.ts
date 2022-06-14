@@ -202,11 +202,13 @@ export class FlashcardContentOptionsBlockComponent
     contentValue = contentValue.trim();
     if (contentValue.length === 0) return FlashcardContentType.NONE;
     if (!contentValue.includes('\\s')) {
+      // checks if string (with no white spaces) ENDS with '.mp3'
       if (contentValue.match(/.mp3$/)) {
         return FlashcardContentType.AUDIO;
       }
-      if (contentValue.match(/(\.(jpeg|jpg|gif|png))|(pjpeg)$/)) {
-        // this is a pretty terrible way to check if the string is an internet image, but apparently there are no TS ways to do it properly. Refactor this in the future.
+      // should check if string (with no white spaces) STARTS with either 'HTTP' or 'HTTPS', even though there is no symbol indicating beginning of line/string (wasn't working with it). This might be a very dangerous way to check this, but still...
+      if (contentValue.match('https?://')) {
+        console.log('matched image!');
         return FlashcardContentType.IMAGE;
       }
       return FlashcardContentType.TEXT;
@@ -234,6 +236,8 @@ export class FlashcardContentOptionsBlockComponent
 
     this.imageAPIData$ = this.imageAPIService.searchImage(keyword, pageNumber);
     this.imageAPIData$.subscribe((r) => {
+      console.log(r.data.results.map((image) => image.link));
+
       this.currentKeyword = keyword;
       this.currentPageNumber = r.data.pageNumber as number;
       this.imageResults = r.data.results;
