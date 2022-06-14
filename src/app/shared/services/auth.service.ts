@@ -56,7 +56,7 @@ export abstract class GenericAuthService {
    * Checks if the logged user (verifies stored JWT) has an admin claim in his/hers credentials.
    * @returns
    */
-  public checkIfAdmin(): boolean {
+  protected checkIfAdmin(): boolean {
     return (
       this.decodePropertyFromToken(
         'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
