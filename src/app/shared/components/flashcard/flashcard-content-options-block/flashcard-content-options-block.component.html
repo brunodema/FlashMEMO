@@ -56,6 +56,8 @@
                 ngbTooltip="Clear results"></i>
             </div>
             <div class="row mt-2">
+              <div *ngIf="showEmptyResultsMessage" class="text-danger">No results were returned by the audio API!
+                😓</div>
               <ng-container *ngFor="let audio of audioAPIResults">
                 <div class="row mb-1">
                   <audio class="col-6" [src]="audio" controls>Oops, your browser is having problems rendering the audio!
@@ -108,16 +110,16 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="showDictionaryToolbar()" class="mt-2 d-flex flex-column justify-content-end">
-              <div class="text-end">
-                <i href="#" class="me-2 bi bi-clipboard-check" (click)="copyToRTE()" style="font-size: 2em;"
-                  placement="auto" ngbTooltip="Append definition to text content"></i>
-                <i href="#" class="bi bi-x-circle" (click)="clearDictionaryResults()" style="font-size: 2em;"
-                  placement="auto" ngbTooltip="Clear results"></i>
-              </div>
-              <div class="row mt-2">
-                <div [innerHTML]="dictAPIparsedHMTL" class="container"></div>
-              </div>
+            <div *ngIf="showDictionaryToolbar" class="mt-2 d-flex justify-content-end">
+              <i href="#" class="me-2 bi bi-clipboard-check" (click)="copyToRTE()" style="font-size: 2em;"
+                placement="auto" ngbTooltip="Append definition to text content"></i>
+              <i href="#" class="bi bi-x-circle" (click)="clearDictionaryResults()" style="font-size: 2em;"
+                placement="auto" ngbTooltip="Clear results"></i>
+            </div>
+            <div class="row mt-2">
+              <div [innerHTML]="dictAPIparsedHMTL" class="container"></div>
+              <div *ngIf="showEmptyResultsMessage" class="text-danger">No results were returned by the dictionary API!
+                😓</div>
             </div>
             <div class="row mt-2">
               <ckeditor #editorComponent [(ngModel)]="textEditorContent"

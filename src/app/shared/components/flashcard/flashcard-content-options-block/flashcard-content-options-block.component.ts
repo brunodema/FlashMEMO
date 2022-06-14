@@ -125,6 +125,14 @@ export class FlashcardContentOptionsBlockComponent
   dictLanguage: string = this.defaultLanguageISOCode;
   dictAPIData$: Observable<IDataResponse<IDictionaryAPIResult>>;
   dictAPIparsedHMTL: string = '';
+  /**
+   * Determines if the toolbar that allows the user to copy/clear results from the dictionary API should be shown or not.
+   */
+  showDictionaryToolbar: boolean = false;
+  /**
+   * Determines if warning for no results returned by dictionary API should be shown to the user or not.
+   */
+  showEmptyResultsMessage: boolean = false;
 
   textEditorContent: string = '';
   editorType: CKEditor4.EditorType = CKEditor4.EditorType.CLASSIC;
@@ -217,6 +225,8 @@ export class FlashcardContentOptionsBlockComponent
     // work-around so editor shows existing text if applicable (possibly there is a 'cleaner' way to implement this?)
     if ((contentType = FlashcardContentType.IMAGE))
       this.textEditorContent = this.contentValue;
+
+    this.showEmptyResultsMessage = false;
   }
 
   searchImage(keyword: string, pageNumber?: number): void {
@@ -293,20 +303,22 @@ export class FlashcardContentOptionsBlockComponent
       languageCode,
       provider
     );
-    this.dictAPIData$.subscribe(
-      (r) =>
-        (this.dictAPIparsedHMTL = this.dictAPIService.ParseResultsIntoHTML(
-          r.data
-        ))
-    );
-  }
-
-  showDictionaryToolbar(): boolean {
-    return this.dictAPIparsedHMTL !== '' ? true : false;
+    this.dictAPIData$.subscribe((result) => {
+      if (result.data.results.length === 0) {
+        this.showEmptyResultsMessage = true;
+      } else {
+        this.dictAPIparsedHMTL = this.dictAPIService.ParseResultsIntoHTML(
+          result.data
+        );
+        this.showEmptyResultsMessage = false;
+        this.showDictionaryToolbar = true;
+      }
+    });
   }
 
   clearDictionaryResults(): void {
     this.dictAPIparsedHMTL = '';
+    this.showDictionaryToolbar = false;
   }
 
   copyToRTE(): void {
@@ -324,9 +336,13 @@ export class FlashcardContentOptionsBlockComponent
       languageCode,
       provider
     );
-    this.audioAPIData$.subscribe(
-      (r) => (this.audioAPIResults = r.data.results.audioLinks)
-    );
+    this.audioAPIData$.subscribe((results) => {
+      if (results.data.results.audioLinks.length === 0) {
+        this.showEmptyResultsMessage = true;
+      } else {
+        this.audioAPIResults = results.data.results.audioLinks;
+      }
+    });
   }
 
   showAudioToolbar(): boolean {
