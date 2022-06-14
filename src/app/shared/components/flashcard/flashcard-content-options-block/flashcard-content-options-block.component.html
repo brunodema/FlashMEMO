@@ -108,14 +108,16 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="showDictionaryToolbar()" class="mt-2 d-flex justify-content-end">
-              <i href="#" class="me-2 bi bi-clipboard-check" (click)="copyToRTE()" style="font-size: 2em;"
-                placement="auto" ngbTooltip="Append definition to text content"></i>
-              <i href="#" class="bi bi-x-circle" (click)="clearDictionaryResults()" style="font-size: 2em;"
-                placement="auto" ngbTooltip="Clear results"></i>
-            </div>
-            <div class="row mt-2">
-              <div [innerHTML]="dictAPIparsedHMTL" class="container"></div>
+            <div *ngIf="showDictionaryToolbar()" class="mt-2 d-flex flex-column justify-content-end">
+              <div class="text-end">
+                <i href="#" class="me-2 bi bi-clipboard-check" (click)="copyToRTE()" style="font-size: 2em;"
+                  placement="auto" ngbTooltip="Append definition to text content"></i>
+                <i href="#" class="bi bi-x-circle" (click)="clearDictionaryResults()" style="font-size: 2em;"
+                  placement="auto" ngbTooltip="Clear results"></i>
+              </div>
+              <div class="row mt-2">
+                <div [innerHTML]="dictAPIparsedHMTL" class="container"></div>
+              </div>
             </div>
             <div class="row mt-2">
               <ckeditor #editorComponent [(ngModel)]="textEditorContent"
