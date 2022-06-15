@@ -99,7 +99,7 @@ export class DeckDetailComponent {
   ];
   pageSizeOptions: number[] = [5, 10, 25];
 
-  @ViewChild(DataTableComponent) dataTable: DataTableComponent<IFlashcard>;
+  @ViewChild('flashcardTable') flashcardTable: DataTableComponent<IFlashcard>;
   flashcardModal: NgbModalRef; // this variable is assigned as soon as the modal is opened (return of the 'open' method)
   studySessionModal: NgbModalRef; // this variable is assigned as soon as the modal is opened (return of the 'open' method)
 
