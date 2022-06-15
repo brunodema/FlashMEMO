@@ -1,17 +1,35 @@
 <div class="container my-3">
   <app-admin-actions-toolbar [routes]=routes></app-admin-actions-toolbar>
 
-  <div class="container">
-    <h4>Your Decks</h4>
-    <app-data-table [hasSelectColumn]="true" (deleteClick)="handleDeleteDeck($event)"
+  <div class="container my-3">
+    <div class="d-flex justify-content-between">
+      <h4>Your Decks</h4>
+      <!-- Same principle used for this tooltip as for the study button on the deck-detail view -->
+      <div placement="auto"
+        [ngbTooltip]="this.userDeckTable.selection.selected.length === 0 ? 'Please select at least one deck from the table' : 'Delete Decks'">
+        <button class="btn btn-danger fa fa-trash fa-2x"
+          [disabled]="this.userDeckTable.selection.selected.length === 0">
+        </button>
+      </div>
+    </div>
+    <app-data-table #userDeckTable [hasSelectColumn]="true" (deleteClick)="handleDeleteDeck($event)"
       [dataSource]="(userDeckData$ | async) || []" [columnOptions]='this.columnOptions'
       [pageSizeOptions]='this.pageSizeOptions' [hasDeleteColumn]="showDeleteIcon">
     </app-data-table>
   </div>
 
   <div class="container mt-5" [hidden]="!this.authService.isLoggedUserAdmin">
-    <h4>FlashMEMO's Decks</h4>
-    <app-data-table [hasSelectColumn]="true" (deleteClick)="handleDeleteDeck($event)"
+    <div class="d-flex justify-content-between">
+      <h4>FlashMEMO's Decks</h4>
+      <!-- Same principle used for this tooltip as for the study button on the deck-detail view -->
+      <div placement="auto"
+        [ngbTooltip]="this.adminDeckTable.selection.selected.length === 0 ? 'Please select at least one deck from the table' : 'Delete Decks'">
+        <button class="btn btn-danger fa fa-trash fa-2x"
+          [disabled]="this.adminDeckTable.selection.selected.length === 0">
+        </button>
+      </div>
+    </div>
+    <app-data-table #adminDeckTable [hasSelectColumn]="true" (deleteClick)="handleDeleteDeck($event)"
       [dataSource]="(deckData$ | async) || []" [columnOptions]='this.columnOptions'
       [pageSizeOptions]='this.pageSizeOptions' [hasDeleteColumn]="showDeleteIcon">
     </app-data-table>

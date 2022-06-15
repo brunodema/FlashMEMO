@@ -67,8 +67,10 @@ export class DeckListComponent {
 
   routes: RouteMap[] = [{ label: 'Create Deck', route: '/deck/create' }];
 
-  @ViewChild(DataTableComponent)
-  dataTable: DataTableComponent<ExtendedDeckInfoDTO>;
+  @ViewChild('userDeckTable')
+  public userDeckTable: DataTableComponent<ExtendedDeckInfoDTO>;
+  @ViewChild('adminDeckTable')
+  public adminDeckTable: DataTableComponent<ExtendedDeckInfoDTO>;
 
   constructor(
     @Inject('GenericDeckService') public deckService: GenericDeckService,
