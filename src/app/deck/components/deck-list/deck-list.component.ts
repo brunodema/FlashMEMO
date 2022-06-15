@@ -73,7 +73,7 @@ export class DeckListComponent {
   constructor(
     @Inject('GenericDeckService') public deckService: GenericDeckService,
     protected notificationService: GenericNotificationService,
-    @Inject('GenericAuthService') protected authService: GenericAuthService,
+    @Inject('GenericAuthService') public authService: GenericAuthService,
     private datePipe: DatePipe
   ) {
     this.refreshDeckDataSource();
@@ -91,4 +91,18 @@ export class DeckListComponent {
       });
     }
   }
+
+  showEditIconn = (item: Deck) => {
+    return (
+      this.authService.isLoggedUserAdmin ||
+      item.deckId === this.authService.loggedUser.getValue().id
+    );
+  };
+
+  showDeleteIcon = (item: Deck) => {
+    return (
+      this.authService.isLoggedUserAdmin ||
+      item.deckId === this.authService.loggedUser.getValue().id
+    );
+  };
 }

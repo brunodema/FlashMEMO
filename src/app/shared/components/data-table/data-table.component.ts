@@ -3,6 +3,7 @@ import {
   AfterViewInit,
   Component,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
   OnInit,
@@ -13,6 +14,7 @@ import {
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { GenericAuthService } from '../../services/auth.service';
 
 export class DataTableColumnOptions {
   columnId: string;
@@ -39,8 +41,11 @@ export class DataTableComponent<Type>
   @Input() dataSource: Type[];
   @Input() columnOptions: DataTableColumnOptions[];
   @Input() pageSizeOptions: number[];
-  @Input() hasEditColumn: boolean;
-  @Input() hasDeleteColumn: boolean;
+
+  // Given this new implementation where I take a lambda to determine if a specific row should have the icons or not, THIS LINK HERE WAS ESSENTIAL FOR ME TO MAKE THIS WORK: https://stackoverflow.com/questions/35328652/angular-pass-callback-function-to-child-component-as-input-similar-to-angularjs. TLDR: it' required to declare the lambdas on the parent using the same type declaration declared on the child. In this case, it was required to declare them using arrow functions, just as described on the link.
+  @Input() hasEditColumn: (item: Type) => boolean = (item: Type) => false;
+  @Input() hasDeleteColumn: (item: Type) => boolean = (item: Type) => false;
+
   @Input() hasSelectColumn: boolean;
 
   @Output() rowClick: EventEmitter<DataTableComponentClickEventArgs<Type>> =
@@ -53,7 +58,7 @@ export class DataTableComponent<Type>
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
 
-  constructor() {}
+  constructor() {} // @Inject('GenericAuthService') public authService: GenericAuthService
   ngOnInit(): void {}
 
   // so... I have to put the paginator/sort assignment twice here to consider two possible cases: async data loading, which is processed outside the widget (differently from many online examples), and situations where the widget is 'hidden' at first (ex: inside accordion). This ensures that both cases work.
@@ -141,9 +146,9 @@ export class DataTableComponent<Type>
    */
   getColumnNames(): string[] {
     let columnNames = this.columnOptions.map((x) => x.columnId);
-    if (this.hasEditColumn) columnNames.push('edit');
-    if (this.hasDeleteColumn) columnNames.push('delete');
     if (this.hasSelectColumn) columnNames.unshift('select');
+    columnNames.push('edit');
+    columnNames.push('delete');
 
     return columnNames;
   }

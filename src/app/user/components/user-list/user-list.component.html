@@ -2,7 +2,7 @@
   <app-admin-actions-toolbar [routes]=routes></app-admin-actions-toolbar>
 
   <app-data-table [dataSource]="(userData$ | async) || []" [columnOptions]='this.columnOptions'
-    [pageSizeOptions]='this.pageSizeOptions' [hasDeleteColumn]="true" (deleteClick)="handleDeleteUser($event)"
-    [hasEditColumn]="true" (editClick)="handleEditUser($event)" [hasSelectColumn]="true">
+    [pageSizeOptions]='this.pageSizeOptions' [hasDeleteColumn]="showEditIcon" (deleteClick)="handleDeleteUser($event)"
+    [hasEditColumn]="showDeleteIcon" (editClick)="handleEditUser($event)" [hasSelectColumn]="true">
   </app-data-table>
 </div>

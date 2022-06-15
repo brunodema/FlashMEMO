@@ -114,7 +114,7 @@ export class DeckDetailComponent {
     private router: Router,
     private notificationService: GenericNotificationService,
     @Inject('GenericAuthService')
-    private authService: GenericAuthService
+    public authService: GenericAuthService
   ) {
     this.deckModel = this.route.snapshot.data['deck'];
     if (this.deckModel) {
@@ -233,4 +233,12 @@ export class DeckDetailComponent {
       }
     );
   }
+
+  showEditIcon = (item: Flashcard) => {
+    return true;
+  };
+
+  showDeleteIcon = (item: Flashcard) => {
+    return true;
+  };
 }

@@ -11,6 +11,7 @@ import { User } from '../../models/user.model';
 import { GenericUserService } from '../../services/user.service';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
 import { Router } from '@angular/router';
+import { GenericAuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-user',
@@ -42,11 +43,26 @@ export class UserListComponent {
 
   constructor(
     @Inject('GenericUserService') private userService: GenericUserService,
+    @Inject('GenericAuthService') private authService: GenericAuthService,
     private notificationService: GenericNotificationService,
     private router: Router
   ) {
     this.refreshUserDataSource();
   }
+
+  showEditIcon = (item: User) => {
+    return (
+      this.authService.isLoggedUserAdmin ||
+      item.id === this.authService.loggedUser.getValue().id
+    );
+  };
+
+  showDeleteIcon = (item: User) => {
+    return (
+      this.authService.isLoggedUserAdmin ||
+      item.id === this.authService.loggedUser.getValue().id
+    );
+  };
 
   handleEditUser(args: DataTableComponentClickEventArgs<User>) {
     this.router.navigate(['/user', args.rowData.id]);

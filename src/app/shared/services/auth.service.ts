@@ -139,7 +139,9 @@ export abstract class GenericAuthService {
   }
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class MockAuthService extends GenericAuthService {
   constructor(
     protected jwtHelper: JwtHelperService,
