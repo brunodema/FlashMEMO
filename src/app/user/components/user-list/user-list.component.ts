@@ -18,8 +18,6 @@ import { GenericAuthService } from 'src/app/shared/services/auth.service';
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css'],
 })
-
-// this component is a complete shitshow at the moment... pretty much a sandbox for weird shit I want to implement
 export class UserListComponent {
   routes: RouteMap[] = [{ label: 'Create User', route: 'create' }];
 
@@ -34,6 +32,9 @@ export class UserListComponent {
   ];
   pageSizeOptions: number[] = [5, 10, 25];
 
+  @ViewChild('userTable')
+  public userTable: DataTableComponent<User>;
+
   userData$ = new BehaviorSubject<User[]>([]);
   refreshUserDataSource() {
     this.userService
@@ -43,7 +44,7 @@ export class UserListComponent {
 
   constructor(
     @Inject('GenericUserService') private userService: GenericUserService,
-    @Inject('GenericAuthService') private authService: GenericAuthService,
+    @Inject('GenericAuthService') public authService: GenericAuthService,
     private notificationService: GenericNotificationService,
     private router: Router
   ) {
