@@ -48,6 +48,7 @@ export class DataTableComponent<Type>
 
   @Input() hasSelectColumn: boolean;
 
+  @Output() selectClick: EventEmitter<Type[]> = new EventEmitter();
   @Output() rowClick: EventEmitter<DataTableComponentClickEventArgs<Type>> =
     new EventEmitter();
   @Output() editClick: EventEmitter<DataTableComponentClickEventArgs<Type>> =
@@ -84,12 +85,10 @@ export class DataTableComponent<Type>
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      return;
-    }
-
-    this.selection.select(...this.dataSource);
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.selection.select(...this.dataSource);
+    this.selectClick.emit(this.selection.selected);
   }
 
   /** The label for the checkbox on the passed row */
@@ -100,6 +99,14 @@ export class DataTableComponent<Type>
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
       this.columnOptions[1]
     }`;
+  }
+
+  /** Custom function by me to toggle row and emit values (instead of declaring everything on the HTML part) */
+  toggleAndEmit(row: any, $event?: any) {
+    if ($event) {
+      this.selection.toggle(row);
+    }
+    this.selectClick.emit(this.selection.selected);
   }
   // ********************************************************
 
