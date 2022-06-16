@@ -90,6 +90,7 @@ export class NewsRepositoryResolverService {
       );
 
       return this.service.getById(id).pipe(
+        // GOD BLESS this dude who explained on Stack Overflow how to use 'switchMap'. Apaprently, when dealing with nested pipes like I'm using below, this operator is necessary to make the nested async calls work (othwerwise they don't seem to fire). Source: https://stackoverflow.com/questions/56547458/how-to-return-observable-in-observable-map-in-angular
         switchMap((r) =>
           this.userService.getById(r.ownerId).pipe(
             map(
