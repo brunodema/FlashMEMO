@@ -79,4 +79,33 @@ export class UserListComponent {
       });
     }
   }
+
+  massDeleteUsers() {
+    let ids = this.userTable.selection.selected.map((u) => u.id);
+
+    if (
+      confirm(
+        ids.length > 1
+          ? `Are you sure you want to delete these ${ids.length} Users?`
+          : 'Are you sure you want to delete this User?'
+      )
+    ) {
+      var promise = new Promise<void>((resolve, reject) => {
+        ids.forEach((id, index) => {
+          this.userService.delete(id).subscribe({
+            error: () =>
+              this.notificationService.showError(
+                'An error ocurred while deleting the User'
+              ),
+            complete: () => {
+              if (index === ids.length - 1) resolve();
+            },
+          });
+        });
+      });
+
+      this.notificationService.showSuccess('User(s) successfully deleted.');
+      this.refreshUserDataSource();
+    }
+  }
 }
