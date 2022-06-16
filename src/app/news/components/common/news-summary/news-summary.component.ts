@@ -1,7 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { User } from 'src/app/user/models/user.model';
-import { GenericUserService } from 'src/app/user/services/user.service';
-import { ExtendedNews, News } from '../../../models/news.model';
+import { ExtendedNews } from '../../../models/news.model';
 import { GenericNewsService } from '../../../services/news.service';
 
 @Component({
@@ -13,8 +11,7 @@ export class NewsSummaryComponent implements OnInit {
   public newsList: ExtendedNews[] = [];
 
   constructor(
-    @Inject('GenericNewsService') private newsService: GenericNewsService,
-    @Inject('GenericUserService') private userService: GenericUserService
+    @Inject('GenericNewsService') private newsService: GenericNewsService
   ) {}
 
   ngOnInit() {
