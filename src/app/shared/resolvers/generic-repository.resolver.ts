@@ -80,7 +80,7 @@ export class NewsRepositoryResolverService {
   resolve(
     route: ActivatedRouteSnapshot
   ): ExtendedNews | Observable<ExtendedNews> | Promise<ExtendedNews> {
-    // console.log('id is: ' + route.paramMap.get('id'));
+    console.log('id is: ' + route.paramMap.get('id'));
     let id = route.params['id'];
     console.log('resolver: id is ' + id);
     if (id) {
@@ -89,35 +89,29 @@ export class NewsRepositoryResolverService {
         this.service
       );
 
-      return this.service
-        .getById(id)
-        .pipe(
-          switchMap((r) =>
-            this.userService
-              .getById(r.ownerId)
-              .pipe(
-                map(
-                  (u) =>
-                    new ExtendedNews({
-                      content: r.content,
-                      creationDate: r.creationDate,
-                      lastUpdated: r.lastUpdated,
-                      newsId: r.newsId,
-                      subtitle: r.subtitle,
-                      title: r.title,
-                      thumbnailPath: r.thumbnailPath,
-                      ownerId: r.ownerId,
-                      ownerInfo: u,
-                    })
-                )
-              )
+      return this.service.getById(id).pipe(
+        switchMap((r) =>
+          this.userService.getById(r.ownerId).pipe(
+            map(
+              (u) =>
+                new ExtendedNews({
+                  content: r.content,
+                  creationDate: r.creationDate,
+                  lastUpdated: r.lastUpdated,
+                  newsId: r.newsId,
+                  subtitle: r.subtitle,
+                  title: r.title,
+                  thumbnailPath: r.thumbnailPath,
+                  ownerId: r.ownerId,
+                  ownerInfo: u,
+                })
+            )
           )
-        );
+        )
+      );
     }
     this.router.navigate(['']);
     console.log("resolver: provided id is likely 'null' or 'undefined'.");
     throw new Error('Provided id does not provide a valid object.');
   }
 }
-
-// { content: r.content, creationDate: r.creationDate, lastUpdated: r.lastUpdated, newsId: r.newsId, subtitle: r.subtitle, title: r.title, thumbnailPath: r.thumbnailPath, ownerId: r.ownerId, ownerInfo: u
