@@ -7,7 +7,7 @@ import {
   Output,
 } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { News } from 'src/app/news/models/news.model';
+import { ExtendedNews, News } from 'src/app/news/models/news.model';
 import { GenericNewsService } from 'src/app/news/services/news.service';
 import { IPaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
@@ -29,12 +29,7 @@ export class NewsCardListComponent implements OnInit {
   /**
    * News data associated with the component.
    */
-  newsData: Array<News> = [];
-
-  /**
-   * Info associated with user who posted each News.
-   */
-  ownerData: Array<User> = [];
+  extendedNewsData: Array<ExtendedNews> = [];
 
   // properties to be used by the paginator
   pageEvent: PageEvent;
@@ -48,28 +43,11 @@ export class NewsCardListComponent implements OnInit {
     protected notificationService: GenericNotificationService
   ) {}
 
-  private refreshOwnerInfo(response: IPaginatedListResponse<News>) {
-    this.ownerData = [];
-
-    response.data.results.forEach((news) => {
-      this.userService.get(news.ownerId).subscribe((getResponse) => {
-        this.ownerData.push(getResponse.data);
-      });
-    });
-  }
-
-  private refreshNewsSource(pageNumber: number, pageSize: number) {
+  private refreshNewsSource(pageSize: number, pageNumber: number) {
     this.newsService
-      .search({
-        pageNumber: pageNumber,
-        pageSize: pageSize,
-        columnToSort: 'creationDate',
-        sortType: 'descending',
-      })
+      .getExtendedLatestNews(pageSize, pageNumber)
       .subscribe((response) => {
-        this.refreshOwnerInfo(response);
-
-        this.newsData = response.data.results;
+        this.extendedNewsData = response.data.results;
         this.pageNumber = Number(response.data.pageNumber) - 1;
         this.pageSize = this.pageSizeOptions[0];
         this.totalAmount = Number(response.data.totalAmount);
@@ -78,15 +56,15 @@ export class NewsCardListComponent implements OnInit {
 
   ngOnInit(): void {
     // wow, 'OnInit' is actually useful! :O
-    this.refreshNewsSource(1, this.pageSizeOptions[0]);
+    this.refreshNewsSource(this.pageSizeOptions[0], 1);
   }
 
   public getServerData(event: PageEvent) {
     event.pageIndex = event.pageIndex + 1;
 
     this.refreshNewsSource(
-      event?.pageIndex ?? 1,
-      event?.pageSize ?? this.pageSizeOptions[0]
+      event?.pageSize ?? this.pageSizeOptions[0],
+      event?.pageIndex ?? 1
     );
 
     return event;
@@ -96,7 +74,7 @@ export class NewsCardListComponent implements OnInit {
     if (confirm('Are you sure you want to delete this News?')) {
       this.newsService.delete(id).subscribe((response) => {
         this.notificationService.showSuccess('News successfully deleted.');
-        this.refreshNewsSource(1, this.pageSize);
+        this.refreshNewsSource(this.pageSize, 1);
       });
     }
   }

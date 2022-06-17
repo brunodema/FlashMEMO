@@ -11,14 +11,13 @@ import { User } from '../../models/user.model';
 import { GenericUserService } from '../../services/user.service';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
 import { Router } from '@angular/router';
+import { GenericAuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css'],
 })
-
-// this component is a complete shitshow at the moment... pretty much a sandbox for weird shit I want to implement
 export class UserListComponent {
   routes: RouteMap[] = [{ label: 'Create User', route: 'create' }];
 
@@ -33,20 +32,39 @@ export class UserListComponent {
   ];
   pageSizeOptions: number[] = [5, 10, 25];
 
+  @ViewChild('userTable')
+  public userTable: DataTableComponent<User>;
+
   userData$ = new BehaviorSubject<User[]>([]);
   refreshUserDataSource() {
-    this.userService
-      .getAll()
-      .subscribe((userArray) => this.userData$.next(userArray));
+    this.userService.getAll().subscribe((userArray) => {
+      this.userData$.next(userArray);
+      this.userTable.toggleAllOff();
+    });
   }
 
   constructor(
     @Inject('GenericUserService') private userService: GenericUserService,
+    @Inject('GenericAuthService') public authService: GenericAuthService,
     private notificationService: GenericNotificationService,
     private router: Router
   ) {
     this.refreshUserDataSource();
   }
+
+  showEditIcon = (item: User) => {
+    return (
+      this.authService.isLoggedUserAdmin ||
+      item.id === this.authService.loggedUser.getValue().id
+    );
+  };
+
+  showDeleteIcon = (item: User) => {
+    return (
+      this.authService.isLoggedUserAdmin ||
+      item.id === this.authService.loggedUser.getValue().id
+    );
+  };
 
   handleEditUser(args: DataTableComponentClickEventArgs<User>) {
     this.router.navigate(['/user', args.rowData.id]);
@@ -60,6 +78,35 @@ export class UserListComponent {
         this.notificationService.showSuccess('User deleted.');
         this.refreshUserDataSource();
       });
+    }
+  }
+
+  async massDeleteUsers() {
+    let ids = this.userTable.selection.selected.map((u) => u.id);
+
+    if (
+      confirm(
+        ids.length > 1
+          ? `Are you sure you want to delete these ${ids.length} Users?`
+          : 'Are you sure you want to delete this User?'
+      )
+    ) {
+      await new Promise<void>((resolve) => {
+        ids.forEach((id, index) => {
+          this.userService.delete(id).subscribe({
+            error: () =>
+              this.notificationService.showError(
+                'An error ocurred while deleting the User'
+              ),
+            complete: () => {
+              if (index === ids.length - 1) resolve();
+            },
+          });
+        });
+      });
+
+      this.notificationService.showSuccess('User(s) successfully deleted.');
+      this.refreshUserDataSource();
     }
   }
 }

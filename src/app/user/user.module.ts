@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
 import { formlyConfig } from '../app.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { formlyConfig } from '../app.module';
     FormlyMaterialModule,
     SharedModule,
     FormsModule,
+    NgbTooltipModule,
   ],
 })
 export class UserModule {}

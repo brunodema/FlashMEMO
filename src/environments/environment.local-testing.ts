@@ -9,8 +9,8 @@ import { LanguageService } from 'src/app/shared/services/language.service';
 import { UserService } from 'src/app/user/services/user.service';
 
 export const environment = {
-  production: true,
-  backendRootAddress: 'https://api.flashmemo.edu',
+  production: false,
+  backendRootAddress: 'http://api.flashmemo.edu:5000',
   maxPageSize: 10000,
   defaultLanguageISOCode: 'en-gb',
   // services

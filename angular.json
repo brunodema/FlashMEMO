@@ -45,6 +45,20 @@
               "sourceMap": true,
               "namedChunks": true
             },
+            "local-testing": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local-testing.ts"
+                }
+              ]
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -115,6 +129,9 @@
             },
             "development": {
               "browserTarget": "FlashMEMO:build:development"
+            },
+            "local-testing": {
+              "browserTarget": "FlashMEMO:build:local-testing"
             },
             "mock": {
               "browserTarget": "FlashMEMO:build:mock"

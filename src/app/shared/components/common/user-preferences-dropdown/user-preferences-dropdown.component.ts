@@ -1,8 +1,8 @@
 import { Component, Inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
 import { GenericAuthService } from 'src/app/shared/services/auth.service';
+import { User } from 'src/app/user/models/user.model';
 
 @Component({
   selector: 'app-user-preferences-dropdown',
@@ -11,11 +11,18 @@ import { GenericAuthService } from 'src/app/shared/services/auth.service';
 export class UserPreferencesDropdownComponent {
   constructor(
     @Inject('GenericAuthService') public authService: GenericAuthService,
-    private router: Router,
-    private toastr: ToastrService
-  ) {}
+    private router: Router
+  ) {
+    this.user$.subscribe((user) => {
+      this.username = user.username;
+      this.userId = user.id;
+    });
+  }
 
-  @Input() username$: Observable<string> = this.authService.loggedName;
+  public username: string;
+  public userId: string;
+
+  public user$: Observable<User> = this.authService.loggedUser;
 
   logout() {
     this.authService.logout();

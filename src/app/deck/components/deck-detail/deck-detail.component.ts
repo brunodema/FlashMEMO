@@ -81,13 +81,18 @@ export class DeckDetailComponent {
   refreshFlashcardDataSource() {
     this.flashcardService
       .getAllFlashcardsFromDeck(this.route.snapshot.params['id'])
-      .subscribe((flashcardArray) => this.flashcardData$.next(flashcardArray));
+      .subscribe((flashcardArray) => {
+        this.flashcardData$.next(flashcardArray);
+        this.flashcardTable.toggleAllOff();
+      });
   }
+
   getDueFlashcards() {
     return this.flashcardData$
       .getValue()
       .filter((flashcard) => new Date(flashcard.dueDate) < new Date());
   }
+
   canStartStudySession(): boolean {
     return this.getDueFlashcards().length > 0;
   }
@@ -99,7 +104,7 @@ export class DeckDetailComponent {
   ];
   pageSizeOptions: number[] = [5, 10, 25];
 
-  @ViewChild(DataTableComponent) dataTable: DataTableComponent<IFlashcard>;
+  @ViewChild('flashcardTable') flashcardTable: DataTableComponent<IFlashcard>;
   flashcardModal: NgbModalRef; // this variable is assigned as soon as the modal is opened (return of the 'open' method)
   studySessionModal: NgbModalRef; // this variable is assigned as soon as the modal is opened (return of the 'open' method)
 
@@ -114,7 +119,7 @@ export class DeckDetailComponent {
     private router: Router,
     private notificationService: GenericNotificationService,
     @Inject('GenericAuthService')
-    private authService: GenericAuthService
+    public authService: GenericAuthService
   ) {
     this.deckModel = this.route.snapshot.data['deck'];
     if (this.deckModel) {
@@ -127,7 +132,7 @@ export class DeckDetailComponent {
     } else {
       this.isNewDeck = true;
       this.deckModel = new Deck({
-        ownerId: authService.loggedUserId.getValue(),
+        ownerId: authService.loggedUser.getValue().id,
       });
     }
   }
@@ -232,5 +237,44 @@ export class DeckDetailComponent {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       }
     );
+  }
+
+  showEditIcon = (item: Flashcard) => {
+    return true;
+  };
+
+  showDeleteIcon = (item: Flashcard) => {
+    return true;
+  };
+
+  async massDeleteFlashcards(flashcards: Flashcard[]) {
+    if (
+      confirm(
+        flashcards.length > 1
+          ? `Are you sure you want to delete these ${flashcards.length} Flashcards?`
+          : 'Are you sure you want to delete this Flashcard?'
+      )
+    ) {
+      await new Promise<void>((resolve) => {
+        flashcards.forEach((flashcard, index) => {
+          this.flashcardService.delete(flashcard.flashcardId).subscribe({
+            error: () =>
+              this.notificationService.showError(
+                'An error ocurred while deleting the Deck'
+              ),
+            complete: () => {
+              if (index === flashcards.length - 1) {
+                resolve();
+              }
+            },
+          });
+        });
+      });
+
+      this.notificationService.showSuccess(
+        'Flashcards(s) successfully deleted.'
+      );
+      this.refreshFlashcardDataSource();
+    }
   }
 }

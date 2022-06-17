@@ -2,10 +2,12 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Guid } from 'guid-ts';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { RepositoryServiceConfig } from 'src/app/app.module';
+import { User } from 'src/app/user/models/user.model';
 import {
   ILoginRequest,
   IRegisterRequest,
@@ -25,17 +27,42 @@ export abstract class GenericAuthService {
     protected notificationService: GenericNotificationService
   ) {}
 
-  // TIL about Subject/BehaviorSubject. "A Subject is like an Observable, but can multicast to many Observers. Subjects are like EventEmitters: they maintain a registry of many listeners" (source: https://rxjs.dev/guide/subject). Implementation taken from here: https://netbasal.com/angular-2-persist-your-login-status-with-behaviorsubject-45da9ec43243
+  private decodeUserFromToken(jwtToken: string): User {
+    return new User({
+      id: this.decodePropertyFromToken('sub') ?? Guid.newGuid(),
+      email: this.decodePropertyFromToken('email') ?? 'johndoe@flashmemo.edu',
+      name: this.decodePropertyFromToken('name') ?? 'John',
+      surname: this.decodePropertyFromToken('surname') ?? 'Doe',
+      username: this.decodePropertyFromToken('username') ?? 'johndoe',
+    });
+  }
 
-  public loggedName = new BehaviorSubject<string>(
-    this.decodePropertyFromToken('unique_name') ?? 'Fellow User'
-  );
-  public loggedUserId = new BehaviorSubject<string>(
-    this.decodePropertyFromToken('sub') ?? ''
-  );
+  // TIL about Subject/BehaviorSubject. "A Subject is like an Observable, but can multicast to many Observers. Subjects are like EventEmitters: they maintain a registry of many listeners" (source: https://rxjs.dev/guide/subject). Implementation taken from here: https://netbasal.com/angular-2-persist-your-login-status-with-behaviorsubject-45da9ec43243
+  public loggedUser = new BehaviorSubject<User>(this.decodeUserFromToken(''));
+
+  /**
+   * Checks if the JWT contains the Microsfot schema entry for role, and if so, checks if the value matches for an admin.
+   */
+  private _isLoggedUserAdmin: boolean = false;
+  get isLoggedUserAdmin(): boolean {
+    // console.log('checking if user is admin...', this.checkIfAdmin());
+    return this.checkIfAdmin();
+  }
 
   abstract login(requestData: ILoginRequest): Observable<any>;
   abstract register(registerData: IRegisterRequest): Observable<any>;
+
+  /**
+   * Checks if the logged user (verifies stored JWT) has an admin claim in his/hers credentials.
+   * @returns
+   */
+  protected checkIfAdmin(): boolean {
+    return (
+      this.decodePropertyFromToken(
+        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+      ) === 'admin'
+    );
+  }
 
   public decodePropertyFromToken(property: string): string {
     if (!this.getJWT()) return '';
@@ -49,7 +76,7 @@ export abstract class GenericAuthService {
 
   public logout() {
     this.clearPreExistingJWT();
-    this.loggedName.next('?');
+    this.loggedUser.next(new User());
     this.redirectToHome();
   }
 
@@ -78,8 +105,7 @@ export abstract class GenericAuthService {
 
   protected handleSuccessfulLogin(res: ILoginResponse) {
     this.storeJWT(res.jwtToken);
-    this.loggedName.next(this.decodePropertyFromToken('name'));
-    this.loggedUserId.next(this.decodePropertyFromToken('sub'));
+    this.loggedUser.next(this.decodeUserFromToken(res.jwtToken));
     this.notificationService
       .showSuccess('You will soon be redirected.', 'Welcome to FlashMEMO!')
       .onHidden.subscribe(() => this.redirectToHome());
@@ -113,7 +139,9 @@ export abstract class GenericAuthService {
   }
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class MockAuthService extends GenericAuthService {
   constructor(
     protected jwtHelper: JwtHelperService,
@@ -127,8 +155,7 @@ export class MockAuthService extends GenericAuthService {
     return of(
       this.handleSuccessfulLogin({
         jwtToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJKb2huIERvZSIsImlhdCI6MTUxNjIzOTAyMn0.p5Csu2THYW5zJys2CWdbGM8GaWjpY6lOQpdLoP4D7V4',
-        status: '200',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZmxhc2htZW1vLmVkdSIsImp0aSI6ImRjYWZiMTEzLTc3OTQtNDlkYi04Y2RlLTQyYjdmMTg3NWZkMyIsInN1YiI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6IkpvaG4gRG9lIiwibmFtZSI6IkpvaG4iLCJzdXJuYW1lIjoiRG9lIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW4iLCJleHAiOjk5OTk5OTk5OTl9.RjQl-_1AMm1qekxdItV8pBndguQtHiPXs8DXNgy-XZc',
         errors: [],
         message: 'success',
       })

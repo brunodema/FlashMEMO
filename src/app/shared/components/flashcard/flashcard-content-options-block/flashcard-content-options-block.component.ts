@@ -36,6 +36,7 @@ import {
   GeneralAudioAPIService,
   IAudioAPIResult,
 } from 'src/app/shared/services/APIs/audio-api.service';
+import { Language } from 'src/app/shared/models/shared-models';
 
 export enum FlashcardContentType {
   NONE = 'NONE',
@@ -119,11 +120,19 @@ export class FlashcardContentOptionsBlockComponent
   possibleDictProviders = Object.values(DictionaryAPIProvider).filter(
     (f) => typeof f === 'string'
   );
-  possibleDictLanguages: any = dictAPISupportedLanguages;
+  possibleDictLanguages: Language[] = [];
   dictProvider: DictionaryAPIProvider = DictionaryAPIProvider.OXFORD;
   dictLanguage: string = this.defaultLanguageISOCode;
   dictAPIData$: Observable<IDataResponse<IDictionaryAPIResult>>;
   dictAPIparsedHMTL: string = '';
+  /**
+   * Determines if the toolbar that allows the user to copy/clear results from the dictionary API should be shown or not.
+   */
+  showDictionaryToolbar: boolean = false;
+  /**
+   * Determines if warning for no results returned by dictionary API should be shown to the user or not.
+   */
+  showEmptyResultsMessage: boolean = false;
 
   textEditorContent: string = '';
   editorType: CKEditor4.EditorType = CKEditor4.EditorType.CLASSIC;
@@ -174,9 +183,10 @@ export class FlashcardContentOptionsBlockComponent
   }
 
   ngOnInit(): void {
-    // console.log('ngOnInit: ' + this.hostElement.nativeElement.offsetHeight + 'px')
+    // calculations to avoid content overflow in Flashcard sections
     this.contentMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
     this.imageMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
+
     this.setLanguageDropdownToDefaultValue();
   }
 
@@ -192,11 +202,13 @@ export class FlashcardContentOptionsBlockComponent
     contentValue = contentValue.trim();
     if (contentValue.length === 0) return FlashcardContentType.NONE;
     if (!contentValue.includes('\\s')) {
+      // checks if string (with no white spaces) ENDS with '.mp3'
       if (contentValue.match(/.mp3$/)) {
         return FlashcardContentType.AUDIO;
       }
-      if (contentValue.match(/(\.(jpeg|jpg|gif|png))|(pjpeg)$/)) {
-        // this is a pretty terrible way to check if the string is an internet image, but apparently there are no TS ways to do it properly. Refactor this in the future.
+      // should check if string (with no white spaces) STARTS with either 'HTTP' or 'HTTPS', even though there is no symbol indicating beginning of line/string (wasn't working with it). This might be a very dangerous way to check this, but still...
+      if (contentValue.match('https?://')) {
+        console.log('matched image!');
         return FlashcardContentType.IMAGE;
       }
       return FlashcardContentType.TEXT;
@@ -215,6 +227,8 @@ export class FlashcardContentOptionsBlockComponent
     // work-around so editor shows existing text if applicable (possibly there is a 'cleaner' way to implement this?)
     if ((contentType = FlashcardContentType.IMAGE))
       this.textEditorContent = this.contentValue;
+
+    this.showEmptyResultsMessage = false;
   }
 
   searchImage(keyword: string, pageNumber?: number): void {
@@ -222,6 +236,8 @@ export class FlashcardContentOptionsBlockComponent
 
     this.imageAPIData$ = this.imageAPIService.searchImage(keyword, pageNumber);
     this.imageAPIData$.subscribe((r) => {
+      console.log(r.data.results.map((image) => image.link));
+
       this.currentKeyword = keyword;
       this.currentPageNumber = r.data.pageNumber as number;
       this.imageResults = r.data.results;
@@ -291,20 +307,22 @@ export class FlashcardContentOptionsBlockComponent
       languageCode,
       provider
     );
-    this.dictAPIData$.subscribe(
-      (r) =>
-        (this.dictAPIparsedHMTL = this.dictAPIService.ParseResultsIntoHTML(
-          r.data
-        ))
-    );
-  }
-
-  showDictionaryToolbar(): boolean {
-    return this.dictAPIparsedHMTL !== '' ? true : false;
+    this.dictAPIData$.subscribe((result) => {
+      if (result.data.results.length === 0) {
+        this.showEmptyResultsMessage = true;
+      } else {
+        this.dictAPIparsedHMTL = this.dictAPIService.ParseResultsIntoHTML(
+          result.data
+        );
+        this.showEmptyResultsMessage = false;
+        this.showDictionaryToolbar = true;
+      }
+    });
   }
 
   clearDictionaryResults(): void {
     this.dictAPIparsedHMTL = '';
+    this.showDictionaryToolbar = false;
   }
 
   copyToRTE(): void {
@@ -322,9 +340,13 @@ export class FlashcardContentOptionsBlockComponent
       languageCode,
       provider
     );
-    this.audioAPIData$.subscribe(
-      (r) => (this.audioAPIResults = r.data.results.audioLinks)
-    );
+    this.audioAPIData$.subscribe((results) => {
+      if (results.data.results.audioLinks.length === 0) {
+        this.showEmptyResultsMessage = true;
+      } else {
+        this.audioAPIResults = results.data.results.audioLinks;
+      }
+    });
   }
 
   showAudioToolbar(): boolean {
@@ -339,10 +361,16 @@ export class FlashcardContentOptionsBlockComponent
    * This function is used to avoid having an empty value for the Language dropdown in the Dictionary API editor. It checks to see if the provider has the language used by the Deck, and if so, sets its value to the dropdown. Otherwise, it will set the default value of the provider (first item of the array).
    */
   setLanguageDropdownToDefaultValue(): void {
-    this.dictLanguage = this.possibleDictLanguages[this.dictProvider].includes(
-      this.defaultLanguageISOCode
-    )
-      ? this.defaultLanguageISOCode
-      : this.possibleDictLanguages[this.dictProvider][0];
+    this.dictAPIService
+      .getAvailableLanguages(this.dictProvider)
+      .subscribe((languages) => {
+        this.possibleDictLanguages = languages;
+        this.dictLanguage =
+          this.possibleDictLanguages.filter(
+            (language) => language.isoCode === this.defaultLanguageISOCode
+          ).length === 0
+            ? this.possibleDictLanguages[0].isoCode
+            : this.defaultLanguageISOCode;
+      });
   }
 }

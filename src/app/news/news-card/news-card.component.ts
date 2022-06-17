@@ -1,6 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { GenericAuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/user/models/user.model';
-import { News } from '../models/news.model';
+import { ExtendedNews, News } from '../models/news.model';
 
 @Component({
   selector: 'app-news-card',
@@ -8,14 +16,21 @@ import { News } from '../models/news.model';
   styleUrls: ['./news-card.component.css'],
 })
 export class NewsCardComponent {
-  @Input() news: News = new News();
-  @Input() ownerInfo: User = new User();
+  /**
+   * Reference News model to be rendered by the component.
+   */
+  @Input() extendedNews: ExtendedNews = new ExtendedNews();
 
+  /**
+   * Relays a 'delete' event in case the button is clicked.
+   */
   @Output() delete: EventEmitter<any> = new EventEmitter();
 
-  constructor() {}
+  constructor(
+    @Inject('GenericAuthService') public authService: GenericAuthService
+  ) {}
 
   deleteClick() {
-    this.delete.emit(this.news.newsId);
+    this.delete.emit(this.extendedNews.newsId);
   }
 }

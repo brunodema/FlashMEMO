@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { Deck } from 'src/app/deck/models/deck.model';
 import { GenericDeckService } from 'src/app/deck/services/deck.service';
-import { News } from 'src/app/news/models/news.model';
+import { ExtendedNews, News } from 'src/app/news/models/news.model';
 import { GenericNewsService } from 'src/app/news/services/news.service';
 import { User } from 'src/app/user/models/user.model';
 import { GenericUserService } from 'src/app/user/services/user.service';
@@ -12,8 +12,8 @@ import { GenericRepositoryService } from '../services/general-repository.service
 
 export class GenericRepositoryResolverService<Type> implements Resolve<Type> {
   constructor(
-    private service: GenericRepositoryService<Type>,
-    private router: Router
+    protected service: GenericRepositoryService<Type>,
+    protected router: Router
   ) {}
 
   resolve(
@@ -70,11 +70,49 @@ export class UserRepositoryResolverService extends GenericRepositoryResolverServ
 }
 
 @Injectable()
-export class NewsRepositoryResolverService extends GenericRepositoryResolverService<News> {
+export class NewsRepositoryResolverService {
   constructor(
-    @Inject('GenericNewsService') service: GenericNewsService,
-    router: Router
-  ) {
-    super(service, router);
+    @Inject('GenericNewsService') protected service: GenericNewsService,
+    @Inject('GenericUserService') protected userService: GenericUserService,
+    protected router: Router
+  ) {}
+
+  resolve(
+    route: ActivatedRouteSnapshot
+  ): ExtendedNews | Observable<ExtendedNews> | Promise<ExtendedNews> {
+    console.log('id is: ' + route.paramMap.get('id'));
+    let id = route.params['id'];
+    console.log('resolver: id is ' + id);
+    if (id) {
+      console.log(
+        'resolver: id is not empty, underlying service is:',
+        this.service
+      );
+
+      return this.service.getById(id).pipe(
+        // GOD BLESS this dude who explained on Stack Overflow how to use 'switchMap'. Apaprently, when dealing with nested pipes like I'm using below, this operator is necessary to make the nested async calls work (othwerwise they don't seem to fire). Source: https://stackoverflow.com/questions/56547458/how-to-return-observable-in-observable-map-in-angular
+        switchMap((r) =>
+          this.userService.getById(r.ownerId).pipe(
+            map(
+              (u) =>
+                new ExtendedNews({
+                  content: r.content,
+                  creationDate: r.creationDate,
+                  lastUpdated: r.lastUpdated,
+                  newsId: r.newsId,
+                  subtitle: r.subtitle,
+                  title: r.title,
+                  thumbnailPath: r.thumbnailPath,
+                  ownerId: r.ownerId,
+                  ownerInfo: u,
+                })
+            )
+          )
+        )
+      );
+    }
+    this.router.navigate(['']);
+    console.log("resolver: provided id is likely 'null' or 'undefined'.");
+    throw new Error('Provided id does not provide a valid object.');
   }
 }

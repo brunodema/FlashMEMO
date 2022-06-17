@@ -4,8 +4,8 @@
     <div class="col-6">
       <formly-form [form]="form" [fields]="fields" [model]="deckModel"></formly-form>
       <div class="d-flex justify-content-end">
-        <button [disabled]="!this.form.valid || (this.form.valid && !this.form.dirty)" class="btn btn-primary" data-testid="save-deck-btn"
-          (click)="saveDeck()">
+        <button [disabled]="!this.form.valid || (this.form.valid && !this.form.dirty)" class="btn btn-primary"
+          data-testid="save-deck-btn" (click)="saveDeck()">
           Save Deck
         </button>
       </div>
@@ -53,8 +53,18 @@
     <ngb-accordion class="mt-2" #acc="ngbAccordion" activeIds="ngb-panel-0" data-testid="flashcard-accordion">
       <ngb-panel title="Flashcards">
         <ng-template ngbPanelContent>
-          <app-data-table [hasSelectColumn]="true" [hasEditColumn]="true" [hasDeleteColumn]="true"
-            (editClick)="openFlashcardModal(flashcardModal, $event.rowData)"
+          <!-- Had to do some shenanigans with ngIf instead of 'hidden' in this case, for some reason -->
+          <div class="d-flex justify-content-end">
+            <div placement="auto"
+              [ngbTooltip]="this.flashcardTable.selection.selected.length === 0 ? 'Please select at least one Flashcard from the table' : 'Delete Flashcards'">
+              <button class="btn btn-danger fa fa-trash fa-2x"
+                [disabled]="this.flashcardTable.selection.selected.length === 0"
+                (click)="massDeleteFlashcards(this.flashcardTable.selection.selected)">
+              </button>
+            </div>
+          </div>
+          <app-data-table #flashcardTable [hasSelectColumn]="true" [hasEditColumn]="showEditIcon"
+            [hasDeleteColumn]="showDeleteIcon" (editClick)="openFlashcardModal(flashcardModal, $event.rowData)"
             (deleteClick)="handleFlashcardDelete($event)" [dataSource]="(flashcardData$ | async) || []"
             [columnOptions]='this.columnOptions' [pageSizeOptions]='this.pageSizeOptions'>
           </app-data-table>

@@ -24,15 +24,31 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === HttpStatusCode.InternalServerError) {
-          this.notificationService.showError(
-            'An error occured with your request.'
-          );
-          console.log(error);
+        switch (error.status) {
+          case HttpStatusCode.InternalServerError:
+            this.notificationService.showError(
+              'An error occured with your request.'
+            );
+            console.log(error);
+            break;
+          case HttpStatusCode.Unauthorized:
+            this.notificationService.showError(
+              'The provided credentials are not valid.'
+            );
+            break;
+
+          default:
+            if (error.error?.errors) {
+              this.notificationService.showError(error.error.errors);
+            } else {
+              // this code branch assumes 'CONNECTION_REFUSED'
+              this.notificationService.showWarning(
+                'FlashMEMO is having some trouble reaching its servers, please try again 😴'
+              );
+            }
+            break;
         }
-        if (error.error?.errors) {
-          this.notificationService.showError(error.error.errors);
-        }
+
         return of();
       })
     );
