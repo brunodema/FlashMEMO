@@ -30,6 +30,8 @@ export class DeckListComponent {
           (d) => d.ownerId === this.authService.loggedUser.getValue().id
         )
       );
+      this.adminDeckTable.toggleAllOff();
+      this.userDeckTable.toggleAllOff();
     });
   }
 

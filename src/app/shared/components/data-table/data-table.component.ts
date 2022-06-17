@@ -108,6 +108,12 @@ export class DataTableComponent<Type>
     }
     this.selectClick.emit(this.selection.selected);
   }
+
+  /** Another custom function to toggle all rows off in case I need to (ex: mass deletion) */
+  public toggleAllOff() {
+    this.selection.clear();
+  }
+
   // ********************************************************
 
   applyFilter(event: Event) {
