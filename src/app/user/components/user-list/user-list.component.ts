@@ -80,7 +80,7 @@ export class UserListComponent {
     }
   }
 
-  massDeleteUsers() {
+  async massDeleteUsers() {
     let ids = this.userTable.selection.selected.map((u) => u.id);
 
     if (
@@ -90,7 +90,7 @@ export class UserListComponent {
           : 'Are you sure you want to delete this User?'
       )
     ) {
-      var promise = new Promise<void>((resolve, reject) => {
+      await new Promise<void>((resolve) => {
         ids.forEach((id, index) => {
           this.userService.delete(id).subscribe({
             error: () =>
