@@ -18,21 +18,18 @@ import { GenericDeckService } from '../../services/deck.service';
   templateUrl: './deck-list.component.html',
 })
 export class DeckListComponent {
-  userDeckData$ = new BehaviorSubject<ExtendedDeckInfoDTO[]>([]);
-  refreshUserDeckDataSource() {
-    this.deckService
-      .getExtendedDeckInfo(this.authService.loggedUser.getValue().id)
-      .subscribe((deckArray) => {
-        this.pipeDeckDatesToLocaleShortFormat(deckArray);
-        this.userDeckData$.next(deckArray);
-      });
-  }
-
   deckData$ = new BehaviorSubject<ExtendedDeckInfoDTO[]>([]);
+  userDeckData$ = new BehaviorSubject<ExtendedDeckInfoDTO[]>([]);
+
   refreshDeckDataSource() {
     this.deckService.getExtendedDeckInfo().subscribe((deckArray) => {
       this.pipeDeckDatesToLocaleShortFormat(deckArray);
       this.deckData$.next(deckArray);
+      this.userDeckData$.next(
+        deckArray.filter(
+          (d) => d.ownerId === this.authService.loggedUser.getValue().id
+        )
+      );
     });
   }
 
@@ -79,7 +76,6 @@ export class DeckListComponent {
     private datePipe: DatePipe
   ) {
     this.refreshDeckDataSource();
-    this.refreshUserDeckDataSource();
   }
 
   handleDeleteDeck(args: DataTableComponentClickEventArgs<Deck>) {
@@ -89,7 +85,6 @@ export class DeckListComponent {
       this.deckService.delete(args.rowData.deckId).subscribe((x) => {
         this.notificationService.showSuccess('Deck deleted.');
         this.refreshDeckDataSource();
-        this.refreshUserDeckDataSource();
       });
     }
   }
@@ -107,4 +102,35 @@ export class DeckListComponent {
       item.deckId === this.authService.loggedUser.getValue().id
     );
   };
+
+  async massDeleteDecks(decks: Deck[]) {
+    console.log(decks);
+    if (
+      confirm(
+        decks.length > 1
+          ? `Are you sure you want to delete these ${decks.length} Decks?`
+          : 'Are you sure you want to delete this Deck?'
+      )
+    ) {
+      await new Promise<void>((resolve) => {
+        decks.forEach((deck, index) => {
+          console.log(deck);
+          this.deckService.delete(deck.deckId).subscribe({
+            error: () =>
+              this.notificationService.showError(
+                'An error ocurred while deleting the Deck'
+              ),
+            complete: () => {
+              if (index === decks.length - 1) {
+                resolve();
+              }
+            },
+          });
+        });
+      });
+
+      this.notificationService.showSuccess('Deck(s) successfully deleted.');
+      this.refreshDeckDataSource();
+    }
+  }
 }

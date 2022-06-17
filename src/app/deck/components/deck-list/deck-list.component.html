@@ -7,8 +7,8 @@
       <!-- Same principle used for this tooltip as for the study button on the deck-detail view -->
       <div placement="auto"
         [ngbTooltip]="this.userDeckTable.selection.selected.length === 0 ? 'Please select at least one deck from the table' : 'Delete Decks'">
-        <button class="btn btn-danger fa fa-trash fa-2x"
-          [disabled]="this.userDeckTable.selection.selected.length === 0">
+        <button class="btn btn-danger fa fa-trash fa-2x" [disabled]="this.userDeckTable.selection.selected.length === 0"
+          (click)="massDeleteDecks(this.userDeckTable.selection.selected)">
         </button>
       </div>
     </div>
@@ -25,7 +25,8 @@
       <div placement="auto"
         [ngbTooltip]="this.adminDeckTable.selection.selected.length === 0 ? 'Please select at least one deck from the table' : 'Delete Decks'">
         <button class="btn btn-danger fa fa-trash fa-2x"
-          [disabled]="this.adminDeckTable.selection.selected.length === 0">
+          [disabled]="this.adminDeckTable.selection.selected.length === 0"
+          (click)="massDeleteDecks(this.adminDeckTable.selection.selected)">
         </button>
       </div>
     </div>
