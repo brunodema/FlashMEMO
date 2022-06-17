@@ -248,7 +248,6 @@ export class DeckDetailComponent {
   };
 
   async massDeleteFlashcards(flashcards: Flashcard[]) {
-    console.log(flashcards);
     if (
       confirm(
         flashcards.length > 1

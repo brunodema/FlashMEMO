@@ -106,7 +106,6 @@ export class DeckListComponent {
   };
 
   async massDeleteDecks(decks: Deck[]) {
-    console.log(decks);
     if (
       confirm(
         decks.length > 1
@@ -116,7 +115,6 @@ export class DeckListComponent {
     ) {
       await new Promise<void>((resolve) => {
         decks.forEach((deck, index) => {
-          console.log(deck);
           this.deckService.delete(deck.deckId).subscribe({
             error: () =>
               this.notificationService.showError(
