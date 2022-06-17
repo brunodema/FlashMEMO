@@ -81,13 +81,18 @@ export class DeckDetailComponent {
   refreshFlashcardDataSource() {
     this.flashcardService
       .getAllFlashcardsFromDeck(this.route.snapshot.params['id'])
-      .subscribe((flashcardArray) => this.flashcardData$.next(flashcardArray));
+      .subscribe((flashcardArray) => {
+        this.flashcardData$.next(flashcardArray);
+        this.flashcardTable.toggleAllOff();
+      });
   }
+
   getDueFlashcards() {
     return this.flashcardData$
       .getValue()
       .filter((flashcard) => new Date(flashcard.dueDate) < new Date());
   }
+
   canStartStudySession(): boolean {
     return this.getDueFlashcards().length > 0;
   }
@@ -241,4 +246,36 @@ export class DeckDetailComponent {
   showDeleteIcon = (item: Flashcard) => {
     return true;
   };
+
+  async massDeleteFlashcards(flashcards: Flashcard[]) {
+    console.log(flashcards);
+    if (
+      confirm(
+        flashcards.length > 1
+          ? `Are you sure you want to delete these ${flashcards.length} Flashcards?`
+          : 'Are you sure you want to delete this Flashcard?'
+      )
+    ) {
+      await new Promise<void>((resolve) => {
+        flashcards.forEach((flashcard, index) => {
+          this.flashcardService.delete(flashcard.flashcardId).subscribe({
+            error: () =>
+              this.notificationService.showError(
+                'An error ocurred while deleting the Deck'
+              ),
+            complete: () => {
+              if (index === flashcards.length - 1) {
+                resolve();
+              }
+            },
+          });
+        });
+      });
+
+      this.notificationService.showSuccess(
+        'Flashcards(s) successfully deleted.'
+      );
+      this.refreshFlashcardDataSource();
+    }
+  }
 }

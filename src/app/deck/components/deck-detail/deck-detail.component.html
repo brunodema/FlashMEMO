@@ -58,7 +58,8 @@
             <div placement="auto"
               [ngbTooltip]="this.flashcardTable.selection.selected.length === 0 ? 'Please select at least one Flashcard from the table' : 'Delete Flashcards'">
               <button class="btn btn-danger fa fa-trash fa-2x"
-                [disabled]="this.flashcardTable.selection.selected.length === 0">
+                [disabled]="this.flashcardTable.selection.selected.length === 0"
+                (click)="massDeleteFlashcards(this.flashcardTable.selection.selected)">
               </button>
             </div>
           </div>
