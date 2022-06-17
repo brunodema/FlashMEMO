@@ -201,7 +201,6 @@ export class DeckService extends GenericDeckService {
   }
 
   getExtendedDeckInfo(ownerId?: string): Observable<ExtendedDeckInfoDTO[]> {
-    console.log(ownerId);
     return this.httpClient
       .get<IDataResponse<ExtendedDeckInfoDTO[]>>(
         `${this.repositoryServiceEndpoint}/list/extended${
