@@ -37,9 +37,10 @@ export class UserListComponent {
 
   userData$ = new BehaviorSubject<User[]>([]);
   refreshUserDataSource() {
-    this.userService
-      .getAll()
-      .subscribe((userArray) => this.userData$.next(userArray));
+    this.userService.getAll().subscribe((userArray) => {
+      this.userData$.next(userArray);
+      this.userTable.toggleAllOff();
+    });
   }
 
   constructor(
