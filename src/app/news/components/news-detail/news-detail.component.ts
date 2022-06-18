@@ -21,6 +21,9 @@ export class NewsDetailComponent
    */
   @ViewChild('tabGroup', { static: false }) tabGroup: MatTabGroup;
 
+  /** Determines if the user can access the edit/preview tabs or not (only for authors). */
+  readMode: boolean = false;
+
   constructor(
     @Inject('GenericNewsService')
     protected newsService: GenericNewsService,
@@ -34,6 +37,12 @@ export class NewsDetailComponent
 
     if (!this.model) {
       this.model = new News();
+    } else {
+      this.readMode =
+        this.authService.loggedUser.getValue().id !== this.model.ownerId &&
+        !this.authService.isLoggedUserAdmin
+          ? true
+          : false;
     }
   }
   ngAfterViewInit(): void {
