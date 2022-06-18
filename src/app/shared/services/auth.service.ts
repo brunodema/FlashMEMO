@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Guid } from 'guid-ts';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -18,13 +19,20 @@ import {
 } from '../models/http/http-response-types';
 import { GenericNotificationService } from './notification/notification.service';
 
+/** Determines which global spinner should be called. These are declared on the 'app.component' file. */
+export enum AuthSpinnerType {
+  LOGIN = 'login',
+  LOGOUT = 'logout',
+}
+
 export abstract class GenericAuthService {
   protected homeAddress = '/home';
 
   constructor(
     protected jwtHelper: JwtHelperService,
     protected router: Router,
-    protected notificationService: GenericNotificationService
+    protected notificationService: GenericNotificationService,
+    protected spinnerService: NgxSpinnerService
   ) {}
 
   private decodeUserFromToken(jwtToken: string): User {
@@ -64,6 +72,16 @@ export abstract class GenericAuthService {
     );
   }
 
+  /** Triggers one of the global spinners depending on the auth action taken by the user (login or logout). */
+  protected showAuthSpinner(spinnerType: AuthSpinnerType) {
+    this.spinnerService.show(spinnerType);
+    setTimeout(() => {
+      this.spinnerService.hide(spinnerType).then(() => {
+        this.redirectToHome();
+      });
+    }, 5000);
+  }
+
   public decodePropertyFromToken(property: string): string {
     if (!this.getJWT()) return '';
     return this.jwtHelper.decodeToken(this.getJWT())[property];
@@ -77,7 +95,7 @@ export abstract class GenericAuthService {
   public logout() {
     this.clearPreExistingJWT();
     this.loggedUser.next(new User());
-    this.redirectToHome();
+    this.showAuthSpinner(AuthSpinnerType.LOGOUT);
   }
 
   protected storeJWT(JWTToken: string) {
@@ -106,13 +124,11 @@ export abstract class GenericAuthService {
   protected handleSuccessfulLogin(res: ILoginResponse) {
     this.storeJWT(res.jwtToken);
     this.loggedUser.next(this.decodeUserFromToken(res.jwtToken));
-    this.notificationService
-      .showSuccess('You will soon be redirected.', 'Welcome to FlashMEMO!')
-      .onHidden.subscribe(() => this.redirectToHome());
+    this.showAuthSpinner(AuthSpinnerType.LOGIN);
   }
 
   protected handleSuccessfulRegistration(res: IBaseAPIResponse) {
-    // leave this empty JUST IN CASE I need to add logic here in the future. This used to show the success notification, but I'm moving this out of servie logic.
+    // leave this empty JUST IN CASE I need to add logic here in the future. This used to show the success notification, but I'm moving this out of service logic.
   }
 
   protected handleFailedLogin(err: HttpErrorResponse) {
@@ -146,9 +162,10 @@ export class MockAuthService extends GenericAuthService {
   constructor(
     protected jwtHelper: JwtHelperService,
     protected router: Router,
-    protected notificationService: GenericNotificationService
+    protected notificationService: GenericNotificationService,
+    protected spinnerService: NgxSpinnerService
   ) {
-    super(jwtHelper, router, notificationService);
+    super(jwtHelper, router, notificationService, spinnerService);
   }
 
   login(requestData: ILoginRequest): Observable<any> {
@@ -192,9 +209,10 @@ export class AuthService extends GenericAuthService {
     protected jwtHelper: JwtHelperService,
     protected http: HttpClient,
     protected router: Router,
-    protected notificationService: GenericNotificationService
+    protected notificationService: GenericNotificationService,
+    protected spinnerService: NgxSpinnerService
   ) {
-    super(jwtHelper, router, notificationService);
+    super(jwtHelper, router, notificationService, spinnerService);
   }
 
   public login(requestData: ILoginRequest): Observable<any> {
