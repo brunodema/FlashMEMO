@@ -1,5 +1,6 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { News } from 'src/app/news/models/news.model';
+import { GenericAuthService } from 'src/app/shared/services/auth.service';
 import { User } from 'src/app/user/models/user.model';
 import { GenericUserService } from 'src/app/user/services/user.service';
 
@@ -21,7 +22,8 @@ export class NewsPreviewComponent implements OnInit {
   ownerInfo: User = new User();
 
   constructor(
-    @Inject('GenericUserService') protected userService: GenericUserService
+    @Inject('GenericUserService') protected userService: GenericUserService,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {}
 
   ngOnInit(): void {
@@ -30,6 +32,8 @@ export class NewsPreviewComponent implements OnInit {
       this.userService.get(this.model.ownerId).subscribe((response) => {
         this.ownerInfo = response.data;
       });
+    } else {
+      this.ownerInfo = this.authService.loggedUser.getValue();
     }
   }
 }

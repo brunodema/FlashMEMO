@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { Deck } from 'src/app/deck/models/deck.model';
 import { GenericDeckService } from 'src/app/deck/services/deck.service';
 import { ExtendedNews, News } from 'src/app/news/models/news.model';
@@ -79,40 +79,12 @@ export class NewsRepositoryResolverService {
 
   resolve(
     route: ActivatedRouteSnapshot
-  ): ExtendedNews | Observable<ExtendedNews> | Promise<ExtendedNews> {
-    console.log('id is: ' + route.paramMap.get('id'));
+  ): News | Observable<News> | Promise<News> {
     let id = route.params['id'];
-    console.log('resolver: id is ' + id);
     if (id) {
-      console.log(
-        'resolver: id is not empty, underlying service is:',
-        this.service
-      );
-
-      return this.service.getById(id).pipe(
-        // GOD BLESS this dude who explained on Stack Overflow how to use 'switchMap'. Apaprently, when dealing with nested pipes like I'm using below, this operator is necessary to make the nested async calls work (othwerwise they don't seem to fire). Source: https://stackoverflow.com/questions/56547458/how-to-return-observable-in-observable-map-in-angular
-        switchMap((r) =>
-          this.userService.getById(r.ownerId).pipe(
-            map(
-              (u) =>
-                new ExtendedNews({
-                  content: r.content,
-                  creationDate: r.creationDate,
-                  lastUpdated: r.lastUpdated,
-                  newsId: r.newsId,
-                  subtitle: r.subtitle,
-                  title: r.title,
-                  thumbnailPath: r.thumbnailPath,
-                  ownerId: r.ownerId,
-                  ownerInfo: u,
-                })
-            )
-          )
-        )
-      );
+      return this.service.getById(id).pipe(tap((r) => r));
     }
     this.router.navigate(['']);
-    console.log("resolver: provided id is likely 'null' or 'undefined'.");
     throw new Error('Provided id does not provide a valid object.');
   }
 }
