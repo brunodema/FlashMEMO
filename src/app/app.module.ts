@@ -9,14 +9,7 @@ import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './root/routing/app-routing.module';
 import { NewsModule } from './news/news.module';
 import { DeckModule } from './deck/deck.module';
-
-import {
-  AuthService,
-  GenericAuthService,
-  MockAuthService,
-} from './shared/services/auth.service';
 import { FlashMEMOAuthGuard } from './shared/guards/auth.guard';
-
 import { LoginComponent } from './root/components/login/login.component';
 import { HomeComponent } from './root/components/home/home.component';
 import { AppComponent } from './root/components/app.component';
@@ -29,56 +22,16 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { NgModule } from '@angular/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import {
-  DeckService,
-  GenericDeckService,
-  MockDeckService,
-} from './deck/services/deck.service';
-import {
-  GenericLanguageService,
-  LanguageService,
-  MockLanguageService,
-} from './shared/services/language.service';
-import {
-  FlashcardService,
-  GenericFlashcardService,
-  MockFlashcardService,
-} from './shared/services/flashcard.service';
-import {
   DeckRepositoryResolverService,
   NewsRepositoryResolverService,
   UserRepositoryResolverService,
 } from './shared/resolvers/generic-repository.resolver';
 import {
-  GeneralImageAPIService,
-  ImageAPIService,
-  MockImageAPIService,
-} from './shared/services/APIs/image-api.service';
-import {
-  DictionaryService,
-  GeneralDictionaryAPIService,
-  MockDictionaryService,
-} from './shared/services/APIs/dictionary-api.service';
-import {
-  AudioService,
-  GeneralAudioAPIService,
-  MockAudioService,
-} from './shared/services/APIs/audio-api.service';
-import {
   GenericNotificationService,
   NotificationService,
 } from './shared/services/notification/notification.service';
 import { GlobalHttpInterceptorService } from './shared/interceptor/http-error.interceptor';
-import {
-  GenericUserService,
-  MockUserService,
-  UserService,
-} from './user/services/user.service';
 import { DatePipe } from '@angular/common';
-import {
-  GenericNewsService,
-  MockNewsService,
-  NewsService,
-} from './news/services/news.service';
 import { environment } from 'src/environments/environment';
 import { TestModule } from './test/test.module';
 
@@ -147,15 +100,6 @@ export type RepositoryServiceConfig = {
     ClipboardModule,
   ],
   providers: [
-    // { provide: GeneralImageAPIService, useClass: MockImageAPIService },
-    // { provide: GeneralDictionaryAPIService, useClass: MockDictionaryService },
-    // { provide: GeneralAudioAPIService, useClass: MockAudioService },
-    // { provide: GenericDeckService, useClass: MockDeckService },
-    // { provide: GenericFlashcardService, useClass: MockFlashcardService },
-    // { provide: GenericLanguageService, useClass: MockLanguageService },
-    // { provide: GenericAuthService, useClass: MockAuthService },
-    // { provide: GenericUserService, useClass: MockUserService },
-    // { provide: GenericNewsService, useClass: MockNewsService },
     {
       provide: 'REPOSITORY_SERVICE_CONFIG',
       useValue: {
