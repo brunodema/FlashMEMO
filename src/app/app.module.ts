@@ -34,6 +34,10 @@ import { GlobalHttpInterceptorService } from './shared/interceptor/http-error.in
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { TestModule } from './test/test.module';
+import {
+  GenericSpinnerService,
+  SpinnerService,
+} from './shared/services/UI/spinner.service';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const password = control.value['password'];
@@ -137,6 +141,7 @@ export type RepositoryServiceConfig = {
     { provide: UserRepositoryResolverService },
     { provide: NewsRepositoryResolverService },
     { provide: GenericNotificationService, useClass: NotificationService },
+    { provide: GenericSpinnerService, useClass: SpinnerService },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: GlobalHttpInterceptorService,
