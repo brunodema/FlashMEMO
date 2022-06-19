@@ -5,13 +5,16 @@ import {
   DataTableComponent,
   DataTableComponentClickEventArgs,
 } from 'src/app/shared/components/data-table/data-table.component';
-import { Deck } from 'src/app/deck/models/deck.model';
 import { BehaviorSubject } from 'rxjs';
 import { User } from '../../models/user.model';
 import { GenericUserService } from '../../services/user.service';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
 import { Router } from '@angular/router';
 import { GenericAuthService } from 'src/app/shared/services/auth.service';
+import {
+  GenericSpinnerService,
+  SpinnerType,
+} from 'src/app/shared/services/UI/spinner.service';
 
 @Component({
   selector: 'app-user',
@@ -37,9 +40,14 @@ export class UserListComponent {
 
   userData$ = new BehaviorSubject<User[]>([]);
   refreshUserDataSource() {
-    this.userService.getAll().subscribe((userArray) => {
-      this.userData$.next(userArray);
-      this.userTable.toggleAllOff();
+    this.spinnerService.showSpinner(SpinnerType.LOADING);
+
+    this.userService.getAll().subscribe({
+      next: (userArray) => {
+        this.userData$.next(userArray);
+        this.userTable.toggleAllOff();
+      },
+      complete: () => this.spinnerService.hideSpinner(SpinnerType.LOADING),
     });
   }
 
@@ -47,7 +55,9 @@ export class UserListComponent {
     @Inject('GenericUserService') private userService: GenericUserService,
     @Inject('GenericAuthService') public authService: GenericAuthService,
     private notificationService: GenericNotificationService,
-    private router: Router
+    private router: Router,
+    @Inject('GenericSpinnerService')
+    protected spinnerService: GenericSpinnerService
   ) {
     this.refreshUserDataSource();
   }

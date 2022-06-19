@@ -36,6 +36,7 @@ export class NewsCardListComponent implements OnInit {
     @Inject('GenericNewsService') protected newsService: GenericNewsService,
     @Inject('GenericUserService') protected userService: GenericUserService,
     protected notificationService: GenericNotificationService,
+    @Inject('GenericSpinnerService')
     protected spinnerService: GenericSpinnerService
   ) {}
 

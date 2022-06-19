@@ -141,7 +141,7 @@ export type RepositoryServiceConfig = {
     { provide: UserRepositoryResolverService },
     { provide: NewsRepositoryResolverService },
     { provide: GenericNotificationService, useClass: NotificationService },
-    { provide: GenericSpinnerService, useClass: SpinnerService },
+    { provide: 'GenericSpinnerService', useClass: SpinnerService },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: GlobalHttpInterceptorService,

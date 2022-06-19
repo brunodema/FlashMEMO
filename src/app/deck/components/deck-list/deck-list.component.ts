@@ -10,6 +10,10 @@ import {
 import { RouteMap } from 'src/app/shared/models/routing/route-map';
 import { GenericAuthService } from 'src/app/shared/services/auth.service';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
+import {
+  GenericSpinnerService,
+  SpinnerType,
+} from 'src/app/shared/services/UI/spinner.service';
 import { Deck, ExtendedDeckInfoDTO } from '../../models/deck.model';
 import { GenericDeckService } from '../../services/deck.service';
 
@@ -22,16 +26,21 @@ export class DeckListComponent {
   userDeckData$ = new BehaviorSubject<ExtendedDeckInfoDTO[]>([]);
 
   refreshDeckDataSource() {
-    this.deckService.getExtendedDeckInfo().subscribe((deckArray) => {
-      this.pipeDeckDatesToLocaleShortFormat(deckArray);
-      this.deckData$.next(deckArray);
-      this.userDeckData$.next(
-        deckArray.filter(
-          (d) => d.ownerId === this.authService.loggedUser.getValue().id
-        )
-      );
-      this.adminDeckTable.toggleAllOff();
-      this.userDeckTable.toggleAllOff();
+    this.spinnerService.showSpinner(SpinnerType.LOADING);
+
+    this.deckService.getExtendedDeckInfo().subscribe({
+      next: (deckArray) => {
+        this.pipeDeckDatesToLocaleShortFormat(deckArray);
+        this.deckData$.next(deckArray);
+        this.userDeckData$.next(
+          deckArray.filter(
+            (d) => d.ownerId === this.authService.loggedUser.getValue().id
+          )
+        );
+        this.adminDeckTable.toggleAllOff();
+        this.userDeckTable.toggleAllOff();
+      },
+      complete: () => this.spinnerService.hideSpinner(SpinnerType.LOADING),
     });
   }
 
@@ -75,7 +84,9 @@ export class DeckListComponent {
     @Inject('GenericDeckService') public deckService: GenericDeckService,
     protected notificationService: GenericNotificationService,
     @Inject('GenericAuthService') public authService: GenericAuthService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    @Inject('GenericSpinnerService')
+    protected spinnerService: GenericSpinnerService
   ) {
     this.refreshDeckDataSource();
   }

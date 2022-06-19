@@ -14,12 +14,14 @@ import {
   DataTableComponentClickEventArgs,
 } from 'src/app/shared/components/data-table/data-table.component';
 import { Flashcard, IFlashcard } from 'src/app/shared/models/flashcard-models';
-import { IDataResponse } from 'src/app/shared/models/http/http-response-types';
 import { GenericAuthService } from 'src/app/shared/services/auth.service';
 import { GenericFlashcardService } from 'src/app/shared/services/flashcard.service';
 import { GenericLanguageService } from 'src/app/shared/services/language.service';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
-import { theNewFlashcardSeeder } from 'src/assets/test_assets/flashcard-seeder';
+import {
+  GenericSpinnerService,
+  SpinnerType,
+} from 'src/app/shared/services/UI/spinner.service';
 import { Deck } from '../../models/deck.model';
 import { GenericDeckService } from '../../services/deck.service';
 
@@ -79,11 +81,16 @@ export class DeckDetailComponent {
   // flashcard info
   flashcardData$ = new BehaviorSubject<IFlashcard[]>([]);
   refreshFlashcardDataSource() {
+    this.spinnerService.showSpinner(SpinnerType.LOADING);
+
     this.flashcardService
       .getAllFlashcardsFromDeck(this.route.snapshot.params['id'])
-      .subscribe((flashcardArray) => {
-        this.flashcardData$.next(flashcardArray);
-        this.flashcardTable.toggleAllOff();
+      .subscribe({
+        next: (flashcardArray) => {
+          this.flashcardData$.next(flashcardArray);
+          this.flashcardTable.toggleAllOff();
+        },
+        complete: () => this.spinnerService.hideSpinner(SpinnerType.LOADING),
       });
   }
 
@@ -119,7 +126,9 @@ export class DeckDetailComponent {
     private router: Router,
     private notificationService: GenericNotificationService,
     @Inject('GenericAuthService')
-    public authService: GenericAuthService
+    public authService: GenericAuthService,
+    @Inject('GenericSpinnerService')
+    protected spinnerService: GenericSpinnerService
   ) {
     this.deckModel = this.route.snapshot.data['deck'];
     if (this.deckModel) {
