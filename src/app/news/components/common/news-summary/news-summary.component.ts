@@ -1,4 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import {
+  GenericSpinnerService,
+  SpinnerType,
+} from 'src/app/shared/services/UI/spinner.service';
 import { ExtendedNews } from '../../../models/news.model';
 import { GenericNewsService } from '../../../services/news.service';
 
@@ -11,12 +15,19 @@ export class NewsSummaryComponent implements OnInit {
   public newsList: ExtendedNews[] = [];
 
   constructor(
-    @Inject('GenericNewsService') private newsService: GenericNewsService
+    @Inject('GenericNewsService') private newsService: GenericNewsService,
+    @Inject('GenericSpinnerService')
+    private spinnerService: GenericSpinnerService
   ) {}
 
   ngOnInit() {
-    this.newsService.getExtendedLatestNews(4, 1).subscribe((latestNews) => {
-      this.newsList = latestNews.data.results;
+    this.spinnerService.showSpinner(SpinnerType.LOADING);
+
+    this.newsService.getExtendedLatestNews(4, 1).subscribe({
+      next: (latestNews) => {
+        this.newsList = latestNews.data.results;
+      },
+      complete: () => this.spinnerService.hideSpinner(SpinnerType.LOADING),
     });
   }
 }
