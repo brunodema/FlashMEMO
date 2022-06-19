@@ -1,17 +1,12 @@
-import {
-  Component,
-  EventEmitter,
-  Inject,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { ExtendedNews, News } from 'src/app/news/models/news.model';
+import { ExtendedNews } from 'src/app/news/models/news.model';
 import { GenericNewsService } from 'src/app/news/services/news.service';
-import { IPaginatedListResponse } from 'src/app/shared/models/http/http-response-types';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
-import { User } from 'src/app/user/models/user.model';
+import {
+  GenericSpinnerService,
+  SpinnerType,
+} from 'src/app/shared/services/UI/spinner.service';
 import { GenericUserService } from 'src/app/user/services/user.service';
 
 @Component({
@@ -40,18 +35,22 @@ export class NewsCardListComponent implements OnInit {
   constructor(
     @Inject('GenericNewsService') protected newsService: GenericNewsService,
     @Inject('GenericUserService') protected userService: GenericUserService,
-    protected notificationService: GenericNotificationService
+    protected notificationService: GenericNotificationService,
+    protected spinnerService: GenericSpinnerService
   ) {}
 
   private refreshNewsSource(pageSize: number, pageNumber: number) {
-    this.newsService
-      .getExtendedLatestNews(pageSize, pageNumber)
-      .subscribe((response) => {
+    this.spinnerService.showSpinner(SpinnerType.LOADING);
+
+    this.newsService.getExtendedLatestNews(pageSize, pageNumber).subscribe({
+      next: (response) => {
         this.extendedNewsData = response.data.results;
         this.pageNumber = Number(response.data.pageNumber) - 1;
         this.pageSize = this.pageSizeOptions[0];
         this.totalAmount = Number(response.data.totalAmount);
-      });
+      },
+      complete: () => this.spinnerService.hideSpinner(SpinnerType.LOADING),
+    });
   }
 
   ngOnInit(): void {
