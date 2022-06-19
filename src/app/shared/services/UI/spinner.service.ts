@@ -5,6 +5,7 @@ export enum SpinnerType {
   LOGIN = 'login',
   LOGOUT = 'logout',
   LOADING = 'loading',
+  SEARCHING = 'searching',
 }
 
 @Injectable({

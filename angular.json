@@ -32,7 +32,8 @@
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "node_modules/ngx-spinner/animations/ball-circus.css"
+              "node_modules/ngx-spinner/animations/ball-circus.css",
+              "node_modules/ngx-spinner/animations/ball-spin-fade-rotating.css"
             ],
             "scripts": []
           },
@@ -157,7 +158,8 @@
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "node_modules/ngx-spinner/animations/ball-circus.css"
+              "node_modules/ngx-spinner/animations/ball-circus.css",
+              "node_modules/ngx-spinner/animations/ball-spin-fade-rotating.css"
             ],
             "scripts": []
           }
