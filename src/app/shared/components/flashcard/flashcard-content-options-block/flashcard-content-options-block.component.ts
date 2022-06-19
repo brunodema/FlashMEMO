@@ -37,6 +37,10 @@ import {
   IAudioAPIResult,
 } from 'src/app/shared/services/APIs/audio-api.service';
 import { Language } from 'src/app/shared/models/shared-models';
+import {
+  GenericSpinnerService,
+  SpinnerType,
+} from 'src/app/shared/services/UI/spinner.service';
 
 export enum FlashcardContentType {
   NONE = 'NONE',
@@ -173,8 +177,11 @@ export class FlashcardContentOptionsBlockComponent
     private audioAPIService: GeneralAudioAPIService,
     private hostElement: ElementRef, // A way to check the parent's height, and use it after an image is selected by the user
     private clipboardService: ClipboardService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    @Inject('GenericSpinnerService')
+    private spinnerService: GenericSpinnerService
   ) {}
+
   ngAfterViewChecked(): void {
     // this must stay commented to prevent those 'image keeps getting larger' issue
     // console.log('ngAfterViewChecked: ' + this.hostElement.nativeElement.offsetHeight + 'px')
@@ -231,21 +238,6 @@ export class FlashcardContentOptionsBlockComponent
     this.showEmptyResultsMessage = false;
   }
 
-  searchImage(keyword: string, pageNumber?: number): void {
-    if (pageNumber === undefined) pageNumber = 1;
-
-    this.imageAPIData$ = this.imageAPIService.searchImage(keyword, pageNumber);
-    this.imageAPIData$.subscribe((r) => {
-      console.log(r.data.results.map((image) => image.link));
-
-      this.currentKeyword = keyword;
-      this.currentPageNumber = r.data.pageNumber as number;
-      this.imageResults = r.data.results;
-      this.hasPrevious = r.data.hasPreviousPage;
-      this.hasNext = r.data.hasNextPage;
-    });
-  }
-
   emitValue(contentValue: string) {
     this.contentSave.emit({ contentValue: this.contentValue });
     console.log('emitting: ' + this.contentValue);
@@ -297,29 +289,6 @@ export class FlashcardContentOptionsBlockComponent
     );
   }
 
-  searchWord(
-    keyword: string,
-    languageCode: string,
-    provider: DictionaryAPIProvider
-  ): void {
-    this.dictAPIData$ = this.dictAPIService.searchWord(
-      keyword,
-      languageCode,
-      provider
-    );
-    this.dictAPIData$.subscribe((result) => {
-      if (result.data.results.length === 0) {
-        this.showEmptyResultsMessage = true;
-      } else {
-        this.dictAPIparsedHMTL = this.dictAPIService.ParseResultsIntoHTML(
-          result.data
-        );
-        this.showEmptyResultsMessage = false;
-        this.showDictionaryToolbar = true;
-      }
-    });
-  }
-
   clearDictionaryResults(): void {
     this.dictAPIparsedHMTL = '';
     this.showDictionaryToolbar = false;
@@ -330,22 +299,75 @@ export class FlashcardContentOptionsBlockComponent
     this.textEditorContent += '\n\n' + this.dictAPIparsedHMTL;
   }
 
+  searchImage(keyword: string, pageNumber?: number): void {
+    this.spinnerService.showSpinner(SpinnerType.SEARCHING);
+
+    if (pageNumber === undefined) pageNumber = 1;
+
+    this.imageAPIData$ = this.imageAPIService.searchImage(keyword, pageNumber);
+    this.imageAPIData$.subscribe({
+      next: (r) => {
+        console.log(r.data.results.map((image) => image.link));
+
+        this.currentKeyword = keyword;
+        this.currentPageNumber = r.data.pageNumber as number;
+        this.imageResults = r.data.results;
+        this.hasPrevious = r.data.hasPreviousPage;
+        this.hasNext = r.data.hasNextPage;
+      },
+      complete: () => this.spinnerService.hideSpinner(SpinnerType.SEARCHING),
+    });
+  }
+
+  searchWord(
+    keyword: string,
+    languageCode: string,
+    provider: DictionaryAPIProvider
+  ): void {
+    this.spinnerService.showSpinner(SpinnerType.SEARCHING);
+
+    this.dictAPIData$ = this.dictAPIService.searchWord(
+      keyword,
+      languageCode,
+      provider
+    );
+    this.dictAPIData$.subscribe({
+      next: (result) => {
+        if (result.data.results.length === 0) {
+          this.showEmptyResultsMessage = true;
+        } else {
+          this.dictAPIparsedHMTL = this.dictAPIService.ParseResultsIntoHTML(
+            result.data
+          );
+          this.showEmptyResultsMessage = false;
+          this.showDictionaryToolbar = true;
+        }
+      },
+      complete: () => this.spinnerService.hideSpinner(SpinnerType.SEARCHING),
+    });
+  }
+
   searchAudio(
     keyword: string,
     languageCode: string,
     provider: AudioAPIProvider
   ): void {
+    this.spinnerService.showSpinner(SpinnerType.SEARCHING);
+
     this.audioAPIData$ = this.audioAPIService.searchAudio(
       keyword,
       languageCode,
       provider
     );
-    this.audioAPIData$.subscribe((results) => {
-      if (results.data.results.audioLinks.length === 0) {
-        this.showEmptyResultsMessage = true;
-      } else {
-        this.audioAPIResults = results.data.results.audioLinks;
-      }
+    this.audioAPIData$.subscribe({
+      next: (results) => {
+        if (results.data.results.audioLinks.length === 0) {
+          this.showEmptyResultsMessage = true;
+        } else {
+          this.audioAPIResults = results.data.results.audioLinks;
+        }
+      },
+      complete: () => this.spinnerService.hideSpinner(SpinnerType.SEARCHING),
     });
   }
 
