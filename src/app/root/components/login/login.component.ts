@@ -39,6 +39,14 @@ export class LoginComponent implements OnInit {
         required: true,
       },
     },
+    {
+      key: 'rememberMe',
+      type: 'checkbox',
+      defaultValue: false,
+      templateOptions: {
+        label: 'Remember me?',
+      },
+    },
   ];
 
   constructor(
@@ -54,7 +62,9 @@ export class LoginComponent implements OnInit {
         username: this.form.value.username,
         password: this.form.value.password,
       };
-      this.authService.login(loginRequestData).subscribe();
+      this.authService
+        .login(loginRequestData, this.form.value.rememberMe)
+        .subscribe();
     }
   }
 }

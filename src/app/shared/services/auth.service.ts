@@ -37,6 +37,7 @@ export abstract class GenericAuthService {
   ) {}
 
   private decodeUserFromToken(jwtToken: string): User {
+    // console.log('decoding jwt...', jwtToken);
     return new User({
       id: this.decodePropertyFromToken('sub') ?? Guid.newGuid(),
       email: this.decodePropertyFromToken('email') ?? 'johndoe@flashmemo.edu',
@@ -62,6 +63,7 @@ export abstract class GenericAuthService {
     requestData: ILoginRequest,
     rememberMe: boolean
   ): Observable<any>;
+
   abstract register(registerData: IRegisterRequest): Observable<any>;
 
   /**
@@ -92,7 +94,7 @@ export abstract class GenericAuthService {
   }
 
   public isAuthenticated(): boolean {
-    const token = localStorage.getItem('token')!; // non-null assertion operator
+    const token = this.jwtHelper.tokenGetter();
     return !this.jwtHelper.isTokenExpired(token);
   }
 
@@ -104,6 +106,7 @@ export abstract class GenericAuthService {
 
   protected storeJWT(JWTToken: string, rememberMe: boolean) {
     this.clearPreExistingJWT();
+    // console.log('storing jwt', rememberMe);
     rememberMe
       ? localStorage.setItem('token', JWTToken)
       : sessionStorage.setItem('token', JWTToken);

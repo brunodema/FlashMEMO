@@ -85,6 +85,9 @@ export type RepositoryServiceConfig = {
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {
+          if (sessionStorage.getItem('token')) {
+            return sessionStorage.getItem('token');
+          }
           return localStorage.getItem('token');
         },
       },
