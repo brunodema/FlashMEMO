@@ -18,6 +18,7 @@ import {
   ILoginResponse,
 } from '../models/http/http-response-types';
 import { GenericNotificationService } from './notification/notification.service';
+import { SpinnerType } from './UI/spinner.service';
 
 /** Determines which global spinner should be called. These are declared on the 'app.component' file. */
 export enum AuthSpinnerType {
@@ -57,7 +58,10 @@ export abstract class GenericAuthService {
     return this.checkIfAdmin();
   }
 
-  abstract login(requestData: ILoginRequest): Observable<any>;
+  abstract login(
+    requestData: ILoginRequest,
+    rememberMe: boolean
+  ): Observable<any>;
   abstract register(registerData: IRegisterRequest): Observable<any>;
 
   /**
@@ -73,7 +77,7 @@ export abstract class GenericAuthService {
   }
 
   /** Triggers one of the global spinners depending on the auth action taken by the user (login or logout). */
-  protected showAuthSpinner(spinnerType: AuthSpinnerType) {
+  protected showAuthSpinner(spinnerType: SpinnerType) {
     this.spinnerService.show(spinnerType);
     setTimeout(() => {
       this.spinnerService.hide(spinnerType).then(() => {
@@ -95,12 +99,14 @@ export abstract class GenericAuthService {
   public logout() {
     this.clearPreExistingJWT();
     this.loggedUser.next(new User());
-    this.showAuthSpinner(AuthSpinnerType.LOGOUT);
+    this.showAuthSpinner(SpinnerType.LOGOUT);
   }
 
-  protected storeJWT(JWTToken: string) {
+  protected storeJWT(JWTToken: string, rememberMe: boolean) {
     this.clearPreExistingJWT();
-    localStorage.setItem('token', JWTToken);
+    rememberMe
+      ? localStorage.setItem('token', JWTToken)
+      : sessionStorage.setItem('token', JWTToken);
   }
 
   protected getJWT(): string {
@@ -121,10 +127,10 @@ export abstract class GenericAuthService {
     sessionStorage.removeItem('token');
   }
 
-  protected handleSuccessfulLogin(res: ILoginResponse) {
-    this.storeJWT(res.jwtToken);
-    this.loggedUser.next(this.decodeUserFromToken(res.jwtToken));
-    this.showAuthSpinner(AuthSpinnerType.LOGIN);
+  protected handleSuccessfulLogin(res: ILoginResponse, rememberMe: boolean) {
+    this.storeJWT(res.accessToken, rememberMe);
+    this.loggedUser.next(this.decodeUserFromToken(res.accessToken));
+    this.showAuthSpinner(SpinnerType.LOGIN);
   }
 
   protected handleSuccessfulRegistration(res: IBaseAPIResponse) {
@@ -168,14 +174,18 @@ export class MockAuthService extends GenericAuthService {
     super(jwtHelper, router, notificationService, spinnerService);
   }
 
-  login(requestData: ILoginRequest): Observable<any> {
+  login(requestData: ILoginRequest, rememberMe: boolean): Observable<any> {
     return of(
-      this.handleSuccessfulLogin({
-        jwtToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZmxhc2htZW1vLmVkdSIsImp0aSI6ImRjYWZiMTEzLTc3OTQtNDlkYi04Y2RlLTQyYjdmMTg3NWZkMyIsInN1YiI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6IkpvaG4gRG9lIiwibmFtZSI6IkpvaG4iLCJzdXJuYW1lIjoiRG9lIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW4iLCJleHAiOjk5OTk5OTk5OTl9.RjQl-_1AMm1qekxdItV8pBndguQtHiPXs8DXNgy-XZc',
-        errors: [],
-        message: 'success',
-      })
+      this.handleSuccessfulLogin(
+        {
+          accessToken:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZmxhc2htZW1vLmVkdSIsImp0aSI6ImRjYWZiMTEzLTc3OTQtNDlkYi04Y2RlLTQyYjdmMTg3NWZkMyIsInN1YiI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6IkpvaG4gRG9lIiwibmFtZSI6IkpvaG4iLCJzdXJuYW1lIjoiRG9lIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW4iLCJleHAiOjk5OTk5OTk5OTl9.RjQl-_1AMm1qekxdItV8pBndguQtHiPXs8DXNgy-XZc',
+          refreshToken: '',
+          errors: [],
+          message: 'success',
+        },
+        rememberMe
+      )
     );
   }
 
@@ -186,10 +196,13 @@ export class MockAuthService extends GenericAuthService {
       //   message: 'Success',
       //   status: '200',
       // }),
-      this.login({
-        username: registerData.username,
-        password: registerData.password,
-      }).subscribe()
+      this.login(
+        {
+          username: registerData.username,
+          password: registerData.password,
+        },
+        false
+      ).subscribe()
     );
   }
 }
@@ -215,11 +228,14 @@ export class AuthService extends GenericAuthService {
     super(jwtHelper, router, notificationService, spinnerService);
   }
 
-  public login(requestData: ILoginRequest): Observable<any> {
+  public login(
+    requestData: ILoginRequest,
+    rememberMe: boolean
+  ): Observable<any> {
     return this.http
       .post<ILoginResponse>(`${this.authServiceURL}/login`, requestData)
       .pipe(
-        map((res) => this.handleSuccessfulLogin(res)),
+        map((res) => this.handleSuccessfulLogin(res, rememberMe)),
         catchError((err: HttpErrorResponse) => this.handleFailedLogin(err))
       );
   }
@@ -230,10 +246,13 @@ export class AuthService extends GenericAuthService {
       .pipe(
         map((res) => {
           this.handleSuccessfulRegistration(res);
-          this.login({
-            username: registerData.username,
-            password: registerData.password,
-          }).subscribe();
+          this.login(
+            {
+              username: registerData.username,
+              password: registerData.password,
+            },
+            false
+          ).subscribe();
         }),
         catchError((err: HttpErrorResponse) => this.handleFailedLogin(err))
       );
