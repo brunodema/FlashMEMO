@@ -64,14 +64,14 @@ export class UserListComponent {
 
   showEditIcon = (item: User) => {
     return (
-      this.authService.isLoggedUserAdmin ||
+      this.authService.isLoggedUserAdmin() ||
       item.id === this.authService.loggedUser.getValue().id
     );
   };
 
   showDeleteIcon = (item: User) => {
     return (
-      this.authService.isLoggedUserAdmin ||
+      this.authService.isLoggedUserAdmin() ||
       item.id === this.authService.loggedUser.getValue().id
     );
   };

@@ -104,14 +104,14 @@ export class DeckListComponent {
 
   showEditIconn = (item: Deck) => {
     return (
-      this.authService.isLoggedUserAdmin ||
+      this.authService.isLoggedUserAdmin() ||
       item.deckId === this.authService.loggedUser.getValue().id
     );
   };
 
   showDeleteIcon = (item: Deck) => {
     return (
-      this.authService.isLoggedUserAdmin ||
+      this.authService.isLoggedUserAdmin() ||
       item.deckId === this.authService.loggedUser.getValue().id
     );
   };

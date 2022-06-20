@@ -74,7 +74,7 @@ export abstract class GenericAuthService {
     this.decodeUserFromAccessToken()
   );
 
-  get isLoggedUserAdmin(): boolean {
+  isLoggedUserAdmin(): boolean {
     // console.log('checking if user is admin...', this.checkIfAdmin());
     return this.checkIfAdmin();
   }

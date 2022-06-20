@@ -40,7 +40,7 @@ export class NewsDetailComponent
     } else {
       this.readMode =
         this.authService.loggedUser.getValue().id !== this.model.ownerId &&
-        !this.authService.isLoggedUserAdmin
+        !this.authService.isLoggedUserAdmin()
           ? true
           : false;
     }
