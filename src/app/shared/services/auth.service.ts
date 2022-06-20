@@ -3,8 +3,8 @@ import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Guid } from 'guid-ts';
+import { CookieService } from 'ngx-cookie-service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { RepositoryServiceConfig } from 'src/app/app.module';
@@ -33,7 +33,8 @@ export abstract class GenericAuthService {
     protected jwtHelper: JwtHelperService,
     protected router: Router,
     protected notificationService: GenericNotificationService,
-    protected spinnerService: NgxSpinnerService
+    protected spinnerService: NgxSpinnerService,
+    protected cookieService: CookieService
   ) {}
 
   get accessToken(): string {
@@ -185,9 +186,16 @@ export class MockAuthService extends GenericAuthService {
     protected jwtHelper: JwtHelperService,
     protected router: Router,
     protected notificationService: GenericNotificationService,
-    protected spinnerService: NgxSpinnerService
+    protected spinnerService: NgxSpinnerService,
+    protected cookieService: CookieService
   ) {
-    super(jwtHelper, router, notificationService, spinnerService);
+    super(
+      jwtHelper,
+      router,
+      notificationService,
+      spinnerService,
+      cookieService
+    );
   }
 
   login(requestData: ILoginRequest, rememberMe: boolean): Observable<any> {
@@ -239,9 +247,16 @@ export class AuthService extends GenericAuthService {
     protected http: HttpClient,
     protected router: Router,
     protected notificationService: GenericNotificationService,
-    protected spinnerService: NgxSpinnerService
+    protected spinnerService: NgxSpinnerService,
+    protected cookieService: CookieService
   ) {
-    super(jwtHelper, router, notificationService, spinnerService);
+    super(
+      jwtHelper,
+      router,
+      notificationService,
+      spinnerService,
+      cookieService
+    );
   }
 
   public login(
