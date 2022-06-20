@@ -36,19 +36,43 @@ export abstract class GenericAuthService {
     protected spinnerService: NgxSpinnerService
   ) {}
 
-  private decodeUserFromToken(jwtToken: string): User {
-    // console.log('decoding jwt...', jwtToken);
-    return new User({
-      id: this.decodePropertyFromToken('sub') ?? Guid.newGuid(),
-      email: this.decodePropertyFromToken('email') ?? 'johndoe@flashmemo.edu',
-      name: this.decodePropertyFromToken('name') ?? 'John',
-      surname: this.decodePropertyFromToken('surname') ?? 'Doe',
-      username: this.decodePropertyFromToken('username') ?? 'johndoe',
-    });
+  get accessToken(): string {
+    const token = this.jwtHelper.tokenGetter();
+
+    if (this.jwtHelper.isTokenExpired(token)) {
+      // console.log('token is expired. Clearing it...');
+      this.clearPreExistingTokens();
+      return '';
+    }
+
+    // console.log('Returning valid token...');
+    return token;
+  }
+
+  private decodeUserFromAccessToken(): User {
+    if (this.accessToken) {
+      return new User({
+        id:
+          this.decodePropertyFromToken(this.accessToken, 'sub') ??
+          Guid.newGuid(),
+        email:
+          this.decodePropertyFromToken(this.accessToken, 'email') ??
+          'johndoe@flashmemo.edu',
+        name: this.decodePropertyFromToken(this.accessToken, 'name') ?? 'John',
+        surname:
+          this.decodePropertyFromToken(this.accessToken, 'surname') ?? 'Doe',
+        username:
+          this.decodePropertyFromToken(this.accessToken, 'username') ??
+          'johndoe',
+      });
+    }
+    return new User();
   }
 
   // TIL about Subject/BehaviorSubject. "A Subject is like an Observable, but can multicast to many Observers. Subjects are like EventEmitters: they maintain a registry of many listeners" (source: https://rxjs.dev/guide/subject). Implementation taken from here: https://netbasal.com/angular-2-persist-your-login-status-with-behaviorsubject-45da9ec43243
-  public loggedUser = new BehaviorSubject<User>(this.decodeUserFromToken(''));
+  public loggedUser = new BehaviorSubject<User>(
+    this.decodeUserFromAccessToken()
+  );
 
   /**
    * Checks if the JWT contains the Microsfot schema entry for role, and if so, checks if the value matches for an admin.
@@ -57,25 +81,6 @@ export abstract class GenericAuthService {
   get isLoggedUserAdmin(): boolean {
     // console.log('checking if user is admin...', this.checkIfAdmin());
     return this.checkIfAdmin();
-  }
-
-  abstract login(
-    requestData: ILoginRequest,
-    rememberMe: boolean
-  ): Observable<any>;
-
-  abstract register(registerData: IRegisterRequest): Observable<any>;
-
-  /**
-   * Checks if the logged user (verifies stored JWT) has an admin claim in his/hers credentials.
-   * @returns
-   */
-  protected checkIfAdmin(): boolean {
-    return (
-      this.decodePropertyFromToken(
-        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-      ) === 'admin'
-    );
   }
 
   /** Triggers one of the global spinners depending on the auth action taken by the user (login or logout). */
@@ -88,51 +93,52 @@ export abstract class GenericAuthService {
     }, 5000);
   }
 
-  public decodePropertyFromToken(property: string): string {
-    if (!this.getJWT()) return '';
-    return this.jwtHelper.decodeToken(this.getJWT())[property];
-  }
-
-  public isAuthenticated(): boolean {
-    const token = this.jwtHelper.tokenGetter();
-    return !this.jwtHelper.isTokenExpired(token);
+  public decodePropertyFromToken(token: string, property: string): string {
+    return this.jwtHelper.decodeToken(token)[property];
   }
 
   public logout() {
-    this.clearPreExistingJWT();
+    this.clearPreExistingTokens();
     this.loggedUser.next(new User());
     this.showAuthSpinner(SpinnerType.LOGOUT);
   }
 
-  protected storeJWT(JWTToken: string, rememberMe: boolean) {
-    this.clearPreExistingJWT();
+  protected storeToken(JWTToken: string, rememberMe: boolean) {
+    this.clearPreExistingTokens();
     // console.log('storing jwt', rememberMe);
     rememberMe
       ? localStorage.setItem('token', JWTToken)
       : sessionStorage.setItem('token', JWTToken);
   }
 
-  protected getJWT(): string {
-    const token = this.jwtHelper.tokenGetter();
-
-    if (this.jwtHelper.isTokenExpired(token)) {
-      // console.log('token is expired. Clearing it...');
-      this.clearPreExistingJWT();
-      return '';
-    }
-
-    // console.log('Returning valid token...');
-    return token;
-  }
-
-  protected clearPreExistingJWT() {
+  protected clearPreExistingTokens() {
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
   }
 
+  /**
+   * Checks if the logged user (verifies stored JWT) has an admin claim in his/hers credentials.
+   * @returns
+   */
+  protected checkIfAdmin(): boolean {
+    if (this.accessToken) {
+      return (
+        this.decodePropertyFromToken(
+          this.accessToken,
+          'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+        ) === 'admin'
+      );
+    }
+    return false;
+  }
+
+  public isAuthenticated(): boolean {
+    return !this.jwtHelper.isTokenExpired(this.accessToken);
+  }
+
   protected handleSuccessfulLogin(res: ILoginResponse, rememberMe: boolean) {
-    this.storeJWT(res.accessToken, rememberMe);
-    this.loggedUser.next(this.decodeUserFromToken(res.accessToken));
+    this.storeToken(res.accessToken, rememberMe);
+    this.loggedUser.next(this.decodeUserFromAccessToken());
     this.showAuthSpinner(SpinnerType.LOGIN);
   }
 
@@ -141,7 +147,7 @@ export abstract class GenericAuthService {
   }
 
   protected handleFailedLogin(err: HttpErrorResponse) {
-    this.clearPreExistingJWT();
+    this.clearPreExistingTokens();
     this.notificationService.showError(
       this.processErrorsFromAPI(err.error),
       'Authentication Failure'
@@ -162,6 +168,13 @@ export abstract class GenericAuthService {
   protected redirectToHome() {
     this.router.navigate([this.homeAddress]);
   }
+
+  abstract login(
+    requestData: ILoginRequest,
+    rememberMe: boolean
+  ): Observable<any>;
+
+  abstract register(registerData: IRegisterRequest): Observable<any>;
 }
 
 @Injectable({
