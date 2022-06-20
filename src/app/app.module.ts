@@ -34,10 +34,8 @@ import { GlobalHttpInterceptorService } from './shared/interceptor/http-error.in
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { TestModule } from './test/test.module';
-import {
-  GenericSpinnerService,
-  SpinnerService,
-} from './shared/services/UI/spinner.service';
+import { SpinnerService } from './shared/services/UI/spinner.service';
+import { CookieService } from 'ngx-cookie-service';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const password = control.value['password'];
@@ -145,6 +143,7 @@ export type RepositoryServiceConfig = {
     { provide: NewsRepositoryResolverService },
     { provide: GenericNotificationService, useClass: NotificationService },
     { provide: 'GenericSpinnerService', useClass: SpinnerService },
+    { provide: CookieService },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: GlobalHttpInterceptorService,
