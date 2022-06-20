@@ -20,12 +20,6 @@ import {
 import { GenericNotificationService } from './notification/notification.service';
 import { SpinnerType } from './UI/spinner.service';
 
-/** Determines which global spinner should be called. These are declared on the 'app.component' file. */
-export enum AuthSpinnerType {
-  LOGIN = 'login',
-  LOGOUT = 'logout',
-}
-
 export abstract class GenericAuthService {
   protected homeAddress = '/home';
 
@@ -34,7 +28,8 @@ export abstract class GenericAuthService {
     protected router: Router,
     protected notificationService: GenericNotificationService,
     protected spinnerService: NgxSpinnerService,
-    protected cookieService: CookieService
+    protected cookieService: CookieService,
+    @Inject('COOKIE_CONFIG') protected cookieSettings: { useValue: boolean }
   ) {}
 
   get accessToken(): string {
@@ -48,6 +43,10 @@ export abstract class GenericAuthService {
 
     // console.log('Returning valid token...');
     return token;
+  }
+
+  get refreshToken(): string {
+    return this.cookieService.get('refreshToken');
   }
 
   private decodeUserFromAccessToken(): User {
@@ -75,10 +74,6 @@ export abstract class GenericAuthService {
     this.decodeUserFromAccessToken()
   );
 
-  /**
-   * Checks if the JWT contains the Microsfot schema entry for role, and if so, checks if the value matches for an admin.
-   */
-  private _isLoggedUserAdmin: boolean = false;
   get isLoggedUserAdmin(): boolean {
     // console.log('checking if user is admin...', this.checkIfAdmin());
     return this.checkIfAdmin();
@@ -187,14 +182,16 @@ export class MockAuthService extends GenericAuthService {
     protected router: Router,
     protected notificationService: GenericNotificationService,
     protected spinnerService: NgxSpinnerService,
-    protected cookieService: CookieService
+    protected cookieService: CookieService,
+    @Inject('COOKIE_CONFIG') protected cookieSettings: { useValue: boolean }
   ) {
     super(
       jwtHelper,
       router,
       notificationService,
       spinnerService,
-      cookieService
+      cookieService,
+      cookieSettings
     );
   }
 
@@ -248,14 +245,16 @@ export class AuthService extends GenericAuthService {
     protected router: Router,
     protected notificationService: GenericNotificationService,
     protected spinnerService: NgxSpinnerService,
-    protected cookieService: CookieService
+    protected cookieService: CookieService,
+    @Inject('COOKIE_CONFIG') protected cookieSettings: { useValue: boolean }
   ) {
     super(
       jwtHelper,
       router,
       notificationService,
       spinnerService,
-      cookieService
+      cookieService,
+      cookieSettings
     );
   }
 

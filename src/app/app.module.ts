@@ -113,6 +113,12 @@ export type RepositoryServiceConfig = {
       },
     },
     {
+      provide: 'COOKIE_CONFIG',
+      useValue: {
+        useSecure: environment.production,
+      },
+    },
+    {
       provide: 'GeneralImageAPIService',
       useClass: environment.imageAPIService,
     },
