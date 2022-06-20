@@ -50,13 +50,6 @@ export abstract class GenericAuthService {
     return this.cookieService.get('refreshToken');
   }
 
-  set refreshToken(value: string) {
-    this.cookieService.set('refreshToken', value, {
-      expires: this.cookieSettings.expirationPeriod,
-      secure: this.cookieSettings.useSecure,
-    });
-  }
-
   private decodeUserFromAccessToken(): User {
     if (this.accessToken) {
       return new User({
@@ -103,11 +96,14 @@ export abstract class GenericAuthService {
 
   public logout() {
     this.clearPreExistingTokens();
+    this.clearPreExistingCookies();
+
     this.loggedUser.next(new User());
+
     this.showAuthSpinner(SpinnerType.LOGOUT);
   }
 
-  protected storeToken(JWTToken: string, rememberMe: boolean) {
+  protected storeAccessToken(JWTToken: string, rememberMe: boolean) {
     this.clearPreExistingTokens();
     // console.log('storing jwt', rememberMe);
     rememberMe
@@ -115,9 +111,20 @@ export abstract class GenericAuthService {
       : sessionStorage.setItem('token', JWTToken);
   }
 
+  protected setRefreshToken(JWTToken: string, rememberMe: boolean) {
+    this.cookieService.set('refreshToken', JWTToken, {
+      expires: rememberMe ? this.cookieSettings.expirationPeriod : undefined,
+      secure: this.cookieSettings.useSecure,
+    });
+  }
+
   protected clearPreExistingTokens() {
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
+  }
+
+  protected clearPreExistingCookies() {
+    this.cookieService.delete('refreshToken');
   }
 
   /**
@@ -141,8 +148,11 @@ export abstract class GenericAuthService {
   }
 
   protected handleSuccessfulLogin(res: ILoginResponse, rememberMe: boolean) {
-    this.storeToken(res.accessToken, rememberMe);
+    this.storeAccessToken(res.accessToken, rememberMe);
+    this.setRefreshToken(res.refreshToken, rememberMe);
+
     this.loggedUser.next(this.decodeUserFromAccessToken());
+
     this.showAuthSpinner(SpinnerType.LOGIN);
   }
 

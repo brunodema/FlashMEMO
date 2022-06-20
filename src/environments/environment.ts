@@ -14,7 +14,7 @@ export const environment = {
   maxPageSize: 10000,
   defaultLanguageISOCode: 'en-gb',
   // cookies
-  expirationPeriod: 7776000, // (7776000s = 90 days)
+  expirationPeriod: 90, // days
   // services
   newsService: MockNewsService,
   userService: MockUserService,
