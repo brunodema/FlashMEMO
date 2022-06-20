@@ -29,7 +29,8 @@ export abstract class GenericAuthService {
     protected notificationService: GenericNotificationService,
     protected spinnerService: NgxSpinnerService,
     protected cookieService: CookieService,
-    @Inject('COOKIE_CONFIG') protected cookieSettings: { useValue: boolean }
+    @Inject('COOKIE_CONFIG')
+    protected cookieSettings: { useSecure: boolean; expirationPeriod: number }
   ) {}
 
   get accessToken(): string {
@@ -47,6 +48,13 @@ export abstract class GenericAuthService {
 
   get refreshToken(): string {
     return this.cookieService.get('refreshToken');
+  }
+
+  set refreshToken(value: string) {
+    this.cookieService.set('refreshToken', value, {
+      expires: this.cookieSettings.expirationPeriod,
+      secure: this.cookieSettings.useSecure,
+    });
   }
 
   private decodeUserFromAccessToken(): User {
@@ -183,7 +191,8 @@ export class MockAuthService extends GenericAuthService {
     protected notificationService: GenericNotificationService,
     protected spinnerService: NgxSpinnerService,
     protected cookieService: CookieService,
-    @Inject('COOKIE_CONFIG') protected cookieSettings: { useValue: boolean }
+    @Inject('COOKIE_CONFIG')
+    protected cookieSettings: { useSecure: boolean; expirationPeriod: number }
   ) {
     super(
       jwtHelper,
@@ -199,9 +208,26 @@ export class MockAuthService extends GenericAuthService {
     return of(
       this.handleSuccessfulLogin(
         {
+          /**
+            "jti": "dcafb113-7794-49db-8cde-42b7f1875fd3",
+            "sub": "1234567890",
+            "username": "johndoe",
+            "name": "John",
+            "surname": "Doe",
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": "admin",
+            "exp": 9999999999
+           */
           accessToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZmxhc2htZW1vLmVkdSIsImp0aSI6ImRjYWZiMTEzLTc3OTQtNDlkYi04Y2RlLTQyYjdmMTg3NWZkMyIsInN1YiI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6IkpvaG4gRG9lIiwibmFtZSI6IkpvaG4iLCJzdXJuYW1lIjoiRG9lIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW4iLCJleHAiOjk5OTk5OTk5OTl9.RjQl-_1AMm1qekxdItV8pBndguQtHiPXs8DXNgy-XZc',
-          refreshToken: '',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZmxhc2htZW1vLmVkdSIsImp0aSI6ImRjYWZiMTEzLTc3OTQtNDlkYi04Y2RlLTQyYjdmMTg3NWZkMyIsInN1YiI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJuYW1lIjoiSm9obiIsInN1cm5hbWUiOiJEb2UiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiIsImV4cCI6OTk5OTk5OTk5OX0.2Oqyj7_bUwTFKQvL4ZDeWVnG3E0iTXfNIz2eLiKXnTE',
+          refreshToken:
+            /**
+            "jti": "619449c6-f12f-4c3b-baaa-db5e65578578",
+            "sub": "dcafb113-7794-49db-8cde-42b7f1875fd3",
+            "username": "johndoe",
+            "iat": 1516239022,
+            "exp": 9999999999
+             */
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2MTk0NDljNi1mMTJmLTRjM2ItYmFhYS1kYjVlNjU1Nzg1NzgiLCJzdWIiOiJkY2FmYjExMy03Nzk0LTQ5ZGItOGNkZS00MmI3ZjE4NzVmZDMiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6OTk5OTk5OTk5OX0.HPrTmB5ggMe_awsJfJUGM4dIhDcO1NVbzrXfklA7uac',
           errors: [],
           message: 'success',
         },
@@ -246,7 +272,8 @@ export class AuthService extends GenericAuthService {
     protected notificationService: GenericNotificationService,
     protected spinnerService: NgxSpinnerService,
     protected cookieService: CookieService,
-    @Inject('COOKIE_CONFIG') protected cookieSettings: { useValue: boolean }
+    @Inject('COOKIE_CONFIG')
+    protected cookieSettings: { useSecure: boolean; expirationPeriod: number }
   ) {
     super(
       jwtHelper,
