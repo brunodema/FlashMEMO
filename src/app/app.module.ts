@@ -116,6 +116,7 @@ export type RepositoryServiceConfig = {
       provide: 'COOKIE_CONFIG',
       useValue: {
         useSecure: environment.production,
+        expirationPeriod: environment.expirationPeriod,
       },
     },
     {
