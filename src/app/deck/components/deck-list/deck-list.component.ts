@@ -34,7 +34,7 @@ export class DeckListComponent {
         this.deckData$.next(deckArray);
         this.userDeckData$.next(
           deckArray.filter(
-            (d) => d.ownerId === this.authService.loggedUser.getValue().id
+            (d) => d.ownerId === this.authService.loggedUser.getValue()?.id
           )
         );
         this.adminDeckTable.toggleAllOff();
@@ -105,14 +105,14 @@ export class DeckListComponent {
   showEditIconn = (item: Deck) => {
     return (
       this.authService.isLoggedUserAdmin() ||
-      item.deckId === this.authService.loggedUser.getValue().id
+      item.deckId === this.authService.loggedUser.getValue()?.id
     );
   };
 
   showDeleteIcon = (item: Deck) => {
     return (
       this.authService.isLoggedUserAdmin() ||
-      item.deckId === this.authService.loggedUser.getValue().id
+      item.deckId === this.authService.loggedUser.getValue()?.id
     );
   };
 

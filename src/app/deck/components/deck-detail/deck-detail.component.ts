@@ -141,7 +141,7 @@ export class DeckDetailComponent {
     } else {
       this.isNewDeck = true;
       this.deckModel = new Deck({
-        ownerId: authService.loggedUser.getValue().id,
+        ownerId: authService.loggedUser.getValue()?.id,
       });
     }
   }

@@ -19,7 +19,7 @@ export class NewsPreviewComponent implements OnInit {
   /**
    * Information associated with user who authored the News.
    */
-  ownerInfo: User = new User();
+  ownerInfo: User | null = new User();
 
   constructor(
     @Inject('GenericUserService') protected userService: GenericUserService,

@@ -1,16 +1,18 @@
-<ul *ngIf="!this.authService.isAuthenticated()" class="navbar-nav me-auto mb-2 mb-lg-0">
-  <li class="nav-item">
-    <a id="login-btn" class="nav-link" routerLink="/login">Login</a>
-  </li>
-  <li class="nav-item">
-    <a id="register-btn" class="nav-link" routerLink="/user/create" [queryParams]="{mode : 'register'}">Register</a>
-  </li>
-</ul>
-
-<div *ngIf="this.authService.isAuthenticated()" ngbDropdown class="d-inline-block">
+<div *ngIf="this.authService.loggedUser | async; else unauthenticated" ngbDropdown class="d-inline-block">
   <button type="button" class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>Welcome {{ username }}</button>
   <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
     <button ngbDropdownItem [routerLink]="['user', userId]">My Profile</button>
     <button ngbDropdownItem (click)="logout()">Logout</button>
   </div>
 </div>
+
+<ng-template #unauthenticated>
+  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <li class="nav-item">
+      <a id="login-btn" class="nav-link" routerLink="/login">Login</a>
+    </li>
+    <li class="nav-item">
+      <a id="register-btn" class="nav-link" routerLink="/user/create" [queryParams]="{mode : 'register'}">Register</a>
+    </li>
+  </ul>
+</ng-template>
