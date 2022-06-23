@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import {
   HttpErrorResponse,
   HttpEvent,
@@ -10,13 +10,17 @@ import {
 import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { GenericNotificationService } from '../services/notification/notification.service';
+import { GenericAuthService } from '../services/auth.service';
 
 /**
  * This global HTTP interceptor implementation is based on these resources: https://www.tektutorialshub.com/angular/angular-http-error-handling/ and https://rollbar.com/blog/error-handling-with-angular-8-tips-and-best-practices/
  */
 @Injectable()
 export class GlobalHttpInterceptorService implements HttpInterceptor {
-  constructor(protected notificationService: GenericNotificationService) {}
+  constructor(
+    protected notificationService: GenericNotificationService,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -32,9 +36,32 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
             console.log(error);
             break;
           case HttpStatusCode.Unauthorized:
-            this.notificationService.showError(
-              'The provided credentials are not valid.'
-            );
+            let accessToken = this.authService.accessToken;
+            if (accessToken) {
+              console.log(
+                'Attempting to renew access token via interceptor...',
+                accessToken
+              );
+              this.authService
+                .renewAccessToken(accessToken)
+                .subscribe((response) => {
+                  this.authService.handleCredentials(
+                    response,
+                    this.authService.storageMode === 'PERSISTENT'
+                  );
+
+                  console.log(
+                    'Successfully renewed credentials via interceptor!'
+                  );
+
+                  req.clone({
+                    setHeaders: {
+                      Authorization: `Bearer ${response.accessToken}`,
+                      RefreshToken: response.refreshToken,
+                    },
+                  });
+                });
+            }
             break;
 
           default:

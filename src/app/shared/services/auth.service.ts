@@ -1,4 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -33,21 +37,18 @@ export abstract class GenericAuthService {
     protected cookieSettings: { useSecure: boolean; expirationPeriod: number }
   ) {}
 
+  get storageMode(): 'PERSISTENT' | 'SESSION' | 'UNAUTHENTICATED' {
+    if (sessionStorage.getItem('token')) return 'SESSION'; // I'll make session have precedence here, for extra safety
+    if (localStorage.getItem('token')) return 'PERSISTENT';
+    return 'UNAUTHENTICATED';
+  }
+
   get accessToken(): string {
-    const token = this.jwtHelper.tokenGetter();
-
-    if (this.jwtHelper.isTokenExpired(token)) {
-      // console.log('token is expired. Clearing it...');
-      this.clearPreExistingTokens();
-      return '';
-    }
-
-    // console.log('Returning valid token...');
-    return token;
+    return this.jwtHelper.tokenGetter();
   }
 
   get refreshToken(): string {
-    return this.cookieService.get('refreshToken');
+    return this.cookieService.get('RefreshToken');
   }
 
   private decodeUserFromAccessToken(): User {
@@ -105,16 +106,19 @@ export abstract class GenericAuthService {
 
   protected storeAccessToken(JWTToken: string, rememberMe: boolean) {
     this.clearPreExistingTokens();
-    // console.log('storing jwt', rememberMe);
-    rememberMe
-      ? localStorage.setItem('token', JWTToken)
-      : sessionStorage.setItem('token', JWTToken);
+
+    if (rememberMe) {
+      localStorage.setItem('token', JWTToken);
+    } else {
+      sessionStorage.setItem('token', JWTToken);
+    }
   }
 
   protected setRefreshToken(JWTToken: string, rememberMe: boolean) {
-    this.cookieService.set('refreshToken', JWTToken, {
+    this.cookieService.set('RefreshToken', JWTToken, {
       expires: rememberMe ? this.cookieSettings.expirationPeriod : undefined,
       secure: this.cookieSettings.useSecure,
+      domain: 'flashmemo.edu',
     });
   }
 
@@ -124,7 +128,7 @@ export abstract class GenericAuthService {
   }
 
   protected clearPreExistingCookies() {
-    this.cookieService.delete('refreshToken');
+    this.cookieService.delete('RefreshToken');
   }
 
   /**
@@ -154,6 +158,13 @@ export abstract class GenericAuthService {
     this.loggedUser.next(this.decodeUserFromAccessToken());
 
     this.showAuthSpinner(SpinnerType.LOGIN);
+  }
+
+  public handleCredentials(res: ILoginResponse, rememberMe: boolean) {
+    this.storeAccessToken(res.accessToken, rememberMe);
+    this.setRefreshToken(res.refreshToken, rememberMe);
+
+    this.loggedUser.next(this.decodeUserFromAccessToken());
   }
 
   protected handleSuccessfulRegistration(res: IBaseAPIResponse) {
@@ -189,12 +200,38 @@ export abstract class GenericAuthService {
   ): Observable<any>;
 
   abstract register(registerData: IRegisterRequest): Observable<any>;
+
+  abstract renewAccessToken(
+    expiredAccessToken: string
+  ): Observable<ILoginResponse>;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class MockAuthService extends GenericAuthService {
+  /**
+    "jti": "dcafb113-7794-49db-8cde-42b7f1875fd3",
+    "sub": "1234567890",
+    "username": "johndoe",
+    "name": "John",
+    "surname": "Doe",
+    "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": "admin",
+    "exp": 9999999999
+    */
+  protected dummyAccessToken =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZmxhc2htZW1vLmVkdSIsImp0aSI6ImRjYWZiMTEzLTc3OTQtNDlkYi04Y2RlLTQyYjdmMTg3NWZkMyIsInN1YiI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJuYW1lIjoiSm9obiIsInN1cm5hbWUiOiJEb2UiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiIsImV4cCI6OTk5OTk5OTk5OX0.2Oqyj7_bUwTFKQvL4ZDeWVnG3E0iTXfNIz2eLiKXnTE';
+
+  /**
+    "jti": "619449c6-f12f-4c3b-baaa-db5e65578578",
+    "sub": "dcafb113-7794-49db-8cde-42b7f1875fd3",
+    "username": "johndoe",
+    "iat": 1516239022,
+    "exp": 9999999999
+      */
+  protected dummyRefreshToken =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2MTk0NDljNi1mMTJmLTRjM2ItYmFhYS1kYjVlNjU1Nzg1NzgiLCJzdWIiOiJkY2FmYjExMy03Nzk0LTQ5ZGItOGNkZS00MmI3ZjE4NzVmZDMiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6OTk5OTk5OTk5OX0.HPrTmB5ggMe_awsJfJUGM4dIhDcO1NVbzrXfklA7uac';
+
   constructor(
     protected jwtHelper: JwtHelperService,
     protected router: Router,
@@ -218,26 +255,8 @@ export class MockAuthService extends GenericAuthService {
     return of(
       this.handleSuccessfulLogin(
         {
-          /**
-            "jti": "dcafb113-7794-49db-8cde-42b7f1875fd3",
-            "sub": "1234567890",
-            "username": "johndoe",
-            "name": "John",
-            "surname": "Doe",
-            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": "admin",
-            "exp": 9999999999
-           */
-          accessToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZmxhc2htZW1vLmVkdSIsImp0aSI6ImRjYWZiMTEzLTc3OTQtNDlkYi04Y2RlLTQyYjdmMTg3NWZkMyIsInN1YiI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJuYW1lIjoiSm9obiIsInN1cm5hbWUiOiJEb2UiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiIsImV4cCI6OTk5OTk5OTk5OX0.2Oqyj7_bUwTFKQvL4ZDeWVnG3E0iTXfNIz2eLiKXnTE',
-          refreshToken:
-            /**
-            "jti": "619449c6-f12f-4c3b-baaa-db5e65578578",
-            "sub": "dcafb113-7794-49db-8cde-42b7f1875fd3",
-            "username": "johndoe",
-            "iat": 1516239022,
-            "exp": 9999999999
-             */
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2MTk0NDljNi1mMTJmLTRjM2ItYmFhYS1kYjVlNjU1Nzg1NzgiLCJzdWIiOiJkY2FmYjExMy03Nzk0LTQ5ZGItOGNkZS00MmI3ZjE4NzVmZDMiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6OTk5OTk5OTk5OX0.HPrTmB5ggMe_awsJfJUGM4dIhDcO1NVbzrXfklA7uac',
+          accessToken: this.dummyAccessToken,
+          refreshToken: this.refreshToken,
           errors: [],
           message: 'success',
         },
@@ -262,6 +281,15 @@ export class MockAuthService extends GenericAuthService {
       ).subscribe()
     );
   }
+
+  renewAccessToken(expiredAccessToken: string): Observable<ILoginResponse> {
+    return of({
+      accessToken: this.dummyAccessToken,
+      refreshToken: this.dummyRefreshToken,
+      message: 'Access renewed.',
+      errors: [],
+    });
+  }
 }
 
 @Injectable({
@@ -270,7 +298,6 @@ export class MockAuthService extends GenericAuthService {
 export class AuthService extends GenericAuthService {
   protected authServiceURL: string = `${this.config.backendAddress}/api/v1/Auth`;
   protected userServiceURL: string = `${this.config.backendAddress}/api/v1/User`;
-  protected customHeaders = { 'content-type': 'application/json' }; // check the need for it (and start using if necessary)
   protected homeAddress = '/home';
 
   constructor(
@@ -323,5 +350,24 @@ export class AuthService extends GenericAuthService {
         }),
         catchError((err: HttpErrorResponse) => this.handleFailedLogin(err))
       );
+  }
+
+  renewAccessToken(expiredAccessToken: string): Observable<ILoginResponse> {
+    console.log(
+      'Attempting to renew the following expired token',
+      expiredAccessToken
+    );
+    console.log('Cookie value is...', this.refreshToken);
+    return this.http.post<ILoginResponse>(
+      `${this.authServiceURL}/refresh`,
+      { expiredAccessToken: expiredAccessToken },
+      {
+        headers: {
+          RefreshToken: this.refreshToken,
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      }
+    );
   }
 }
