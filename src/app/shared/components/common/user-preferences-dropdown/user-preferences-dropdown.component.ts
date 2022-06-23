@@ -13,14 +13,8 @@ export class UserPreferencesDropdownComponent {
     @Inject('GenericAuthService') public authService: GenericAuthService,
     private router: Router
   ) {
-    this.user$.subscribe((user) => {
-      this.username = user?.username ?? '';
-      this.userId = user?.id ?? '';
-    });
+    this.user$.subscribe();
   }
-
-  public username: string;
-  public userId: string;
 
   public user$: Observable<User | null> = this.authService.loggedUser;
 

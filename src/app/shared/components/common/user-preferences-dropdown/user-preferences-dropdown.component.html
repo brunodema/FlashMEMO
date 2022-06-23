@@ -1,7 +1,8 @@
 <div *ngIf="this.authService.loggedUser | async; else unauthenticated" ngbDropdown class="d-inline-block">
-  <button type="button" class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>Welcome {{ username }}</button>
+  <button type="button" class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>Welcome {{
+    (this.authService.loggedUser | async)?.username }}</button>
   <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-    <button ngbDropdownItem [routerLink]="['user', userId]">My Profile</button>
+    <button ngbDropdownItem [routerLink]="['user',  (this.authService.loggedUser | async)?.id]">My Profile</button>
     <button ngbDropdownItem (click)="logout()">Logout</button>
   </div>
 </div>

@@ -51,7 +51,7 @@ export abstract class GenericAuthService {
     return this.cookieService.get('RefreshToken');
   }
 
-  private decodeUserFromAccessToken(): User {
+  private decodeUserFromAccessToken(): User | null {
     if (this.accessToken) {
       return new User({
         id:
@@ -68,7 +68,7 @@ export abstract class GenericAuthService {
           'johndoe',
       });
     }
-    return new User();
+    return null;
   }
 
   // TIL about Subject/BehaviorSubject. "A Subject is like an Observable, but can multicast to many Observers. Subjects are like EventEmitters: they maintain a registry of many listeners" (source: https://rxjs.dev/guide/subject). Implementation taken from here: https://netbasal.com/angular-2-persist-your-login-status-with-behaviorsubject-45da9ec43243
