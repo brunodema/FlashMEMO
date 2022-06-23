@@ -40,11 +40,12 @@ export class FlashMEMOAuthGuard implements CanActivate {
               return false;
             },
           });
+      } else {
+        console.log('Why the hell am I here for?');
+        this.notificationService.showWarning('Please log in first 🤠');
+        this.router.navigateByUrl('login');
+        return false;
       }
-      console.log('Why the hell am I here for?');
-      this.notificationService.showWarning('Please log in first 🤠');
-      this.router.navigateByUrl('login');
-      return false;
     }
 
     return true;
