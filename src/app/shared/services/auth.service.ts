@@ -59,6 +59,12 @@ export abstract class GenericAuthService {
     if (this.accessToken) {
       const decodedAT = this.jwtHelper.decodeToken(this.accessToken);
       const decodedRT = this.jwtHelper.decodeToken(this.refreshToken);
+      console.log(
+        `Access token EXP is: ${decodedAT['exp']}. It has ${
+          this.jwtHelper.getTokenExpirationDate(this.accessToken)!.getTime() -
+          new Date().getTime()
+        }ms until expiration.`
+      );
 
       if (!decodedAT || !decodedRT) return null;
 
