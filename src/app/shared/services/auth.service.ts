@@ -51,23 +51,60 @@ export abstract class GenericAuthService {
     return this.cookieService.get('RefreshToken');
   }
 
+  /**
+   * For any value different than 'null' to be returned, the following must be true. (1) There must exist an access token in the browser's store; (2) A valid refresh token associated with the access token must exist in the brower's cookies.
+   * @returns
+   */
   private decodeUserFromAccessToken(): User | null {
     if (this.accessToken) {
-      return new User({
-        id:
-          this.decodePropertyFromToken(this.accessToken, 'sub') ??
-          Guid.newGuid(),
-        email:
-          this.decodePropertyFromToken(this.accessToken, 'email') ??
-          'johndoe@flashmemo.edu',
-        name: this.decodePropertyFromToken(this.accessToken, 'name') ?? 'John',
-        surname:
-          this.decodePropertyFromToken(this.accessToken, 'surname') ?? 'Doe',
-        username:
-          this.decodePropertyFromToken(this.accessToken, 'username') ??
-          'johndoe',
-      });
+      const decodedAT = this.jwtHelper.decodeToken(this.accessToken);
+      const decodedRT = this.jwtHelper.decodeToken(this.refreshToken);
+
+      if (!decodedAT || !decodedRT) return null;
+
+      const expirationCheck = !this.jwtHelper.isTokenExpired(this.refreshToken);
+      const subjectCheck = decodedAT['jti'] === decodedRT['sub'];
+      if (!subjectCheck) {
+        console.log(decodedAT['jti'], decodedRT['sub']);
+        throw new Error(
+          'Subject check has failed for stored credentials (i.e., tokens are not related to each other.)'
+        );
+      }
+
+      const userCheck = decodedAT['sub'] === decodedRT['userid'];
+
+      console.log(
+        'Token check for user mapping done.',
+        decodedAT,
+        decodedRT,
+        `expiration check is: ${expirationCheck}, but access token validity is: ${!this.jwtHelper.isTokenExpired(
+          this.accessToken
+        )}`,
+        `subject check is: ${subjectCheck}`,
+        `user check is: ${userCheck}`
+      );
+
+      if (expirationCheck && subjectCheck && userCheck) {
+        return new User({
+          id:
+            this.decodePropertyFromToken(this.accessToken, 'sub') ??
+            Guid.newGuid(),
+          email:
+            this.decodePropertyFromToken(this.accessToken, 'email') ??
+            'johndoe@flashmemo.edu',
+          name:
+            this.decodePropertyFromToken(this.accessToken, 'name') ?? 'John',
+          surname:
+            this.decodePropertyFromToken(this.accessToken, 'surname') ?? 'Doe',
+          username:
+            this.decodePropertyFromToken(this.accessToken, 'username') ??
+            'johndoe',
+        });
+      }
+      console.log('Check have failed, returning user as "null"');
+      return null;
     }
+    console.log('No existing access token detected, returning user as "null"');
     return null;
   }
 
@@ -95,15 +132,6 @@ export abstract class GenericAuthService {
     return this.jwtHelper.decodeToken(token)[property];
   }
 
-  public logout() {
-    this.clearPreExistingTokens();
-    this.clearPreExistingCookies();
-
-    this.loggedUser.next(null);
-
-    this.showAuthSpinner(SpinnerType.LOGOUT);
-  }
-
   protected storeAccessToken(JWTToken: string, rememberMe: boolean) {
     this.clearPreExistingTokens();
 
@@ -115,10 +143,12 @@ export abstract class GenericAuthService {
   }
 
   protected setRefreshToken(JWTToken: string, rememberMe: boolean) {
+    this.cookieService.delete('RefreshToken');
     this.cookieService.set('RefreshToken', JWTToken, {
       expires: rememberMe ? this.cookieSettings.expirationPeriod : undefined,
       secure: this.cookieSettings.useSecure,
       domain: 'flashmemo.edu',
+      path: '/',
     });
   }
 
@@ -152,19 +182,30 @@ export abstract class GenericAuthService {
   }
 
   protected handleSuccessfulLogin(res: ILoginResponse, rememberMe: boolean) {
-    this.storeAccessToken(res.accessToken, rememberMe);
-    this.setRefreshToken(res.refreshToken, rememberMe);
-
-    this.loggedUser.next(this.decodeUserFromAccessToken());
-
+    this.handleCredentials(res, rememberMe);
     this.showAuthSpinner(SpinnerType.LOGIN);
   }
 
   public handleCredentials(res: ILoginResponse, rememberMe: boolean) {
+    this.clearPreExistingTokens();
+    this.clearPreExistingCookies();
+
     this.storeAccessToken(res.accessToken, rememberMe);
     this.setRefreshToken(res.refreshToken, rememberMe);
 
     this.loggedUser.next(this.decodeUserFromAccessToken());
+  }
+
+  public logout() {
+    this.disconnectUser();
+    this.showAuthSpinner(SpinnerType.LOGOUT);
+  }
+
+  public disconnectUser() {
+    this.clearPreExistingTokens();
+    this.clearPreExistingCookies();
+
+    this.loggedUser.next(null);
   }
 
   protected handleSuccessfulRegistration(res: IBaseAPIResponse) {
@@ -225,12 +266,12 @@ export class MockAuthService extends GenericAuthService {
   /**
     "jti": "619449c6-f12f-4c3b-baaa-db5e65578578",
     "sub": "dcafb113-7794-49db-8cde-42b7f1875fd3",
-    "username": "johndoe",
+    "userid": "1234567890",
     "iat": 1516239022,
     "exp": 9999999999
       */
   protected dummyRefreshToken =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2MTk0NDljNi1mMTJmLTRjM2ItYmFhYS1kYjVlNjU1Nzg1NzgiLCJzdWIiOiJkY2FmYjExMy03Nzk0LTQ5ZGItOGNkZS00MmI3ZjE4NzVmZDMiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6OTk5OTk5OTk5OX0.HPrTmB5ggMe_awsJfJUGM4dIhDcO1NVbzrXfklA7uac';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2MTk0NDljNi1mMTJmLTRjM2ItYmFhYS1kYjVlNjU1Nzg1NzgiLCJzdWIiOiJkY2FmYjExMy03Nzk0LTQ5ZGItOGNkZS00MmI3ZjE4NzVmZDMiLCJ1c2VyaWQiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjk5OTk5OTk5OTl9.9MNZG15gJI5j8deZUlqqexvH5F_fbW_AR3CW1_yViu8';
 
   constructor(
     protected jwtHelper: JwtHelperService,

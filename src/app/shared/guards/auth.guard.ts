@@ -34,8 +34,13 @@ export class FlashMEMOAuthGuard implements CanActivate {
 
               return true;
             },
-            error: (error) => {
-              this.notificationService.showWarning(error);
+            error: (err) => {
+              console.log(
+                'An error ocurred while attepmting to renew credentials via auth-guard',
+                err
+              );
+              this.notificationService.showWarning('Please log in first 🤠');
+              this.authService.disconnectUser();
               this.router.navigateByUrl('login');
               return false;
             },
