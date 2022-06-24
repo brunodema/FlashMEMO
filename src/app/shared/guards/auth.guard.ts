@@ -16,7 +16,7 @@ export class FlashMEMOAuthGuard implements CanActivate {
   canActivate(): boolean {
     if (!this.authService.isAuthenticated()) {
       console.log(
-        'The result for the token check is:',
+        'Does an access token exist? Auth-guard is asking:',
         this.authService.accessToken ? true : false
       );
       if (this.authService.accessToken) {

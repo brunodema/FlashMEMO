@@ -16,6 +16,7 @@ import {
   IPaginatedListResponse,
 } from '../models/http/http-response-types';
 import { RepositoryServiceConfig } from 'src/app/app.module';
+import { GenericAuthService } from './auth.service';
 
 export class FlashcardSearchParams implements IServiceSearchParams {
   pageSize: Number;
@@ -37,12 +38,14 @@ export class FlashcardSearchParams implements IServiceSearchParams {
 export abstract class GenericFlashcardService extends GenericRepositoryService<IFlashcard> {
   constructor(
     protected config: RepositoryServiceConfig,
-    protected httpClient: HttpClient
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {
     super(
       `${config.backendAddress}/api/v1/Flashcard`,
       config.maxPageSize,
-      httpClient
+      httpClient,
+      authService
     );
   }
   abstract search(params: FlashcardSearchParams): Observable<IFlashcard[]>;
@@ -74,14 +77,16 @@ export abstract class GenericFlashcardService extends GenericRepositoryService<I
 export class MockFlashcardService extends GenericFlashcardService {
   constructor(
     @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
-    protected httpClient: HttpClient
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {
     super(
       {
         backendAddress: config.backendAddress,
         maxPageSize: config.maxPageSize,
       },
-      httpClient
+      httpClient,
+      authService
     );
   }
   getAllFlashcardsFromDeck(deckId: string): Observable<IFlashcard[]> {
@@ -137,14 +142,16 @@ export class MockFlashcardService extends GenericFlashcardService {
 export class FlashcardService extends GenericFlashcardService {
   constructor(
     @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
-    protected httpClient: HttpClient
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {
     super(
       {
         backendAddress: config.backendAddress,
         maxPageSize: config.maxPageSize,
       },
-      httpClient
+      httpClient,
+      authService
     );
   }
   search(params: FlashcardSearchParams): Observable<IFlashcard[]> {
