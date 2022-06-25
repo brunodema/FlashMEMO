@@ -45,7 +45,7 @@ export class UserListComponent {
     this.userService.getAll().subscribe({
       next: (userArray) => {
         this.userData$.next(userArray);
-        this.userTable.toggleAllOff();
+        this.userTable?.toggleAllOff();
       },
       complete: () => this.spinnerService.hideSpinner(SpinnerType.LOADING),
     });

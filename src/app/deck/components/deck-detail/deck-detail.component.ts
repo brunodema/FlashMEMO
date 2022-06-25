@@ -88,7 +88,7 @@ export class DeckDetailComponent {
       .subscribe({
         next: (flashcardArray) => {
           this.flashcardData$.next(flashcardArray);
-          this.flashcardTable.toggleAllOff();
+          this.flashcardTable?.toggleAllOff();
         },
         complete: () => this.spinnerService.hideSpinner(SpinnerType.LOADING),
       });
