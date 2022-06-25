@@ -144,7 +144,6 @@ export type RepositoryServiceConfig = {
     { provide: 'GenericUserService', useClass: environment.userService },
     { provide: 'GenericNewsService', useClass: environment.newsService },
 
-    FlashMEMOAuthGuard,
     { provide: DeckRepositoryResolverService },
     { provide: UserRepositoryResolverService },
     { provide: NewsRepositoryResolverService },

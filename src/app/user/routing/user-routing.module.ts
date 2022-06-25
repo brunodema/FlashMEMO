@@ -7,7 +7,11 @@ import { UserDetailComponent } from '../components/user-detail/user-detail.compo
 import { UserListComponent } from '../components/user-list/user-list.component';
 
 const routes: Routes = [
-  { path: '', component: UserListComponent, canActivate: [FlashMEMOAuthGuard] },
+  {
+    path: 'list',
+    component: UserListComponent,
+    canActivate: [FlashMEMOAuthGuard],
+  },
   {
     path: 'create',
     component: UserCreateComponent,

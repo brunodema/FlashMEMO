@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { catchError, map, Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { GenericAuthService } from '../services/auth.service';
 import { GenericNotificationService } from '../services/notification/notification.service';
 
