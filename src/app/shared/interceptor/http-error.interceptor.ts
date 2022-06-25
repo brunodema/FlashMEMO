@@ -38,44 +38,54 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
             console.log(error);
             break;
           case HttpStatusCode.Unauthorized:
-            let accessToken = this.authService.accessToken;
-            if (accessToken) {
+            if (this.authService.canAttemptTokenRenewal()) {
               console.log(
                 'Attempting to renew access token via interceptor...',
-                accessToken
+                this.authService.accessToken
               );
-              return this.authService.renewAccessToken(accessToken).pipe(
-                switchMap((response) => {
-                  this.authService.handleCredentials(
-                    response,
-                    this.authService.storageMode === 'PERSISTENT'
-                  );
+              return this.authService
+                .renewAccessToken(this.authService.accessToken)
+                .pipe(
+                  switchMap((response) => {
+                    this.authService.handleCredentials(
+                      response,
+                      this.authService.storageMode === 'PERSISTENT'
+                    );
 
-                  console.log(
-                    'Successfully renewed credentials via interceptor!'
-                  );
+                    console.log(
+                      'Successfully renewed credentials via interceptor!'
+                    );
 
-                  return next.handle(
-                    req.clone({
-                      setHeaders: {
-                        Authorization: `Bearer ${response.accessToken}`,
-                        RefreshToken: response.refreshToken,
-                      },
-                    })
-                  );
-                }),
-                catchError((err) => {
-                  console.log('Why the hell am I here for?');
-                  this.notificationService.showWarning(
-                    'Please log in first 🤠'
-                  );
-                  this.authService.disconnectUser();
-                  this.router.navigateByUrl('login');
-                  return of();
-                })
+                    return next.handle(
+                      req.clone({
+                        setHeaders: {
+                          Authorization: `Bearer ${response.accessToken}`,
+                          RefreshToken: response.refreshToken,
+                        },
+                      })
+                    );
+                  }),
+                  catchError((err) => {
+                    console.log('Why the hell am I here for?');
+                    this.notificationService.showWarning(
+                      'Please log in first 🤠'
+                    );
+                    this.authService.disconnectUser();
+                    this.router.navigateByUrl('login');
+                    throw new Error(
+                      "An error occured while renewing the user's credentials via the http-interceptor."
+                    );
+                  })
+                );
+            } else {
+              console.log('Oops, something is missing for token renewal...');
+              this.notificationService.showWarning('Please log in first 🤠');
+              this.authService.disconnectUser();
+              this.router.navigateByUrl('login');
+              throw new Error(
+                "It is not possible to renew the user's credentials via the http-interceptor."
               );
             }
-            break;
 
           default:
             if (error.error?.errors) {

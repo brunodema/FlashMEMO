@@ -200,6 +200,20 @@ export abstract class GenericAuthService {
     return !this.jwtHelper.isTokenExpired(this.accessToken);
   }
 
+  public canAttemptTokenRenewal(): boolean {
+    console.log(
+      'Checking if token renewal is possible...',
+      this.accessToken,
+      this.refreshToken,
+      'is AT expired? ' + this.jwtHelper.isTokenExpired(this.accessToken),
+      'is RT expired? ' + this.jwtHelper.isTokenExpired(this.refreshToken)
+    );
+    return (
+      !this.jwtHelper.isTokenExpired(this.accessToken) &&
+      !this.jwtHelper.isTokenExpired(this.refreshToken)
+    );
+  }
+
   protected handleSuccessfulLogin(res: ILoginResponse, rememberMe: boolean) {
     this.handleCredentials(res, rememberMe);
     this.showAuthSpinner(SpinnerType.LOGIN);

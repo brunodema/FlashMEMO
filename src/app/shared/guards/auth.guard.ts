@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { GenericAuthService } from '../services/auth.service';
 import { GenericNotificationService } from '../services/notification/notification.service';
 
@@ -20,8 +20,10 @@ export class FlashMEMOAuthGuard implements CanActivate {
         'User is not authenticated. Does an access token exist? Auth-guard is asking:',
         this.authService.accessToken ? true : false
       );
-      if (this.authService.accessToken) {
-        console.log('Attempting to renew access token via auth-guard...');
+      if (this.authService.canAttemptTokenRenewal()) {
+        console.log(
+          'It is possible to renew token. Attempting to renew access token via auth-guard...'
+        );
         return this.authService
           .renewAccessToken(this.authService.accessToken)
           .pipe(
@@ -34,10 +36,18 @@ export class FlashMEMOAuthGuard implements CanActivate {
               console.log('Successfully renewed credentials via auth-guard!');
 
               return true;
+            }),
+            catchError((err) => {
+              console.log('Credential renewal via auth-guard has failed.');
+              this.notificationService.showWarning('Please log in first 🤠');
+              this.authService.disconnectUser();
+              this.router.navigateByUrl('login');
+
+              return throwError(() => new Error(err));
             })
           );
       } else {
-        console.log('Why the hell am I here for?');
+        console.log('Oops, something is missing for token renewal...');
         this.notificationService.showWarning('Please log in first 🤠');
         this.authService.disconnectUser();
         this.router.navigateByUrl('login');

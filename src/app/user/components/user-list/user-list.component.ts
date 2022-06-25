@@ -109,13 +109,17 @@ export class UserListComponent {
                 'An error ocurred while deleting the User'
               ),
             complete: () => {
-              if (index === ids.length - 1) resolve();
+              if (index === ids.length - 1) {
+                this.notificationService.showSuccess(
+                  'User(s) successfully deleted.'
+                );
+                resolve();
+              }
             },
           });
         });
       });
 
-      this.notificationService.showSuccess('User(s) successfully deleted.');
       this.refreshUserDataSource();
     }
   }
