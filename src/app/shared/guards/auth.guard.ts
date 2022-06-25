@@ -39,6 +39,7 @@ export class FlashMEMOAuthGuard implements CanActivate {
       } else {
         console.log('Why the hell am I here for?');
         this.notificationService.showWarning('Please log in first 🤠');
+        this.authService.disconnectUser();
         this.router.navigateByUrl('login');
         return false;
       }

@@ -6,6 +6,7 @@ import {
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Guid } from 'guid-ts';
 import { CookieService } from 'ngx-cookie-service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -34,7 +35,8 @@ export abstract class GenericAuthService {
     protected spinnerService: NgxSpinnerService,
     protected cookieService: CookieService,
     @Inject('COOKIE_CONFIG')
-    protected cookieSettings: { useSecure: boolean; expirationPeriod: number }
+    protected cookieSettings: { useSecure: boolean; expirationPeriod: number },
+    protected modalService: NgbModal
   ) {}
 
   get storageMode(): 'PERSISTENT' | 'SESSION' | 'UNAUTHENTICATED' {
@@ -219,8 +221,10 @@ export abstract class GenericAuthService {
   }
 
   public disconnectUser() {
+    console.log('Disconnecting user...');
     this.clearPreExistingTokens();
     this.clearPreExistingCookies();
+    this.modalService.dismissAll();
 
     this.loggedUser.next(null);
   }
@@ -297,7 +301,8 @@ export class MockAuthService extends GenericAuthService {
     protected spinnerService: NgxSpinnerService,
     protected cookieService: CookieService,
     @Inject('COOKIE_CONFIG')
-    protected cookieSettings: { useSecure: boolean; expirationPeriod: number }
+    protected cookieSettings: { useSecure: boolean; expirationPeriod: number },
+    protected modalService: NgbModal
   ) {
     super(
       jwtHelper,
@@ -305,7 +310,8 @@ export class MockAuthService extends GenericAuthService {
       notificationService,
       spinnerService,
       cookieService,
-      cookieSettings
+      cookieSettings,
+      modalService
     );
   }
 
@@ -368,7 +374,8 @@ export class AuthService extends GenericAuthService {
     protected spinnerService: NgxSpinnerService,
     protected cookieService: CookieService,
     @Inject('COOKIE_CONFIG')
-    protected cookieSettings: { useSecure: boolean; expirationPeriod: number }
+    protected cookieSettings: { useSecure: boolean; expirationPeriod: number },
+    protected modalService: NgbModal
   ) {
     super(
       jwtHelper,
@@ -376,7 +383,8 @@ export class AuthService extends GenericAuthService {
       notificationService,
       spinnerService,
       cookieService,
-      cookieSettings
+      cookieSettings,
+      modalService
     );
   }
 

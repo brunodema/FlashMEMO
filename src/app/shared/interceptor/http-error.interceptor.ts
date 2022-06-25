@@ -11,6 +11,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { GenericNotificationService } from '../services/notification/notification.service';
 import { GenericAuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 /**
  * This global HTTP interceptor implementation is based on these resources: https://www.tektutorialshub.com/angular/angular-http-error-handling/ and https://rollbar.com/blog/error-handling-with-angular-8-tips-and-best-practices/
@@ -19,7 +20,8 @@ import { GenericAuthService } from '../services/auth.service';
 export class GlobalHttpInterceptorService implements HttpInterceptor {
   constructor(
     protected notificationService: GenericNotificationService,
-    @Inject('GenericAuthService') protected authService: GenericAuthService
+    @Inject('GenericAuthService') protected authService: GenericAuthService,
+    protected router: Router
   ) {}
 
   intercept(
@@ -61,6 +63,15 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
                       },
                     })
                   );
+                }),
+                catchError((err) => {
+                  console.log('Why the hell am I here for?');
+                  this.notificationService.showWarning(
+                    'Please log in first 🤠'
+                  );
+                  this.authService.disconnectUser();
+                  this.router.navigateByUrl('login');
+                  return of();
                 })
               );
             }
