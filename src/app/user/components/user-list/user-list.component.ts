@@ -22,7 +22,7 @@ import {
   styleUrls: ['./user-list.component.css'],
 })
 export class UserListComponent {
-  routes: RouteMap[] = [{ label: 'Create User', route: 'create' }];
+  routes: RouteMap[] = [{ label: 'Create User', route: '/user/create' }];
 
   columnOptions: DataTableColumnOptions[] = [
     {

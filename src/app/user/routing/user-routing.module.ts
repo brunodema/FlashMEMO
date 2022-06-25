@@ -15,7 +15,6 @@ const routes: Routes = [
   {
     path: 'create',
     component: UserCreateComponent,
-    canActivate: [FlashMEMOAuthGuard],
   },
   {
     path: ':id',
