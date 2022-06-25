@@ -8,7 +8,7 @@ import {
   HttpStatusCode,
 } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { GenericNotificationService } from '../services/notification/notification.service';
 import { GenericAuthService } from '../services/auth.service';
 
@@ -42,9 +42,8 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
                 'Attempting to renew access token via interceptor...',
                 accessToken
               );
-              this.authService
-                .renewAccessToken(accessToken)
-                .subscribe((response) => {
+              return this.authService.renewAccessToken(accessToken).pipe(
+                switchMap((response) => {
                   this.authService.handleCredentials(
                     response,
                     this.authService.storageMode === 'PERSISTENT'
@@ -54,13 +53,16 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
                     'Successfully renewed credentials via interceptor!'
                   );
 
-                  req.clone({
-                    setHeaders: {
-                      Authorization: `Bearer ${response.accessToken}`,
-                      RefreshToken: response.refreshToken,
-                    },
-                  });
-                });
+                  return next.handle(
+                    req.clone({
+                      setHeaders: {
+                        Authorization: `Bearer ${response.accessToken}`,
+                        RefreshToken: response.refreshToken,
+                      },
+                    })
+                  );
+                })
+              );
             }
             break;
 
