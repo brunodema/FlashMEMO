@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { FlashMEMOAuthGuard } from 'src/app/shared/guards/auth.guard';
 import {
   DeckRepositoryResolverService,
   GenericRepositoryResolverService,
@@ -8,14 +9,29 @@ import { DeckDetailComponent } from '../components/deck-detail/deck-detail.compo
 import { DeckListComponent } from '../components/deck-list/deck-list.component';
 
 const routes: Routes = [
-  { path: 'list', component: DeckListComponent },
-  { path: 'create', component: DeckDetailComponent },
+  {
+    path: 'list',
+    component: DeckListComponent,
+    canActivate: [FlashMEMOAuthGuard],
+  },
+  {
+    path: 'create',
+    component: DeckDetailComponent,
+    canActivate: [FlashMEMOAuthGuard],
+  },
   {
     path: ':id',
     component: DeckDetailComponent,
-    resolve: { deck: DeckRepositoryResolverService },
+    resolve: {
+      deck: DeckRepositoryResolverService,
+      canActivate: [FlashMEMOAuthGuard],
+    },
   },
-  { path: '', redirectTo: 'list', pathMatch: 'full' },
+  {
+    path: '',
+    redirectTo: 'list',
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({

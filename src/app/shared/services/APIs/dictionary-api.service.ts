@@ -11,6 +11,7 @@ import dictAPIJson from 'src/assets/test_assets/DictAPI.json';
 import { IDataResponse } from '../../models/http/http-response-types';
 import { Language } from '../../models/shared-models';
 import { FormatString } from '../../tools/tools';
+import { GenericAuthService } from '../auth.service';
 
 /**************************************************************************************/
 /* Dictionary API stuff */
@@ -60,7 +61,10 @@ export interface IDictionaryAPIResult {
  */
 @Injectable()
 export abstract class GeneralDictionaryAPIService {
-  constructor(protected httpClient: HttpClient) {}
+  constructor(
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
+  ) {}
 
   abstract searchWord(
     keyword: string,
@@ -132,9 +136,10 @@ export class DictionaryService extends GeneralDictionaryAPIService {
   constructor(
     @Inject('REPOSITORY_SERVICE_CONFIG')
     protected config: RepositoryServiceConfig,
-    protected httpClient: HttpClient
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {
-    super(httpClient);
+    super(httpClient, authService);
   }
   searchWord(
     keyword: string,
@@ -143,7 +148,12 @@ export class DictionaryService extends GeneralDictionaryAPIService {
   ): Observable<IDataResponse<IDictionaryAPIResult>> {
     return this.httpClient.get<IDataResponse<IDictionaryAPIResult>>(
       FormatString(`${this.endpoint}/{0}/search?`, provider) +
-        `searchText=${keyword}&languageCode=${languageCode}`
+        `searchText=${keyword}&languageCode=${languageCode}`,
+      {
+        headers: {
+          Authorization: `bearer ${this.authService.accessToken}`,
+        },
+      }
     );
   }
 
@@ -152,7 +162,12 @@ export class DictionaryService extends GeneralDictionaryAPIService {
   ): Observable<Language[]> {
     return this.httpClient
       .get<IDataResponse<Language[]>>(
-        FormatString(`${this.endpoint}/{0}/languages`, provider)
+        FormatString(`${this.endpoint}/{0}/languages`, provider),
+        {
+          headers: {
+            Authorization: `bearer ${this.authService.accessToken}`,
+          },
+        }
       )
       .pipe(map((response) => response.data));
   }

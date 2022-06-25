@@ -140,7 +140,11 @@ export class UserService extends GenericRepositoryService<User> {
     }
 
     return this.httpClient
-      .get<IPaginatedListResponse<User>>(formattedURL)
+      .get<IPaginatedListResponse<User>>(formattedURL, {
+        headers: {
+          Authorization: `bearer ${this.authService.accessToken}`,
+        },
+      })
       .pipe(map((a) => a.data.results));
   }
 }

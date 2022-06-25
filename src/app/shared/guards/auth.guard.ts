@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
+import { catchError, map, Observable } from 'rxjs';
 import { GenericAuthService } from '../services/auth.service';
 import { GenericNotificationService } from '../services/notification/notification.service';
 
@@ -13,18 +14,18 @@ export class FlashMEMOAuthGuard implements CanActivate {
     public router: Router
   ) {}
 
-  canActivate(): boolean {
+  canActivate(): Observable<boolean> | Promise<boolean> | boolean {
     if (!this.authService.isAuthenticated()) {
       console.log(
-        'Does an access token exist? Auth-guard is asking:',
+        'User is not authenticated. Does an access token exist? Auth-guard is asking:',
         this.authService.accessToken ? true : false
       );
       if (this.authService.accessToken) {
         console.log('Attempting to renew access token via auth-guard...');
-        this.authService
+        return this.authService
           .renewAccessToken(this.authService.accessToken)
-          .subscribe({
-            next: (response) => {
+          .pipe(
+            map((response) => {
               this.authService.handleCredentials(
                 response,
                 this.authService.storageMode === 'PERSISTENT'
@@ -33,26 +34,19 @@ export class FlashMEMOAuthGuard implements CanActivate {
               console.log('Successfully renewed credentials via auth-guard!');
 
               return true;
-            },
-            error: (err) => {
-              console.log(
-                'An error ocurred while attepmting to renew credentials via auth-guard',
-                err
-              );
-              this.notificationService.showWarning('Please log in first 🤠');
-              this.authService.disconnectUser();
-              this.router.navigateByUrl('login');
-              return false;
-            },
-          });
+            })
+          );
       } else {
         console.log('Why the hell am I here for?');
         this.notificationService.showWarning('Please log in first 🤠');
         this.router.navigateByUrl('login');
         return false;
       }
+    } else {
+      console.log(
+        'User is authenticated. Redirecting him/her to the desired page...'
+      );
+      return true;
     }
-
-    return true;
   }
 }

@@ -17,14 +17,7 @@ export abstract class GenericRepositoryService<Type> {
     protected maxPageSize: number,
     protected httpClient: HttpClient,
     @Inject('GenericAuthService') protected authService: GenericAuthService
-  ) {
-    this.authHeader = this.authHeader.append(
-      'authorization',
-      `bearer ${this.authService.accessToken}`
-    );
-  }
-
-  protected authHeader: HttpHeaders = new HttpHeaders();
+  ) {}
 
   abstract getTypename(): string;
 
@@ -32,14 +25,23 @@ export abstract class GenericRepositoryService<Type> {
     return this.httpClient.post<IDataResponse<string>>(
       `${this.repositoryServiceEndpoint}/create`,
       JSON.stringify(object),
-      { headers: this.authHeader.append('Content-Type', 'application/json') }
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `bearer ${this.authService.accessToken}`,
+        },
+      }
     );
   }
 
   get(id: string): Observable<IDataResponse<Type>> {
     return this.httpClient.get<IDataResponse<Type>>(
       `${this.repositoryServiceEndpoint}/${id}`,
-      { headers: this.authHeader }
+      {
+        headers: {
+          Authorization: `bearer ${this.authService.accessToken}`,
+        },
+      }
     );
   }
 
@@ -47,7 +49,12 @@ export abstract class GenericRepositoryService<Type> {
     return this.httpClient.put<IDataResponse<string>>(
       `${this.repositoryServiceEndpoint}/${id}`,
       JSON.stringify(object),
-      { headers: this.authHeader.append('Content-Type', 'application/json') }
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `bearer ${this.authService.accessToken}`,
+        },
+      }
     );
   }
 
@@ -55,7 +62,12 @@ export abstract class GenericRepositoryService<Type> {
     return this.httpClient.post<IDataResponse<IBaseAPIResponse>>(
       `${this.repositoryServiceEndpoint}/delete`,
       JSON.stringify(id),
-      { headers: this.authHeader.append('Content-Type', 'application/json') }
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `bearer ${this.authService.accessToken}`,
+        },
+      }
     );
   }
 
@@ -63,7 +75,11 @@ export abstract class GenericRepositoryService<Type> {
     return this.httpClient
       .get<IPaginatedListResponse<Type>>(
         `${this.repositoryServiceEndpoint}/list?pageSize=${this.maxPageSize}`,
-        { headers: this.authHeader }
+        {
+          headers: {
+            Authorization: `bearer ${this.authService.accessToken}`,
+          },
+        }
       )
       .pipe(map((a) => a.data.results));
   }
@@ -71,7 +87,9 @@ export abstract class GenericRepositoryService<Type> {
   getById(id: string): Observable<Type> {
     return this.httpClient
       .get<IDataResponse<Type>>(`${this.repositoryServiceEndpoint}/${id}`, {
-        headers: this.authHeader,
+        headers: {
+          Authorization: `bearer ${this.authService.accessToken}`,
+        },
       })
       .pipe(map((a) => a.data));
   }

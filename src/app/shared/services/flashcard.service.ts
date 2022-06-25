@@ -189,7 +189,11 @@ export class FlashcardService extends GenericFlashcardService {
       }
 
       return this.httpClient
-        .get<IPaginatedListResponse<IFlashcard>>(formattedURL)
+        .get<IPaginatedListResponse<IFlashcard>>(formattedURL, {
+          headers: {
+            Authorization: `bearer ${this.authService.accessToken}`,
+          },
+        })
         .pipe(map((a) => a.data.results));
     }
   }
@@ -197,13 +201,21 @@ export class FlashcardService extends GenericFlashcardService {
   getAllFlashcardsFromDeck(deckId: string): Observable<IFlashcard[]> {
     let formattedURL: string = `${this.repositoryServiceEndpoint}/GetAllFlashcardsFromDeck/${deckId}`;
     return this.httpClient
-      .get<IDataResponse<IFlashcard[]>>(formattedURL)
+      .get<IDataResponse<IFlashcard[]>>(formattedURL, {
+        headers: {
+          Authorization: `bearer ${this.authService.accessToken}`,
+        },
+      })
       .pipe(map((a) => a.data));
   }
   getNumberOfFlashcardsFromDeck(deckId: string): Observable<number> {
     let formattedURL: string = `${this.repositoryServiceEndpoint}/GetAllFlashcardsFromDeck/${deckId}?countOnly=true`;
     return this.httpClient
-      .get<IDataResponse<number>>(formattedURL)
+      .get<IDataResponse<number>>(formattedURL, {
+        headers: {
+          Authorization: `bearer ${this.authService.accessToken}`,
+        },
+      })
       .pipe(map((a) => a.data));
   }
 }

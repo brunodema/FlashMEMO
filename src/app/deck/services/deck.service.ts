@@ -204,7 +204,9 @@ export class DeckService extends GenericDeckService {
 
     return this.httpClient
       .get<IPaginatedListResponse<Deck>>(formattedURL, {
-        headers: this.authHeader,
+        headers: {
+          Authorization: `bearer ${this.authService.accessToken}`,
+        },
       })
       .pipe(map((a) => a.data.results));
   }
@@ -215,7 +217,11 @@ export class DeckService extends GenericDeckService {
         `${this.repositoryServiceEndpoint}/list/extended${
           ownerId ? '?ownerId=' + ownerId : ''
         }`,
-        { headers: this.authHeader }
+        {
+          headers: {
+            Authorization: `bearer ${this.authService.accessToken}`,
+          },
+        }
       )
       .pipe(map((y) => y.data));
   }

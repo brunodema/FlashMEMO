@@ -101,7 +101,11 @@ export class LanguageService extends GenericLanguageService {
     }
 
     return this.httpClient
-      .get<IPaginatedListResponse<Language>>(formattedURL)
+      .get<IPaginatedListResponse<Language>>(formattedURL, {
+        headers: {
+          Authorization: `bearer ${this.authService.accessToken}`,
+        },
+      })
       .pipe(map((a) => a.data.results));
   }
 }
