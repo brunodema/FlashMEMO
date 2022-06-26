@@ -10,6 +10,7 @@ import {
   IPaginatedListResponse,
   PaginatedListResponse,
 } from '../../models/http/http-response-types';
+import { GenericAuthService } from '../auth.service';
 
 /**************************************************************************************/
 /* Image API stuff */
@@ -54,7 +55,10 @@ export class GoogleImageResult implements IImageAPIResult {
 
 @Injectable()
 export abstract class GeneralImageAPIService {
-  constructor(protected httpClient: HttpClient) {}
+  constructor(
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
+  ) {}
 
   /**
    * Searches for images related to the provided keyword. Returns a IPaginatedListResponse<Type> response, containing information on the request itself, and of the returned data (page size/index, results themselves, etc).
@@ -102,9 +106,10 @@ export class ImageAPIService extends GeneralImageAPIService {
   constructor(
     @Inject('REPOSITORY_SERVICE_CONFIG')
     protected config: RepositoryServiceConfig,
-    httpClient: HttpClient
+    httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {
-    super(httpClient);
+    super(httpClient, authService);
   }
 
   searchImage(
@@ -112,7 +117,12 @@ export class ImageAPIService extends GeneralImageAPIService {
     pageNumber: number
   ): Observable<IPaginatedListResponse<GoogleImageResult>> {
     return this.httpClient.get<PaginatedListResponse<GoogleImageResult>>(
-      `${this.endpoint}/search?searchText=${keyword}&pageNumber=${pageNumber}`
+      `${this.endpoint}/search?searchText=${keyword}&pageNumber=${pageNumber}`,
+      {
+        headers: {
+          Authorization: `bearer ${this.authService.accessToken}`,
+        },
+      }
     );
   }
 }

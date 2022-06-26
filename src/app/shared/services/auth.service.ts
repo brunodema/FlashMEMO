@@ -1,10 +1,15 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Guid } from 'guid-ts';
+import { CookieService } from 'ngx-cookie-service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { RepositoryServiceConfig } from 'src/app/app.module';
@@ -18,12 +23,7 @@ import {
   ILoginResponse,
 } from '../models/http/http-response-types';
 import { GenericNotificationService } from './notification/notification.service';
-
-/** Determines which global spinner should be called. These are declared on the 'app.component' file. */
-export enum AuthSpinnerType {
-  LOGIN = 'login',
-  LOGOUT = 'logout',
-}
+import { SpinnerType } from './UI/spinner.service';
 
 export abstract class GenericAuthService {
   protected homeAddress = '/home';
@@ -32,48 +32,113 @@ export abstract class GenericAuthService {
     protected jwtHelper: JwtHelperService,
     protected router: Router,
     protected notificationService: GenericNotificationService,
-    protected spinnerService: NgxSpinnerService
+    protected spinnerService: NgxSpinnerService,
+    protected cookieService: CookieService,
+    @Inject('COOKIE_CONFIG')
+    protected cookieSettings: { useSecure: boolean; expirationPeriod: number },
+    protected modalService: NgbModal
   ) {}
 
-  private decodeUserFromToken(jwtToken: string): User {
-    return new User({
-      id: this.decodePropertyFromToken('sub') ?? Guid.newGuid(),
-      email: this.decodePropertyFromToken('email') ?? 'johndoe@flashmemo.edu',
-      name: this.decodePropertyFromToken('name') ?? 'John',
-      surname: this.decodePropertyFromToken('surname') ?? 'Doe',
-      username: this.decodePropertyFromToken('username') ?? 'johndoe',
-    });
+  get storageMode(): 'PERSISTENT' | 'SESSION' | 'UNAUTHENTICATED' {
+    if (sessionStorage.getItem('token')) return 'SESSION'; // I'll make session have precedence here, for extra safety
+    if (localStorage.getItem('token')) return 'PERSISTENT';
+    return 'UNAUTHENTICATED';
+  }
+
+  get accessToken(): string {
+    return this.jwtHelper.tokenGetter();
+  }
+
+  get refreshToken(): string {
+    return this.cookieService.get('RefreshToken');
+  }
+
+  /**
+   * For any value different than 'null' to be returned, the following must be true. (1) There must exist an access token in the browser's store; (2) A valid refresh token associated with the access token must exist in the brower's cookies.
+   * @returns
+   */
+  private decodeUserFromAccessToken(): User | null {
+    if (this.accessToken) {
+      const decodedAT = this.jwtHelper.decodeToken(this.accessToken);
+      const decodedRT = this.jwtHelper.decodeToken(this.refreshToken);
+
+      console.log(
+        `Access token EXP is: ${new Date(
+          new Date().getTime() + decodedAT['exp']
+        ).toUTCString()}. It has ${new Date(
+          this.jwtHelper.getTokenExpirationDate(this.accessToken)!.getTime() -
+            new Date().getTime()
+        ).getTime()}ms until expiration.`
+      );
+      console.log(
+        `Refresh token EXP is: ${new Date(
+          new Date().getTime() + decodedRT['exp']
+        ).toUTCString()}. It has ${new Date(
+          this.jwtHelper.getTokenExpirationDate(this.refreshToken)!.getTime() -
+            new Date().getTime()
+        ).getTime()}ms until expiration.`
+      );
+
+      if (!decodedAT || !decodedRT) return null;
+
+      const expirationCheck = !this.jwtHelper.isTokenExpired(this.refreshToken);
+      const subjectCheck = decodedAT['jti'] === decodedRT['sub'];
+      if (!subjectCheck) {
+        console.log(decodedAT['jti'], decodedRT['sub']);
+        throw new Error(
+          'Subject check has failed for stored credentials (i.e., tokens are not related to each other.)'
+        );
+      }
+
+      const userCheck = decodedAT['sub'] === decodedRT['userid'];
+
+      console.log(
+        'Token check for user mapping done.',
+        decodedAT,
+        decodedRT,
+        `expiration check is: ${expirationCheck}, but access token validity is: ${!this.jwtHelper.isTokenExpired(
+          this.accessToken
+        )}`,
+        `subject check is: ${subjectCheck}`,
+        `user check is: ${userCheck}`
+      );
+
+      if (expirationCheck && subjectCheck && userCheck) {
+        return new User({
+          id:
+            this.decodePropertyFromToken(this.accessToken, 'sub') ??
+            Guid.newGuid(),
+          email:
+            this.decodePropertyFromToken(this.accessToken, 'email') ??
+            'johndoe@flashmemo.edu',
+          name:
+            this.decodePropertyFromToken(this.accessToken, 'name') ?? 'John',
+          surname:
+            this.decodePropertyFromToken(this.accessToken, 'surname') ?? 'Doe',
+          username:
+            this.decodePropertyFromToken(this.accessToken, 'username') ??
+            'johndoe',
+        });
+      }
+      console.log('Check have failed, returning user as "null"');
+      return null;
+    }
+    console.log('No existing access token detected, returning user as "null"');
+    return null;
   }
 
   // TIL about Subject/BehaviorSubject. "A Subject is like an Observable, but can multicast to many Observers. Subjects are like EventEmitters: they maintain a registry of many listeners" (source: https://rxjs.dev/guide/subject). Implementation taken from here: https://netbasal.com/angular-2-persist-your-login-status-with-behaviorsubject-45da9ec43243
-  public loggedUser = new BehaviorSubject<User>(this.decodeUserFromToken(''));
+  public loggedUser = new BehaviorSubject<User | null>(
+    this.decodeUserFromAccessToken()
+  );
 
-  /**
-   * Checks if the JWT contains the Microsfot schema entry for role, and if so, checks if the value matches for an admin.
-   */
-  private _isLoggedUserAdmin: boolean = false;
-  get isLoggedUserAdmin(): boolean {
+  isLoggedUserAdmin(): boolean {
     // console.log('checking if user is admin...', this.checkIfAdmin());
     return this.checkIfAdmin();
   }
 
-  abstract login(requestData: ILoginRequest): Observable<any>;
-  abstract register(registerData: IRegisterRequest): Observable<any>;
-
-  /**
-   * Checks if the logged user (verifies stored JWT) has an admin claim in his/hers credentials.
-   * @returns
-   */
-  protected checkIfAdmin(): boolean {
-    return (
-      this.decodePropertyFromToken(
-        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-      ) === 'admin'
-    );
-  }
-
   /** Triggers one of the global spinners depending on the auth action taken by the user (login or logout). */
-  protected showAuthSpinner(spinnerType: AuthSpinnerType) {
+  protected showAuthSpinner(spinnerType: SpinnerType) {
     this.spinnerService.show(spinnerType);
     setTimeout(() => {
       this.spinnerService.hide(spinnerType).then(() => {
@@ -82,49 +147,100 @@ export abstract class GenericAuthService {
     }, 5000);
   }
 
-  public decodePropertyFromToken(property: string): string {
-    if (!this.getJWT()) return '';
-    return this.jwtHelper.decodeToken(this.getJWT())[property];
+  public decodePropertyFromToken(token: string, property: string): string {
+    return this.jwtHelper.decodeToken(token)[property];
   }
 
-  public isAuthenticated(): boolean {
-    const token = localStorage.getItem('token')!; // non-null assertion operator
-    return !this.jwtHelper.isTokenExpired(token);
-  }
+  protected storeAccessToken(JWTToken: string, rememberMe: boolean) {
+    this.clearPreExistingTokens();
 
-  public logout() {
-    this.clearPreExistingJWT();
-    this.loggedUser.next(new User());
-    this.showAuthSpinner(AuthSpinnerType.LOGOUT);
-  }
-
-  protected storeJWT(JWTToken: string) {
-    this.clearPreExistingJWT();
-    localStorage.setItem('token', JWTToken);
-  }
-
-  protected getJWT(): string {
-    const token = this.jwtHelper.tokenGetter();
-
-    if (this.jwtHelper.isTokenExpired(token)) {
-      // console.log('token is expired. Clearing it...');
-      this.clearPreExistingJWT();
-      return '';
+    if (rememberMe) {
+      localStorage.setItem('token', JWTToken);
+    } else {
+      sessionStorage.setItem('token', JWTToken);
     }
-
-    // console.log('Returning valid token...');
-    return token;
   }
 
-  protected clearPreExistingJWT() {
+  protected setRefreshToken(JWTToken: string, rememberMe: boolean) {
+    this.cookieService.delete('RefreshToken');
+    this.cookieService.set('RefreshToken', JWTToken, {
+      expires: rememberMe ? this.cookieSettings.expirationPeriod : undefined,
+      secure: this.cookieSettings.useSecure,
+      domain: 'flashmemo.edu',
+      path: '/',
+    });
+  }
+
+  protected clearPreExistingTokens() {
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
   }
 
-  protected handleSuccessfulLogin(res: ILoginResponse) {
-    this.storeJWT(res.jwtToken);
-    this.loggedUser.next(this.decodeUserFromToken(res.jwtToken));
-    this.showAuthSpinner(AuthSpinnerType.LOGIN);
+  protected clearPreExistingCookies() {
+    this.cookieService.delete('RefreshToken');
+  }
+
+  /**
+   * Checks if the logged user (verifies stored JWT) has an admin claim in his/hers credentials.
+   * @returns
+   */
+  protected checkIfAdmin(): boolean {
+    if (this.accessToken) {
+      return (
+        this.decodePropertyFromToken(
+          this.accessToken,
+          'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+        ) === 'admin'
+      );
+    }
+    return false;
+  }
+
+  public isAuthenticated(): boolean {
+    return !this.jwtHelper.isTokenExpired(this.accessToken);
+  }
+
+  public canAttemptTokenRenewal(): boolean {
+    console.log(
+      'Checking if token renewal is possible...',
+      this.accessToken,
+      this.refreshToken,
+      'is AT expired? ' + this.jwtHelper.isTokenExpired(this.accessToken),
+      'is RT expired? ' + this.jwtHelper.isTokenExpired(this.refreshToken)
+    );
+    return (
+      !this.jwtHelper.isTokenExpired(this.accessToken) &&
+      !this.jwtHelper.isTokenExpired(this.refreshToken)
+    );
+  }
+
+  protected handleSuccessfulLogin(res: ILoginResponse, rememberMe: boolean) {
+    this.handleCredentials(res, rememberMe);
+    this.showAuthSpinner(SpinnerType.LOGIN);
+  }
+
+  public handleCredentials(res: ILoginResponse, rememberMe: boolean) {
+    this.clearPreExistingTokens();
+    this.clearPreExistingCookies();
+
+    this.storeAccessToken(res.accessToken, rememberMe);
+    this.setRefreshToken(res.refreshToken, rememberMe);
+
+    this.loggedUser.next(this.decodeUserFromAccessToken());
+  }
+
+  public logout() {
+    this.disconnectUser();
+    this.showAuthSpinner(SpinnerType.LOGOUT);
+  }
+
+  public disconnectUser() {
+    console.log('Disconnecting user...');
+    this.clearPreExistingTokens();
+    this.clearPreExistingCookies();
+    this.modalService.dismissAll();
+
+    this.loggedUser.next(null);
   }
 
   protected handleSuccessfulRegistration(res: IBaseAPIResponse) {
@@ -132,7 +248,7 @@ export abstract class GenericAuthService {
   }
 
   protected handleFailedLogin(err: HttpErrorResponse) {
-    this.clearPreExistingJWT();
+    this.clearPreExistingTokens();
     this.notificationService.showError(
       this.processErrorsFromAPI(err.error),
       'Authentication Failure'
@@ -153,29 +269,77 @@ export abstract class GenericAuthService {
   protected redirectToHome() {
     this.router.navigate([this.homeAddress]);
   }
+
+  abstract login(
+    requestData: ILoginRequest,
+    rememberMe: boolean
+  ): Observable<any>;
+
+  abstract register(registerData: IRegisterRequest): Observable<any>;
+
+  abstract renewAccessToken(
+    expiredAccessToken: string
+  ): Observable<ILoginResponse>;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class MockAuthService extends GenericAuthService {
+  /**
+    "jti": "dcafb113-7794-49db-8cde-42b7f1875fd3",
+    "sub": "1234567890",
+    "username": "johndoe",
+    "name": "John",
+    "surname": "Doe",
+    "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": "admin",
+    "exp": 9999999999
+    */
+  protected dummyAccessToken =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZmxhc2htZW1vLmVkdSIsImp0aSI6ImRjYWZiMTEzLTc3OTQtNDlkYi04Y2RlLTQyYjdmMTg3NWZkMyIsInN1YiI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJuYW1lIjoiSm9obiIsInN1cm5hbWUiOiJEb2UiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiIsImV4cCI6OTk5OTk5OTk5OX0.2Oqyj7_bUwTFKQvL4ZDeWVnG3E0iTXfNIz2eLiKXnTE';
+
+  /**
+    "jti": "619449c6-f12f-4c3b-baaa-db5e65578578",
+    "sub": "dcafb113-7794-49db-8cde-42b7f1875fd3",
+    "userid": "1234567890",
+    "iat": 1516239022,
+    "exp": 9999999999
+      */
+  protected dummyRefreshToken =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2MTk0NDljNi1mMTJmLTRjM2ItYmFhYS1kYjVlNjU1Nzg1NzgiLCJzdWIiOiJkY2FmYjExMy03Nzk0LTQ5ZGItOGNkZS00MmI3ZjE4NzVmZDMiLCJ1c2VyaWQiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjk5OTk5OTk5OTl9.9MNZG15gJI5j8deZUlqqexvH5F_fbW_AR3CW1_yViu8';
+
   constructor(
     protected jwtHelper: JwtHelperService,
     protected router: Router,
     protected notificationService: GenericNotificationService,
-    protected spinnerService: NgxSpinnerService
+    protected spinnerService: NgxSpinnerService,
+    protected cookieService: CookieService,
+    @Inject('COOKIE_CONFIG')
+    protected cookieSettings: { useSecure: boolean; expirationPeriod: number },
+    protected modalService: NgbModal
   ) {
-    super(jwtHelper, router, notificationService, spinnerService);
+    super(
+      jwtHelper,
+      router,
+      notificationService,
+      spinnerService,
+      cookieService,
+      cookieSettings,
+      modalService
+    );
   }
 
-  login(requestData: ILoginRequest): Observable<any> {
+  login(requestData: ILoginRequest, rememberMe: boolean): Observable<any> {
     return of(
-      this.handleSuccessfulLogin({
-        jwtToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZmxhc2htZW1vLmVkdSIsImp0aSI6ImRjYWZiMTEzLTc3OTQtNDlkYi04Y2RlLTQyYjdmMTg3NWZkMyIsInN1YiI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6IkpvaG4gRG9lIiwibmFtZSI6IkpvaG4iLCJzdXJuYW1lIjoiRG9lIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW4iLCJleHAiOjk5OTk5OTk5OTl9.RjQl-_1AMm1qekxdItV8pBndguQtHiPXs8DXNgy-XZc',
-        errors: [],
-        message: 'success',
-      })
+      this.handleSuccessfulLogin(
+        {
+          accessToken: this.dummyAccessToken,
+          refreshToken: this.refreshToken,
+          errors: [],
+          message: 'success',
+        },
+        rememberMe
+      )
     );
   }
 
@@ -186,11 +350,23 @@ export class MockAuthService extends GenericAuthService {
       //   message: 'Success',
       //   status: '200',
       // }),
-      this.login({
-        username: registerData.username,
-        password: registerData.password,
-      }).subscribe()
+      this.login(
+        {
+          username: registerData.username,
+          password: registerData.password,
+        },
+        false
+      ).subscribe()
     );
+  }
+
+  renewAccessToken(expiredAccessToken: string): Observable<ILoginResponse> {
+    return of({
+      accessToken: this.dummyAccessToken,
+      refreshToken: this.dummyRefreshToken,
+      message: 'Access renewed.',
+      errors: [],
+    });
   }
 }
 
@@ -200,7 +376,6 @@ export class MockAuthService extends GenericAuthService {
 export class AuthService extends GenericAuthService {
   protected authServiceURL: string = `${this.config.backendAddress}/api/v1/Auth`;
   protected userServiceURL: string = `${this.config.backendAddress}/api/v1/User`;
-  protected customHeaders = { 'content-type': 'application/json' }; // check the need for it (and start using if necessary)
   protected homeAddress = '/home';
 
   constructor(
@@ -210,16 +385,31 @@ export class AuthService extends GenericAuthService {
     protected http: HttpClient,
     protected router: Router,
     protected notificationService: GenericNotificationService,
-    protected spinnerService: NgxSpinnerService
+    protected spinnerService: NgxSpinnerService,
+    protected cookieService: CookieService,
+    @Inject('COOKIE_CONFIG')
+    protected cookieSettings: { useSecure: boolean; expirationPeriod: number },
+    protected modalService: NgbModal
   ) {
-    super(jwtHelper, router, notificationService, spinnerService);
+    super(
+      jwtHelper,
+      router,
+      notificationService,
+      spinnerService,
+      cookieService,
+      cookieSettings,
+      modalService
+    );
   }
 
-  public login(requestData: ILoginRequest): Observable<any> {
+  public login(
+    requestData: ILoginRequest,
+    rememberMe: boolean
+  ): Observable<any> {
     return this.http
       .post<ILoginResponse>(`${this.authServiceURL}/login`, requestData)
       .pipe(
-        map((res) => this.handleSuccessfulLogin(res)),
+        map((res) => this.handleSuccessfulLogin(res, rememberMe)),
         catchError((err: HttpErrorResponse) => this.handleFailedLogin(err))
       );
   }
@@ -230,12 +420,34 @@ export class AuthService extends GenericAuthService {
       .pipe(
         map((res) => {
           this.handleSuccessfulRegistration(res);
-          this.login({
-            username: registerData.username,
-            password: registerData.password,
-          }).subscribe();
+          this.login(
+            {
+              username: registerData.username,
+              password: registerData.password,
+            },
+            false
+          ).subscribe();
         }),
         catchError((err: HttpErrorResponse) => this.handleFailedLogin(err))
       );
+  }
+
+  renewAccessToken(expiredAccessToken: string): Observable<ILoginResponse> {
+    console.log(
+      'Attempting to renew the following expired token',
+      expiredAccessToken
+    );
+    console.log('Cookie value is...', this.refreshToken);
+    return this.http.post<ILoginResponse>(
+      `${this.authServiceURL}/refresh`,
+      { expiredAccessToken: expiredAccessToken },
+      {
+        headers: {
+          RefreshToken: this.refreshToken,
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      }
+    );
   }
 }

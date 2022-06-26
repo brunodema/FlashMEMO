@@ -4,7 +4,8 @@ export interface IBaseAPIResponse {
 }
 
 export interface ILoginResponse extends IBaseAPIResponse {
-  jwtToken: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 /**

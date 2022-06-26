@@ -34,11 +34,11 @@ export class DeckListComponent {
         this.deckData$.next(deckArray);
         this.userDeckData$.next(
           deckArray.filter(
-            (d) => d.ownerId === this.authService.loggedUser.getValue().id
+            (d) => d.ownerId === this.authService.loggedUser.getValue()?.id
           )
         );
-        this.adminDeckTable.toggleAllOff();
-        this.userDeckTable.toggleAllOff();
+        this.adminDeckTable?.toggleAllOff();
+        this.userDeckTable?.toggleAllOff();
       },
       complete: () => this.spinnerService.hideSpinner(SpinnerType.LOADING),
     });
@@ -104,15 +104,15 @@ export class DeckListComponent {
 
   showEditIconn = (item: Deck) => {
     return (
-      this.authService.isLoggedUserAdmin ||
-      item.deckId === this.authService.loggedUser.getValue().id
+      this.authService.isLoggedUserAdmin() ||
+      item.deckId === this.authService.loggedUser.getValue()?.id
     );
   };
 
   showDeleteIcon = (item: Deck) => {
     return (
-      this.authService.isLoggedUserAdmin ||
-      item.deckId === this.authService.loggedUser.getValue().id
+      this.authService.isLoggedUserAdmin() ||
+      item.deckId === this.authService.loggedUser.getValue()?.id
     );
   };
 
@@ -124,24 +124,26 @@ export class DeckListComponent {
           : 'Are you sure you want to delete this Deck?'
       )
     ) {
-      await new Promise<void>((resolve) => {
-        decks.forEach((deck, index) => {
+      let errorHappened = false;
+      for (const deck of decks) {
+        await new Promise<void>((resolve, reject) => {
           this.deckService.delete(deck.deckId).subscribe({
-            error: () =>
-              this.notificationService.showError(
-                'An error ocurred while deleting the Deck'
-              ),
-            complete: () => {
-              if (index === decks.length - 1) {
-                resolve();
-              }
+            next: () => resolve(),
+            error: () => {
+              reject();
             },
           });
-        });
-      });
+        }).catch(() => (errorHappened = true));
 
-      this.notificationService.showSuccess('Deck(s) successfully deleted.');
-      this.refreshDeckDataSource();
+        if (errorHappened) {
+          return this.notificationService.showError(
+            'An error ocurred while deleting the Deck.'
+          );
+        }
+      }
+
+      this.notificationService.showSuccess('Deck(s) deleted successfully.');
+      return this.refreshDeckDataSource();
     }
   }
 }

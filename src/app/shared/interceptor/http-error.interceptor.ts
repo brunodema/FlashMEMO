@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import {
   HttpErrorResponse,
   HttpEvent,
@@ -8,15 +8,21 @@ import {
   HttpStatusCode,
 } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { GenericNotificationService } from '../services/notification/notification.service';
+import { GenericAuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 /**
  * This global HTTP interceptor implementation is based on these resources: https://www.tektutorialshub.com/angular/angular-http-error-handling/ and https://rollbar.com/blog/error-handling-with-angular-8-tips-and-best-practices/
  */
 @Injectable()
 export class GlobalHttpInterceptorService implements HttpInterceptor {
-  constructor(protected notificationService: GenericNotificationService) {}
+  constructor(
+    protected notificationService: GenericNotificationService,
+    @Inject('GenericAuthService') protected authService: GenericAuthService,
+    protected router: Router
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -32,10 +38,54 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
             console.log(error);
             break;
           case HttpStatusCode.Unauthorized:
-            this.notificationService.showError(
-              'The provided credentials are not valid.'
-            );
-            break;
+            if (this.authService.canAttemptTokenRenewal()) {
+              console.log(
+                'Attempting to renew access token via interceptor...',
+                this.authService.accessToken
+              );
+              return this.authService
+                .renewAccessToken(this.authService.accessToken)
+                .pipe(
+                  switchMap((response) => {
+                    this.authService.handleCredentials(
+                      response,
+                      this.authService.storageMode === 'PERSISTENT'
+                    );
+
+                    console.log(
+                      'Successfully renewed credentials via interceptor!'
+                    );
+
+                    return next.handle(
+                      req.clone({
+                        setHeaders: {
+                          Authorization: `Bearer ${response.accessToken}`,
+                          RefreshToken: response.refreshToken,
+                        },
+                      })
+                    );
+                  }),
+                  catchError((err) => {
+                    console.log('Why the hell am I here for?');
+                    this.notificationService.showWarning(
+                      'Please log in first 🤠'
+                    );
+                    this.authService.disconnectUser();
+                    this.router.navigateByUrl('login');
+                    throw new Error(
+                      "An error occured while renewing the user's credentials via the http-interceptor."
+                    );
+                  })
+                );
+            } else {
+              console.log('Oops, something is missing for token renewal...');
+              this.notificationService.showWarning('Please log in first 🤠');
+              this.authService.disconnectUser();
+              this.router.navigateByUrl('login');
+              throw new Error(
+                "It is not possible to renew the user's credentials via the http-interceptor."
+              );
+            }
 
           default:
             if (error.error?.errors) {
@@ -46,7 +96,7 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
                 'FlashMEMO is having some trouble reaching its servers, please try again 😴'
               );
             }
-            break;
+          // throw error;
         }
 
         return of();

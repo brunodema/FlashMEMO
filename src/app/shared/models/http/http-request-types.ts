@@ -3,6 +3,10 @@ export interface ILoginRequest {
   password: string;
 }
 
+export interface IRefreshRequest {
+  expiredAccessToken: string;
+}
+
 export interface IRegisterRequest {
   username: string;
   name: string;

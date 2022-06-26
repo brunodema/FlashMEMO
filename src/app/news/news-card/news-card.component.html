@@ -15,7 +15,7 @@
     <div class="d-flex w-100 justify-content-between">
       <a class="btn btn-outline-primary" role="button" [routerLink]="['/news', extendedNews.newsId]">Continue
         reading</a>
-      <a class="btn btn-danger" role="button" [hidden]="!this.authService.isLoggedUserAdmin"
+      <a class="btn btn-danger" role="button" [hidden]="!this.authService.isLoggedUserAdmin()"
         (click)="deleteClick()">Delete</a>
     </div>
   </div>

@@ -7,15 +7,26 @@ import { UserDetailComponent } from '../components/user-detail/user-detail.compo
 import { UserListComponent } from '../components/user-list/user-list.component';
 
 const routes: Routes = [
-  { path: '', component: UserListComponent, canActivate: [FlashMEMOAuthGuard] },
-  { path: 'create', component: UserCreateComponent },
+  {
+    path: 'list',
+    component: UserListComponent,
+    canActivate: [FlashMEMOAuthGuard],
+  },
+  {
+    path: 'create',
+    component: UserCreateComponent,
+  },
   {
     path: ':id',
     component: UserDetailComponent,
     resolve: { user: UserRepositoryResolverService },
     canActivate: [FlashMEMOAuthGuard],
   },
-  { path: '', redirectTo: 'list', pathMatch: 'full' },
+  {
+    path: '',
+    redirectTo: 'list',
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({

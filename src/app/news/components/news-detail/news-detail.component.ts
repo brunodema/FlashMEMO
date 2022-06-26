@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
 import { MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Guid } from 'guid-ts';
 import { DetailViewComponent } from 'src/app/shared/components/common/detail-view/detail-view.component';
 import { GenericAuthService } from 'src/app/shared/services/auth.service';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
@@ -39,8 +40,8 @@ export class NewsDetailComponent
       this.model = new News();
     } else {
       this.readMode =
-        this.authService.loggedUser.getValue().id !== this.model.ownerId &&
-        !this.authService.isLoggedUserAdmin
+        this.authService.loggedUser.getValue()?.id !== this.model.ownerId &&
+        !this.authService.isLoggedUserAdmin()
           ? true
           : false;
     }
@@ -65,7 +66,12 @@ export class NewsDetailComponent
       });
     } else {
       this.service
-        .create({ ...args, ownerId: this.authService.loggedUser.getValue().id })
+        .create({
+          ...args,
+          ownerId:
+            this.authService.loggedUser.getValue()?.id ??
+            Guid.newGuid().toString(),
+        })
         .subscribe((response) => {
           this.notificationService.showSuccess('News successfully created.');
           this.router.navigate(['/news', response.data]);

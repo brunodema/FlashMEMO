@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { RepositoryServiceConfig } from 'src/app/app.module';
 import AudioAPIJson from 'src/assets/test_assets/AudioAPI.json';
 import { IDataResponse } from '../../models/http/http-response-types';
+import { GenericAuthService } from '../auth.service';
 
 /**************************************************************************************/
 /* Dictionary API stuff */
@@ -45,7 +46,10 @@ export interface IAudioAPIResult {
  */
 @Injectable()
 export abstract class GeneralAudioAPIService {
-  constructor(protected httpClient: HttpClient) {}
+  constructor(
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
+  ) {}
 
   abstract searchAudio(
     keyword: string,
@@ -95,9 +99,10 @@ export class AudioService extends GeneralAudioAPIService {
   constructor(
     @Inject('REPOSITORY_SERVICE_CONFIG')
     protected config: RepositoryServiceConfig,
-    protected httpClient: HttpClient
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {
-    super(httpClient);
+    super(httpClient, authService);
   }
 
   searchAudio(
@@ -107,7 +112,12 @@ export class AudioService extends GeneralAudioAPIService {
   ): Observable<IDataResponse<IAudioAPIResult>> {
     return this.httpClient.get<IDataResponse<IAudioAPIResult>>(
       this.endpoint +
-        `keyword=${keyword}&languageCode=${languageCode}&provider=${provider}`
+        `keyword=${keyword}&languageCode=${languageCode}&provider=${provider}`,
+      {
+        headers: {
+          Authorization: `bearer ${this.authService.accessToken}`,
+        },
+      }
     );
   }
 }

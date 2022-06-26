@@ -18,7 +18,7 @@
     </app-data-table>
   </div>
 
-  <div class="container mt-5" [hidden]="!this.authService.isLoggedUserAdmin">
+  <div class="container mt-5" [hidden]="!this.authService.isLoggedUserAdmin()">
     <div class="d-flex justify-content-between">
       <h4>FlashMEMO's Decks</h4>
       <!-- Same principle used for this tooltip as for the study button on the deck-detail view -->

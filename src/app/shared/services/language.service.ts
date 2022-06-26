@@ -11,6 +11,7 @@ import languageJson from 'src/assets/test_assets/Languages.json';
 import { environment } from 'src/environments/environment';
 import { IPaginatedListResponse } from '../models/http/http-response-types';
 import { RepositoryServiceConfig } from 'src/app/app.module';
+import { GenericAuthService } from './auth.service';
 
 export class LanguageSearchParams implements IServiceSearchParams {
   name: string;
@@ -24,12 +25,14 @@ export class LanguageSearchParams implements IServiceSearchParams {
 export abstract class GenericLanguageService extends GenericRepositoryService<Language> {
   constructor(
     protected config: RepositoryServiceConfig,
-    protected httpClient: HttpClient
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {
     super(
       `${config.backendAddress}/api/v1/Language`,
       config.maxPageSize,
-      httpClient
+      httpClient,
+      authService
     );
   }
   abstract search(params: LanguageSearchParams): Observable<Language[]>;
@@ -43,14 +46,16 @@ export abstract class GenericLanguageService extends GenericRepositoryService<La
 export class MockLanguageService extends GenericLanguageService {
   constructor(
     @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
-    protected httpClient: HttpClient
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {
     super(
       {
         backendAddress: config.backendAddress,
         maxPageSize: config.maxPageSize,
       },
-      httpClient
+      httpClient,
+      authService
     );
   }
 
@@ -67,14 +72,16 @@ export class MockLanguageService extends GenericLanguageService {
 export class LanguageService extends GenericLanguageService {
   constructor(
     @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
-    protected httpClient: HttpClient
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {
     super(
       {
         backendAddress: config.backendAddress,
         maxPageSize: config.maxPageSize,
       },
-      httpClient
+      httpClient,
+      authService
     );
   }
 
@@ -94,7 +101,11 @@ export class LanguageService extends GenericLanguageService {
     }
 
     return this.httpClient
-      .get<IPaginatedListResponse<Language>>(formattedURL)
+      .get<IPaginatedListResponse<Language>>(formattedURL, {
+        headers: {
+          Authorization: `bearer ${this.authService.accessToken}`,
+        },
+      })
       .pipe(map((a) => a.data.results));
   }
 }

@@ -20,6 +20,7 @@ import newsJson from 'src/assets/test_assets/News.json';
 import userJson from 'src/assets/test_assets/User.json';
 import { RepositoryServiceConfig } from 'src/app/app.module';
 import { User } from 'src/app/user/models/user.model';
+import { GenericAuthService } from 'src/app/shared/services/auth.service';
 
 class NewsSearchParams implements IServiceSearchParams {
   pageSize: number;
@@ -39,12 +40,14 @@ const newsSortCreationDateDesc = (a: News, b: News) =>
 export abstract class GenericNewsService extends GenericRepositoryService<News> {
   constructor(
     protected config: RepositoryServiceConfig,
-    protected httpClient: HttpClient
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {
     super(
       `${config.backendAddress}/api/v1/News`,
       config.maxPageSize,
-      httpClient
+      httpClient,
+      authService
     );
   }
   abstract search(
@@ -65,14 +68,16 @@ export abstract class GenericNewsService extends GenericRepositoryService<News> 
 export class MockNewsService extends GenericNewsService {
   constructor(
     @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
-    protected httpClient: HttpClient
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {
     super(
       {
         backendAddress: config.backendAddress,
         maxPageSize: config.maxPageSize,
       },
-      httpClient
+      httpClient,
+      authService
     );
   }
 
@@ -183,14 +188,16 @@ export class MockNewsService extends GenericNewsService {
 export class NewsService extends GenericNewsService {
   constructor(
     @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
-    protected httpClient: HttpClient
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {
     super(
       {
         backendAddress: config.backendAddress,
         maxPageSize: config.maxPageSize,
       },
-      httpClient
+      httpClient,
+      authService
     );
   }
 

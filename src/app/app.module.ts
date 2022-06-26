@@ -34,10 +34,8 @@ import { GlobalHttpInterceptorService } from './shared/interceptor/http-error.in
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { TestModule } from './test/test.module';
-import {
-  GenericSpinnerService,
-  SpinnerService,
-} from './shared/services/UI/spinner.service';
+import { SpinnerService } from './shared/services/UI/spinner.service';
+import { CookieService } from 'ngx-cookie-service';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const password = control.value['password'];
@@ -85,6 +83,9 @@ export type RepositoryServiceConfig = {
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {
+          if (sessionStorage.getItem('token')) {
+            return sessionStorage.getItem('token');
+          }
           return localStorage.getItem('token');
         },
       },
@@ -112,6 +113,13 @@ export type RepositoryServiceConfig = {
       },
     },
     {
+      provide: 'COOKIE_CONFIG',
+      useValue: {
+        useSecure: environment.production,
+        expirationPeriod: environment.expirationPeriod,
+      },
+    },
+    {
       provide: 'GeneralImageAPIService',
       useClass: environment.imageAPIService,
     },
@@ -136,12 +144,12 @@ export type RepositoryServiceConfig = {
     { provide: 'GenericUserService', useClass: environment.userService },
     { provide: 'GenericNewsService', useClass: environment.newsService },
 
-    FlashMEMOAuthGuard,
     { provide: DeckRepositoryResolverService },
     { provide: UserRepositoryResolverService },
     { provide: NewsRepositoryResolverService },
     { provide: GenericNotificationService, useClass: NotificationService },
     { provide: 'GenericSpinnerService', useClass: SpinnerService },
+    { provide: CookieService },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: GlobalHttpInterceptorService,

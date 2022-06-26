@@ -1,4 +1,5 @@
 <div class="container my-3">
-  <app-admin-actions-toolbar [hidden]="!this.authService.isLoggedUserAdmin" [routes]=routes></app-admin-actions-toolbar>
+  <app-admin-actions-toolbar [hidden]="!this.authService.isLoggedUserAdmin()" [routes]=routes>
+  </app-admin-actions-toolbar>
   <app-news-card-list [pageSizeOptions]="[10, 25, 100]"> </app-news-card-list>
 </div>

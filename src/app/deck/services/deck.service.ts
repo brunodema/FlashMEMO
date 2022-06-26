@@ -17,6 +17,7 @@ import { Deck, ExtendedDeckInfoDTO } from '../models/deck.model';
 import deckJson from 'src/assets/test_assets/Decks.json';
 import flashcardJson from 'src/assets/test_assets/Flashcards.json';
 import { RepositoryServiceConfig } from 'src/app/app.module';
+import { GenericAuthService } from 'src/app/shared/services/auth.service';
 
 class DeckSearchParams implements IServiceSearchParams {
   pageSize: Number;
@@ -36,12 +37,14 @@ class DeckSearchParams implements IServiceSearchParams {
 export abstract class GenericDeckService extends GenericRepositoryService<Deck> {
   constructor(
     @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
-    protected httpClient: HttpClient
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {
     super(
       `${config.backendAddress}/api/v1/Deck`,
       config.maxPageSize,
-      httpClient
+      httpClient,
+      authService
     );
   }
   abstract search(searchParams: DeckSearchParams): Observable<Deck[]>;
@@ -58,14 +61,16 @@ export abstract class GenericDeckService extends GenericRepositoryService<Deck> 
 export class MockDeckService extends GenericDeckService {
   constructor(
     @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
-    protected httpClient: HttpClient
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {
     super(
       {
         backendAddress: config.backendAddress,
         maxPageSize: config.maxPageSize,
       },
-      httpClient
+      httpClient,
+      authService
     );
   }
 
@@ -155,14 +160,16 @@ export class DeckService extends GenericDeckService {
   constructor(
     @Inject('REPOSITORY_SERVICE_CONFIG')
     protected config: RepositoryServiceConfig,
-    protected httpClient: HttpClient
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {
     super(
       {
         backendAddress: config.backendAddress,
         maxPageSize: config.maxPageSize,
       },
-      httpClient
+      httpClient,
+      authService
     );
   }
 
@@ -196,7 +203,11 @@ export class DeckService extends GenericDeckService {
     }
 
     return this.httpClient
-      .get<IPaginatedListResponse<Deck>>(formattedURL)
+      .get<IPaginatedListResponse<Deck>>(formattedURL, {
+        headers: {
+          Authorization: `bearer ${this.authService.accessToken}`,
+        },
+      })
       .pipe(map((a) => a.data.results));
   }
 
@@ -205,7 +216,12 @@ export class DeckService extends GenericDeckService {
       .get<IDataResponse<ExtendedDeckInfoDTO[]>>(
         `${this.repositoryServiceEndpoint}/list/extended${
           ownerId ? '?ownerId=' + ownerId : ''
-        }`
+        }`,
+        {
+          headers: {
+            Authorization: `bearer ${this.authService.accessToken}`,
+          },
+        }
       )
       .pipe(map((y) => y.data));
   }

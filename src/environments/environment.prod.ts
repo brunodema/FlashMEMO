@@ -13,6 +13,8 @@ export const environment = {
   backendRootAddress: 'https://api.flashmemo.edu',
   maxPageSize: 10000,
   defaultLanguageISOCode: 'en-gb',
+  // cookies
+  expirationPeriod: 90, // days
   // services
   newsService: NewsService,
   userService: UserService,

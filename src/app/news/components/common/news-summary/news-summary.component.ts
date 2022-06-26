@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
 import {
   GenericSpinnerService,
   SpinnerType,

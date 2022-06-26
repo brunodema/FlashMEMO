@@ -22,7 +22,7 @@ import {
   styleUrls: ['./user-list.component.css'],
 })
 export class UserListComponent {
-  routes: RouteMap[] = [{ label: 'Create User', route: 'create' }];
+  routes: RouteMap[] = [{ label: 'Create User', route: '/user/create' }];
 
   columnOptions: DataTableColumnOptions[] = [
     {
@@ -45,7 +45,7 @@ export class UserListComponent {
     this.userService.getAll().subscribe({
       next: (userArray) => {
         this.userData$.next(userArray);
-        this.userTable.toggleAllOff();
+        this.userTable?.toggleAllOff();
       },
       complete: () => this.spinnerService.hideSpinner(SpinnerType.LOADING),
     });
@@ -64,15 +64,15 @@ export class UserListComponent {
 
   showEditIcon = (item: User) => {
     return (
-      this.authService.isLoggedUserAdmin ||
-      item.id === this.authService.loggedUser.getValue().id
+      this.authService.isLoggedUserAdmin() ||
+      item.id === this.authService.loggedUser.getValue()?.id
     );
   };
 
   showDeleteIcon = (item: User) => {
     return (
-      this.authService.isLoggedUserAdmin ||
-      item.id === this.authService.loggedUser.getValue().id
+      this.authService.isLoggedUserAdmin() ||
+      item.id === this.authService.loggedUser.getValue()?.id
     );
   };
 
@@ -101,22 +101,26 @@ export class UserListComponent {
           : 'Are you sure you want to delete this User?'
       )
     ) {
-      await new Promise<void>((resolve) => {
-        ids.forEach((id, index) => {
+      let errorHappened = false;
+      for (const id of ids) {
+        await new Promise<void>((resolve, reject) => {
           this.userService.delete(id).subscribe({
-            error: () =>
-              this.notificationService.showError(
-                'An error ocurred while deleting the User'
-              ),
-            complete: () => {
-              if (index === ids.length - 1) resolve();
+            next: () => resolve(),
+            error: () => {
+              reject();
             },
           });
-        });
-      });
+        }).catch(() => (errorHappened = true));
 
-      this.notificationService.showSuccess('User(s) successfully deleted.');
-      this.refreshUserDataSource();
+        if (errorHappened) {
+          return this.notificationService.showError(
+            'An error ocurred while deleting the User.'
+          );
+        }
+      }
+
+      this.notificationService.showSuccess('User(s) deleted successfully.');
+      return this.refreshUserDataSource();
     }
   }
 }

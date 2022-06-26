@@ -11,6 +11,7 @@ import {
   IServiceSearchParams,
   SortType,
 } from 'src/app/shared/models/other/api-query-types';
+import { GenericAuthService } from 'src/app/shared/services/auth.service';
 import { GenericRepositoryService } from 'src/app/shared/services/general-repository.service';
 
 import userJson from 'src/assets/test_assets/User.json';
@@ -28,12 +29,14 @@ class UserSearchParams implements IServiceSearchParams {
 export abstract class GenericUserService extends GenericRepositoryService<User> {
   constructor(
     protected config: RepositoryServiceConfig,
-    protected httpClient: HttpClient
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {
     super(
       `${config.backendAddress}/api/v1/User`,
       config.maxPageSize,
-      httpClient
+      httpClient,
+      authService
     );
   }
   abstract search(searchParams: UserSearchParams): Observable<User[]>;
@@ -43,14 +46,16 @@ export abstract class GenericUserService extends GenericRepositoryService<User> 
 export class MockUserService extends GenericUserService {
   constructor(
     @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
-    protected httpClient: HttpClient
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {
     super(
       {
         backendAddress: config.backendAddress,
         maxPageSize: config.maxPageSize,
       },
-      httpClient
+      httpClient,
+      authService
     );
   }
   getTypename(): string {
@@ -110,12 +115,14 @@ export class MockUserService extends GenericUserService {
 export class UserService extends GenericRepositoryService<User> {
   constructor(
     @Inject('REPOSITORY_SERVICE_CONFIG') config: RepositoryServiceConfig,
-    protected httpClient: HttpClient
+    protected httpClient: HttpClient,
+    @Inject('GenericAuthService') protected authService: GenericAuthService
   ) {
     super(
       `${config.backendAddress}/api/v1/User`,
       config.maxPageSize,
-      httpClient
+      httpClient,
+      authService
     );
   }
 
@@ -133,7 +140,11 @@ export class UserService extends GenericRepositoryService<User> {
     }
 
     return this.httpClient
-      .get<IPaginatedListResponse<User>>(formattedURL)
+      .get<IPaginatedListResponse<User>>(formattedURL, {
+        headers: {
+          Authorization: `bearer ${this.authService.accessToken}`,
+        },
+      })
       .pipe(map((a) => a.data.results));
   }
 }
