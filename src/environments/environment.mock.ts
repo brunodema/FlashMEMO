@@ -8,6 +8,7 @@ import { MockImageAPIService } from 'src/app/shared/services/APIs/image-api.serv
 import { MockAuthService } from 'src/app/shared/services/auth.service';
 import { MockFlashcardService } from 'src/app/shared/services/flashcard.service';
 import { MockLanguageService } from 'src/app/shared/services/language.service';
+import { IFlashMEMOLoggerOptions } from 'src/app/shared/services/logging/logger.service';
 import { MockUserService } from 'src/app/user/services/user.service';
 
 export const environment = {
@@ -27,4 +28,9 @@ export const environment = {
   imageAPIService: MockImageAPIService,
   audioAPIService: MockAudioService,
   dictionaryAPIService: MockDictionaryService,
+  // logging
+  loggerConfig: {
+    logLevel: 'INFORMATION',
+    provider: 'CONSOLE',
+  } as IFlashMEMOLoggerOptions,
 };
