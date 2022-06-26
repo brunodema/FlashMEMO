@@ -63,17 +63,13 @@ export abstract class GenericAuthService {
       const decodedRT = this.jwtHelper.decodeToken(this.refreshToken);
 
       console.log(
-        `Access token EXP is: ${new Date(
-          new Date().getTime() + decodedAT['exp']
-        ).toUTCString()}. It has ${new Date(
+        `Access token has ${new Date(
           this.jwtHelper.getTokenExpirationDate(this.accessToken)!.getTime() -
             new Date().getTime()
         ).getTime()}ms until expiration.`
       );
       console.log(
-        `Refresh token EXP is: ${new Date(
-          new Date().getTime() + decodedRT['exp']
-        ).toUTCString()}. It has ${new Date(
+        `Refresh token has ${new Date(
           this.jwtHelper.getTokenExpirationDate(this.refreshToken)!.getTime() -
             new Date().getTime()
         ).getTime()}ms until expiration.`
@@ -296,7 +292,7 @@ export class MockAuthService extends GenericAuthService {
     "exp": 9999999999
     */
   protected dummyAccessToken =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZmxhc2htZW1vLmVkdSIsImp0aSI6ImRjYWZiMTEzLTc3OTQtNDlkYi04Y2RlLTQyYjdmMTg3NWZkMyIsInN1YiI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJuYW1lIjoiSm9obiIsInN1cm5hbWUiOiJEb2UiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiIsImV4cCI6OTk5OTk5OTk5OX0.2Oqyj7_bUwTFKQvL4ZDeWVnG3E0iTXfNIz2eLiKXnTE';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZmxhc2htZW1vLmVkdSIsImp0aSI6ImRjYWZiMTEzLTc3OTQtNDlkYi04Y2RlLTQyYjdmMTg3NWZkMyIsInN1YiI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJuYW1lIjoiSm9obiIsInN1cm5hbWUiOiJEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwiZXhwIjo5OTk5OTk5OTk5fQ.Ltt645uDST3Qo1dDYXq0fceyUfmTFJVP0AxE8-O8n8o';
 
   /**
     "jti": "619449c6-f12f-4c3b-baaa-db5e65578578",
@@ -334,7 +330,7 @@ export class MockAuthService extends GenericAuthService {
       this.handleSuccessfulLogin(
         {
           accessToken: this.dummyAccessToken,
-          refreshToken: this.refreshToken,
+          refreshToken: this.dummyRefreshToken,
           errors: [],
           message: 'success',
         },
