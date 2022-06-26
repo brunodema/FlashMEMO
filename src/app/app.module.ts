@@ -9,6 +9,7 @@ import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './root/routing/app-routing.module';
 import { NewsModule } from './news/news.module';
 import { DeckModule } from './deck/deck.module';
+import { FlashMEMOAuthGuard } from './shared/guards/auth.guard';
 import { LoginComponent } from './root/components/login/login.component';
 import { HomeComponent } from './root/components/home/home.component';
 import { AppComponent } from './root/components/app.component';
@@ -35,10 +36,6 @@ import { environment } from 'src/environments/environment';
 import { TestModule } from './test/test.module';
 import { SpinnerService } from './shared/services/UI/spinner.service';
 import { CookieService } from 'ngx-cookie-service';
-import {
-  IFlashMEMOLoggerOptions,
-  LoggerService,
-} from './shared/services/logging/logger.service';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const password = control.value['password'];
@@ -109,13 +106,6 @@ export type RepositoryServiceConfig = {
   ],
   providers: [
     {
-      provide: 'LOGGER_CONFIG',
-      useValue: {
-        logLevel: environment.loggingConfig.logLevel,
-        provider: environment.loggingConfig.provider,
-      } as IFlashMEMOLoggerOptions,
-    },
-    {
       provide: 'REPOSITORY_SERVICE_CONFIG',
       useValue: {
         backendAddress: environment.backendRootAddress,
@@ -159,7 +149,6 @@ export type RepositoryServiceConfig = {
     { provide: NewsRepositoryResolverService },
     { provide: GenericNotificationService, useClass: NotificationService },
     { provide: 'GenericSpinnerService', useClass: SpinnerService },
-    { provide: 'GenericLoggerService', useClass: LoggerService },
     { provide: CookieService },
     {
       provide: HTTP_INTERCEPTORS,
