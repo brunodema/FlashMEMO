@@ -101,26 +101,26 @@ export class UserListComponent {
           : 'Are you sure you want to delete this User?'
       )
     ) {
-      await new Promise<void>((resolve) => {
-        ids.forEach((id, index) => {
+      let errorHappened = false;
+      for (const id of ids) {
+        await new Promise<void>((resolve, reject) => {
           this.userService.delete(id).subscribe({
-            error: () =>
-              this.notificationService.showError(
-                'An error ocurred while deleting the User'
-              ),
-            complete: () => {
-              if (index === ids.length - 1) {
-                this.notificationService.showSuccess(
-                  'User(s) successfully deleted.'
-                );
-                resolve();
-              }
+            next: () => resolve(),
+            error: () => {
+              reject();
             },
           });
-        });
-      });
+        }).catch(() => (errorHappened = true));
 
-      this.refreshUserDataSource();
+        if (errorHappened) {
+          return this.notificationService.showError(
+            'An error ocurred while deleting the User.'
+          );
+        }
+      }
+
+      this.notificationService.showSuccess('User(s) deleted successfully.');
+      return this.refreshUserDataSource();
     }
   }
 }

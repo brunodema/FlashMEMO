@@ -124,24 +124,26 @@ export class DeckListComponent {
           : 'Are you sure you want to delete this Deck?'
       )
     ) {
-      await new Promise<void>((resolve) => {
-        decks.forEach((deck, index) => {
+      let errorHappened = false;
+      for (const deck of decks) {
+        await new Promise<void>((resolve, reject) => {
           this.deckService.delete(deck.deckId).subscribe({
-            error: () =>
-              this.notificationService.showError(
-                'An error ocurred while deleting the Deck'
-              ),
-            complete: () => {
-              if (index === decks.length - 1) {
-                resolve();
-              }
+            next: () => resolve(),
+            error: () => {
+              reject();
             },
           });
-        });
-      });
+        }).catch(() => (errorHappened = true));
 
-      this.notificationService.showSuccess('Deck(s) successfully deleted.');
-      this.refreshDeckDataSource();
+        if (errorHappened) {
+          return this.notificationService.showError(
+            'An error ocurred while deleting the Deck.'
+          );
+        }
+      }
+
+      this.notificationService.showSuccess('Deck(s) deleted successfully.');
+      return this.refreshDeckDataSource();
     }
   }
 }

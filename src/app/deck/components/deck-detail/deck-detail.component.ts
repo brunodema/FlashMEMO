@@ -264,26 +264,28 @@ export class DeckDetailComponent {
           : 'Are you sure you want to delete this Flashcard?'
       )
     ) {
-      await new Promise<void>((resolve) => {
-        flashcards.forEach((flashcard, index) => {
+      let errorHappened = false;
+      for (const flashcard of flashcards) {
+        await new Promise<void>((resolve, reject) => {
           this.flashcardService.delete(flashcard.flashcardId).subscribe({
-            error: () =>
-              this.notificationService.showError(
-                'An error ocurred while deleting the Deck'
-              ),
-            complete: () => {
-              if (index === flashcards.length - 1) {
-                resolve();
-              }
+            next: () => resolve(),
+            error: () => {
+              reject();
             },
           });
-        });
-      });
+        }).catch(() => (errorHappened = true));
+
+        if (errorHappened) {
+          return this.notificationService.showError(
+            'An error ocurred while deleting the Flashcard.'
+          );
+        }
+      }
 
       this.notificationService.showSuccess(
-        'Flashcards(s) successfully deleted.'
+        'Flashcard(s) deleted successfully.'
       );
-      this.refreshFlashcardDataSource();
+      return this.refreshFlashcardDataSource();
     }
   }
 }
