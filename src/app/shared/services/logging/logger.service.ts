@@ -43,7 +43,7 @@ export abstract class GenericLoggerService implements IFlashMEMOLogger {
 })
 export class LoggerService extends GenericLoggerService {
   constructor(
-    @Inject('LOGGER_OPTIONS') protected options: IFlashMEMOLoggerOptions
+    @Inject('LOGGER_CONFIG') protected options: IFlashMEMOLoggerOptions
   ) {
     super();
   }
