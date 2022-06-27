@@ -160,7 +160,7 @@ export type RepositoryServiceConfig = {
     { provide: NewsRepositoryResolverService },
     { provide: GenericNotificationService, useClass: NotificationService },
     { provide: 'GenericSpinnerService', useClass: SpinnerService },
-    // { provide: 'GenericLoggerService', useClass: LoggerService },
+    { provide: 'GenericLoggerService', useClass: LoggerService },
     { provide: CookieService },
     {
       provide: HTTP_INTERCEPTORS,
