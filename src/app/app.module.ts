@@ -40,6 +40,7 @@ import {
   IFlashMEMOLoggerOptions,
   LoggerService,
 } from './shared/services/logging/logger.service';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const password = control.value['password'];
@@ -82,6 +83,7 @@ export type RepositoryServiceConfig = {
     DeckModule,
     TestModule,
     BrowserAnimationsModule,
+    LoggerModule.forRoot(null),
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
     JwtModule.forRoot({

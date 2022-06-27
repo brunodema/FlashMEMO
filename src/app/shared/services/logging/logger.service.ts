@@ -1,5 +1,5 @@
-import { Inject, Injectable } from '@angular/core';
-import { Logger } from 'tslog';
+import { Inject, Injectable, Type } from '@angular/core';
+import { INGXLoggerConfig, NGXLogger, NgxLoggerLevel } from 'ngx-logger';
 
 export interface IFlashMEMOLoggerOptions {
   logLevel: 'DEBUG' | 'TRACE' | 'WARNING' | 'INFORMATION' | 'ERROR';
@@ -7,34 +7,81 @@ export interface IFlashMEMOLoggerOptions {
 }
 
 export interface IFlashMEMOLogger {
-  logDebug(): void;
-  logTrace(): void;
-  logError(): void;
-  logInformation(): void;
-  logWarning(): void;
+  logDebug(...args: unknown[]): void;
+  logTrace(...args: unknown[]): void;
+  logError(...args: unknown[]): void;
+  logInformation(...args: unknown[]): void;
+  logWarning(...args: unknown[]): void;
+}
+
+export class LoggerConfigFactory {
+  public BuildConfig(
+    internalConfig: IFlashMEMOLoggerOptions,
+    configType: 'NGX_LOGGER'
+  ): any {
+    switch (configType) {
+      case 'NGX_LOGGER':
+        let logLevel: NgxLoggerLevel;
+        switch (internalConfig.logLevel) {
+          case 'DEBUG':
+            logLevel = NgxLoggerLevel.DEBUG;
+            break;
+          case 'TRACE':
+            logLevel = NgxLoggerLevel.TRACE;
+
+            break;
+          case 'INFORMATION':
+            logLevel = NgxLoggerLevel.INFO;
+
+            break;
+          case 'WARNING':
+            logLevel = NgxLoggerLevel.WARN;
+
+            break;
+          case 'ERROR':
+            logLevel = NgxLoggerLevel.ERROR;
+
+            break;
+
+          default:
+            throw new Error('Invalid config level chosen.');
+        }
+
+        return {
+          level: logLevel,
+          serverLogLevel: logLevel,
+        } as INGXLoggerConfig;
+
+      default:
+        throw new Error('Invalid logger provider chosen.');
+    }
+  }
 }
 
 export abstract class GenericLoggerService implements IFlashMEMOLogger {
-  protected loggerInstance: Logger;
-
-  constructor() {
-    this.loggerInstance = new Logger();
+  constructor(
+    protected loggerInstance: NGXLogger,
+    @Inject('LOGGER_CONFIG') protected config: IFlashMEMOLoggerOptions
+  ) {
+    this.loggerInstance.updateConfig(
+      new LoggerConfigFactory().BuildConfig(config, 'NGX_LOGGER')
+    );
   }
 
-  logInformation(): void {
-    this.loggerInstance.info();
+  logInformation(...args: unknown[]): void {
+    this.loggerInstance.info(...args);
   }
-  logDebug(): void {
-    this.loggerInstance.debug();
+  logDebug(...args: unknown[]): void {
+    this.loggerInstance.debug(...args);
   }
-  logTrace(): void {
-    this.loggerInstance.trace();
+  logTrace(...args: unknown[]): void {
+    this.loggerInstance.trace(...args);
   }
-  logError(): void {
-    this.loggerInstance.error();
+  logError(...args: unknown[]): void {
+    this.loggerInstance.error(...args);
   }
-  logWarning(): void {
-    this.loggerInstance.warn();
+  logWarning(...args: unknown[]): void {
+    this.loggerInstance.warn(...args);
   }
 }
 
@@ -43,8 +90,9 @@ export abstract class GenericLoggerService implements IFlashMEMOLogger {
 })
 export class LoggerService extends GenericLoggerService {
   constructor(
-    @Inject('LOGGER_CONFIG') protected options: IFlashMEMOLoggerOptions
+    protected loggerInstance: NGXLogger,
+    @Inject('LOGGER_CONFIG') protected config: IFlashMEMOLoggerOptions
   ) {
-    super();
+    super(loggerInstance, config);
   }
 }
