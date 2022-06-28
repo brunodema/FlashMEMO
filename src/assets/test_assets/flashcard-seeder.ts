@@ -30,10 +30,8 @@ function randomValueWithCuttof<Type>(
 ): Type {
   let rng = Math.random();
   if (rng < cutoff) {
-    console.log('rng value of ' + rng + ', returning fixed value...');
     return fixedValue;
   }
-  console.log('rng value of ' + rng + ', returning predicate value...');
   return predicate(args);
 }
 

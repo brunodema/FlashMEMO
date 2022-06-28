@@ -198,9 +198,9 @@ export class FlashcardContentOptionsBlockComponent
   }
 
   fixHeightOnLoad() {
-    console.log(
-      'fixHeightOnLoad: ' + this.hostElement.nativeElement.offsetHeight + 'px'
-    );
+    // console.log(
+    //   'fixHeightOnLoad: ' + this.hostElement.nativeElement.offsetHeight + 'px'
+    // );
     this.imageMaxHeight = this.hostElement.nativeElement.offsetHeight + 'px';
     this.cdr.detectChanges();
   }
@@ -215,7 +215,6 @@ export class FlashcardContentOptionsBlockComponent
       }
       // should check if string (with no white spaces) STARTS with either 'HTTP' or 'HTTPS', even though there is no symbol indicating beginning of line/string (wasn't working with it). This might be a very dangerous way to check this, but still...
       if (contentValue.match('https?://')) {
-        console.log('matched image!');
         return FlashcardContentType.IMAGE;
       }
       return FlashcardContentType.TEXT;
@@ -240,7 +239,6 @@ export class FlashcardContentOptionsBlockComponent
 
   emitValue(contentValue: string) {
     this.contentSave.emit({ contentValue: this.contentValue });
-    console.log('emitting: ' + this.contentValue);
   }
 
   saveAudio(audioURL: string): void {
@@ -307,8 +305,6 @@ export class FlashcardContentOptionsBlockComponent
     this.imageAPIData$ = this.imageAPIService.searchImage(keyword, pageNumber);
     this.imageAPIData$.subscribe({
       next: (r) => {
-        console.log(r.data.results.map((image) => image.link));
-
         this.currentKeyword = keyword;
         this.currentPageNumber = r.data.pageNumber as number;
         this.imageResults = r.data.results;
