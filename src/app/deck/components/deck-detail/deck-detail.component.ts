@@ -151,8 +151,6 @@ export class DeckDetailComponent {
       this.activeFlashcard = new Flashcard({ deckId: this.deckModel.deckId });
     else this.activeFlashcard = flashcard!;
 
-    //console.log(theNewFlashcardSeeder(250));
-
     this.flashcardModal = this.modalService.open(content, {
       ariaLabelledBy: 'modal-basic-title',
       size: 'lg',
