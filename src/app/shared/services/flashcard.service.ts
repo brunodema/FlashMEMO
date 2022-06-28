@@ -66,10 +66,6 @@ export abstract class GenericFlashcardService extends GenericRepositoryService<I
     flashcard.dueDate = new Date(
       new Date().setDate(new Date().getDate() + newLevel ** 2)
     ).toISOString();
-    console.log(
-      'today is ' + new Date().toISOString(),
-      'due date is now ' + flashcard.dueDate
-    );
   }
 }
 

@@ -22,6 +22,7 @@ import {
   IBaseAPIResponse,
   ILoginResponse,
 } from '../models/http/http-response-types';
+import { GenericLoggerService } from './logging/logger.service';
 import { GenericNotificationService } from './notification/notification.service';
 import { SpinnerType } from './UI/spinner.service';
 
@@ -36,7 +37,9 @@ export abstract class GenericAuthService {
     protected cookieService: CookieService,
     @Inject('COOKIE_CONFIG')
     protected cookieSettings: { useSecure: boolean; expirationPeriod: number },
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    @Inject('GenericLoggerService')
+    protected loggerService: GenericLoggerService
   ) {}
 
   get storageMode(): 'PERSISTENT' | 'SESSION' | 'UNAUTHENTICATED' {
@@ -62,18 +65,15 @@ export abstract class GenericAuthService {
       const decodedAT = this.jwtHelper.decodeToken(this.accessToken);
       const decodedRT = this.jwtHelper.decodeToken(this.refreshToken);
 
-      console.log(
-        `Access token EXP is: ${new Date(
-          new Date().getTime() + decodedAT['exp']
-        ).toUTCString()}. It has ${new Date(
+      this.loggerService.logDebug(
+        `Access token has ${new Date(
           this.jwtHelper.getTokenExpirationDate(this.accessToken)!.getTime() -
             new Date().getTime()
         ).getTime()}ms until expiration.`
       );
-      console.log(
-        `Refresh token EXP is: ${new Date(
-          new Date().getTime() + decodedRT['exp']
-        ).toUTCString()}. It has ${new Date(
+
+      this.loggerService.logDebug(
+        `Refresh token has ${new Date(
           this.jwtHelper.getTokenExpirationDate(this.refreshToken)!.getTime() -
             new Date().getTime()
         ).getTime()}ms until expiration.`
@@ -84,7 +84,7 @@ export abstract class GenericAuthService {
       const expirationCheck = !this.jwtHelper.isTokenExpired(this.refreshToken);
       const subjectCheck = decodedAT['jti'] === decodedRT['sub'];
       if (!subjectCheck) {
-        console.log(decodedAT['jti'], decodedRT['sub']);
+        this.loggerService.logDebug(decodedAT['jti'], decodedRT['sub']);
         throw new Error(
           'Subject check has failed for stored credentials (i.e., tokens are not related to each other.)'
         );
@@ -92,7 +92,7 @@ export abstract class GenericAuthService {
 
       const userCheck = decodedAT['sub'] === decodedRT['userid'];
 
-      console.log(
+      this.loggerService.logDebug(
         'Token check for user mapping done.',
         decodedAT,
         decodedRT,
@@ -120,10 +120,14 @@ export abstract class GenericAuthService {
             'johndoe',
         });
       }
-      console.log('Check have failed, returning user as "null"');
+      this.loggerService.logDebug(
+        'Check have failed, returning user as "null"'
+      );
       return null;
     }
-    console.log('No existing access token detected, returning user as "null"');
+    this.loggerService.logDebug(
+      'No existing access token detected, returning user as "null"'
+    );
     return null;
   }
 
@@ -133,7 +137,6 @@ export abstract class GenericAuthService {
   );
 
   isLoggedUserAdmin(): boolean {
-    // console.log('checking if user is admin...', this.checkIfAdmin());
     return this.checkIfAdmin();
   }
 
@@ -201,7 +204,7 @@ export abstract class GenericAuthService {
   }
 
   public canAttemptTokenRenewal(): boolean {
-    console.log(
+    this.loggerService.logDebug(
       'Checking if token renewal is possible...',
       this.accessToken,
       this.refreshToken,
@@ -235,7 +238,7 @@ export abstract class GenericAuthService {
   }
 
   public disconnectUser() {
-    console.log('Disconnecting user...');
+    this.loggerService.logDebug('Disconnecting user...');
     this.clearPreExistingTokens();
     this.clearPreExistingCookies();
     this.modalService.dismissAll();
@@ -296,7 +299,7 @@ export class MockAuthService extends GenericAuthService {
     "exp": 9999999999
     */
   protected dummyAccessToken =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZmxhc2htZW1vLmVkdSIsImp0aSI6ImRjYWZiMTEzLTc3OTQtNDlkYi04Y2RlLTQyYjdmMTg3NWZkMyIsInN1YiI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJuYW1lIjoiSm9obiIsInN1cm5hbWUiOiJEb2UiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiIsImV4cCI6OTk5OTk5OTk5OX0.2Oqyj7_bUwTFKQvL4ZDeWVnG3E0iTXfNIz2eLiKXnTE';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZmxhc2htZW1vLmVkdSIsImp0aSI6ImRjYWZiMTEzLTc3OTQtNDlkYi04Y2RlLTQyYjdmMTg3NWZkMyIsInN1YiI6IjEyMzQ1Njc4OTAiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJuYW1lIjoiSm9obiIsInN1cm5hbWUiOiJEb2UiLCJpYXQiOjE1MTYyMzkwMjIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwiZXhwIjo5OTk5OTk5OTk5fQ.Ltt645uDST3Qo1dDYXq0fceyUfmTFJVP0AxE8-O8n8o';
 
   /**
     "jti": "619449c6-f12f-4c3b-baaa-db5e65578578",
@@ -316,7 +319,9 @@ export class MockAuthService extends GenericAuthService {
     protected cookieService: CookieService,
     @Inject('COOKIE_CONFIG')
     protected cookieSettings: { useSecure: boolean; expirationPeriod: number },
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    @Inject('GenericLoggerService')
+    protected loggerService: GenericLoggerService
   ) {
     super(
       jwtHelper,
@@ -325,7 +330,8 @@ export class MockAuthService extends GenericAuthService {
       spinnerService,
       cookieService,
       cookieSettings,
-      modalService
+      modalService,
+      loggerService
     );
   }
 
@@ -334,7 +340,7 @@ export class MockAuthService extends GenericAuthService {
       this.handleSuccessfulLogin(
         {
           accessToken: this.dummyAccessToken,
-          refreshToken: this.refreshToken,
+          refreshToken: this.dummyRefreshToken,
           errors: [],
           message: 'success',
         },
@@ -389,7 +395,9 @@ export class AuthService extends GenericAuthService {
     protected cookieService: CookieService,
     @Inject('COOKIE_CONFIG')
     protected cookieSettings: { useSecure: boolean; expirationPeriod: number },
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    @Inject('GenericLoggerService')
+    protected loggerService: GenericLoggerService
   ) {
     super(
       jwtHelper,
@@ -398,7 +406,8 @@ export class AuthService extends GenericAuthService {
       spinnerService,
       cookieService,
       cookieSettings,
-      modalService
+      modalService,
+      loggerService
     );
   }
 
@@ -433,11 +442,12 @@ export class AuthService extends GenericAuthService {
   }
 
   renewAccessToken(expiredAccessToken: string): Observable<ILoginResponse> {
-    console.log(
+    this.loggerService.logDebug(
       'Attempting to renew the following expired token',
       expiredAccessToken
     );
-    console.log('Cookie value is...', this.refreshToken);
+    this.loggerService.logDebug('Cookie value is...', this.refreshToken);
+
     return this.http.post<ILoginResponse>(
       `${this.authServiceURL}/refresh`,
       { expiredAccessToken: expiredAccessToken },

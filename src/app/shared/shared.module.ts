@@ -25,7 +25,6 @@ import { UserPreferencesDropdownComponent } from './components/common/user-prefe
 import { StudySessionComponent } from './components/study-session/study-session/study-session.component';
 import { FlashcardAnswerButtonsComponent } from './components/flashcard/flashcard-answer-buttons/flashcard-answer-buttons.component';
 import { DetailViewComponent } from './components/common/detail-view/detail-view.component';
-import { DataListComponent } from './components/data-list/data-list.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +42,6 @@ import { DataListComponent } from './components/data-list/data-list.component';
     StudySessionComponent,
     FlashcardAnswerButtonsComponent,
     DetailViewComponent,
-    DataListComponent,
   ],
   imports: [
     CollapseModule,
@@ -66,7 +64,6 @@ import { DataListComponent } from './components/data-list/data-list.component';
     FooterComponent,
     AdminActionsToolbarComponent,
     DataTableComponent,
-    DataListComponent,
     UserPreferencesDropdownComponent,
     FlashcardContentOptionsBlockComponent,
     FlashcardComponent,

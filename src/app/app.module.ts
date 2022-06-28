@@ -36,6 +36,11 @@ import { environment } from 'src/environments/environment';
 import { TestModule } from './test/test.module';
 import { SpinnerService } from './shared/services/UI/spinner.service';
 import { CookieService } from 'ngx-cookie-service';
+import {
+  IFlashMEMOLoggerOptions,
+  LoggerService,
+} from './shared/services/logging/logger.service';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const password = control.value['password'];
@@ -78,6 +83,7 @@ export type RepositoryServiceConfig = {
     DeckModule,
     TestModule,
     BrowserAnimationsModule,
+    LoggerModule.forRoot(null),
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
     JwtModule.forRoot({
@@ -105,6 +111,13 @@ export type RepositoryServiceConfig = {
     ClipboardModule,
   ],
   providers: [
+    {
+      provide: 'LOGGER_CONFIG',
+      useValue: {
+        logLevel: environment.loggerConfig.logLevel,
+        provider: environment.loggerConfig.provider,
+      } as IFlashMEMOLoggerOptions,
+    },
     {
       provide: 'REPOSITORY_SERVICE_CONFIG',
       useValue: {
@@ -149,6 +162,7 @@ export type RepositoryServiceConfig = {
     { provide: NewsRepositoryResolverService },
     { provide: GenericNotificationService, useClass: NotificationService },
     { provide: 'GenericSpinnerService', useClass: SpinnerService },
+    { provide: 'GenericLoggerService', useClass: LoggerService },
     { provide: CookieService },
     {
       provide: HTTP_INTERCEPTORS,

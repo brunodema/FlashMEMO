@@ -7,11 +7,12 @@ import {
   HttpRequest,
   HttpStatusCode,
 } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 import { GenericNotificationService } from '../services/notification/notification.service';
 import { GenericAuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { GenericLoggerService } from '../services/logging/logger.service';
 
 /**
  * This global HTTP interceptor implementation is based on these resources: https://www.tektutorialshub.com/angular/angular-http-error-handling/ and https://rollbar.com/blog/error-handling-with-angular-8-tips-and-best-practices/
@@ -21,7 +22,9 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
   constructor(
     protected notificationService: GenericNotificationService,
     @Inject('GenericAuthService') protected authService: GenericAuthService,
-    protected router: Router
+    protected router: Router,
+    @Inject('GenericLoggerService')
+    protected loggerService: GenericLoggerService
   ) {}
 
   intercept(
@@ -35,11 +38,11 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
             this.notificationService.showError(
               'An error occured with your request.'
             );
-            console.log(error);
+            this.loggerService.logError(error);
             break;
           case HttpStatusCode.Unauthorized:
             if (this.authService.canAttemptTokenRenewal()) {
-              console.log(
+              this.loggerService.logDebug(
                 'Attempting to renew access token via interceptor...',
                 this.authService.accessToken
               );
@@ -52,10 +55,9 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
                       this.authService.storageMode === 'PERSISTENT'
                     );
 
-                    console.log(
+                    this.loggerService.logDebug(
                       'Successfully renewed credentials via interceptor!'
                     );
-
                     return next.handle(
                       req.clone({
                         setHeaders: {
@@ -66,7 +68,7 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
                     );
                   }),
                   catchError((err) => {
-                    console.log('Why the hell am I here for?');
+                    this.loggerService.logDebug('Why the hell am I here for?');
                     this.notificationService.showWarning(
                       'Please log in first 🤠'
                     );
@@ -78,7 +80,9 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
                   })
                 );
             } else {
-              console.log('Oops, something is missing for token renewal...');
+              this.loggerService.logDebug(
+                'Oops, something is missing for token renewal...'
+              );
               this.notificationService.showWarning('Please log in first 🤠');
               this.authService.disconnectUser();
               this.router.navigateByUrl('login');

@@ -54,9 +54,5 @@ export class FlashcardLayoutComponent implements OnInit {
       contentValue: args.contentValue,
       sectionChanged: sectionChanged,
     });
-    console.log('relaying the event: ', {
-      contentValue: args.contentValue,
-      sectionChanged: sectionChanged,
-    });
   }
 }

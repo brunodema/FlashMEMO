@@ -6,6 +6,7 @@ import { ImageAPIService } from 'src/app/shared/services/APIs/image-api.service'
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { FlashcardService } from 'src/app/shared/services/flashcard.service';
 import { LanguageService } from 'src/app/shared/services/language.service';
+import { IFlashMEMOLoggerOptions } from 'src/app/shared/services/logging/logger.service';
 import { UserService } from 'src/app/user/services/user.service';
 
 export const environment = {
@@ -25,4 +26,9 @@ export const environment = {
   imageAPIService: ImageAPIService,
   audioAPIService: AudioService,
   dictionaryAPIService: DictionaryService,
+  // logging
+  loggerConfig: {
+    logLevel: 'INFORMATION',
+    provider: 'CONSOLE',
+  } as IFlashMEMOLoggerOptions,
 };

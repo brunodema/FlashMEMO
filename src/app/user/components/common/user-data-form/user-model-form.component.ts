@@ -147,7 +147,6 @@ export class UserModelFormComponent implements AfterViewInit {
     private cdr: ChangeDetectorRef
   ) {}
   ngAfterViewInit(): void {
-    // console.log('current mode is: ' + this.formMode);
     this.clearPasswordFields();
   }
 

@@ -25,6 +25,5 @@ export class UserDetailComponent {
     } else {
       this.formMode = UserFormMode.CREATE;
     }
-    // console.log(this.userModel, this.route.snapshot.data['user'])
   }
 }
