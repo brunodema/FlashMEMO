@@ -12,11 +12,5 @@ export class HomeComponent implements OnInit {
     protected loggerService: LoggerService
   ) {}
 
-  ngOnInit(): void {
-    this.loggerService.logTrace('hello there (trace)');
-    this.loggerService.logDebug('hello there (debug)');
-    this.loggerService.logInformation('hello there (info)');
-    this.loggerService.logWarning('hello there (warning)');
-    this.loggerService.logError('hello there (error)');
-  }
+  ngOnInit(): void {}
 }
