@@ -1,0 +1,27 @@
+<h1>Welcome back, {{ (this.authService.loggedUser | async)!.username }} 😊</h1>
+<div class="row mt-4">
+  <div class="col-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">Your stats</h5>
+        <p class="card-text">You currently have <b>XX</b> decks, which contain a total of <b>YY</b> flashcards. There
+          are <b>XX</b> study
+          sessions pending, for a total of <b>YY</b> flashcards to be reviewed. Your last login was on
+          <b>DD-MM-YYYY</b>, and your
+          last study session was held on <b>DD-MM-YYYY</b>.
+        </p>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">Here are your decks</h5>
+        <app-data-table #deckTable [dataSource]="(deckData$ | async) || []" [columnOptions]='this.columnOptions'
+          [pageSizeOptions]='this.pageSizeOptions'></app-data-table>
+      </div>
+      <a href="#" class="btn btn-primary">See all</a>
+    </div>
+  </div>
+</div>

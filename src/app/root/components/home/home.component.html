@@ -1,7 +1,10 @@
 <div class="container my-3">
-  <div class="row">
-    <app-jumbotron></app-jumbotron>
+  <div *ngIf="this.authService.loggedUser | async; else anonymousJumbotron" class="row">
+    <app-user-welcome></app-user-welcome>
   </div>
+  <ng-template #anonymousJumbotron class="row">
+    <app-jumbotron></app-jumbotron>
+  </ng-template>
   <div class="row mt-5">
     <h2>Here is what is trending on FlashMEMO...</h2>
   </div>

@@ -25,6 +25,7 @@ import { UserPreferencesDropdownComponent } from './components/common/user-prefe
 import { StudySessionComponent } from './components/study-session/study-session/study-session.component';
 import { FlashcardAnswerButtonsComponent } from './components/flashcard/flashcard-answer-buttons/flashcard-answer-buttons.component';
 import { DetailViewComponent } from './components/common/detail-view/detail-view.component';
+import { UserWelcomeComponent } from './components/user-welcome/user-welcome.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { DetailViewComponent } from './components/common/detail-view/detail-view
     StudySessionComponent,
     FlashcardAnswerButtonsComponent,
     DetailViewComponent,
+    UserWelcomeComponent,
   ],
   imports: [
     CollapseModule,
@@ -71,6 +73,7 @@ import { DetailViewComponent } from './components/common/detail-view/detail-view
     StudySessionComponent,
     FlashcardAnswerButtonsComponent,
     ImageLoaderDirective,
+    UserWelcomeComponent,
   ],
   providers: [SafePipe],
 })
