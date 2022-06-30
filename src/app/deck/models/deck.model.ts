@@ -17,5 +17,5 @@ export class Deck {
  */
 export class ExtendedDeckInfoDTO extends Deck {
   flashcardCount: number;
-  dueFlashcards: number;
+  dueFlashcardCount: number;
 }
