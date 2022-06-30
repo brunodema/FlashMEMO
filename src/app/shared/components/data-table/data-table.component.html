@@ -29,7 +29,7 @@
         </div>
       </td>
     </ng-container>
-    <ng-container matColumnDef="edit">
+    <ng-container *ngIf="this.hasEditColumn" matColumnDef="edit">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let row" class="text-center">
         <a (click)="raiseEdit(row)" class="fa fa-pen-nib fa-2x text-decoration-none" placement="top"
@@ -37,7 +37,7 @@
           [style.visibility]="this.hasEditColumn(row) ? 'visible' : 'hidden'"></a>
       </td>
     </ng-container>
-    <ng-container matColumnDef="delete">
+    <ng-container *ngIf="this.hasDeleteColumn" matColumnDef="delete">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let row" class="text-center">
         <a (click)="raiseDelete(row)" class="fa fa-trash fa-2x text-decoration-none" placement="top" ngbTooltip="Delete"
