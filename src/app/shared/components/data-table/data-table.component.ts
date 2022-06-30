@@ -47,6 +47,7 @@ export class DataTableComponent<Type>
   @Input() hasDeleteColumn: (item: Type) => boolean = (item: Type) => false;
 
   @Input() hasSelectColumn: boolean;
+  @Input() hidePaginator: boolean;
 
   @Output() selectClick: EventEmitter<Type[]> = new EventEmitter();
   @Output() rowClick: EventEmitter<DataTableComponentClickEventArgs<Type>> =
