@@ -1,0 +1,10 @@
+::ng-deep .mat-column-dueFlashcardCount {
+  text-align: right;
+  justify-content: flex-end;
+}
+
+
+:host ::ng-deep .mat-column-dueFlashcardCount .mat-sort-header-container {
+  display: flex;
+  justify-content: right;
+}
