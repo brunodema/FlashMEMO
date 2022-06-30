@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Deck } from 'src/app/deck/models/deck.model';
+import { Deck, ExtendedDeckInfoDTO } from 'src/app/deck/models/deck.model';
 import { GenericDeckService } from 'src/app/deck/services/deck.service';
 import { GenericAuthService } from '../../services/auth.service';
 import {
@@ -23,30 +23,34 @@ export class UserWelcomeComponent {
     @Inject('GenericSpinnerService')
     protected spinnerService: GenericSpinnerService,
     @Inject('GenericDeckService') protected deckService: GenericDeckService
-  ) {}
+  ) {
+    this.refreshDeckDataSource();
+  }
+
+  private maxListSize = 5;
 
   columnOptions: DataTableColumnOptions[] = [
-    {
-      columnId: 'deckId',
-      displayName: 'Id',
-    },
     { columnId: 'name', displayName: 'Name' },
+    { columnId: 'dueFlashcardCount', displayName: 'Due Flashcards' },
   ];
   pageSizeOptions: number[] = [5];
 
   @ViewChild('deckTable')
-  public userTable: DataTableComponent<Deck>;
+  public userTable: DataTableComponent<ExtendedDeckInfoDTO>;
 
-  deckData$ = new BehaviorSubject<Deck[]>([]);
-  refreshUserDataSource() {
+  deckData$ = new BehaviorSubject<ExtendedDeckInfoDTO[]>([]);
+  refreshDeckDataSource() {
     this.spinnerService.showSpinner(SpinnerType.LOADING);
 
-    this.deckService.getAll().subscribe({
-      next: (deckArray) => {
-        this.deckData$.next(deckArray);
-        this.userTable?.toggleAllOff();
-      },
-      complete: () => this.spinnerService.hideSpinner(SpinnerType.LOADING),
-    });
+    this.deckService
+      .getExtendedDeckInfo(this.authService.loggedUser.getValue()?.id)
+      .subscribe({
+        next: (deckArray) => {
+          console.log(deckArray);
+          this.deckData$.next(deckArray.slice(0, this.maxListSize));
+          this.userTable?.toggleAllOff();
+        },
+        complete: () => this.spinnerService.hideSpinner(SpinnerType.LOADING),
+      });
   }
 }
