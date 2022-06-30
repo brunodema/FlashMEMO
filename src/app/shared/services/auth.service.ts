@@ -212,7 +212,7 @@ export abstract class GenericAuthService {
       'is RT expired? ' + this.jwtHelper.isTokenExpired(this.refreshToken)
     );
     return (
-      !this.jwtHelper.isTokenExpired(this.accessToken) &&
+      this.jwtHelper.isTokenExpired(this.accessToken) &&
       !this.jwtHelper.isTokenExpired(this.refreshToken)
     );
   }
