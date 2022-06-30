@@ -74,7 +74,12 @@ export type RepositoryServiceConfig = {
 };
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, LoginComponent, JumbotronComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    LoginComponent,
+    JumbotronComponent,
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,
