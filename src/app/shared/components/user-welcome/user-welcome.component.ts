@@ -30,7 +30,11 @@ export class UserWelcomeComponent {
   private maxListSize = 5;
 
   columnOptions: DataTableColumnOptions[] = [
-    { columnId: 'name', displayName: 'Name' },
+    {
+      columnId: 'name',
+      displayName: 'Name',
+      redirectParams: ['/deck/', 'deckId'],
+    },
     { columnId: 'dueFlashcardCount', displayName: 'Due Flashcards' },
   ];
   pageSizeOptions: number[] = [5];
