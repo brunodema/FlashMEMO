@@ -311,6 +311,7 @@ export class FlashcardContentOptionsBlockComponent
         this.hasPrevious = r.data.hasPreviousPage;
         this.hasNext = r.data.hasNextPage;
       },
+      error: () => this.spinnerService.hideSpinner(SpinnerType.SEARCHING),
       complete: () => this.spinnerService.hideSpinner(SpinnerType.SEARCHING),
     });
   }
@@ -339,6 +340,7 @@ export class FlashcardContentOptionsBlockComponent
           this.showDictionaryToolbar = true;
         }
       },
+      error: () => this.spinnerService.hideSpinner(SpinnerType.SEARCHING),
       complete: () => this.spinnerService.hideSpinner(SpinnerType.SEARCHING),
     });
   }
@@ -363,6 +365,7 @@ export class FlashcardContentOptionsBlockComponent
           this.audioAPIResults = results.data.results.audioLinks;
         }
       },
+      error: () => this.spinnerService.hideSpinner(SpinnerType.SEARCHING),
       complete: () => this.spinnerService.hideSpinner(SpinnerType.SEARCHING),
     });
   }
