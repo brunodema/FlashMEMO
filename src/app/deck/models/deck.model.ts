@@ -6,6 +6,7 @@ export class Deck {
   description: string = '';
   creationDate: string = new Date().toISOString();
   lastUpdated: string = new Date().toISOString();
+  lastStudySession?: string = undefined;
 
   public constructor(init?: Partial<Deck>) {
     Object.assign(this, init);

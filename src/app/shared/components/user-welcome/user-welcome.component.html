@@ -4,11 +4,13 @@
     <div class="card h-100 ">
       <div class="card-body d-flex flex-column align-items-center justify-content-center">
         <h5 class="card-title">Your stats</h5>
-        <p class="card-text">You currently have <b>XX</b> decks, which contain a total of <b>YY</b> flashcards. There
+        <p class="card-text">You currently have <b>{{ this.userStats$.getValue()!.deckCount }}</b> decks, which contain
+          a total of <b>{{ this.userStats$.getValue()!.flashcardCount }}</b> flashcards. There
           are <b>XX</b> study
-          sessions pending, for a total of <b>YY</b> flashcards to be reviewed. Your last login was on
-          <b>DD-MM-YYYY</b>, and your
-          last study session was held on <b>DD-MM-YYYY</b>.
+          sessions pending, for a total of <b>{{ this.userStats$.getValue()!.dueFlashcardCount }}</b> flashcards to be
+          reviewed. Your last login was on
+          <b>{{ this.userStats$.getValue()!.lastLogin ?? 'IDK' }}</b>, and your
+          last study session was held on <b>{{ this.userStats$.getValue()!.lastStudySession ?? 'IDK' }}</b>.
         </p>
 
       </div>
