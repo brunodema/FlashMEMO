@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, ViewChild } from '@angular/core';
 import { BehaviorSubject, mergeMap, tap, forkJoin, of } from 'rxjs';
 import { ExtendedDeckInfoDTO } from 'src/app/deck/models/deck.model';
 import { GenericDeckService } from 'src/app/deck/services/deck.service';
@@ -54,7 +54,6 @@ export class UserWelcomeComponent {
       .getExtendedDeckInfo(this.authService.loggedUser.getValue()?.id)
       .subscribe({
         next: (deckArray) => {
-          console.log(deckArray);
           this.deckData$.next(deckArray.slice(0, this.maxListSize));
           this.deckTable?.toggleAllOff();
         },
@@ -65,11 +64,9 @@ export class UserWelcomeComponent {
   userStats$ = new BehaviorSubject<UserWithDeckData | undefined>(undefined);
   refreshUserWithDeckDataSource() {
     this.spinnerService.showSpinner(SpinnerType.LOADING);
-    console.log('about to start the shenanigans');
     this.userService
       .get(this.authService.loggedUser.getValue()!.id)
       .pipe(
-        tap((lol) => console.log('tapping this user shit', lol)),
         mergeMap((userResponse) => {
           const deckResponse = this.deckService.getExtendedDeckInfo(
             userResponse.data.id
