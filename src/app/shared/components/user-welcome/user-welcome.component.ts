@@ -87,6 +87,9 @@ export class UserWelcomeComponent {
           lastLogin: res[0].data.lastLogin,
           deckCount: res[1].length,
           // super cool map + reduce approach taken from: https://stackoverflow.com/questions/23247859/better-way-to-sum-a-property-value-in-an-array
+          dueDeckCount: res[1]
+            .map((deck) => deck.dueFlashcardCount)
+            .filter((value) => value > 0).length,
           lastStudySession: res[1]
             .map((deck) => deck.lastStudySession)
             .reduce((prev, next) =>

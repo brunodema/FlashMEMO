@@ -6,11 +6,10 @@
         <h5 class="card-title">Your stats</h5>
         <p class="card-text">You currently have <b>{{ this.userStats$.getValue()!.deckCount }}</b> decks, which contain
           a total of <b>{{ this.userStats$.getValue()!.flashcardCount }}</b> flashcards. There
-          are <b>XX</b> study
+          are <b>{{ this.userStats$.getValue()!.dueDeckCount }}</b> study
           sessions pending, for a total of <b>{{ this.userStats$.getValue()!.dueFlashcardCount }}</b> flashcards to be
-          reviewed. Your last login was on
-          <b>{{ this.userStats$.getValue()!.lastLogin ?? 'IDK' }}</b>, and your
-          last study session was held on <b>{{ this.userStats$.getValue()!.lastStudySession ?? 'IDK' }}</b>.
+          reviewed. Your last study session was held on <b>{{ this.userStats$.getValue()!.lastStudySession ?? 'N/A'
+            }}</b>.
         </p>
 
       </div>
