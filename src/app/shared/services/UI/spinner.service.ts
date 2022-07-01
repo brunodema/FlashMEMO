@@ -23,6 +23,14 @@ export abstract class GenericSpinnerService {
   hideSpinner(spinnerType: SpinnerType) {
     this.spinnerService.hide(spinnerType);
   }
+
+  /** To be used to avoid screen-locking with spinners in certain situations (ex: errors thrown). */
+  killAllSpinners() {
+    this.spinnerService.hide(SpinnerType.LOGIN);
+    this.spinnerService.hide(SpinnerType.LOGOUT);
+    this.spinnerService.hide(SpinnerType.LOADING);
+    this.spinnerService.hide(SpinnerType.SEARCHING);
+  }
 }
 
 @Injectable({
