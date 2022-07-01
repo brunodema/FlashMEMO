@@ -28,7 +28,7 @@ export const environment = {
   dictionaryAPIService: DictionaryService,
   // logging
   loggerConfig: {
-    logLevel: 'INFORMATION',
+    logLevel: 'DEBUG',
     provider: 'CONSOLE',
   } as IFlashMEMOLoggerOptions,
 };

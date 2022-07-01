@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { GenericAuthService } from 'src/app/shared/services/auth.service';
 import { LoggerService } from 'src/app/shared/services/logging/logger.service';
 
 @Component({
@@ -9,14 +10,10 @@ import { LoggerService } from 'src/app/shared/services/logging/logger.service';
 export class HomeComponent implements OnInit {
   constructor(
     @Inject('GenericLoggerService')
-    protected loggerService: LoggerService
+    protected loggerService: LoggerService,
+    @Inject('GenericAuthService')
+    public authService: GenericAuthService
   ) {}
 
-  ngOnInit(): void {
-    this.loggerService.logTrace('hello there (trace)');
-    this.loggerService.logDebug('hello there (debug)');
-    this.loggerService.logInformation('hello there (info)');
-    this.loggerService.logWarning('hello there (warning)');
-    this.loggerService.logError('hello there (error)');
-  }
+  ngOnInit(): void {}
 }

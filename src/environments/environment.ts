@@ -28,7 +28,7 @@ export const environment = {
   dictionaryAPIService: MockDictionaryService,
   // logging
   loggerConfig: {
-    logLevel: 'INFORMATION',
+    logLevel: 'DEBUG',
     provider: 'CONSOLE',
   } as IFlashMEMOLoggerOptions,
 };

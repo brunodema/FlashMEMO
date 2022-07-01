@@ -3,18 +3,17 @@ import {
   AfterViewInit,
   Component,
   EventEmitter,
-  Inject,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
   ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { GenericAuthService } from '../../services/auth.service';
 
 export class DataTableColumnOptions {
   columnId: string;
@@ -43,10 +42,11 @@ export class DataTableComponent<Type>
   @Input() pageSizeOptions: number[];
 
   // Given this new implementation where I take a lambda to determine if a specific row should have the icons or not, THIS LINK HERE WAS ESSENTIAL FOR ME TO MAKE THIS WORK: https://stackoverflow.com/questions/35328652/angular-pass-callback-function-to-child-component-as-input-similar-to-angularjs. TLDR: it' required to declare the lambdas on the parent using the same type declaration declared on the child. In this case, it was required to declare them using arrow functions, just as described on the link.
-  @Input() hasEditColumn: (item: Type) => boolean = (item: Type) => false;
-  @Input() hasDeleteColumn: (item: Type) => boolean = (item: Type) => false;
+  @Input() hasEditColumn: ((item: Type) => boolean) | undefined = undefined;
+  @Input() hasDeleteColumn: ((item: Type) => boolean) | undefined = undefined;
 
   @Input() hasSelectColumn: boolean;
+  @Input() hidePaginator: boolean;
 
   @Output() selectClick: EventEmitter<Type[]> = new EventEmitter();
   @Output() rowClick: EventEmitter<DataTableComponentClickEventArgs<Type>> =
@@ -160,8 +160,8 @@ export class DataTableComponent<Type>
   getColumnNames(): string[] {
     let columnNames = this.columnOptions.map((x) => x.columnId);
     if (this.hasSelectColumn) columnNames.unshift('select');
-    columnNames.push('edit');
-    columnNames.push('delete');
+    if (this.hasEditColumn) columnNames.push('edit');
+    if (this.hasDeleteColumn) columnNames.push('delete');
 
     return columnNames;
   }

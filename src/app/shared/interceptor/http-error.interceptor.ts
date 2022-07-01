@@ -13,6 +13,7 @@ import { GenericNotificationService } from '../services/notification/notificatio
 import { GenericAuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { GenericLoggerService } from '../services/logging/logger.service';
+import { GenericSpinnerService } from '../services/UI/spinner.service';
 
 /**
  * This global HTTP interceptor implementation is based on these resources: https://www.tektutorialshub.com/angular/angular-http-error-handling/ and https://rollbar.com/blog/error-handling-with-angular-8-tips-and-best-practices/
@@ -24,7 +25,9 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
     @Inject('GenericAuthService') protected authService: GenericAuthService,
     protected router: Router,
     @Inject('GenericLoggerService')
-    protected loggerService: GenericLoggerService
+    protected loggerService: GenericLoggerService,
+    @Inject('GenericSpinnerService')
+    protected spinnerService: GenericSpinnerService
   ) {}
 
   intercept(
@@ -66,17 +69,6 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
                         },
                       })
                     );
-                  }),
-                  catchError((err) => {
-                    this.loggerService.logDebug('Why the hell am I here for?');
-                    this.notificationService.showWarning(
-                      'Please log in first 🤠'
-                    );
-                    this.authService.disconnectUser();
-                    this.router.navigateByUrl('login');
-                    throw new Error(
-                      "An error occured while renewing the user's credentials via the http-interceptor."
-                    );
                   })
                 );
             } else {
@@ -86,6 +78,7 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
               this.notificationService.showWarning('Please log in first 🤠');
               this.authService.disconnectUser();
               this.router.navigateByUrl('login');
+              this.spinnerService.killAllSpinners(); // for extra security - but might backfire in sensitive situations?
               throw new Error(
                 "It is not possible to renew the user's credentials via the http-interceptor."
               );

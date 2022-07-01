@@ -1,0 +1,30 @@
+<h1>Welcome back, {{ (this.authService.loggedUser | async)!.username }} 😊</h1>
+<div class="row mt-4">
+  <div class="col-6">
+    <div class="card h-100 ">
+      <div class="card-body d-flex flex-column align-items-center justify-content-center">
+        <h5 class="card-title">Your stats</h5>
+        <!-- The approach described here is WAY cleaner than whatever I implemented so far with observables/subjects on HTML: https://ultimatecourses.com/blog/angular-ngif-async-pipe -->
+        <p *ngIf="this.userStats$ | async as user" class="card-text">You currently have <b>{{ user.deckCount }}</b>
+          decks, which contain
+          a total of <b>{{ user.flashcardCount }}</b> flashcards. There
+          are <b>{{ user.dueDeckCount }}</b> study
+          sessions pending, for a total of <b>{{ user.dueFlashcardCount }}</b> flashcards to be
+          reviewed. Your last study session was held on <b>{{ (user.lastStudySession | date: 'medium') ?? 'N/A'
+            }}</b>.
+        </p>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">Here are your decks</h5>
+        <app-data-table #deckTable [dataSource]="(deckData$ | async) || []" [columnOptions]='this.columnOptions'
+          [pageSizeOptions]='this.pageSizeOptions' [hidePaginator]="true"></app-data-table>
+      </div>
+      <a href="#" class="btn btn-primary" routerLink="/deck/list">See all</a>
+    </div>
+  </div>
+</div>
