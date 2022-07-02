@@ -20,6 +20,7 @@ import {
 } from '../models/http/http-request-types';
 import {
   IBaseAPIResponse,
+  IDataResponse,
   ILoginResponse,
 } from '../models/http/http-response-types';
 import { GenericLoggerService } from './logging/logger.service';
@@ -422,7 +423,10 @@ export class AuthService extends GenericAuthService {
 
   public register(registerData: IRegisterRequest): Observable<any> {
     return this.http
-      .post<IBaseAPIResponse>(`${this.userServiceURL}/create`, registerData)
+      .post<IDataResponse<string>>(
+        `${this.userServiceURL}/create`,
+        registerData
+      )
       .pipe(
         map((res) => {
           this.handleSuccessfulRegistration(res);
