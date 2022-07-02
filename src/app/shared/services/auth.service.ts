@@ -199,10 +199,11 @@ export abstract class GenericAuthService {
     return false;
   }
 
-  public isAuthenticated(): boolean {
+  public hasNonExpiredAccessTokenStored(): boolean {
     return !this.jwtHelper.isTokenExpired(this.accessToken);
   }
 
+  /** To be able to renew an access token, the front-end will require that an access token exists (regardless if expire, invalid, etc), and that a non-expired refreshToken exists. */
   public canAttemptTokenRenewal(): boolean {
     this.loggerService.logDebug(
       'Checking if token renewal is possible...',
@@ -252,11 +253,7 @@ export abstract class GenericAuthService {
 
   protected handleFailedLogin(err: HttpErrorResponse) {
     this.clearPreExistingTokens();
-    this.notificationService.showError(
-      this.processErrorsFromAPI(err.error),
-      'Authentication Failure'
-    );
-    return throwError(err);
+    return throwError(() => err);
   }
 
   protected processErrorsFromAPI(errorResponse: ILoginResponse): string {

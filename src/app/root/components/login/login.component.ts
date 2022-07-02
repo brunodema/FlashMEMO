@@ -1,7 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
 import { ILoginRequest } from '../../../shared/models/http/http-request-types';
 import { GenericAuthService } from '../../../shared/services/auth.service';
 
@@ -51,6 +53,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     @Inject('GenericAuthService') private authService: GenericAuthService,
+
+    private notificationService: GenericNotificationService,
     private router: Router
   ) {}
 
@@ -64,7 +68,11 @@ export class LoginComponent implements OnInit {
       };
       this.authService
         .login(loginRequestData, this.form.value.rememberMe)
-        .subscribe();
+        .subscribe({
+          error: (err: HttpErrorResponse) => {
+            this.notificationService.showError(err.error.message);
+          },
+        });
     }
   }
 }

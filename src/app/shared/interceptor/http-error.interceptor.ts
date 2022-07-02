@@ -38,12 +38,18 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         switch (error.status) {
           case HttpStatusCode.InternalServerError:
-            this.notificationService.showError(
-              'An error occured with your request.'
+            this.loggerService.logError(
+              'A 500 response was returned by the back-end.',
+              error
             );
-            this.loggerService.logError(error);
-            break;
+            throw error;
           case HttpStatusCode.Unauthorized:
+            if (!this.authService.accessToken && req.url.includes('login')) {
+              this.loggerService.logDebug(
+                "401 returned, user has no stored access token, and URL has 'login' in it"
+              );
+              throw error;
+            }
             if (this.authService.canAttemptTokenRenewal()) {
               this.loggerService.logDebug(
                 'Attempting to renew access token via interceptor...',
@@ -80,7 +86,7 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
               this.router.navigateByUrl('login');
               this.spinnerService.killAllSpinners(); // for extra security - but might backfire in sensitive situations?
               throw new Error(
-                "It is not possible to renew the user's credentials via the http-interceptor."
+                "User's stored credentials do not qualify for credential renewal via http-interceptor."
               );
             }
 

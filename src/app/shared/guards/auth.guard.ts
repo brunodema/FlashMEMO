@@ -17,7 +17,7 @@ export class FlashMEMOAuthGuard implements CanActivate {
   ) {}
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
-    if (!this.authService.isAuthenticated()) {
+    if (!this.authService.hasNonExpiredAccessTokenStored()) {
       this.loggerService.logDebug(
         'User is not authenticated. Does an access token exist? Auth-guard is asking:',
         this.authService.accessToken ? true : false
@@ -62,7 +62,7 @@ export class FlashMEMOAuthGuard implements CanActivate {
       }
     } else {
       this.loggerService.logDebug(
-        'User is authenticated. Redirecting him/her to the desired page...'
+        'User has an access token stored. Redirecting him/her to the desired page...'
       );
       return true;
     }
