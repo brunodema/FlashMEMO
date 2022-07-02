@@ -42,6 +42,7 @@ import {
 } from './shared/services/logging/logger.service';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { JumbotronComponent } from './root/components/common/jumbotron/jumbotron.component';
+import { MethodComponent } from './root/components/method/method.component';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const password = control.value['password'];
@@ -79,6 +80,7 @@ export type RepositoryServiceConfig = {
     HomeComponent,
     LoginComponent,
     JumbotronComponent,
+    MethodComponent,
   ],
   imports: [
     BrowserModule,
