@@ -126,14 +126,6 @@ export class UserModelFormComponent implements AfterViewInit {
    * To avoid any risks of exposing confidential information (even if masked), this function is called to clear both password fields of the form.
    */
   private clearPasswordFields() {
-    // this.form.controls['password'].setValue('', {
-    //   emitEvent: false,
-    //   onlySelf: true,
-    // });
-    // this.form.controls['confirmPassword'].setValue('', {
-    //   emitEvent: false,
-    //   onlySelf: true,
-    // });
     this.form.patchValue({ password: '', confirmPassword: '' });
     this.cdr.detectChanges();
   }
@@ -166,6 +158,7 @@ export class UserModelFormComponent implements AfterViewInit {
             );
           });
         } else {
+          // This is used when an admin user is creating a new user manually
           this.userService.create(this.form.value).subscribe((result) => {
             this.notificationService.showSuccess('User successfully created!');
             this.router.navigate(['user', result.data]);
