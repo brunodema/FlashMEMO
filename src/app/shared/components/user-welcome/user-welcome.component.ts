@@ -83,26 +83,28 @@ export class UserWelcomeComponent {
           username: res[0].data.username,
           lastLogin: res[0].data.lastLogin,
           deckCount: res[1].length,
-          // super cool map + reduce approach taken from: https://stackoverflow.com/questions/23247859/better-way-to-sum-a-property-value-in-an-array
+          // super cool map + reduce approach taken from: https://stackoverflow.com/questions/23247859/better-way-to-sum-a-property-value-in-an-array. Had to take initial value considerations from here: https://stackoverflow.com/questions/23359173/javascript-reduce-an-empty-array.
           dueDeckCount: res[1]
             .map((deck) => deck.dueFlashcardCount)
             .filter((value) => value > 0).length,
           lastStudySession: res[1]
             .map((deck) => deck.lastStudySession)
-            .reduce((prev, next) =>
-              new Date(
-                Math.max(
-                  new Date(prev ?? new Date()).getTime(),
-                  new Date(next ?? new Date()).getTime()
-                )
-              ).toISOString()
+            .reduce(
+              (prev, next) =>
+                new Date(
+                  Math.max(
+                    new Date(prev ?? new Date()).getTime(),
+                    new Date(next ?? new Date()).getTime()
+                  )
+                ).toISOString(),
+              undefined
             ),
           dueFlashcardCount: res[1]
             .map((deck) => deck.flashcardCount)
-            .reduce((prev, next) => prev + next),
+            .reduce((prev, next) => prev + next, 0),
           flashcardCount: res[1]
             .map((deck) => deck.dueFlashcardCount)
-            .reduce((prev, next) => prev + next),
+            .reduce((prev, next) => prev + next, 0),
         });
         this.spinnerService.hideSpinner(SpinnerType.LOADING);
       });
