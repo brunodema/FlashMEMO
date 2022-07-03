@@ -1,9 +1,9 @@
 import {
   Component,
-  ElementRef,
   EventEmitter,
   Inject,
   Input,
+  OnInit,
   Output,
 } from '@angular/core';
 import { IFlashcard } from 'src/app/shared/models/flashcard-models';
@@ -36,7 +36,7 @@ export class StudySessionImageTools {
   styleUrls: ['./study-session.component.css'],
   host: { class: 'container h-100 d-flex' },
 })
-export class StudySessionComponent {
+export class StudySessionComponent implements OnInit {
   /**
    * Simply holds a reference to the Enum type (otherwise HTML bindings for the type do not work).
    */
@@ -71,6 +71,8 @@ export class StudySessionComponent {
    */
   @Input()
   flashcardList: Array<IFlashcard>;
+  /** I use this variable to keep the flashcard lenght static, otherwise whenever an answer that moves the due date to a future date is chosen (again/correct), the lenght of the list changes, since the input variable changes on the outside. */
+  initialflashcardList: Array<IFlashcard> = [];
   /**
    * Flashcard being currently reviewed.
    */
@@ -93,26 +95,28 @@ export class StudySessionComponent {
   wrongCount: number = 0;
 
   constructor(
-    private hostElement: ElementRef,
     @Inject('GenericFlashcardService')
     private flashcardService: GenericFlashcardService
   ) {
     this.startImg = new StudySessionImageTools().pickRandomImage();
     this.endImg = new StudySessionImageTools().pickRandomImage();
   }
+  ngOnInit(): void {
+    this.initialflashcardList = this.flashcardList;
+  }
 
   startSession() {
     this.currentStep = StudySessionStep.STUDY;
-    this.activeFlashcard = this.flashcardList[this.activeFlashcardIndex];
+    this.activeFlashcard = this.initialflashcardList[this.activeFlashcardIndex];
     // this.hostElement.nativeElement.classList.remove('flex-column'); // Hell yeah, another fuckin' random line that does magic... if I leave the 'flex-column' directive from the host element of this component (this is declared above), the calculation for the heights of the individual content blocks gets fucked (ex: returns things such as '2px' or '4px'). B U T, if I remove this directive first, it works like usual. FML 🤪
   }
 
   goToNextFlashcard() {
     ++this.activeFlashcardIndex;
-    if (this.activeFlashcardIndex >= this.flashcardList.length) {
+    if (this.activeFlashcardIndex >= this.initialflashcardList.length) {
       return this.triggerEndScreen();
     }
-    this.activeFlashcard = this.flashcardList[this.activeFlashcardIndex];
+    this.activeFlashcard = this.initialflashcardList[this.activeFlashcardIndex];
   }
 
   /**
@@ -127,7 +131,7 @@ export class StudySessionComponent {
     switch (args) {
       case FlashcardReviewStatus.CORRECT:
         let newLevel = this.activeFlashcard.level + 1;
-        this.flashcardService.advanceToNextLevel(
+        this.activeFlashcard = this.flashcardService.advanceToNextLevel(
           this.activeFlashcard,
           newLevel
         );
@@ -135,7 +139,7 @@ export class StudySessionComponent {
         break;
 
       case FlashcardReviewStatus.AGAIN:
-        this.flashcardService.advanceToNextLevel(
+        this.activeFlashcard = this.flashcardService.advanceToNextLevel(
           this.activeFlashcard,
           this.activeFlashcard.level
         );
@@ -143,7 +147,10 @@ export class StudySessionComponent {
         break;
 
       case FlashcardReviewStatus.WRONG:
-        this.flashcardService.advanceToNextLevel(this.activeFlashcard, 0);
+        this.activeFlashcard = this.flashcardService.advanceToNextLevel(
+          this.activeFlashcard,
+          0
+        );
         ++this.wrongCount;
         break;
 

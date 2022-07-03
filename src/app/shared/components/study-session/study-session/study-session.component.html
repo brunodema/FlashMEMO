@@ -6,7 +6,8 @@
         <div class="card-body">
           <h5 class="card-title">Ready to study?</h5>
           <p class="card-text">Click on 'Start' to begin you study session!</p>
-          <p class="card-text"><small class="text-muted">Let me se... you have <b>{{ flashcardList.length }}</b>
+          <p class="card-text"><small class="text-muted">Let me se... you have <b>{{ initialflashcardList.length
+                }}</b>
               flashcards to be reviewed 💭.</small></p>
         </div>
       </div>
@@ -19,7 +20,7 @@
 
   <ng-container *ngSwitchCase="StudySessionStepEnum.STUDY">
     <div class="container d-flex flex-column h-100">
-      <small class="text-muted text-center">{{ activeFlashcardIndex }}/{{ flashcardList.length }}</small>
+      <small class="text-muted text-center">{{ activeFlashcardIndex }}/{{ initialflashcardList.length }}</small>
       <app-flashcard class="flex-grow-1" [isStudySession]="true" [flashcard]="activeFlashcard"
         (relayStudySessionAnswer)="processFlashcardAnswer($event)"></app-flashcard>
     </div>
@@ -32,7 +33,8 @@
         <div class="card-body">
           <h5 class="card-title">Finished!</h5>
           <p class="card-text">We are done for the day. Here are your stats:</p>
-          <p class="card-text"><small class="text-muted">You reviewed a total of <b>{{ this.flashcardList.length }}</b>
+          <p class="card-text"><small class="text-muted">You reviewed a total of <b>{{ initialflashcardList.length
+                }}</b>
               flashcards 🗃. You answered correctly <b>{{ correctCount }}</b>
               time(s) ✅, and answered incorrectly <b>{{ wrongCount }}</b> time(s) ❌. You set <b>{{ againCount }}</b>
               flashcard(s) to
