@@ -89,21 +89,24 @@ export class UserWelcomeComponent {
             .filter((value) => value > 0).length,
           lastStudySession: res[1]
             .map((deck) => deck.lastStudySession)
-            .reduce(
-              (prev, next) =>
+            .reduce((prev, next) => {
+              // The madness below is an attempt to short-circuit the method if applicable, and to return 'undefined' in the end if no valid values exist - which imply that no study sessions were made so far.
+              if (prev && !next) return prev;
+              if (!prev && next) return next;
+              if (!prev && !next) return undefined;
+
+              return (
                 new Date(
-                  Math.max(
-                    new Date(prev ?? new Date()).getTime(),
-                    new Date(next ?? new Date()).getTime()
-                  )
+                  Math.max(new Date(prev!).getTime(), new Date(next!).getTime())
                 ).toISOString(),
-              undefined
-            ),
+                undefined
+              );
+            }),
           dueFlashcardCount: res[1]
-            .map((deck) => deck.flashcardCount)
+            .map((deck) => deck.dueFlashcardCount)
             .reduce((prev, next) => prev + next, 0),
           flashcardCount: res[1]
-            .map((deck) => deck.dueFlashcardCount)
+            .map((deck) => deck.flashcardCount)
             .reduce((prev, next) => prev + next, 0),
         });
         this.spinnerService.hideSpinner(SpinnerType.LOADING);
