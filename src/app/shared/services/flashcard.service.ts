@@ -61,11 +61,13 @@ export abstract class GenericFlashcardService extends GenericRepositoryService<I
    * @param flashcard
    * @param newLevel
    */
-  advanceToNextLevel(flashcard: IFlashcard, newLevel: number): void {
+  advanceToNextLevel(flashcard: IFlashcard, newLevel: number): IFlashcard {
     flashcard.level = newLevel;
     flashcard.dueDate = new Date(
       new Date().setDate(new Date().getDate() + newLevel ** 2)
     ).toISOString();
+
+    return flashcard;
   }
 }
 
