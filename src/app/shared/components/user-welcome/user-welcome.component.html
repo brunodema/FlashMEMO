@@ -24,7 +24,7 @@
         <app-data-table #deckTable [dataSource]="(deckData$ | async) || []" [columnOptions]='this.columnOptions'
           [pageSizeOptions]='this.pageSizeOptions' [hidePaginator]="true"></app-data-table>
       </div>
-      <a href="#" class="btn btn-primary" routerLink="/deck/list">See all</a>
+      <a class="btn btn-primary" routerLink="/deck/list">See all</a>
     </div>
   </div>
 </div>
