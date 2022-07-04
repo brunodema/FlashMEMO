@@ -4,11 +4,12 @@
       <div class="row card-body">
         <div class="col-sm-6">
           <h5 class="card-title">The Leitner Box</h5>
-          <p class="card-text">The Leitner System, also referred sometimes as 'Leitner Box', is a spaced-repetition
+          <p class="card-text">
+            The Leitner System, also referred sometimes as 'Leitner Box', is a spaced-repetition
             memorization technique proposed by German science journalist Sebastian Leitner in the 1970s. In his book <a
               target="_blank" rel="noopener noreferrer"
-              href="https://www.amazon.com/lernt-lernen-Board-Leitner-Sebastian/dp/B002DUHIKA?language=en_US">'So
-              lernt man lernen'</a> (roughly 'how to learn to learn' or 'learning how to learn'), the idea of a review
+              href="https://www.amazon.com/lernt-lernen-Board-Leitner-Sebastian/dp/B002DUHIKA?language=en_US">So
+              lernt man lernen</a> (roughly 'how to learn to learn' or 'learning how to learn'), the idea of a review
             system
             is proposed, where concepts - which can be words, topics, names, etc - can efficiently be learned by
             reviewing them in pre-determined time ranges, which get longer and more challenging as you prove to
@@ -28,12 +29,15 @@
           <h5 class="card-title">Fluent Forever and Flashcards</h5>
           <p class="card-text">
             The use of flashcards is popularly used in conjunction with this method. Published by Gabriel Wyner, the
-            book 'Fluent Forever' describes the author's experience with this method during the language learning
+            book <a target="_blank" rel="noopener noreferrer"
+              href="https://www.amazon.com/dp/B00IBZ405W/ref=dp-kindle-redirect?_encoding=UTF8&btkr=1">Fluent
+              Forever</a> describes the author's experience with this method during the language learning
             process, and tips on how to take the most of it. As someone who read the book and sucessfully put the
             concept to the test, I decided to set up a platform on which users can easily create their own flashcards
-            and help each other learn more efficiently, with the help of a collaborative environment.
-            You can either check the book or go to Fluent Forever's blog to get more info about the team's idea, its app
-            in development and its methodology.</p>
+            and help each other learn more efficiently, with the help of a collaborative environment. An app that uses
+            this concept is <a target="_blank" rel="noopener noreferrer" href="https://apps.ankiweb.net/">Anki</a>,
+            which is probably the most popular option in this regard.
+          </p>
         </div>
         <img class="col-sm-6" style="max-height: 300px;" src="assets/features/flashmemo_dummy2.jpg" alt="sans" />
       </div>
@@ -44,7 +48,8 @@
       <div class="row card-body">
         <div class="col-sm-6">
           <h5 class="card-title">(Language) Learning</h5>
-          <p class="card-text">As mentioned, the Leitner System isn't a 'language learning' methodology, per se. You can
+          <p class="card-text">
+            As mentioned, the Leitner System isn't a 'language learning' methodology, per se. You can
             apply it to whatever you want, in fact. Are you having a hard time fixating concepts of a given class in
             college? Or do you wish to establish a more grounded study routine for an upcoming test? Maybe just train
             memorization for the sake of it - you might be participating in memorization contests, for instance?
@@ -52,7 +57,8 @@
             The goal of this app is not only to provide a flexible and intuitive system to create and store your
             flashcards, but also to leave up to you how to handle them. If you specify a target language for your deck,
             you'll be redirected to guided content for the given target language. If you don't, you'll be able to add
-            whatever content you want to your deck/flashcard.</p>
+            whatever content you want to your deck/flashcard.
+          </p>
         </div>
         <img class="col-sm-6" style="max-height: 300px;" src="assets/features/flashmemo_dummy4.jpg" alt="sans" />
       </div>
@@ -62,20 +68,31 @@
     <div class="card">
       <div class="row card-body">
         <div class="col-sm-6">
-          <h5 class="card-title">Alright, I'm in!</h5>
-          <p class="card-text">1. Register here. You'll be prompted to create a new login and password. YOU DON'T
-            NECESSARILY NEED TO CREATE A NEW USER. You can use login: TestUser01 and password: 1234, if you prefer to
-            use our test account.
-            2. Click on 'Create Deck'. Set a name and a language to it (you can also set it to 'N/A'), and confirm to
-            create it.
-            3. Go to your deck page. You'll see at the bottom an 'Add Flashcard' Button. Click on it to start creating
-            your flashcard. Use the APIs to add custom content (images, definitions, etc) and, after validating it,
-            confirm to create the flashcard.
-            4. After adding/editing your flashcards, click on 'Study' to start a study session. Try to correctly guess
-            the flashcard's answer - or set the manual input, if you configured it this way. Go through all of the due
-            flashcards to finish the session.
-            5. CONGRATULATIONS! Now wait until your flashcards are due again to study again. In the meanwhile, create
-            new flashcards!</p>
+          <h5 class="card-title">So you decided to give FlashMEMO a try... that's great! 🙌</h5>
+          <p class="card-text">
+            Here are your first steps:
+          <ol>
+            <li>
+              Register <a routerLink="/user/create" [queryParams]="{ mode: 'create' }">here</a>.
+            </li>
+            <li>
+              Click on 'Create Deck'. Set a name and a language to it (you can also set it to 'N/A'), and confirm to
+              create it.
+            </li>
+            <li>
+              Go to your deck page. Click on 'Create Flashcard'. Use the APIs to add custom content to it (images,
+              definitions, etc).
+            </li>
+            <li>
+              Once your flashcards are ready, click on 'Study'. Try to correctly guess the flashcards' answers. Go
+              through all of the your flashcards to finish the session.
+            </li>
+            <li>
+              CONGRATULATIONS! Now wait until your next study session. In the meanwhile, create
+              new flashcards!
+            </li>
+          </ol>
+          <p>
         </div>
         <img class="col-sm-6" style="max-height: 300px;" src="assets/features/flashmemo_dummy1.jpg" alt="sans" />
       </div>
