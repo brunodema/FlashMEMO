@@ -9,6 +9,7 @@ import { MockAuthService } from 'src/app/shared/services/auth.service';
 import { MockFlashcardService } from 'src/app/shared/services/flashcard.service';
 import { MockLanguageService } from 'src/app/shared/services/language.service';
 import { IFlashMEMOLoggerOptions } from 'src/app/shared/services/logging/logger.service';
+import { MockUserStatsService } from 'src/app/shared/services/user-stats.service';
 import { MockUserService } from 'src/app/user/services/user.service';
 
 export const environment = {
@@ -28,6 +29,7 @@ export const environment = {
   imageAPIService: MockImageAPIService,
   audioAPIService: MockAudioService,
   dictionaryAPIService: MockDictionaryService,
+  userStatsService: MockUserStatsService,
   // logging
   loggerConfig: {
     logLevel: 'INFORMATION',

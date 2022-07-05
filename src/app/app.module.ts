@@ -164,6 +164,10 @@ export type RepositoryServiceConfig = {
     { provide: 'GenericAuthService', useClass: environment.authService },
     { provide: 'GenericUserService', useClass: environment.userService },
     { provide: 'GenericNewsService', useClass: environment.newsService },
+    {
+      provide: 'GenericUserStatsService',
+      useClass: environment.userStatsService,
+    },
 
     { provide: DeckRepositoryResolverService },
     { provide: UserRepositoryResolverService },

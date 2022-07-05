@@ -1,14 +1,17 @@
-import { ChangeDetectorRef, Component, Inject, ViewChild } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { BehaviorSubject, mergeMap, tap, forkJoin, of } from 'rxjs';
 import { ExtendedDeckInfoDTO } from 'src/app/deck/models/deck.model';
 import { GenericDeckService } from 'src/app/deck/services/deck.service';
-import { UserWithDeckData } from 'src/app/user/models/user.model';
 import { GenericUserService } from 'src/app/user/services/user.service';
 import { GenericAuthService } from '../../services/auth.service';
 import {
   GenericSpinnerService,
   SpinnerType,
 } from '../../services/UI/spinner.service';
+import {
+  GenericUserStatsService,
+  UserStats,
+} from '../../services/user-stats.service';
 import {
   DataTableColumnOptions,
   DataTableComponent,
@@ -25,10 +28,11 @@ export class UserWelcomeComponent {
     @Inject('GenericSpinnerService')
     protected spinnerService: GenericSpinnerService,
     @Inject('GenericDeckService') protected deckService: GenericDeckService,
-    @Inject('GenericUserService') protected userService: GenericUserService
+    @Inject('GenericUserStatsService')
+    protected userStatsService: GenericUserStatsService
   ) {
     this.refreshDeckDataSource();
-    this.refreshUserWithDeckDataSource();
+    this.refreshUserStatsDataSource();
   }
 
   private maxListSize = 5;
@@ -61,51 +65,17 @@ export class UserWelcomeComponent {
       });
   }
 
-  userStats$ = new BehaviorSubject<UserWithDeckData | undefined>(undefined);
-  refreshUserWithDeckDataSource() {
+  userStats$ = new BehaviorSubject<UserStats | undefined>(undefined);
+  refreshUserStatsDataSource() {
+    // Spinner doesn't seem to be doing anything here though...
     this.spinnerService.showSpinner(SpinnerType.LOADING);
-    this.userService
-      .get(this.authService.loggedUser.getValue()!.id)
-      .pipe(
-        mergeMap((userResponse) => {
-          const deckResponse = this.deckService.getExtendedDeckInfo(
-            userResponse.data.id
-          );
-          return forkJoin([of(userResponse), deckResponse]);
-        })
-      )
-      .subscribe((res) => {
-        this.userStats$.next({
-          id: res[0].data.id,
-          email: res[0].data.email,
-          name: res[0].data.name,
-          surname: res[0].data.surname,
-          username: res[0].data.username,
-          lastLogin: res[0].data.lastLogin,
-          deckCount: res[1].length,
-          // super cool map + reduce approach taken from: https://stackoverflow.com/questions/23247859/better-way-to-sum-a-property-value-in-an-array. Had to take initial value considerations from here: https://stackoverflow.com/questions/23359173/javascript-reduce-an-empty-array.
-          dueDeckCount: res[1]
-            .map((deck) => deck.dueFlashcardCount)
-            .filter((value) => value > 0).length,
-          lastStudySession: res[1]
-            .map((deck) => deck.lastStudySession)
-            .reduce((prev, next) => {
-              // The madness below is an attempt to short-circuit the method if applicable, and to return 'undefined' in the end if no valid values exist - which imply that no study sessions were made so far.
-              if (prev && !next) return prev;
-              if (!prev && next) return next;
-              if (!prev && !next) return undefined;
-              return new Date(
-                Math.max(new Date(prev!).getTime(), new Date(next!).getTime())
-              ).toISOString();
-            }, undefined),
-          dueFlashcardCount: res[1]
-            .map((deck) => deck.dueFlashcardCount)
-            .reduce((prev, next) => prev + next, 0),
-          flashcardCount: res[1]
-            .map((deck) => deck.flashcardCount)
-            .reduce((prev, next) => prev + next, 0),
-        });
-        this.spinnerService.hideSpinner(SpinnerType.LOADING);
+    this.userStatsService
+      .getUserStats(this.authService.loggedUser.getValue()!.id)
+      .subscribe({
+        next: (stats) => {
+          this.userStats$.next(stats);
+        },
+        complete: () => this.spinnerService.hideSpinner(SpinnerType.LOADING),
       });
   }
 }
