@@ -86,5 +86,13 @@
     "surname": "demantova",
     "email": "mauris.eu@outlook.couk",
     "password": "AQAAAAEAACcQAAAAEG5yhSaKWi5tNBivcvH4tJXER6uPzjdmQ1J23OZU76sXKE+ffwDTQ7O1Rbbce6ZpGQ=="
+  },
+  {
+    "id": "1234567890",
+    "username": "johndoe",
+    "name": "john",
+    "surname": "doe",
+    "email": "johndoe@email.com",
+    "password": "AQAAAAEAACcQAAAAEG5yhSaKWi5tNBivcvH4tJXER6uPzjdmQ1J23OZU76sXKE+ffwDTQ7O1Rbbce6ZpGQ=="
   }
 ]
