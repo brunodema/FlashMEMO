@@ -5,7 +5,8 @@
       <div class="card-body d-flex flex-column align-items-center justify-content-center">
         <h5 class="card-title">Your stats</h5>
         <!-- The approach described here is WAY cleaner than whatever I implemented so far with observables/subjects on HTML: https://ultimatecourses.com/blog/angular-ngif-async-pipe -->
-        <p *ngIf="this.userStats$ | async as user" class="card-text">You currently have <b>{{ user.deckCount }}</b>
+        <p *ngIf="this.userStats$ | async as user; else nouserdata" class="card-text">You currently have <b>{{
+            user.deckCount }}</b>
           decks, which contain
           a total of <b>{{ user.flashcardCount }}</b> flashcards. There
           are <b>{{ user.dueDeckCount }}</b> study
@@ -13,6 +14,12 @@
           reviewed. Your last study session was held on <b>{{ (user.lastStudySession | date: 'medium') ?? 'N/A'
             }}</b>.
         </p>
+        <ng-template #nouserdata>
+          <span class="text-center">
+            We could not load your stats, but do not worry! We are on the look for them
+            🕵️‍♂️🕵️‍♀️
+          </span>
+        </ng-template>
 
       </div>
     </div>
