@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UserStats } from 'src/app/shared/services/user-stats.service';
+import { Observable } from 'rxjs';
+import {
+  GenericUserStatsService,
+  UserStats,
+} from 'src/app/shared/services/user-stats.service';
 import { User } from '../../models/user.model';
 import { UserFormMode } from '../common/user-data-form/user-model-form.component';
 
@@ -10,6 +14,19 @@ import { UserFormMode } from '../common/user-data-form/user-model-form.component
   styleUrls: ['./user-detail.component.css'],
 })
 export class UserDetailComponent {
+  constructor(
+    private route: ActivatedRoute,
+    @Inject('GenericUserStatsService')
+    protected userStatsService: GenericUserStatsService
+  ) {
+    this.userModel = this.route.snapshot.data['user'];
+    if (this.userModel) {
+      this.formMode = UserFormMode.EDIT;
+      this.userStats$ = this.userStatsService.getUserStats(this.userModel.id);
+    } else {
+      this.formMode = UserFormMode.CREATE;
+    }
+  }
   /**
    * User data associated with the 'detail' view.
    */
@@ -17,18 +34,9 @@ export class UserDetailComponent {
   /**
    * Stats related to the user, similar to what is implemented in the 'user-welcome' component.
    */
-  extendedDeckInfo: UserStats;
+  userStats$: Observable<UserStats>;
   /**
    * Enum representing which logic should be applied to the user form component.
    */
   formMode: UserFormMode;
-
-  constructor(private route: ActivatedRoute) {
-    this.userModel = this.route.snapshot.data['user'];
-    if (this.userModel) {
-      this.formMode = UserFormMode.EDIT;
-    } else {
-      this.formMode = UserFormMode.CREATE;
-    }
-  }
 }

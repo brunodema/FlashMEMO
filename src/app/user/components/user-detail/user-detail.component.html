@@ -1,16 +1,61 @@
 <div class="container my-3">
-  <app-user-model-form [userModel]="userModel" [formMode]="formMode"></app-user-model-form>
+  <div class="row">
+    <div class="col-6">
+      <app-user-model-form [userModel]="userModel" [formMode]="formMode"></app-user-model-form>
+    </div>
+    <div class="col-6 text-center">
+      <div *ngIf="this.userStats$ | async as user; else nouserdata" class="">
+        <div class="row">
+          <div class="col-6">
+            <label for="">Number of decks:</label>
+          </div>
+          <div class="col-6">
+            <i class="fa-regular fa-hard-drive"></i> <b> {{user.deckCount }}</b>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <label for="">Number of flashcards:</label>
+          </div>
+          <div class="col-6">
+            <i class="fa-regular fa-id-card"></i> <b> {{ user.flashcardCount }}</b>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <label for="">Study sessions pending:</label>
+          </div>
+          <div class="col-6">
+            <i class="fa-regular fa-calendar-check"></i> <b> {{ user.dueDeckCount }}</b>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <label for="">Due flashcards:</label>
+          </div>
+          <div class="col-6">
+            <i class="fa-solid fa-triangle-exclamation"></i> <b> {{
+              user.dueFlashcardCount }}</b>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <label for="">Last study session:</label>
+          </div>
+          <div class="col-6">
+            <i class="fa-solid fa-clock"></i> <b> {{
+              (user.lastStudySession | date: 'medium') ?? 'N/A' }}</b>
+          </div>
+        </div>
+      </div>
+      <ng-template #nouserdata>
+        <span class="text-center">
+          We could not load your stats, but do not worry! We are on the look for them
+          🕵️‍♂️🕵️‍♀️
+        </span>
+      </ng-template>
+    </div>
+  </div>
 
-  <!-- <p *ngIf="this.userStats$ | async as user; else nouserdata" class="card-text">
-          You currently have <i class="fa-regular fa-hard-drive"></i> <b> {{user.deckCount }}</b> deck(s), which contain
-          a
-          total
-          of <i class="fa-regular fa-id-card"></i> <b> {{ user.flashcardCount }}</b>
-          flashcard(s). You have <i class="fa-regular fa-calendar-check"></i> <b> {{ user.dueDeckCount }}</b> study
-          session(s)
-          pending, for a total of <i class="fa-solid fa-triangle-exclamation"></i> <b> {{
-            user.dueFlashcardCount }}</b> flashcard(s) to be reviewed. Your last study session was held on <i
-            class="fa-solid fa-clock"></i> <b> {{
-            (user.lastStudySession | date: 'medium') ?? 'N/A' }}</b>.
-        </p> -->
+
 </div>
