@@ -94,14 +94,10 @@ export class UserWelcomeComponent {
               if (prev && !next) return prev;
               if (!prev && next) return next;
               if (!prev && !next) return undefined;
-
-              return (
-                new Date(
-                  Math.max(new Date(prev!).getTime(), new Date(next!).getTime())
-                ).toISOString(),
-                undefined
-              );
-            }),
+              return new Date(
+                Math.max(new Date(prev!).getTime(), new Date(next!).getTime())
+              ).toISOString();
+            }, undefined),
           dueFlashcardCount: res[1]
             .map((deck) => deck.dueFlashcardCount)
             .reduce((prev, next) => prev + next, 0),
