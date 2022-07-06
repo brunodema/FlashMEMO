@@ -1,13 +1,15 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
   Inject,
   Input,
-  OnInit,
+  ViewChild,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { GenericAuthService } from 'src/app/shared/services/auth.service';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
@@ -136,8 +138,11 @@ export class UserModelFormComponent implements AfterViewInit {
     @Inject('GenericUserService') private userService: GenericUserService,
     private notificationService: GenericNotificationService,
     private router: Router,
-    private cdr: ChangeDetectorRef
-  ) {}
+    private cdr: ChangeDetectorRef,
+    private modalService: NgbModal
+  ) {
+    console.log(this.formMode);
+  }
   ngAfterViewInit(): void {
     this.clearPasswordFields();
   }
@@ -152,10 +157,13 @@ export class UserModelFormComponent implements AfterViewInit {
           });
       } else {
         if (this.formMode === UserFormMode.REGISTER) {
-          this.authService.register(this.form.value).subscribe((result) => {
-            this.notificationService.showSuccess(
-              'User successfully registered!'
-            );
+          this.authService.register(this.form.value).subscribe({
+            next: (result) => {
+              this.openFlashcardModal();
+            },
+            error: (error: HttpErrorResponse) => {
+              this.notificationService.showError(error.error.message);
+            },
           });
         } else {
           // This is used when an admin user is creating a new user manually
@@ -169,5 +177,18 @@ export class UserModelFormComponent implements AfterViewInit {
       return;
     }
     this.notificationService.showWarning('The form has problems.');
+  }
+
+  @ViewChild('registrationConfirmModal')
+  registrationConfirmModal: NgbModalRef; // this variable is assigned as soon as the modal is opened (return of the 'open' method)
+
+  openFlashcardModal() {
+    this.registrationConfirmModal = this.modalService.open(
+      this.registrationConfirmModal,
+      {
+        ariaLabelledBy: 'modal-basic-title',
+        centered: true,
+      }
+    );
   }
 }
