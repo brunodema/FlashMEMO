@@ -91,18 +91,16 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
             }
 
           default:
-            if (error.error?.errors) {
-              this.notificationService.showError(error.error.errors);
-            } else {
-              // this code branch assumes 'CONNECTION_REFUSED'
-              this.notificationService.showWarning(
-                'FlashMEMO is having some trouble reaching its servers, please try again 😴'
-              );
-            }
-          // throw error;
+            // if (error.error?.errors) {
+            //   this.notificationService.showError(error.error.errors);
+            // } else {
+            //   // this code branch assumes 'CONNECTION_REFUSED'
+            //   this.notificationService.showWarning(
+            //     'FlashMEMO is having some trouble reaching its servers, please try again 😴'
+            //   );
+            // }
+            throw error;
         }
-
-        return of();
       })
     );
   }

@@ -422,24 +422,10 @@ export class AuthService extends GenericAuthService {
   }
 
   public register(registerData: IRegisterRequest): Observable<any> {
-    return this.http
-      .post<IDataResponse<string>>(
-        `${this.userServiceURL}/create`,
-        registerData
-      )
-      .pipe(
-        map((res) => {
-          this.handleSuccessfulRegistration(res);
-          this.login(
-            {
-              username: registerData.username,
-              password: registerData.password,
-            },
-            false
-          ).subscribe();
-        }),
-        catchError((err: HttpErrorResponse) => this.handleFailedLogin(err))
-      );
+    return this.http.post<IDataResponse<string>>(
+      `${this.authServiceURL}/register`,
+      registerData
+    );
   }
 
   renewAccessToken(expiredAccessToken: string): Observable<ILoginResponse> {
