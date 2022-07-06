@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserFormMode } from '../common/user-data-form/user-model-form.component';
 
@@ -7,7 +7,7 @@ import { UserFormMode } from '../common/user-data-form/user-model-form.component
   templateUrl: './user-create.component.html',
   styleUrls: ['./user-create.component.css'],
 })
-export class UserCreateComponent implements OnInit {
+export class UserCreateComponent {
   formMode: UserFormMode = UserFormMode.CREATE;
 
   constructor(private route: ActivatedRoute) {
@@ -15,6 +15,4 @@ export class UserCreateComponent implements OnInit {
       if (params.mode === 'register') this.formMode = UserFormMode.REGISTER;
     });
   }
-
-  ngOnInit(): void {}
 }
