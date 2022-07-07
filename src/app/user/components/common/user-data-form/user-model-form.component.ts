@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { GenericAuthService } from 'src/app/shared/services/auth.service';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
@@ -140,9 +140,7 @@ export class UserModelFormComponent implements AfterViewInit {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private modalService: NgbModal
-  ) {
-    console.log(this.formMode);
-  }
+  ) {}
   ngAfterViewInit(): void {
     this.clearPasswordFields();
   }
@@ -180,7 +178,7 @@ export class UserModelFormComponent implements AfterViewInit {
   }
 
   @ViewChild('registrationConfirmModal')
-  registrationConfirmModal: NgbModalRef; // this variable is assigned as soon as the modal is opened (return of the 'open' method)
+  registrationConfirmModal: any; // For some fucking reason, declaring this as 'any' is way safer when programatically using the 'open' method from the modal services.
 
   openFlashcardModal() {
     this.registrationConfirmModal = this.modalService.open(

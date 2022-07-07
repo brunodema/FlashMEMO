@@ -1,7 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
 import { ILoginRequest } from '../../../shared/models/http/http-request-types';
@@ -12,7 +13,7 @@ import { GenericAuthService } from '../../../shared/services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   form = new FormGroup({});
   model = {}; // apparently has to be of 'any' type
   fields: FormlyFieldConfig[] = [
@@ -53,12 +54,10 @@ export class LoginComponent implements OnInit {
 
   constructor(
     @Inject('GenericAuthService') private authService: GenericAuthService,
-
     private notificationService: GenericNotificationService,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal
   ) {}
-
-  ngOnInit(): void {}
 
   onSubmit() {
     if (this.form.valid) {
@@ -73,6 +72,43 @@ export class LoginComponent implements OnInit {
             this.notificationService.showError(err.error.message);
           },
         });
+    }
+  }
+
+  // Things related to the password recovery modal
+
+  forgotForm = new FormGroup({});
+  forgotModel = {}; // apparently has to be of 'any' type
+  forgotFields: FormlyFieldConfig[] = [
+    {
+      key: 'email',
+      type: 'input',
+      templateOptions: {
+        type: 'email',
+        label: 'Email',
+        placeholder: 'Enter your email',
+        required: true,
+      },
+      className: 'd-block mb-2',
+    },
+  ];
+
+  forgotPasswordModal: NgbModalRef; // this variable is assigned as soon as the modal is opened (return of the 'open' method)
+
+  openForgotPasswordModal(content: any) {
+    this.forgotPasswordModal = this.modalService.open(content, {
+      ariaLabelledBy: 'modal-basic-title',
+      centered: true,
+    });
+  }
+
+  onForgotPasswordSubmit() {
+    if (this.forgotForm.valid) {
+      // Add associated method from auth-service (implement it!), then...
+      this.notificationService.showSuccess(
+        'Instruction were sent to your email.'
+      );
+      this.forgotPasswordModal.close('Finished process');
     }
   }
 }
