@@ -190,5 +190,9 @@ export class UserModelFormComponent implements AfterViewInit {
         centered: true,
       }
     );
+
+    this.registrationConfirmModal.result.finally(() =>
+      this.router.navigateByUrl('/login')
+    );
   }
 }

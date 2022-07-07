@@ -348,20 +348,7 @@ export class MockAuthService extends GenericAuthService {
   }
 
   register(registerData: IRegisterRequest): Observable<any> {
-    return of(
-      // this.handleSuccessfulRegistration({
-      //   errors: [],
-      //   message: 'Success',
-      //   status: '200',
-      // }),
-      this.login(
-        {
-          username: registerData.username,
-          password: registerData.password,
-        },
-        false
-      ).subscribe()
-    );
+    return of({});
   }
 
   renewAccessToken(expiredAccessToken: string): Observable<ILoginResponse> {
