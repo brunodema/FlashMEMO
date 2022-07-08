@@ -3,6 +3,7 @@ import { Component, Inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { finalize } from 'rxjs';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
 import { ILoginRequest } from '../../../shared/models/http/http-request-types';
 import { GenericAuthService } from '../../../shared/services/auth.service';
@@ -103,11 +104,22 @@ export class LoginComponent {
 
   onForgotPasswordSubmit() {
     if (this.forgotForm.valid) {
-      // Add associated method from auth-service (implement it!), then...
-      this.notificationService.showSuccess(
-        'Instruction were sent to your email.'
-      );
-      this.forgotPasswordModal.close('Finished process');
+      this.authService
+        .forgotPassword(this.forgotForm.value.email)
+        .pipe(
+          finalize(() => this.forgotPasswordModal.close('Finished process'))
+        )
+        .subscribe({
+          next: () =>
+            this.notificationService.showSuccess(
+              'Instructions were sent to your email.'
+            ),
+          error: (err: HttpErrorResponse) =>
+            this.notificationService.showError(
+              err?.error?.message ??
+                'An error occurred while resetting your password.'
+            ),
+        });
     }
   }
 }

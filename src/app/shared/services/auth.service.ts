@@ -496,16 +496,26 @@ export class AuthService extends GenericAuthService {
   }
 
   activateAccount(token: string): Observable<any> {
-    return this.http.post<IBaseAPIResponse>(`${this.authServiceURL}/activate`, {
-      activationToken: token,
-    });
+    return this.http.post<IBaseAPIResponse>(
+      `${this.authServiceURL}/activate`,
+      JSON.stringify(token),
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
   }
 
   forgotPassword(email: string): Observable<any> {
     return this.http.post<IBaseAPIResponse>(
       `${this.authServiceURL}/forgot-password`,
+      JSON.stringify(email),
       {
-        email: email,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
       }
     );
   }
@@ -517,10 +527,16 @@ export class AuthService extends GenericAuthService {
   ): Observable<any> {
     return this.http.post<IBaseAPIResponse>(
       `${this.authServiceURL}/reset-password`,
-      {
+      JSON.stringify({
         username: username,
         token: token,
         newPassword: newPassword,
+      }),
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
       }
     );
   }

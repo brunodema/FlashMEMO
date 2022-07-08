@@ -99,7 +99,7 @@ export class PasswordResetComponent {
 
       return this.authService
         .resetPassword(
-          this.form.value.usernasme,
+          this.form.value.username,
           this.token,
           this.form.value.password
         )

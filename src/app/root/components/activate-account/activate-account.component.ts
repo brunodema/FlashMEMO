@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { finalize } from 'rxjs';
 import { GenericAuthService } from 'src/app/shared/services/auth.service';
 import { GenericLoggerService } from 'src/app/shared/services/logging/logger.service';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
@@ -31,19 +32,22 @@ export class ActivateAccountComponent {
 
       let activationToken = params['token'];
       if (activationToken) {
-        this.authService.activateAccount(activationToken).subscribe({
-          next: () => {
-            this.isActivationSuccessful = true;
-          },
-          error: (error: HttpErrorResponse) => {
-            this.isActivationSuccessful = false;
-            if (error.status !== 500) {
-              // I would rather not show any 500 messages here
-              this.failureReason = error.error.message;
-            }
-          },
-          complete: () => this.spinnerService.hideSpinner(SpinnerType.LOADING),
-        });
+        this.authService
+          .activateAccount(activationToken)
+          .pipe(
+            finalize(() => this.spinnerService.hideSpinner(SpinnerType.LOADING))
+          )
+          .subscribe({
+            next: () => {
+              this.isActivationSuccessful = true;
+            },
+            error: (err: HttpErrorResponse) => {
+              this.isActivationSuccessful = false;
+              this.failureReason =
+                err?.error?.message ??
+                'An error occurred while resetting your password.';
+            },
+          });
       } else {
         this.loggerService.logInformation(
           "No 'activationToken' provided for activate-account page, redirecting to 'home'..."
