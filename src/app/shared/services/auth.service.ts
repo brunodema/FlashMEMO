@@ -378,7 +378,8 @@ export class MockAuthService extends GenericAuthService {
       this.loggerService.logDebug(
         "A token value was not provided to the 'activateAccount' method... returning failure..."
       );
-      throw Error('Failed to activate account (mock error)');
+
+      return throwError(() => Error('Failed to activate account (mock error)')); // LESSON LEARNED: when dealing with a method that returns an observable, errors must be thrown like this, otherwise the error handlers within the future subscriptions (or whatevers) won't be able to catch them
     }
   }
 
@@ -392,7 +393,10 @@ export class MockAuthService extends GenericAuthService {
       this.loggerService.logDebug(
         "An email value was not provided to the 'forgotPassword' method... returning failure..."
       );
-      throw Error('Failed to request password reset link (mock error)');
+
+      return throwError(() =>
+        Error('Failed to request password reset link (mock error)')
+      );
     }
   }
 
@@ -410,7 +414,8 @@ export class MockAuthService extends GenericAuthService {
       this.loggerService.logDebug(
         "Values missing for the 'resetPassword' method... returning failure..."
       );
-      throw Error('Failed to reset password (mock error)');
+
+      return throwError(() => Error('Failed to reset password (mock error)'));
     }
   }
 }
