@@ -82,6 +82,7 @@ export class DeckListComponent {
 
   constructor(
     @Inject('GenericDeckService') public deckService: GenericDeckService,
+    @Inject('GenericNotificationService')
     protected notificationService: GenericNotificationService,
     @Inject('GenericAuthService') public authService: GenericAuthService,
     private datePipe: DatePipe,

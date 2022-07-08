@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
@@ -54,8 +53,8 @@ export class LoginComponent {
 
   constructor(
     @Inject('GenericAuthService') private authService: GenericAuthService,
+    @Inject('GenericNotificationService')
     private notificationService: GenericNotificationService,
-    private router: Router,
     private modalService: NgbModal
   ) {}
 

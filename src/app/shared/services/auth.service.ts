@@ -1,8 +1,4 @@
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -33,6 +29,7 @@ export abstract class GenericAuthService {
   constructor(
     protected jwtHelper: JwtHelperService,
     protected router: Router,
+    @Inject('GenericNotificationService')
     protected notificationService: GenericNotificationService,
     protected spinnerService: NgxSpinnerService,
     protected cookieService: CookieService,
@@ -281,6 +278,16 @@ export abstract class GenericAuthService {
   abstract renewAccessToken(
     expiredAccessToken: string
   ): Observable<ILoginResponse>;
+
+  abstract activateAccount(token: string): Observable<any>;
+
+  abstract forgotPassword(email: string): Observable<any>;
+
+  abstract resetPassword(
+    username: string,
+    token: string,
+    newPassword: string
+  ): Observable<any>;
 }
 
 @Injectable({
@@ -312,6 +319,7 @@ export class MockAuthService extends GenericAuthService {
   constructor(
     protected jwtHelper: JwtHelperService,
     protected router: Router,
+    @Inject('GenericNotificationService')
     protected notificationService: GenericNotificationService,
     protected spinnerService: NgxSpinnerService,
     protected cookieService: CookieService,
@@ -359,6 +367,52 @@ export class MockAuthService extends GenericAuthService {
       errors: [],
     });
   }
+
+  activateAccount(token: string): Observable<any> {
+    if (token) {
+      this.loggerService.logDebug(
+        "A token value was provided to the 'activateAccount' method... returning success..."
+      );
+      return of({});
+    } else {
+      this.loggerService.logDebug(
+        "A token value was not provided to the 'activateAccount' method... returning failure..."
+      );
+      throw Error('Failed to activate account (mock error)');
+    }
+  }
+
+  forgotPassword(email: string): Observable<any> {
+    if (email) {
+      this.loggerService.logDebug(
+        "An email value was provided to the 'forgotPassword' method... returning success..."
+      );
+      return of({});
+    } else {
+      this.loggerService.logDebug(
+        "An email value was not provided to the 'forgotPassword' method... returning failure..."
+      );
+      throw Error('Failed to request password reset link (mock error)');
+    }
+  }
+
+  resetPassword(
+    username: string,
+    token: string,
+    newPassword: string
+  ): Observable<any> {
+    if (username && token && newPassword) {
+      this.loggerService.logDebug(
+        "All values provided to the 'resetPassword' method... returning success..."
+      );
+      return of({});
+    } else {
+      this.loggerService.logDebug(
+        "Values missing for the 'resetPassword' method... returning failure..."
+      );
+      throw Error('Failed to reset password (mock error)');
+    }
+  }
 }
 
 @Injectable({
@@ -375,6 +429,7 @@ export class AuthService extends GenericAuthService {
     protected jwtHelper: JwtHelperService,
     protected http: HttpClient,
     protected router: Router,
+    @Inject('GenericNotificationService')
     protected notificationService: GenericNotificationService,
     protected spinnerService: NgxSpinnerService,
     protected cookieService: CookieService,
@@ -431,6 +486,36 @@ export class AuthService extends GenericAuthService {
           'Content-Type': 'application/json',
         },
         withCredentials: true,
+      }
+    );
+  }
+
+  activateAccount(token: string): Observable<any> {
+    return this.http.post<IBaseAPIResponse>(`${this.authServiceURL}/activate`, {
+      activationToken: token,
+    });
+  }
+
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post<IBaseAPIResponse>(
+      `${this.authServiceURL}/forgot-password`,
+      {
+        email: email,
+      }
+    );
+  }
+
+  resetPassword(
+    username: string,
+    token: string,
+    newPassword: string
+  ): Observable<any> {
+    return this.http.post<IBaseAPIResponse>(
+      `${this.authServiceURL}/reset-password`,
+      {
+        username: username,
+        token: token,
+        newPassword: newPassword,
       }
     );
   }

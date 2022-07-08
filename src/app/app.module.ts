@@ -176,7 +176,7 @@ export type RepositoryServiceConfig = {
     { provide: DeckRepositoryResolverService },
     { provide: UserRepositoryResolverService },
     { provide: NewsRepositoryResolverService },
-    { provide: GenericNotificationService, useClass: NotificationService },
+    { provide: 'GenericNotificationService', useClass: NotificationService },
     { provide: 'GenericSpinnerService', useClass: SpinnerService },
     { provide: 'GenericLoggerService', useClass: LoggerService },
     { provide: CookieService },

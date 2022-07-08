@@ -1,1 +1,17 @@
-<p>activate-account works!</p>
+<div class="container my-3">
+  <ng-container *ngIf="!isActivationSuccessful; else failure">
+    <h1 class="text-success">Account activated</h1>
+    <p>Congratulations, you are now an official member of the FlashMEMO family 🎉</p>
+    <p>You should now be able to log into our website, and create/manage your decks. Click <a routerLink="/login"
+        class="link-primary">here</a> to go to the login page.</p>
+  </ng-container>
+  <ng-template #failure>
+    <h1 class="text-danger">Activation failed</h1>
+    <p>An error occurred while attempting to activate your account 😶</p>
+    <p>Please verify if you used the same link sent to your email. The apparent reason for the failure was: <span
+        class="text-danger">{{
+        failureReason }}</span></p>
+    <p>If you are having continous problems with oue platform, please <a href="mailto:flashmemo.mail@gmail.com">reach
+        out to us</a>.</p>
+  </ng-template>
+</div>

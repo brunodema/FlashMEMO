@@ -21,6 +21,7 @@ import { GenericSpinnerService } from '../services/UI/spinner.service';
 @Injectable()
 export class GlobalHttpInterceptorService implements HttpInterceptor {
   constructor(
+    @Inject('GenericNotificationService')
     protected notificationService: GenericNotificationService,
     @Inject('GenericAuthService') protected authService: GenericAuthService,
     protected router: Router,

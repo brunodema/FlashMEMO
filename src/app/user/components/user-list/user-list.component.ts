@@ -54,6 +54,7 @@ export class UserListComponent {
   constructor(
     @Inject('GenericUserService') private userService: GenericUserService,
     @Inject('GenericAuthService') public authService: GenericAuthService,
+    @Inject('GenericNotificationService')
     private notificationService: GenericNotificationService,
     private router: Router,
     @Inject('GenericSpinnerService')

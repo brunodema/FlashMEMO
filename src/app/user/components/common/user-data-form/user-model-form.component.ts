@@ -136,6 +136,7 @@ export class UserModelFormComponent implements AfterViewInit {
     @Inject('GenericAuthService')
     private authService: GenericAuthService,
     @Inject('GenericUserService') private userService: GenericUserService,
+    @Inject('GenericNotificationService')
     private notificationService: GenericNotificationService,
     private router: Router,
     private cdr: ChangeDetectorRef,

@@ -124,6 +124,7 @@ export class DeckDetailComponent {
     @Inject('GenericDeckService') private deckService: GenericDeckService,
     private route: ActivatedRoute,
     private router: Router,
+    @Inject('GenericNotificationService')
     private notificationService: GenericNotificationService,
     @Inject('GenericAuthService')
     public authService: GenericAuthService,

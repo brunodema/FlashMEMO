@@ -30,6 +30,7 @@ export class NewsDetailComponent
     protected newsService: GenericNewsService,
     @Inject('GenericAuthService')
     protected authService: GenericAuthService,
+    @Inject('GenericNotificationService')
     protected notificationService: GenericNotificationService,
     protected router: Router,
     protected route: ActivatedRoute
