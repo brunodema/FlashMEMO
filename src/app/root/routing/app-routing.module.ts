@@ -3,12 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from '../components/login/login.component';
 import { HomeComponent } from '../components/home/home.component';
 import { MethodComponent } from '../components/method/method.component';
+import { ActivateAccountComponent } from '../components/activate-account/activate-account.component';
+import { PasswordResetComponent } from '../components/password-reset/password-reset.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'method', component: MethodComponent },
+  { path: 'activate-account', component: ActivateAccountComponent },
+  { path: 'password-reset', component: PasswordResetComponent },
   {
     path: 'news',
     loadChildren: () =>
