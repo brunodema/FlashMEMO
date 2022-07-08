@@ -138,7 +138,7 @@ export class DeckListComponent {
 
         if (errorHappened) {
           return this.notificationService.showError(
-            'An error ocurred while deleting the Deck.'
+            'An error occurred while deleting the Deck.'
           );
         }
       }

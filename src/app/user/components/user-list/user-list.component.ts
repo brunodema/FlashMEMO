@@ -115,7 +115,7 @@ export class UserListComponent {
 
         if (errorHappened) {
           return this.notificationService.showError(
-            'An error ocurred while deleting the User.'
+            'An error occurred while deleting the User.'
           );
         }
       }

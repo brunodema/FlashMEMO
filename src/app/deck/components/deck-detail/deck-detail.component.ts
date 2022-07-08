@@ -276,7 +276,7 @@ export class DeckDetailComponent {
 
         if (errorHappened) {
           return this.notificationService.showError(
-            'An error ocurred while deleting the Flashcard.'
+            'An error occurred while deleting the Flashcard.'
           );
         }
       }
