@@ -11,6 +11,7 @@ import { GenericNotificationService } from '../services/notification/notificatio
 export class FlashMEMOAuthGuard implements CanActivate {
   constructor(
     @Inject('GenericAuthService') private authService: GenericAuthService,
+    @Inject('GenericNotificationService')
     protected notificationService: GenericNotificationService,
     public router: Router,
     @Inject('GenericLoggerService') private loggerService: GenericLoggerService

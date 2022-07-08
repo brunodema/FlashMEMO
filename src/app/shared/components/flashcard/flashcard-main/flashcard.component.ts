@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
   Output,
@@ -79,7 +80,10 @@ export class FlashcardComponent implements OnChanges {
    */
   userAnswer: string = '';
 
-  constructor(private notificationService: GenericNotificationService) {}
+  constructor(
+    @Inject('GenericNotificationService')
+    private notificationService: GenericNotificationService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.isFlashcardFront = true;

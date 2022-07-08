@@ -14,6 +14,7 @@ export class NewsComponent {
   constructor(
     @Inject('GenericNewsService') protected newsService: GenericNewsService,
     @Inject('GenericAuthService') public authService: GenericAuthService,
+    @Inject('GenericNotificationService')
     protected notificationService: GenericNotificationService
   ) {}
 }

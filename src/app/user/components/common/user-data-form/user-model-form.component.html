@@ -5,3 +5,19 @@
     <button type="submit" [ngClass]="{'disabled' : !this.form.valid}" class="btn btn-primary">Submit</button>
   </div>
 </form>
+
+<!-- Modal section -->
+<ng-template #registrationConfirmModal let-modal class="modal">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Registration complete!
+    </h4>
+    <button type="button" class="btn btn-close" aria-label="Close" (click)="modal.close()">
+    </button>
+  </div>
+  <div class="modal-body">
+    You have successfully registered on FlashMEMO! Now, we need you to confirm your email address. Please, go to the
+    email that you provided us, and click on the link we sent you. After that, your account will be ready for use on
+    the website 😁
+  </div>
+</ng-template>

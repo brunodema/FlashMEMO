@@ -82,6 +82,7 @@ export class DeckListComponent {
 
   constructor(
     @Inject('GenericDeckService') public deckService: GenericDeckService,
+    @Inject('GenericNotificationService')
     protected notificationService: GenericNotificationService,
     @Inject('GenericAuthService') public authService: GenericAuthService,
     private datePipe: DatePipe,
@@ -137,7 +138,7 @@ export class DeckListComponent {
 
         if (errorHappened) {
           return this.notificationService.showError(
-            'An error ocurred while deleting the Deck.'
+            'An error occurred while deleting the Deck.'
           );
         }
       }

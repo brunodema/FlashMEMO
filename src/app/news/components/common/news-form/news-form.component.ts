@@ -3,8 +3,8 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
-  OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -64,6 +64,7 @@ export class NewsFormComponent {
   @ViewChild('imagePreview') imagePreview: ElementRef<any>;
 
   constructor(
+    @Inject('GenericNotificationService')
     protected notificationService: GenericNotificationService,
     protected crd: ChangeDetectorRef
   ) {

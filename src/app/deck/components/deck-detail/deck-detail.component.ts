@@ -124,6 +124,7 @@ export class DeckDetailComponent {
     @Inject('GenericDeckService') private deckService: GenericDeckService,
     private route: ActivatedRoute,
     private router: Router,
+    @Inject('GenericNotificationService')
     private notificationService: GenericNotificationService,
     @Inject('GenericAuthService')
     public authService: GenericAuthService,
@@ -275,7 +276,7 @@ export class DeckDetailComponent {
 
         if (errorHappened) {
           return this.notificationService.showError(
-            'An error ocurred while deleting the Flashcard.'
+            'An error occurred while deleting the Flashcard.'
           );
         }
       }

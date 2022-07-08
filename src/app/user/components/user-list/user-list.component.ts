@@ -54,6 +54,7 @@ export class UserListComponent {
   constructor(
     @Inject('GenericUserService') private userService: GenericUserService,
     @Inject('GenericAuthService') public authService: GenericAuthService,
+    @Inject('GenericNotificationService')
     private notificationService: GenericNotificationService,
     private router: Router,
     @Inject('GenericSpinnerService')
@@ -114,7 +115,7 @@ export class UserListComponent {
 
         if (errorHappened) {
           return this.notificationService.showError(
-            'An error ocurred while deleting the User.'
+            'An error occurred while deleting the User.'
           );
         }
       }
