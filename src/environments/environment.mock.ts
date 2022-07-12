@@ -12,9 +12,11 @@ import { IFlashMEMOLoggerOptions } from 'src/app/shared/services/logging/logger.
 import { MockUserStatsService } from 'src/app/shared/services/user-stats.service';
 import { MockUserService } from 'src/app/user/services/user.service';
 
+const backendRootAddress = 'http://api.flashmemo.edu:5000';
+
 export const environment = {
   production: true,
-  backendRootAddress: 'http://api.flashmemo.edu:5000',
+  backendRootAddress: backendRootAddress,
   maxPageSize: 10000,
   defaultLanguageISOCode: 'en-gb',
   // cookies
@@ -32,7 +34,10 @@ export const environment = {
   userStatsService: MockUserStatsService,
   // logging
   loggerConfig: {
-    logLevel: 'INFORMATION',
-    provider: 'CONSOLE',
+    sinks: ['CONSOLE'], // Maybe add 'API' here too?
+    logLevel: 'DEBUG',
+    serverLogLevel: 'INFORMATION',
+    logServerURL: undefined,
   } as IFlashMEMOLoggerOptions,
+  apmServerURL: 'http://localhost:8200',
 };
