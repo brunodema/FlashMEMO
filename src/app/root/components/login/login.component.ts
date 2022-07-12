@@ -1,9 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { finalize } from 'rxjs';
+import { GenericLoggerService } from 'src/app/shared/services/logging/logger.service';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
 import { ILoginRequest } from '../../../shared/models/http/http-request-types';
 import { GenericAuthService } from '../../../shared/services/auth.service';
@@ -14,6 +16,29 @@ import { GenericAuthService } from '../../../shared/services/auth.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
+  constructor(
+    @Inject('GenericAuthService') private authService: GenericAuthService,
+    @Inject('GenericNotificationService')
+    private notificationService: GenericNotificationService,
+    @Inject('GenericLoggerService')
+    private loggerService: GenericLoggerService,
+    private modalService: NgbModal,
+    private router: Router
+  ) {
+    this.authService.loggedUser.subscribe((user) => {
+      if (user) {
+        this.loggerService.logDebug(
+          'User seems to be already logged, redirecting to home page...',
+          user
+        );
+        this.notificationService.showWarning(
+          'You are already logged you silly 😋'
+        );
+        this.router.navigateByUrl('/home');
+      }
+    });
+  }
+
   form = new FormGroup({});
   model = {}; // apparently has to be of 'any' type
   fields: FormlyFieldConfig[] = [
@@ -51,13 +76,6 @@ export class LoginComponent {
       },
     },
   ];
-
-  constructor(
-    @Inject('GenericAuthService') private authService: GenericAuthService,
-    @Inject('GenericNotificationService')
-    private notificationService: GenericNotificationService,
-    private modalService: NgbModal
-  ) {}
 
   onSubmit() {
     if (this.form.valid) {
