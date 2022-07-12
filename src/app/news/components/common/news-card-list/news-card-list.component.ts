@@ -1,5 +1,6 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { finalize } from 'rxjs';
 import { ExtendedNews } from 'src/app/news/models/news.model';
 import { GenericNewsService } from 'src/app/news/services/news.service';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
@@ -44,15 +45,19 @@ export class NewsCardListComponent implements OnInit {
   private refreshNewsSource(pageSize: number, pageNumber: number) {
     this.spinnerService.showSpinner(SpinnerType.LOADING);
 
-    this.newsService.getExtendedLatestNews(pageSize, pageNumber).subscribe({
-      next: (response) => {
-        this.extendedNewsData = response.data.results;
-        this.pageNumber = Number(response.data.pageNumber) - 1;
-        this.pageSize = this.pageSizeOptions[0];
-        this.totalAmount = Number(response.data.totalAmount);
-      },
-      complete: () => this.spinnerService.hideSpinner(SpinnerType.LOADING),
-    });
+    this.newsService
+      .getExtendedLatestNews(pageSize, pageNumber)
+      .pipe(
+        finalize(() => this.spinnerService.hideSpinner(SpinnerType.LOADING))
+      )
+      .subscribe({
+        next: (response) => {
+          this.extendedNewsData = response.data.results;
+          this.pageNumber = Number(response.data.pageNumber) - 1;
+          this.pageSize = this.pageSizeOptions[0];
+          this.totalAmount = Number(response.data.totalAmount);
+        },
+      });
   }
 
   ngOnInit(): void {

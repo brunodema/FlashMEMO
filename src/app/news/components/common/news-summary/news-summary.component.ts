@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { finalize } from 'rxjs';
 import {
   GenericSpinnerService,
   SpinnerType,
@@ -23,11 +24,15 @@ export class NewsSummaryComponent implements OnInit {
   ngOnInit() {
     this.spinnerService.showSpinner(SpinnerType.LOADING);
 
-    this.newsService.getExtendedLatestNews(4, 1).subscribe({
-      next: (latestNews) => {
-        this.newsList = latestNews.data.results;
-      },
-      complete: () => this.spinnerService.hideSpinner(SpinnerType.LOADING),
-    });
+    this.newsService
+      .getExtendedLatestNews(4, 1)
+      .pipe(
+        finalize(() => this.spinnerService.hideSpinner(SpinnerType.LOADING))
+      )
+      .subscribe({
+        next: (latestNews) => {
+          this.newsList = latestNews.data.results;
+        },
+      });
   }
 }

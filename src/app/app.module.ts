@@ -19,7 +19,7 @@ import { CKEditorModule } from 'ckeditor4-angular';
 import { BrowserModule } from '@angular/platform-browser';
 import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { ClipboardModule } from 'ngx-clipboard';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, Inject, NgModule } from '@angular/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import {
   DeckRepositoryResolverService,
@@ -39,12 +39,18 @@ import { CookieService } from 'ngx-cookie-service';
 import {
   IFlashMEMOLoggerOptions,
   LoggerService,
+  ServerCustomisedService,
 } from './shared/services/logging/logger.service';
-import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { LoggerModule, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
 import { JumbotronComponent } from './root/components/common/jumbotron/jumbotron.component';
 import { MethodComponent } from './root/components/method/method.component';
 import { ActivateAccountComponent } from './root/components/activate-account/activate-account.component';
 import { PasswordResetComponent } from './root/components/password-reset/password-reset.component';
+import {
+  ApmErrorHandler,
+  ApmModule,
+  ApmService,
+} from '@elastic/apm-rum-angular';
 
 export function fieldMatchValidator(control: AbstractControl) {
   const password = control.value['password'];
@@ -95,7 +101,12 @@ export type RepositoryServiceConfig = {
     DeckModule,
     TestModule,
     BrowserAnimationsModule,
-    LoggerModule.forRoot(null),
+    LoggerModule.forRoot(null, {
+      serverProvider: {
+        provide: TOKEN_LOGGER_SERVER_SERVICE,
+        useClass: ServerCustomisedService,
+      },
+    }),
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
     JwtModule.forRoot({
@@ -121,13 +132,16 @@ export type RepositoryServiceConfig = {
     CKEditorModule,
     NgbModule,
     ClipboardModule,
+    ApmModule,
   ],
   providers: [
     {
       provide: 'LOGGER_CONFIG',
       useValue: {
+        sinks: environment.loggerConfig.sinks,
         logLevel: environment.loggerConfig.logLevel,
-        provider: environment.loggerConfig.provider,
+        serverLogLevel: environment.loggerConfig.serverLogLevel,
+        logServerURL: environment.loggerConfig.logServerURL,
       } as IFlashMEMOLoggerOptions,
     },
     {
@@ -185,11 +199,30 @@ export type RepositoryServiceConfig = {
       useClass: GlobalHttpInterceptorService,
       multi: true,
     },
+    {
+      // For APM integration
+      provide: ErrorHandler,
+      useClass: ApmErrorHandler,
+    },
+
     { provide: DatePipe },
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(@Inject(ApmService) service: ApmService) {
+    // Agent API is exposed through this apm instance
+    const apm = service.init({
+      serviceName: 'flashmemo-website',
+      serverUrl: 'http://localhost:8200',
+    });
+
+    apm.setUserContext({
+      username: 'foo',
+      id: 'bar',
+    });
+  }
+}
 
 /**
  * NGX-Spinner: contains a bunch of spinner templates, and options for them. Main instructions here: https://www.npmjs.com/package/ngx-spinner. Spinner tester here: https://napster2210.github.io/ngx-spinner/
