@@ -18,7 +18,7 @@ import { GenericAuthService } from '../auth.service';
  * It's a copy of the one used for the Dictionary API. This is still WIP, since the [REDACTED] API is still being developed (conceptually).
  */
 const AudioAPISupportedLanguages = {
-  Redacted: [''], // nothing for now
+  FlashMEMO: [''], // It supports everything, if you think about it...
   Oxford: ['en-gb', 'en-us', 'fr', 'gu', 'hi', 'lv', 'ro', 'es', 'sw', 'ta'], // same as from the other ones, even though it seems that only 'en-gb' brings any results
 };
 
@@ -26,8 +26,8 @@ const AudioAPISupportedLanguages = {
  * Enum used to show the provider options to the user ('Select' elements).
  */
 export enum AudioAPIProvider {
-  REDACTED = 'REDACTED',
-  OXFORD = 'Oxford',
+  FLASHMEMO = 'FLASHMEMO',
+  // OXFORD = 'Oxford',
 }
 
 /**
@@ -62,10 +62,8 @@ export abstract class GeneralAudioAPIService {
     languageCode: string
   ): boolean {
     switch (provider) {
-      case AudioAPIProvider.OXFORD:
-        return AudioAPISupportedLanguages.Oxford.includes(languageCode);
-      case AudioAPIProvider.REDACTED:
-        return true; // shouldn't do anything for now
+      case AudioAPIProvider.FLASHMEMO:
+        return true;
 
       default:
         throw new Error('The audio API provider selected does not exist.');
@@ -94,7 +92,7 @@ export class MockAudioService extends GeneralAudioAPIService {
 
 @Injectable()
 export class AudioService extends GeneralAudioAPIService {
-  private endpoint = `${this.config.backendAddress}/api/v1/redactedapi/search?`;
+  private endpoint = `${this.config.backendAddress}/api/v1/audio/flashmemo/search?`;
 
   constructor(
     @Inject('REPOSITORY_SERVICE_CONFIG')

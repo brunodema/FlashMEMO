@@ -114,7 +114,7 @@ export class FlashcardContentOptionsBlockComponent
   possibleAudioProviders = Object.values(AudioAPIProvider).filter(
     (f) => typeof f === 'string'
   );
-  audioProvider: AudioAPIProvider = AudioAPIProvider.REDACTED;
+  audioProvider: AudioAPIProvider = AudioAPIProvider.FLASHMEMO;
   audioAPIData$: Observable<IDataResponse<IAudioAPIResult>>;
   audioAPIResults: string[];
 
@@ -125,7 +125,7 @@ export class FlashcardContentOptionsBlockComponent
     (f) => typeof f === 'string'
   );
   possibleDictLanguages: Language[] = [];
-  dictProvider: DictionaryAPIProvider = DictionaryAPIProvider.OXFORD;
+  dictProvider: DictionaryAPIProvider = DictionaryAPIProvider.LEXICALA;
   dictLanguage: string = this.defaultLanguageISOCode;
   dictAPIData$: Observable<IDataResponse<IDictionaryAPIResult>>;
   dictAPIparsedHMTL: string = '';

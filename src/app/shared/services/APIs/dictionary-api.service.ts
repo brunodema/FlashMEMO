@@ -38,7 +38,7 @@ export const dictAPISupportedLanguages = {
  * Enum used to show the provider options to the user ('Select' elements).
  */
 export enum DictionaryAPIProvider {
-  OXFORD = 'Oxford',
+  // OXFORD = 'Oxford', // Now deprecated... but could add it back in the future, if I manage to deal with the request limits
   LEXICALA = 'Lexicala',
 }
 
@@ -120,8 +120,8 @@ export class MockDictionaryService extends GeneralDictionaryAPIService {
     switch (provider) {
       case DictionaryAPIProvider.LEXICALA:
         return of(dictAPISupportedLanguages.Lexicala);
-      case DictionaryAPIProvider.OXFORD:
-        return of(dictAPISupportedLanguages.Oxford);
+      // case DictionaryAPIProvider.OXFORD:
+      //   return of(dictAPISupportedLanguages.Oxford);
 
       default:
         throw new Error('The dictionary API provider selected does not exist.');
