@@ -7,13 +7,11 @@ import { LoggerService } from 'src/app/shared/services/logging/logger.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   constructor(
     @Inject('GenericLoggerService')
     protected loggerService: LoggerService,
     @Inject('GenericAuthService')
     public authService: GenericAuthService
   ) {}
-
-  ngOnInit(): void {}
 }
