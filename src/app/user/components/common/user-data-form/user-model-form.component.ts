@@ -137,35 +137,47 @@ export class UserModelFormComponent implements AfterViewInit {
         },
       ],
     },
-    // Below, properties only seen by sysadmins
     {
-      hide: !this.authService.isLoggedUserAdmin(), // Only shows these fields if 'false' (not hiding it)
+      // Below, properties only seen by sysadmins
+      hide: !this.authService.isLoggedUserAdmin(),
       fieldGroup: [
         {
           key: 'lockoutEnabled',
           type: 'checkbox',
+          defaultValue: false,
           templateOptions: {
             label: 'Is user locked?',
           },
           className: 'd-block mb-2',
         },
         {
-          key: 'lockoutEnd',
-          type: 'input',
-          templateOptions: {
-            label: 'End',
-            type: 'date',
+          // Now, you might be asking yourselves: why the fuck is this random 'fieldGroup' alone here? The anwser: for some reason, the 'hideExpression' property only works when I apply them to a 'fieldGroup', and not to an indiviual field - even though the property is there to be set. Hence this atrocity over here...
+          hideExpression: (model, fs, field) => {
+            let hide = !model.lockoutEnabled;
+            if (hide) {
+              field!.model.lockoutEnd = undefined;
+            }
+            return !model.lockoutEnabled;
           },
-          className: 'd-block mb-2',
-          validators: {
-            validation: ['date-future'],
-          },
-          hideExpression: true,
-          hide: true,
+          fieldGroup: [
+            {
+              key: 'lockoutEnd',
+              type: 'input',
+              templateOptions: {
+                label: 'End',
+                type: 'date',
+              },
+              className: 'd-block mb-2',
+              validators: {
+                validation: ['date-future'],
+              },
+            },
+          ],
         },
         {
           key: 'emailConfirmed',
           type: 'checkbox',
+          defaultValue: false,
           templateOptions: {
             label: 'Confirmed email?',
           },
@@ -268,9 +280,5 @@ export class UserModelFormComponent implements AfterViewInit {
     this.registrationConfirmModal.result.finally(() =>
       this.router.navigateByUrl('/login')
     );
-  }
-
-  lol() {
-    console.log(this.userModel);
   }
 }

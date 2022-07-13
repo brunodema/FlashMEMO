@@ -1,5 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <formly-form [form]="form" [fields]="fields" [model]="userModel" (modelChange)="lol()"></formly-form>
+  <formly-form [form]="form" [fields]="fields" [model]="userModel"></formly-form>
 
   <div class="d-flex justify-content-end mt-3">
     <button type="submit" [ngClass]="{'disabled' : !this.form.valid}" class="btn btn-primary">Submit</button>
