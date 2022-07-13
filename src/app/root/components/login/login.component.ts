@@ -7,6 +7,10 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { finalize } from 'rxjs';
 import { GenericLoggerService } from 'src/app/shared/services/logging/logger.service';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
+import {
+  GenericSpinnerService,
+  SpinnerType,
+} from 'src/app/shared/services/UI/spinner.service';
 import { ILoginRequest } from '../../../shared/models/http/http-request-types';
 import { GenericAuthService } from '../../../shared/services/auth.service';
 
@@ -22,21 +26,22 @@ export class LoginComponent {
     private notificationService: GenericNotificationService,
     @Inject('GenericLoggerService')
     private loggerService: GenericLoggerService,
+    @Inject('GenericSpinnerService')
+    private spinnerService: GenericSpinnerService,
     private modalService: NgbModal,
     private router: Router
   ) {
-    this.authService.loggedUser.subscribe((user) => {
-      if (user) {
-        this.loggerService.logDebug(
-          'User seems to be already logged, redirecting to home page...',
-          user
-        );
-        this.notificationService.showWarning(
-          'You are already logged you silly 😋'
-        );
-        this.router.navigateByUrl('/home');
-      }
-    });
+    let user = this.authService.loggedUser.getValue(); // Nope, I don't need to use a subscription here because I want the value now, not sometime later when I'm already done with the check. Fuck Stack Overflow dudes who just know to call out "code smells" but don't even consider possible use cases
+    if (user) {
+      this.loggerService.logDebug(
+        'User seems to be already logged, redirecting to home page...',
+        user
+      );
+      this.notificationService.showWarning(
+        'You are already logged you silly 😋'
+      );
+      this.router.navigateByUrl('/home');
+    }
   }
 
   form = new FormGroup({});
@@ -83,8 +88,12 @@ export class LoginComponent {
         username: this.form.value.username,
         password: this.form.value.password,
       };
+      this.spinnerService.showSpinner(SpinnerType.LOADING);
       this.authService
         .login(loginRequestData, this.form.value.rememberMe)
+        .pipe(
+          finalize(() => this.spinnerService.hideSpinner(SpinnerType.LOADING))
+        )
         .subscribe({
           error: (err: HttpErrorResponse) => {
             this.notificationService.showError(err.error.message);
