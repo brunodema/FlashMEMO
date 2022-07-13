@@ -58,7 +58,7 @@ export class PasswordResetComponent {
     {
       validators: {
         validation: [
-          { name: 'fieldMatch', options: { errorPath: 'passwordConfirm' } },
+          { name: 'passwordMatch', options: { errorPath: 'passwordConfirm' } },
         ],
       },
       fieldGroup: [
@@ -69,8 +69,12 @@ export class PasswordResetComponent {
             type: 'password',
             label: 'New password',
             placeholder: 'Enter your new password',
+            required: true,
           },
           className: 'd-block mb-2',
+          validators: {
+            validation: ['passwordRequirements'],
+          },
         },
         {
           key: 'passwordConfirm',

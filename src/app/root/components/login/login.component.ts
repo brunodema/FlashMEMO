@@ -131,10 +131,14 @@ export class LoginComponent {
 
   onForgotPasswordSubmit() {
     if (this.forgotForm.valid) {
+      this.spinnerService.showSpinner(SpinnerType.LOADING);
       this.authService
         .forgotPassword(this.forgotForm.value.email)
         .pipe(
-          finalize(() => this.forgotPasswordModal.close('Finished process'))
+          finalize(() => {
+            this.forgotPasswordModal.close('Finished process');
+            this.spinnerService.hideSpinner(SpinnerType.LOADING);
+          })
         )
         .subscribe({
           next: () =>
