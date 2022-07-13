@@ -7,6 +7,9 @@ export class User {
   username: string = '';
   email: string = '';
   lastLogin?: string = undefined;
+  lockoutEnabled?: boolean = undefined;
+  lockoutEnd?: Date = undefined;
+  emailConfirmed?: boolean = undefined;
 
   public constructor(init?: Partial<User>) {
     Object.assign(this, init);

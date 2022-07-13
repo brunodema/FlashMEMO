@@ -3,7 +3,11 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { CollapseModule } from 'ngx-bootstrap/collapse'; // boostrap collapsable
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown'; // boostrap dropbdown
 import { ToastrModule } from 'ngx-toastr'; // Toastr
-import { ConfigOption, FormlyModule } from '@ngx-formly/core';
+import {
+  ConfigOption,
+  FormlyFieldConfig,
+  FormlyModule,
+} from '@ngx-formly/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './root/routing/app-routing.module';
@@ -19,6 +23,7 @@ import { CKEditorModule } from 'ckeditor4-angular';
 import { BrowserModule } from '@angular/platform-browser';
 import {
   AbstractControl,
+  FormControl,
   ReactiveFormsModule,
   ValidationErrors,
 } from '@angular/forms';
@@ -56,6 +61,7 @@ import {
   ApmService,
 } from '@elastic/apm-rum-angular';
 
+// FOR REFERENCE: these function must either return 'null' on success, or a 'ValidationError' object on fail. Therefore, if there is something like '{ fieldMatch: true }', which could mean a successful validation, it will actually be interpreted as a failed one, since it's a 'ValidationError' object.
 export function passwordMatchValidator(control: AbstractControl) {
   const { password, passwordConfirm } = control.value;
 
@@ -90,6 +96,21 @@ export function passwordRequirementsValidator(control: AbstractControl) {
   return { passwordRequirements: false };
 }
 
+export function dateFutureValidator(
+  control: AbstractControl,
+  field: FormlyFieldConfig,
+  options = {}
+) {
+  console.log(
+    new Date(control.value),
+    new Date(),
+    new Date(control.value) >= new Date()
+  );
+  return new Date(control.value) >= new Date()
+    ? null
+    : { 'date-future': false };
+}
+
 export function emailValidator(control: AbstractControl) {
   const email = control.value;
   const regex = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
@@ -107,15 +128,23 @@ export const formlyConfig: ConfigOption = {
     { name: 'passwordMatch', validation: passwordMatchValidator },
     { name: 'email', validation: emailValidator },
     { name: 'passwordRequirements', validation: passwordRequirementsValidator },
+    {
+      name: 'date-future',
+      validation: dateFutureValidator,
+    },
   ],
   validationMessages: [
     { name: 'required', message: 'This field is required.' },
     { name: 'email', message: 'This is not a valid email.' },
-    { name: 'passwordMatch', message: 'Passwords do not match.' },
     {
       name: 'passwordRequirements',
       message:
         'Password must contain at least 8 characters, one digit, one lowercase letter, one uppercase letter, and one special digit.',
+    },
+    { name: 'passwordMatch', message: 'Passwords do not match.' },
+    {
+      name: 'date-future',
+      message: 'Date must be set in the future.',
     },
   ],
 };

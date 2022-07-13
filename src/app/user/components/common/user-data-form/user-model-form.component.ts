@@ -42,91 +42,134 @@ export class UserModelFormComponent implements AfterViewInit {
   form = new FormGroup({});
   fields: FormlyFieldConfig[] = [
     {
-      // id is not necessary
-      key: 'name',
-      type: 'input',
-      templateOptions: {
-        label: 'Name',
-        placeholder: 'Enter your name',
-        required: true,
-      },
-      className: 'd-block mb-2',
-    },
-    {
-      key: 'surname',
-      type: 'input',
-      templateOptions: {
-        label: 'Surname',
-        placeholder: 'Enter your last name',
-        required: true,
-      },
-      className: 'd-block mb-2',
-    },
-    {
-      key: 'username',
-      type: 'input',
-      templateOptions: {
-        label: 'Username',
-        placeholder: 'Enter a unique username',
-        required: true,
-      },
-      className: 'd-block mb-2',
-    },
-    {
-      key: 'email',
-      type: 'input',
-      templateOptions: {
-        type: 'email',
-        label: 'Email',
-        placeholder: 'Enter your email',
-        required: true,
-      },
-      className: 'd-block mb-2',
-      validators: {
-        validation: ['email'],
-      },
-    },
-    {
-      validators: {
-        validation: [
-          { name: 'passwordMatch', options: { errorPath: 'passwordConfirm' } },
-        ],
-      },
       fieldGroup: [
         {
-          key: 'password',
+          // id is not necessary
+          key: 'name',
           type: 'input',
           templateOptions: {
-            type: 'password',
-            label: 'Password',
-            placeholder: 'Enter your password',
-          },
-          validators: {
-            validation: ['passwordRequirements'],
+            label: 'Name',
+            placeholder: 'Enter your name',
+            required: true,
           },
           className: 'd-block mb-2',
-          expressionProperties: {
-            'templateOptions.required': (model: User, formState: any) => {
-              return this.formMode === UserFormMode.EDIT ? false : true;
-            },
+        },
+        {
+          key: 'surname',
+          type: 'input',
+          templateOptions: {
+            label: 'Surname',
+            placeholder: 'Enter your last name',
+            required: true,
+          },
+          className: 'd-block mb-2',
+        },
+        {
+          key: 'username',
+          type: 'input',
+          templateOptions: {
+            label: 'Username',
+            placeholder: 'Enter a unique username',
+            required: true,
+          },
+          className: 'd-block mb-2',
+        },
+        {
+          key: 'email',
+          type: 'input',
+          templateOptions: {
+            type: 'email',
+            label: 'Email',
+            placeholder: 'Enter your email',
+            required: true,
+          },
+          className: 'd-block mb-2',
+          validators: {
+            validation: ['email'],
           },
         },
         {
-          key: 'passwordConfirm',
+          validators: {
+            validation: [
+              {
+                name: 'passwordMatch',
+                options: { errorPath: 'passwordConfirm' },
+              },
+            ],
+          },
+          fieldGroup: [
+            {
+              key: 'password',
+              type: 'input',
+              templateOptions: {
+                type: 'password',
+                label: 'Password',
+                placeholder: 'Enter your password',
+              },
+              validators: {
+                validation: ['passwordRequirements'],
+              },
+              className: 'd-block mb-2',
+              expressionProperties: {
+                'templateOptions.required': (model: User, formState: any) => {
+                  return this.formMode === UserFormMode.EDIT ? false : true;
+                },
+              },
+            },
+            {
+              key: 'passwordConfirm',
+              type: 'input',
+              templateOptions: {
+                type: 'password',
+                label: 'Confirm password',
+                placeholder: 'Repeat your password',
+              },
+              expressionProperties: {
+                'templateOptions.required': (model: any, formState: any) => {
+                  return model.password?.length > 0;
+                },
+                'templateOptions.disabled': (model: any, formState: any) => {
+                  return model.password?.length === 0;
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
+    // Below, properties only seen by sysadmins
+    {
+      hide: !this.authService.isLoggedUserAdmin(), // Only shows these fields if 'false' (not hiding it)
+      fieldGroup: [
+        {
+          key: 'lockoutEnabled',
+          type: 'checkbox',
+          templateOptions: {
+            label: 'Is user locked?',
+          },
+          className: 'd-block mb-2',
+        },
+        {
+          key: 'lockoutEnd',
           type: 'input',
           templateOptions: {
-            type: 'password',
-            label: 'Confirm password',
-            placeholder: 'Repeat your password',
+            label: 'End',
+            type: 'date',
           },
-          expressionProperties: {
-            'templateOptions.required': (model: any, formState: any) => {
-              return model.password?.length > 0;
-            },
-            'templateOptions.disabled': (model: any, formState: any) => {
-              return model.password?.length === 0;
-            },
+          className: 'd-block mb-2',
+          validators: {
+            validation: ['date-future'],
           },
+          hideExpression: true,
+          hide: true,
+        },
+        {
+          key: 'emailConfirmed',
+          type: 'checkbox',
+          templateOptions: {
+            label: 'Confirmed email?',
+          },
+          className: 'd-block mb-2',
         },
       ],
     },
@@ -205,7 +248,6 @@ export class UserModelFormComponent implements AfterViewInit {
             });
         }
       }
-
       return;
     }
     this.notificationService.showWarning('The form has problems.');
@@ -226,5 +268,9 @@ export class UserModelFormComponent implements AfterViewInit {
     this.registrationConfirmModal.result.finally(() =>
       this.router.navigateByUrl('/login')
     );
+  }
+
+  lol() {
+    console.log(this.userModel);
   }
 }
