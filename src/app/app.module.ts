@@ -17,7 +17,11 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { BrowserModule } from '@angular/platform-browser';
-import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import {
+  AbstractControl,
+  ReactiveFormsModule,
+  ValidationErrors,
+} from '@angular/forms';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ErrorHandler, Inject, NgModule } from '@angular/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
@@ -52,9 +56,8 @@ import {
   ApmService,
 } from '@elastic/apm-rum-angular';
 
-export function fieldMatchValidator(control: AbstractControl) {
-  const password = control.value['password'];
-  const passwordConfirm = control.value['passwordConfirm'];
+export function passwordMatchValidator(control: AbstractControl) {
+  const { password, passwordConfirm } = control.value;
 
   // avoid displaying the message error when values are empty
   if (!passwordConfirm || !password) {
@@ -65,16 +68,56 @@ export function fieldMatchValidator(control: AbstractControl) {
     return null;
   }
 
-  return { fieldMatch: { message: 'Password Not Matching' } };
+  return { passwordMatch: { message: 'Passwords do not match.' } };
+}
+
+/** Implementing these custom validator are a real pain in the ass. At least this is working. For now. */
+export function passwordRequirementsValidator(control: AbstractControl) {
+  const password = control.value;
+  // Just take a look on how many regex I had to test before settling with the correct one... jesus fucking christ (PS: I'll admit it, I wasn't pasting the regex using the specialized syntax, that might have cause extra trouble)
+  const regex = new RegExp(
+    // '^[(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[^da-zA-Z])].{8,}$'
+    // `(?=^.{8,}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$`
+    // '(?=^.{8,}$)((?=.*d)|(?=.*W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$'
+    // "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
+    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+  );
+  const regexCheck = regex.test(password);
+
+  if (!password || regexCheck) {
+    return null;
+  }
+  return { passwordRequirements: false };
+}
+
+export function emailValidator(control: AbstractControl) {
+  const email = control.value;
+  const regex = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
+
+  const regexCheck = regex.test(email);
+
+  if (!email || regexCheck) {
+    return null;
+  }
+  return { email: false };
 }
 
 export const formlyConfig: ConfigOption = {
-  validationMessages: [
-    { name: 'required', message: 'This field is required' },
-    { name: 'emailIsValid', message: 'This is not a valid email' },
-    { name: 'passwordMatch', message: 'The password must match' },
+  validators: [
+    { name: 'passwordMatch', validation: passwordMatchValidator },
+    { name: 'email', validation: emailValidator },
+    { name: 'passwordRequirements', validation: passwordRequirementsValidator },
   ],
-  validators: [{ name: 'fieldMatch', validation: fieldMatchValidator }],
+  validationMessages: [
+    { name: 'required', message: 'This field is required.' },
+    { name: 'email', message: 'This is not a valid email.' },
+    { name: 'passwordMatch', message: 'Passwords do not match.' },
+    {
+      name: 'passwordRequirements',
+      message:
+        'Password must contain at least 8 characters, one digit, one lowercase letter, one uppercase letter, and one special digit.',
+    },
+  ],
 };
 
 export type RepositoryServiceConfig = {

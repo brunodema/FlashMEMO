@@ -11,8 +11,13 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { finalize } from 'rxjs';
 import { GenericAuthService } from 'src/app/shared/services/auth.service';
 import { GenericNotificationService } from 'src/app/shared/services/notification/notification.service';
+import {
+  GenericSpinnerService,
+  SpinnerType,
+} from 'src/app/shared/services/UI/spinner.service';
 import { User } from 'src/app/user/models/user.model';
 import { GenericUserService } from 'src/app/user/services/user.service';
 
@@ -77,11 +82,14 @@ export class UserModelFormComponent implements AfterViewInit {
         required: true,
       },
       className: 'd-block mb-2',
+      validators: {
+        validation: ['email'],
+      },
     },
     {
       validators: {
         validation: [
-          { name: 'fieldMatch', options: { errorPath: 'passwordConfirm' } },
+          { name: 'passwordMatch', options: { errorPath: 'passwordConfirm' } },
         ],
       },
       fieldGroup: [
@@ -92,6 +100,9 @@ export class UserModelFormComponent implements AfterViewInit {
             type: 'password',
             label: 'Password',
             placeholder: 'Enter your password',
+          },
+          validators: {
+            validation: ['passwordRequirements'],
           },
           className: 'd-block mb-2',
           expressionProperties: {
@@ -138,6 +149,8 @@ export class UserModelFormComponent implements AfterViewInit {
     @Inject('GenericUserService') private userService: GenericUserService,
     @Inject('GenericNotificationService')
     private notificationService: GenericNotificationService,
+    @Inject('GenericSpinnerService')
+    private spinnerService: GenericSpinnerService,
     private router: Router,
     private cdr: ChangeDetectorRef,
     private modalService: NgbModal
@@ -148,28 +161,48 @@ export class UserModelFormComponent implements AfterViewInit {
 
   onSubmit() {
     if (this.form.valid) {
+      this.spinnerService.showSpinner(SpinnerType.LOADING);
       if (this.formMode === UserFormMode.EDIT) {
         this.userService
           .update(this.userModel.id, this.userModel)
+          .pipe(
+            finalize(() => this.spinnerService.hideSpinner(SpinnerType.LOADING))
+          )
           .subscribe((result) => {
             this.notificationService.showSuccess('User successfully updated!');
           });
       } else {
         if (this.formMode === UserFormMode.REGISTER) {
-          this.authService.register(this.form.value).subscribe({
-            next: (result) => {
-              this.openFlashcardModal();
-            },
-            error: (error: HttpErrorResponse) => {
-              this.notificationService.showError(error.error.message);
-            },
-          });
+          this.authService
+            .register(this.form.value)
+            .pipe(
+              finalize(() =>
+                this.spinnerService.hideSpinner(SpinnerType.LOADING)
+              )
+            )
+            .subscribe({
+              next: (result) => {
+                this.openFlashcardModal();
+              },
+              error: (error: HttpErrorResponse) => {
+                this.notificationService.showError(error.error.message);
+              },
+            });
         } else {
           // This is used when an admin user is creating a new user manually
-          this.userService.create(this.form.value).subscribe((result) => {
-            this.notificationService.showSuccess('User successfully created!');
-            this.router.navigate(['user', result.data]);
-          });
+          this.userService
+            .create(this.form.value)
+            .pipe(
+              finalize(() =>
+                this.spinnerService.hideSpinner(SpinnerType.LOADING)
+              )
+            )
+            .subscribe((result) => {
+              this.notificationService.showSuccess(
+                'User successfully created!'
+              );
+              this.router.navigate(['user', result.data]);
+            });
         }
       }
 
