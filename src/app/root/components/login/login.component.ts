@@ -95,8 +95,12 @@ export class LoginComponent {
           finalize(() => this.spinnerService.hideSpinner(SpinnerType.LOADING))
         )
         .subscribe({
-          error: (err: HttpErrorResponse) => {
-            this.notificationService.showError(err.error.message);
+          error: (err) => {
+            if (err instanceof HttpErrorResponse) {
+              this.notificationService.showError(err.error.message);
+            } else {
+              this.notificationService.showError(err.message);
+            }
           },
         });
     }
