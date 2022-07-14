@@ -7,7 +7,7 @@ import {
   HttpRequest,
   HttpStatusCode,
 } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { GenericNotificationService } from '../services/notification/notification.service';
 import { GenericAuthService } from '../services/auth.service';
@@ -37,7 +37,10 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
+        // console.log('óia o erro aí:', error);
         switch (error.status) {
+          case 0: // Case '0' is when no response is obtained from the back-end
+            throw new Error('FlashMEMO could not reach its servers.');
           case HttpStatusCode.InternalServerError:
             this.loggerService.logError(
               'A 500 response was returned by the back-end.',
