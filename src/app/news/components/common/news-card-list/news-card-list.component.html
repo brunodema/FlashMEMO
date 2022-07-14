@@ -1,4 +1,4 @@
-<ng-container *ngIf="extendedNewsData.length > 0; else nodata">
+<ng-container *ngIf="extendedNewsData.length > 0; else loadFailure">
   <app-news-card *ngFor="let item of extendedNewsData" [extendedNews]="item" (delete)="deleteNews($event)">
   </app-news-card>
 
@@ -7,6 +7,6 @@
     [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = getServerData($event)">
   </mat-paginator>
 </ng-container>
-<ng-template #nodata>
-  <!-- FlashMEMO was not able to fetch the latest news for you ⚰ -->
+<ng-template #loadFailure>
+  <app-load-failure></app-load-failure>
 </ng-template>
