@@ -1,4 +1,4 @@
-<div class="row" *ngIf="newsList; else loadFailure">
+<div class="row" *ngIf="newsList.length > 0; else loadFailure">
   <div class="col-md-6" *ngFor="let item of newsList; let i = index">
     <div class="container d-flex justify-content-center align-items-center">
       <div class="card">
