@@ -26,6 +26,7 @@ import { StudySessionComponent } from './components/study-session/study-session/
 import { FlashcardAnswerButtonsComponent } from './components/flashcard/flashcard-answer-buttons/flashcard-answer-buttons.component';
 import { DetailViewComponent } from './components/common/detail-view/detail-view.component';
 import { UserWelcomeComponent } from './components/user-welcome/user-welcome.component';
+import { LoadFailureComponent } from './components/load-failure/load-failure.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { UserWelcomeComponent } from './components/user-welcome/user-welcome.com
     FlashcardAnswerButtonsComponent,
     DetailViewComponent,
     UserWelcomeComponent,
+    LoadFailureComponent,
   ],
   imports: [
     CollapseModule,
@@ -74,6 +76,7 @@ import { UserWelcomeComponent } from './components/user-welcome/user-welcome.com
     FlashcardAnswerButtonsComponent,
     ImageLoaderDirective,
     UserWelcomeComponent,
+    LoadFailureComponent,
   ],
   providers: [SafePipe],
 })
