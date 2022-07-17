@@ -30,12 +30,13 @@ jobs:
           repository: brunodema/FlashMEMO-secrets
           ref: refs/heads/master
           token: ${{ secrets.FLASHMEMO_SECRETS }}
+          path: fmemo-secrets
           
       - name: Log files
-        run: ls      
+        run: ls && ls fmemo-secrets      
           
       - name: Move configs
-        run: cp frontend/config src/environment
+        run: cp fmemo-secrets/frontend/config src/environment
               
       - name: Log in to the Container registry
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
