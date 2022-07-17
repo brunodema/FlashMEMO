@@ -1,3 +1,6 @@
+[![Angular Scheduled E2E CI](https://github.com/brunodema/FlashMEMO/actions/workflows/e2e.yml/badge.svg)](https://github.com/brunodema/FlashMEMO/actions/workflows/e2e.yml)
+[![Create and publish a Docker image](https://github.com/brunodema/FlashMEMO/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/brunodema/FlashMEMO/actions/workflows/docker-publish.yml)
+
 # FlashMEMO
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.9.
