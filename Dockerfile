@@ -1,6 +1,10 @@
 # FlashMEMO-frontend
 # If overloading the default 'environment' files is desired, then this must be done while publishing the image, since Angular doesn't consume the 'environment' files at runtime. PS: it's possible to make it so, but too much stuff would have to change - and the implementation for it seems a bit wonky too.
 
+# Nginx configuration files can be overloaded by setting up the following mounts:
+# - /etc/nginx/nginx.conf
+# - /etc/nginx/security-headers.conf
+
 # Certificates for the website must be mounted in the '/usr/share/nginx/cert/' folder:
 # - /usr/share/nginx/cert/flashmemo.edu.pem
 # - /usr/share/nginx/cert/flashmemo.edu-key.pem
