@@ -27,7 +27,7 @@ jobs:
       - name: Checkout configs
         uses: actions/checkout@v3
         with:
-          repository: https://github.com/brunodema/FlashMEMO-secrets
+          repository: brunodema/FlashMEMO-secrets
           ref: refs/heads/master
           
       - name: Log files
